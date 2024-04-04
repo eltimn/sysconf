@@ -1,0 +1,55 @@
+---
+
+networks:
+  nas_net:
+    external: true
+
+volumes:
+  data:
+  config:
+
+services:
+  caddy:
+    build: .
+    container_name: caddy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+      #- "2019:2019"
+    volumes:
+      #- $PWD/Caddyfile:/etc/caddy/Caddyfile
+      #- $PWD/site:/srv
+      - data:/data
+      - config:/config
+    networks:
+      - nas_net
+    # Makes `host.docker.internal` available so Caddy can access Plex, which runs `network_mode: host`.
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway"
+    labels:
+      - homepage.group=Web
+      - homepage.name=Caddy
+      - homepage.icon=caddy.png
+      #- homepage.href=https://caddy.home.eltimn.com/
+      - homepage.description=Caddy Web Server
+      #- homepage.widget.type=caddy
+      #- homepage.widget.url=http://caddy:2019
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    #environment:
+      #PUID: {{caddy_user.uid}}
+      #PGID: {{caddy_user.group}}
+    #ports:
+    #  - 3000:3000
+    volumes:
+      - $PWD/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+    restart: unless-stopped
+    networks:
+      - nas_net

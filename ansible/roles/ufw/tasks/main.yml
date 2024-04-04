@@ -1,0 +1,29 @@
+---
+# firewall
+
+- name: Copy ufw config
+  copy:
+    src: etc_default_ufw
+    dest: /etc/default/ufw
+  notify: Restart ufw
+  tags: ufw
+
+- meta: flush_handlers
+
+- name: Resetting firewall
+  ufw:
+    state: reset
+  tags: ufw
+
+- import_tasks: ufw-nas.yml
+  when: "computer_type == 'nas'"
+  tags: ufw
+
+- import_tasks: ufw-workstation.yml
+  when: "computer_type == 'workstation'"
+  tags: ufw
+
+- name: enable ufw
+  ufw:
+    state: enabled
+  tags: ufw

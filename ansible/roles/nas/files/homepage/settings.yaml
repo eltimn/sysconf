@@ -1,0 +1,11 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: HomeLab
+theme: light # dark
+color: slate
+headerStyle: boxed
+# providers:
+#   openweathermap: openweathermapapikey
+#   weatherapi: weatherapiapikey

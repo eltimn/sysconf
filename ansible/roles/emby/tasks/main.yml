@@ -1,0 +1,13 @@
+---
+# emby
+
+- name: Download .deb
+  get_url:
+    url: "https://github.com/MediaBrowser/Emby.Releases/releases/download/{{emby_version}}/emby-server-deb_{{emby_version}}_amd64.deb"
+    dest: "{{downloads_path}}/emby_{{emby_version}}.deb"
+  tags: emby
+
+- name: Install deb
+  apt:
+    deb: "{{downloads_path}}/emby_{{emby_version}}.deb"
+  tags: emby

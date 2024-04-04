@@ -1,0 +1,62 @@
+---
+
+- name: create bin dir
+  file:
+    path: "/home/{{username}}/bin"
+    state: directory
+    owner: "{{username}}"
+    group: "{{username}}"
+  tags: nas
+
+- name: Copy scripts
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{username}}/bin"
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0755
+  with_fileglob:
+    - bin/*
+  tags: nas
+
+- name: Add cron entry
+  cron:
+    name: "backup rotozen"
+    user: "{{username}}"
+    minute: "0"
+    hour: "6"
+    job: "/home/{{username}}/bin/backup-rotozen"
+  tags: nas
+
+- name: Create the docker network
+  ansible.builtin.shell:
+    cmd: docker network create nas_net >> /srv/docker/nas_net
+    creates: /srv/docker/nas_net
+  tags:
+    - nas
+    - nas-network
+
+# - name: Create the docker network
+#   community.docker.docker_network:
+#     name: nas_net
+#   tags: nas
+
+- import_tasks: caddy.yml
+  tags:
+    - nas
+    - caddy
+
+- import_tasks: channels.yml
+  tags:
+    - nas
+    - channels
+
+- import_tasks: plex.yml
+  tags:
+    - nas
+    - plex
+
+- import_tasks: unifi.yml
+  tags:
+    - nas
+    - unifi

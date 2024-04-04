@@ -1,0 +1,6 @@
+---
+
+- name: Install nextcloud
+  snap:
+    name: nextcloud
+  tags: nextcloud

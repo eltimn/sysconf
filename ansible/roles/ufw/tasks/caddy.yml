@@ -1,0 +1,13 @@
+---
+
+- name: Copy Caddy file
+  copy:
+    src: caddy
+    dest: /etc/ufw/applications.d/caddy
+  tags: ufw
+
+- name: Allow Caddy
+  ufw:
+    name: Caddy
+    rule: allow
+  tags: ufw

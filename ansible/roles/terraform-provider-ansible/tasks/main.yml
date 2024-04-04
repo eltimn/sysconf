@@ -1,0 +1,45 @@
+---
+# install the terrafrom provider for ansible
+
+- name: Fetch archive
+  get_url:
+    url: "https://github.com/nbering/terraform-provider-ansible/releases/download/v{{tpa_version}}/terraform-provider-ansible-linux_amd64.zip"
+    dest: "{{downloads_path}}/terraform-provider-ansible-{{tpa_version}}.zip"
+  tags: terraform-provider-ansible
+
+- name: Create a directory to unpack archive into
+  file:
+    path: "{{downloads_path}}/terraform-provider-ansible-{{tpa_version}}"
+    state: directory
+    owner: root
+    group: root
+  tags: terraform-provider-ansible
+
+- name: Unpack archive
+  unarchive:
+    src: "{{downloads_path}}/terraform-provider-ansible-{{tpa_version}}.zip"
+    dest: "{{downloads_path}}/terraform-provider-ansible-{{tpa_version}}"
+    remote_src: yes
+    creates: "{{downloads_path}}/terraform-provider-ansible-{{tpa_version}}/linux_amd64/terraform-provider-ansible_v{{tpa_version}}"
+  tags: terraform-provider-ansible
+
+- name: Create plugins directory
+  file:
+    path: "/home/{{ terraform_user }}/.terraform.d/plugins"
+    owner: "{{ terraform_user }}"
+    group: "{{ terraform_user }}"
+    mode: 0755
+    state: directory
+  tags: terraform-provider-ansible
+
+- name: Copy provider file
+  command: cp {{downloads_path}}/terraform-provider-ansible-{{tpa_version}}/linux_amd64/terraform-provider-ansible_v{{tpa_version}} /home/{{ terraform_user }}/.terraform.d/plugins/
+  tags: terraform-provider-ansible
+
+- name: Chown provider file
+  file:
+    path: "/home/{{ terraform_user }}/.terraform.d/plugins/terraform-provider-ansible_v{{tpa_version}}"
+    owner: "{{ terraform_user }}"
+    group: "{{ terraform_user }}"
+  tags: terraform-provider-ansible
+  

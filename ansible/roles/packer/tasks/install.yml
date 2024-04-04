@@ -1,0 +1,28 @@
+---
+
+- name: Get packer binaries
+  get_url:
+    url: "https://releases.hashicorp.com/packer/{{ packer_version }}/packer_{{ packer_version }}_linux_amd64.zip"
+    dest: "{{ downloads_path }}/packer_{{ packer_version }}_linux_amd64.zip"
+
+- name: Create /usr/local/packer-{{ packer_version }} directory
+  file:
+    path: "/usr/local/packer-{{ packer_version }}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Unpack zip file
+  unarchive:
+    src: "{{ downloads_path }}/packer_{{ packer_version }}_linux_amd64.zip"
+    dest: "/usr/local/packer-{{ packer_version }}"
+    remote_src: yes
+    creates: /usr/local/packer-{{ packer_version }}/packer
+
+- name: Create symlink to current version
+  file:
+    src: "/usr/local/packer-{{ packer_version }}/packer"
+    dest: /usr/local/bin/packer
+    owner: root
+    group: root
+    state: link

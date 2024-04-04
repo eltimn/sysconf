@@ -1,0 +1,24 @@
+---
+
+- name: Install common (server) packages
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - direnv
+  tags: common
+
+- name: Insert/Update "direnv hook" in ~/.bashrc
+  ansible.builtin.blockinfile:
+    path: "/home/{{ username }}/.bashrc"
+    block: |
+      eval "$(direnv hook bash)"
+  tags: common
+
+- name: Create /srv/docker directory
+  file:
+    path: /srv/docker
+    owner: root
+    group: root
+    state: directory
+  tags: common

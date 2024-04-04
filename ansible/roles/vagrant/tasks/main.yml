@@ -1,0 +1,12 @@
+---
+# vagrant
+
+- name: Download vagrant deb pkg
+  get_url:
+    url: "https://releases.hashicorp.com/vagrant/{{vagrant_version}}/vagrant_{{vagrant_version}}_x86_64.deb"
+    dest: "{{ downloads_path }}/vagrant_{{vagrant_version}}_x86_64.deb"
+  tags: vagrant
+
+- name: Install vagrant
+  command: dpkg -i {{ downloads_path }}/vagrant_{{vagrant_version}}_x86_64.deb
+  tags: vagrant

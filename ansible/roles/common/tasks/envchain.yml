@@ -1,0 +1,11 @@
+---
+- name: Install deps
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  tags: common
+  with_items:
+    - libreadline6
+    - libreadline6-dev
+    - libsecret-1-0
+    - libsecret-1-dev

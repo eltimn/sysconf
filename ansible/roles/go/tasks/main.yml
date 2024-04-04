@@ -1,0 +1,38 @@
+---
+
+- name: Download go tar
+  get_url:
+    url: "https://go.dev/dl/go{{go_version}}.linux-amd64.tar.gz"
+    dest: "{{downloads_path}}/go-{{go_version}}.linux-amd64.tar.gz"
+    checksum: "sha256:{{ go_checksum }}"
+  tags: go
+
+- name: Create /usr/local/go-{{go_version}} directory
+  file:
+    path: "/usr/local/go-{{go_version}}"
+    state: directory
+    owner: root
+    group: root
+  tags: go
+
+- name: Unpack gzip file
+  unarchive:
+    src: "{{downloads_path}}/go-{{go_version}}.linux-amd64.tar.gz"
+    dest: "/usr/local/go-{{go_version}}"
+    copy: no
+    creates: "/usr/local/go-{{go_version}}/go"
+  tags: go
+
+- name: Create symlink to /usr/local/go
+  file:
+    src: "/usr/local/go-{{go_version}}/go"
+    dest: /usr/local/go
+    state: link
+  tags: go
+
+# - name: insert go path into PATH
+#   blockinfile:
+#     dest: /etc/profile
+#     block: |
+#       export PATH=$PATH:/usr/local/go/bin
+#   tags: go

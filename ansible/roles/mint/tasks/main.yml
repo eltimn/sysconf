@@ -1,0 +1,21 @@
+---
+# mint
+
+#- name: Add plank repo
+#  apt_repository: repo=ppa:ricotz/docky state=present
+#  tags: mint
+
+- name: Install plank
+  apt: pkg=plank state=latest update_cache=yes
+  tags: mint
+
+- name: Remove bloat
+  apt: pkg={{item}} state=absent
+  tags: mint
+  with_items:
+    - banshee
+    - hexchat
+    - pidgin
+    - thunderbird
+    - tomboy
+    - totem

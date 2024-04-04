@@ -1,0 +1,13 @@
+---
+
+- name: add PPA
+  apt_repository:
+    repo: "ppa:git-core/ppa"
+    state: present
+  tags: git
+
+- name: install
+  package:
+    name: git
+    state: latest
+  tags: git

@@ -1,0 +1,18 @@
+---
+# elementary community
+
+- name: Add elementary community repo
+  apt_repository: repo='ppa:mpstark/elementary-tweaks-daily' state=present
+  tags: elementary
+
+- name: Install elementary-tweaks
+  apt: pkg=elementary-tweaks state=latest update_cache=yes
+  tags: elementary
+
+- name: Add diodon repo
+  apt_repository: repo='ppa:diodon-team/stable' state=present
+  tags: elementary
+
+- name: Install diodon
+  apt: pkg=diodon state=latest update_cache=yes
+  tags: elementary

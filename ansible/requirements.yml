@@ -1,0 +1,5 @@
+---
+roles:
+  #- src: franklinkim.docker
+  #- src: ocha.yarn
+  - name: spreadcat.appimage

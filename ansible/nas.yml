@@ -1,0 +1,26 @@
+---
+# NAS
+
+- hosts: nas
+  become: yes
+  become_method: sudo
+  vars_files:
+    - vaults/nas.yml
+  vars:
+    username: nelly
+    node_user: nelly
+    computer_type: nas
+    subnet_cidr: "192.168.1.0/24"
+  roles:
+    - common
+    - common-server
+    # - nextcloud
+    - byobu
+    - docker
+    # - emby
+    # - franklinkim.docker
+    - sshd
+    - zfs
+    - mongo
+    - nas
+    - ufw

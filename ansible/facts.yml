@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Display all variables/facts known for a host
+      debug: var=hostvars[inventory_hostname]['ansible_distribution_release']
+      tags: facts

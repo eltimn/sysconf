@@ -1,0 +1,38 @@
+---
+
+- name: Create user to run unifi as
+  user:
+    name: unifi
+    shell: /bin/false
+  register: unifi_user
+  tags: unifi
+
+- name: Print the uid:gid of unifi user
+  ansible.builtin.debug:
+    msg: "user:group {{ unifi_user.uid }}:{{ unifi_user.group }}"
+  when: unifi_user is defined
+  tags: unifi
+
+- name: Create /srv/docker/unifi directory
+  file:
+    path: /srv/docker/unifi
+    state: directory
+    owner: unifi
+    group: unifi
+  tags: unifi
+
+- name: Copy unifi docker compose file
+  template:
+    src: unifi-compose.yml.j2
+    dest: /srv/docker/unifi/compose.yml
+    owner: unifi
+    group: unifi
+  tags: unifi
+
+# - name: Copy init-mongo.js file
+#   copy:
+#     src: envrc
+#     dest: /srv/docker/unifi/init-mongo.js
+#     owner: unifi
+#     group: unifi
+#   tags: unifi

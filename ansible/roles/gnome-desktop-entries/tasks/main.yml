@@ -1,0 +1,18 @@
+---
+- name: Create a directory for the icons
+  file:
+    path: /opt/gnome-desktop-entries
+    owner: root
+    group: root
+    state: directory
+
+# - name: Setup logseq
+#   import_tasks: logseq.yml
+
+- name: Setup filen
+  import_tasks: filen.yml
+
+- name: Setup obsidian
+  import_tasks: obsidian.yml
+# - name: Setup wave
+#   import_tasks: wave.yml

@@ -1,0 +1,4 @@
+[PiHole]
+title=Pi Hole
+description=This opens up PiHole ports.
+ports=8888/tcp|53/tcp|53/udp

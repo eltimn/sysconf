@@ -1,0 +1,38 @@
+---
+
+networks:
+  nas_net:
+    external: true
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    #network_mode: host
+    environment:
+      - PUID={{plex_user.uid}}
+      - PGID={{plex_user.group}}
+      - TZ='America/Chicago'
+      - VERSION=docker
+      #- PLEX_CLAIM=''
+    volumes:
+      - /mnt/plex:/config
+      - /mnt/music:/data/music
+      - /mnt/pictures:/data/pictures
+      - /mnt/tv:/data/tv
+      - /mnt/video:/data/video
+    restart: unless-stopped
+    networks:
+      - nas_net
+    #ports:
+      #- 32400:32400
+    labels:
+      - homepage.group=Media
+      - homepage.name=Plex
+      - homepage.icon=plex.png
+      - homepage.href=https://plex.home.eltimn.com/
+      - homepage.description=Media server
+      - homepage.widget.type=plex
+      - homepage.widget.url=http://plex:32400
+      - homepage.widget.key=WcH7TqXzfPzzdEqzWnra
+

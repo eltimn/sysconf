@@ -1,0 +1,4 @@
+---
+
+- name: Copy license file
+  copy: src=license.dat dest=/usr/lib/prince/license/license.dat

@@ -1,0 +1,25 @@
+---
+
+- name: Download hugo tar
+  get_url:
+    url: "https://github.com/spf13/hugo/releases/download/v{{hugo_version}}/hugo_{{hugo_version}}_linux_amd64.tar.gz"
+    dest: "{{ downloads_path }}/hugo_{{hugo_version}}_linux_amd64.tar.gz"
+  tags: hugo
+
+- name: Unpack gzip file
+  unarchive:
+    src: "{{ downloads_path }}/hugo_{{hugo_version}}_linux_amd64.tar.gz"
+    dest: /usr/local
+    copy: no
+    owner: root
+    group: root
+  tags: hugo
+
+- name: Create symlink to current version
+  file:
+    src: /usr/local/hugo_{{hugo_version}}_linux_amd64/hugo_{{hugo_version}}_linux_amd64
+    dest: /usr/local/bin/hugo
+    owner: root
+    group: root
+    state: link
+  tags: hugo

@@ -1,0 +1,11 @@
+#!/bin/sh
+# TRIM the SSD
+# http://www.webupd8.org/2013/01/enable-trim-on-ssd-solid-state-drives.html
+
+LOG=/var/log/trim.log
+echo "*** $(date -R) ***" >> $LOG
+fstrim -v / >> $LOG
+
+notify-send "TRIM" "Finished processing"
+
+exit 0

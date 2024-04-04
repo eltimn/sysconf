@@ -1,0 +1,30 @@
+---
+
+- name: Install common (desktop) packages
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    #- asciinema
+    #- conky
+    #- gparted
+    #- keepassx
+    #- rdesktop
+    - meld
+    #- firefox
+    #- python-virtualenv
+    #- build-essential
+    #- exuberant-ctags
+    #- gtk2-engines-pixbuf
+    #- software-properties-common
+    #- virtualbox
+    #- virtualbox-guest-additions-iso
+    - parcellite
+    # - clipit
+    - terminator
+    - ffmpeg
+    - psensor
+    - zsh
+    - gnome-tweaks
+    #- gnome-shell-extensions
+  tags: common

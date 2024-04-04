@@ -1,0 +1,27 @@
+---
+
+- name: Copy filen icon
+  ansible.builtin.copy:
+    src: filen_logo_dark.svg
+    dest: /opt/gnome-desktop-entries/filen_logo_dark.svg
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create desktop entry for filen
+  ansible.builtin.copy:
+    content: |
+      [Desktop Entry]
+      Encoding=UTF-8
+      Name=Filen
+      Comment=Cloud File Storage
+      Exec=/usr/local/bin/filen
+      Icon=/opt/gnome-desktop-entries/filen_logo_dark.svg
+      Terminal=false
+      Type=Application
+      StartupNotify=true
+      Categories=GNOME;Utility
+    dest: /usr/share/applications/filen.desktop
+    owner: root
+    group: root
+    mode: '0644'

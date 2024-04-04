@@ -1,0 +1,8 @@
+[nas]
+illmatic ansible_python_interpreter=/usr/bin/python3
+
+[workstation]
+localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
+
+[laptop]
+localhost ansible_connection=local

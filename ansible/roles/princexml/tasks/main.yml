@@ -1,0 +1,17 @@
+---
+# prince xml
+
+- include: install.yml
+  tags: princexml
+
+# - include: config.yml
+#   tags: princexml
+
+# http://www.stefanwienert.de/blog/2014/08/29/ansible-enable-ubuntu-multiverse-and-install-mscorefonts/
+- name: Accept License
+  shell: "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
+  tags: princexml
+
+- name: Install microsoft fonts
+  apt: pkg=ttf-mscorefonts-installer state=present
+  tags: princexml

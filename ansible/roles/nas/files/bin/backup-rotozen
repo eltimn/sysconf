@@ -1,0 +1,14 @@
+#!/bin/bash
+
+BACKUP_DIR=/mnt/backup
+REMOTE_PATH=rzweb.rotozen.com:/srv/mongo-backups
+RSYNC_OPTS='-az --progress --delete-after'
+
+mkdir -p $BACKUP_DIR/rotozen
+
+echo "sync rotozen mongodb backups from remote to local"
+rsync $RSYNC_OPTS --exclude=*.log $REMOTE_PATH $BACKUP_DIR/rotozen/
+
+echo "Finished processing"
+
+exit 0

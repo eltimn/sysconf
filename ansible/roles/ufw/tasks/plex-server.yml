@@ -1,0 +1,15 @@
+---
+# https://support.plex.tv/hc/en-us/articles/201543147-What-network-ports-do-I-need-to-allow-through-my-firewall-
+
+- name: Copy plex file
+  copy:
+    src: plex-media-server
+    dest: /etc/ufw/applications.d/plex-media-server
+  tags: ufw
+
+- name: allow plex server
+  ufw:
+    name: PlexMediaServer
+    from_ip: "{{ subnet_cidr }}"
+    rule: allow
+  tags: ufw

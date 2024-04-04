@@ -1,0 +1,37 @@
+---
+
+# - name: Add an Apt signing key
+#   apt_key:
+#     url: "https://www.mongodb.org/static/pgp/server-4.2.asc"
+#     id: E162F504A20CDF15827F718D4B7C549A058F8B6B
+#     state: absent
+
+- name: Add an Apt signing key
+  apt_key:
+    url: "https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc"
+    state: present
+
+- name: "Add mongo {{ mongo_version }} repo"
+  apt_repository:
+    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ansible_distribution_release}}/mongodb-org/{{ mongo_version }} multiverse"
+    mode: "0644"
+    state: present
+
+- name: Install mongodb-shell
+  package:
+    name: mongodb-mongosh
+    state: latest
+
+- name: Install mongodb-tools
+  package:
+    name: mongodb-database-tools
+    state: latest
+
+#- name: Create disable-transparent-hugepages file
+#  copy:
+#    src: disable-transparent-hugepages
+#    dest: /etc/init.d/disable-transparent-hugepages
+#    mode: 0755
+#    owner: root
+#    group: root
+#  notify: Update disable-transparent-hugepages

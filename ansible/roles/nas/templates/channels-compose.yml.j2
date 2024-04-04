@@ -1,0 +1,32 @@
+---
+
+networks:
+  nas_net:
+    external: true
+
+services:
+  channels-dvr:
+    image: fancybits/channels-dvr:latest
+    container_name: channels-dvr
+    ports:
+      - "5353:5353"
+      - "8089:8089"
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - /mnt/dvr-config:/channels-dvr
+      - /mnt/dvr-recordings:/shares/DVR
+      - /mnt/tv:/mnt/tv
+      - /mnt/movies:/mnt/movies
+      - /mnt/videos:/mnt/videos
+    networks:
+      - nas_net
+    labels:
+      - homepage.group=Media
+      - homepage.name=ChannelsDVR
+      - homepage.icon=channels.png
+      - homepage.href=https://dvr.home.eltimn.com/
+      - homepage.description=DVR Server
+      - homepage.widget.type=channelsdvrserver
+      - homepage.widget.url=http://channels-dvr:8089

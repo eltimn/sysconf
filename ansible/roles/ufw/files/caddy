@@ -1,0 +1,4 @@
+[Caddy]
+title=Caddy
+description=This opens up http and https ports.
+ports=80/tcp|443/tcp|443/udp

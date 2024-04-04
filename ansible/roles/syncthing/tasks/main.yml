@@ -1,0 +1,17 @@
+---
+
+- name: Add signing key
+  apt_key:
+    url: "https://syncthing.net/release-key.txt"
+    state: present
+  tags: syncthing
+
+- name: Add repo
+  apt_repository:
+    repo: "deb https://apt.syncthing.net/ syncthing stable"
+    state: present
+  tags: syncthing
+
+- name: Install package
+  apt: pkg=syncthing state=latest
+  tags: syncthing

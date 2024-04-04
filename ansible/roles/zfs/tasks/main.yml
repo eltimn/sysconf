@@ -1,0 +1,12 @@
+---
+# zfs
+
+- name: Install zfs
+  package:
+    name: zfsutils-linux
+    state: latest
+  tags: zfs
+
+# - name: Copy zfs config
+#   copy: src=zfs.conf dest=/etc/modprobe.d/zfs.conf
+#   tags: zfs

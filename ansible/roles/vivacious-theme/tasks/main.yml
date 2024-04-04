@@ -1,0 +1,13 @@
+---
+
+- name: Add repo
+  apt_repository: repo="ppa:ravefinity-project/ppa" state=present
+  tags: vivacious
+
+- name: Install theme
+  apt: pkg=vivacious-unity-gtk-dark state=latest update_cache=yes
+  tags: vivacious
+
+- name: Install theme
+  apt: pkg=vivacious-colors state=latest update_cache=yes
+  tags: vivacious

@@ -1,0 +1,4 @@
+[ChannelsDVR]
+title=Channels DVR
+description=This opens up Channels DVR web and zeroconf ports.
+ports=8089/tcp|5353/tcp

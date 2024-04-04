@@ -1,0 +1,12 @@
+---
+
+- name: Download deb
+  get_url:
+    url: "https://github.com/atom/atom/releases/download/v{{ atom_version }}/atom-amd64.deb"
+    dest: "{{ downloads_path }}/atom-{{ atom_version }}-amd64.deb"
+  tags: atom
+
+- name: Install from deb package
+  apt:
+    deb: "{{ downloads_path }}/atom-{{ atom_version }}-amd64.deb"
+  tags: atom

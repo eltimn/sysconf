@@ -1,0 +1,57 @@
+#!/bin/sh
+
+IMAGE_NAME='eltimn/rzproxy:stable'
+CONTAINER_NAME='rzproxy'
+
+pull() {
+  docker pull $IMAGE_NAME
+}
+
+remove() {
+  echo "Removing previous container $CONTAINER_NAME"
+  docker rm -f $CONTAINER_NAME &> /dev/null || true
+}
+
+run() {
+  docker run -d \
+    --restart=unless-stopped \
+    -p 8810:8080 \
+    --name="$CONTAINER_NAME" \
+    $IMAGE_NAME
+}
+
+start() {
+  docker start $CONTAINER_NAME
+}
+
+stop() {
+  docker stop $CONTAINER_NAME
+}
+
+upgrade() {
+  pull
+  stop
+  remove
+  run
+}
+
+help() {
+  echo "-----------------------------------------------------------------------"
+  echo " This controls the unifi controller container.                        -"
+  echo "-----------------------------------------------------------------------"
+  echo "                      Available commands                              -"
+  echo "-----------------------------------------------------------------------"
+  echo -e -n "$BLUE"
+  echo "   > pull - To pull the image"
+  echo "   > run - To run the image and create the container"
+  echo "   > stop - To stop main container"
+  echo "   > start - To start main container"
+  echo "   > remove - Remove main container"
+  echo "   > upgrade - Pull the latest and restart container"
+  echo "   > help - Display this help"
+  echo -e -n "$NORMAL"
+  echo "-----------------------------------------------------------------------"
+
+}
+
+$*

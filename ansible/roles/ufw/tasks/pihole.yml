@@ -1,0 +1,14 @@
+---
+
+- name: Copy pihole file
+  copy:
+    src: pihole
+    dest: /etc/ufw/applications.d/pihole
+  tags: ufw
+
+- name: allow pihole server
+  ufw:
+    name: PiHole
+    from_ip: "{{ subnet_cidr }}"
+    rule: allow
+  tags: ufw

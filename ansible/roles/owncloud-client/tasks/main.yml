@@ -1,0 +1,10 @@
+---
+# owncloud client
+
+- name: Add owncloud repo
+  apt_repository: repo='deb http://download.opensuse.org/repositories/isv:ownCloud:devel/{{ owncloud_version }}/ /' state=present
+  tags: owncloud-client
+
+- name: Install owncloud client
+  apt: pkg=owncloud-client state=latest update_cache=yes force=yes
+  tags: owncloud-client
