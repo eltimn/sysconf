@@ -1,0 +1,84 @@
+[alias]
+  au = add -u .
+  br = branch
+  ci = commit
+  cia = commit --amend
+  co = checkout
+  df = difftool
+  dff = diff --no-ext-diff
+  find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep
+  lg = log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph
+  st = status
+  w = whatchanged
+  # given a string for an author, try to figure out full name and email:
+  whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+  # given any git object, try to show it briefly
+  whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+	switch = !legit switch \"$@\"
+	branches = !legit branches
+	sprout = !legit sprout \"$@\"
+	unpublish = !legit unpublish \"$@\"
+	harvest = !legit harvest \"$@\"
+	sync = !legit sync \"$@\"
+	publish = !legit publish \"$@\"
+	graft = !legit graft \"$@\"
+  # http://stevenharman.net/git-clean-delete-already-merged-branches
+  cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D"
+  cleanup-main = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D"
+  cleanup-master = "!git branch --merged master | grep -v '^*\\|master' | xargs -r -n 1 git branch -D"
+  remove = "git rm --cached"
+
+[core]
+  editor = /usr/share/code/code --wait --new-window
+  excludesfile = ~/.gitignore
+
+[diff]
+  tool = vscode
+
+[difftool]
+  prompt = false
+
+[difftool "vscode"]
+  cmd = /usr/share/code/code --wait --new-window --diff "$LOCAL" "$REMOTE"
+
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
+
+[merge]
+  tool = meld
+
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
+  ui = auto
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[apply]
+  whitespace = fix
+
+[url "git@github.com"]
+  insteadOf = github:
+
+[push]
+  default = simple
+
+[pull]
+  ff = only
+
+[init]
+  defaultBranch = main
+
+[include]
+  path = gitconfig.d/github.inc
+  path = gitconfig.d/user.inc

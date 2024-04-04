@@ -1,0 +1,10 @@
+#!/bin/bash
+# use `unmount /path/to/mount` to unmount
+
+if [ ! -d "$2" ]; then
+  sudo mkdir -p "$2"
+  sudo chown nelly:nelly "$2"
+fi
+
+sshfs -o IdentityFile=~/.ssh/id_rsa "illmatic:$1" "$2"
+

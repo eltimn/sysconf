@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+reboot_file=/var/run/reboot-required
+
+sudo apt-get update
+sudo --preserve-env apt-get -o Dpkg::Options::="--force-confold" -y --allow-downgrades dist-upgrade
+sudo apt-get -y autoremove
+
+if [ -f "$reboot_file" ]; then
+  cat $reboot_file
+else
+  echo "All Good!"
+fi
+
+exit 0

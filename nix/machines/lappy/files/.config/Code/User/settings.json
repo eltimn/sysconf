@@ -1,0 +1,131 @@
+{
+  "editor.folding": false,
+  "window.zoomLevel": 1,
+  "editor.minimap.enabled": false,
+  "explorer.openEditors.visible": 3,
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "workbench.colorCustomizations": {
+    "editor.background": "#eef5eb"
+  },
+  "window.titleBarStyle": "custom",
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.startupEditor": "none",
+  "breadcrumbs.enabled": true,
+  "editor.detectIndentation": false,
+  "cSpell.userWords": [
+    "all",
+    "break",
+    "bson",
+    "casl",
+    "catch",
+    "destination",
+    "download",
+    "driver",
+    "elif",
+    "else",
+    "err",
+    "exc",
+    "except",
+    "exceptions",
+    "existing",
+    "i",
+    "if",
+    "info",
+    "is",
+    "none",
+    "not",
+    "obj",
+    "object",
+    "overwrite",
+    "path",
+    "prefs",
+    "result",
+    "retries",
+    "return",
+    "sleep",
+    "storage",
+    "sys",
+    "time",
+    "true",
+    "try",
+    "while"
+  ],
+  "javascript.suggestionActions.enabled": false,
+  "typescript.format.enable": false,
+  "workbench.editor.tabSizing": "shrink",
+  "sync.gist": "c27fdc4ce7e5bb11fd197cb51343ed79",
+  "terraform.indexing": {
+    "enabled": false,
+    "liveIndexing": false,
+    "delay": 500,
+    "exclude": [
+      ".terraform/**/*",
+      "**/.terraform/**/*"
+    ]
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "python.jediEnabled": false,
+  "java.requirements.JDK11Warning": false,
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "editor.formatOnSave": true,
+  "[terraform]": {
+    "editor.formatOnSave": true
+  },
+  "[templ]": {
+    "editor.defaultFormatter": "a-h.templ"
+  },
+  "emmet.includeLanguages": {
+    "templ": "html"
+  },
+  "shellcheck.disableVersionCheck": true,
+  "python.languageServer": "Default",
+  "files.associations": {
+    "*.tf": "terraform",
+    "*.html.tmpl": "jinja-html",
+    "*.sh.tmpl": "jinja-shell",
+    "*.yml.tmpl": "jinja-yaml",
+    "*.py.tmpl": "jinja-py",
+    "Caddyfile.j2": "caddyfile"
+  },
+  "go.useLanguageServer": true,
+  "extensions.ignoreRecommendations": false,
+  "eslint.format.enable": true,
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "terminal.integrated.env.linux": {},
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "terraform.languageServer.enable": true,
+  "files.watcherExclude": {
+    "**/.bloop": true,
+    "**/.metals": true,
+    "**/.ammonite": true
+  },
+  "metals.javaHome": "/usr/lib/jvm/java-17-openjdk-amd64",
+  "editor.fontSize": 16,
+  "remote.SSH.defaultExtensions": [
+    "gitpod.gitpod-remote-ssh"
+  ],
+  "redhat.telemetry.enabled": false,
+  "explorer.confirmDragAndDrop": false,
+  "workbench.colorTheme": "Default Light+"
+}

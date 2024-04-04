@@ -1,0 +1,7 @@
+--ignore-dir=target
+--ignore-dir=grunt-build
+--ignore-dir=node_modules
+
+--type-set=props=.props
+--type-set=less=.less
+--type-set=jinja2=.j2

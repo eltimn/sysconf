@@ -2,5 +2,5 @@
 
 Switch to new config.
 ```shell
-home-manager --flake ~/sysconf/nix/hosts/ruca switch
+home-manager --flake ~/sysconf/nix/machines/ruca switch
 ```

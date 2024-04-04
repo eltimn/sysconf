@@ -1,0 +1,184 @@
+[global_config]
+suppress_multiple_term_dialog = True
+title_transmit_fg_color = "#d2f83e"
+[keybindings]
+switch_to_tab_1 = <Primary><Shift>exclam
+switch_to_tab_2 = <Primary><Shift>at
+switch_to_tab_3 = <Primary><Shift>numbersign
+switch_to_tab_4 = <Primary><Shift>dollar
+switch_to_tab_5 = <Primary><Shift>percent
+switch_to_tab_6 = <Primary><Shift>asciicircum
+switch_to_tab_7 = <Primary><Shift>ampersand
+switch_to_tab_8 = <Primary><Shift>asterisk
+switch_to_tab_9 = <Primary><Shift>parenleft
+switch_to_tab_10 = <Primary><Shift>parenright
+[profiles]
+[[default]]
+font = Monospace 14
+use_system_font = False
+background_color = "#ffffff"
+cursor_color = "#000000"
+foreground_color = "#000000"
+scrollback_lines = 2000
+[layouts]
+[[default]]
+[[[child1]]]
+parent = window0
+profile = default
+type = Terminal
+[[[window0]]]
+type = Window
+command = ""
+directory = ""
+parent = ""
+[[acmweb]]
+[[[child0]]]
+fullscreen = False
+last_active_window = True
+maximised = False
+position = 951:154
+size = 1183, 894
+title = acm-web
+type = Window
+[[[child1]]]
+labels = None, None
+last_active_term = 998e1358-b4aa-4999-bcab-58d29402ce59, 25b93263-e035-4500-8549-3ffa4fa50c55
+parent = child0
+type = Notebook
+[[[child2]]]
+parent = child1
+type = VPaned
+[[[terminal3]]]
+directory = /home/nelly/code/ascendant/acm-web
+parent = child2
+profile = default
+type = Terminal
+uuid = 998e1358-b4aa-4999-bcab-58d29402ce59
+[[[terminal4]]]
+directory = /home/nelly/code/ascendant/acm-web/web
+parent = child2
+profile = default
+type = Terminal
+uuid = 4faa302e-f2d6-4548-9738-1537b1e69eac
+[[[terminal5]]]
+directory = /home/nelly/code/ascendant/acm-web/dev
+parent = child1
+profile = default
+type = Terminal
+uuid = 25b93263-e035-4500-8549-3ffa4fa50c55
+active_page = 0
+order = 0
+order = 0
+order = 0
+order = 0
+order = 1
+order = 1
+parent = ""
+position = 440
+ratio = 0.511547344111
+[[deuce]]
+[[[child0]]]
+position = 780:418
+size = 1116, 813
+type = Window
+[[[child1]]]
+labels = None, None
+parent = child0
+type = Notebook
+[[[terminal2]]]
+command = sbt; zsh
+parent = child1
+profile = default
+type = Terminal
+[[[terminal3]]]
+command = docker-compose up; zsh
+parent = child1
+profile = default
+type = Terminal
+directory = ""
+order = 0
+order = 0
+order = 0
+order = 1
+parent = ""
+[[rotozen]]
+[[[child0]]]
+fullscreen = False
+last_active_window = True
+maximised = False
+position = 951:154
+size = 1183, 894
+title = rotozen
+type = Window
+[[[child1]]]
+labels = None, None
+last_active_term = 998e1358-b4aa-4999-bcab-58d29402ce59, 25b93263-e035-4500-8549-3ffa4fa50c55
+parent = child0
+type = Notebook
+[[[child2]]]
+parent = child1
+type = VPaned
+[[[terminal3]]]
+directory = /home/nelly/code/rotozen
+parent = child2
+profile = default
+type = Terminal
+uuid = 998e1358-b4aa-4999-bcab-58d29402ce59
+[[[terminal4]]]
+directory = /home/nelly/code/rotozen
+parent = child2
+profile = default
+type = Terminal
+uuid = 4faa302e-f2d6-4548-9738-1537b1e69eac
+[[[terminal5]]]
+directory = /home/nelly/code/rotozen/dev
+parent = child1
+profile = default
+type = Terminal
+uuid = 25b93263-e035-4500-8549-3ffa4fa50c55
+active_page = 0
+command = ""
+order = 0
+order = 0
+order = 0
+order = 0
+order = 1
+order = 1
+parent = ""
+position = 440
+ratio = 0.511547344111
+[[tlweb]]
+[[[child0]]]
+type = Window
+position = 2560:0
+maximised = True
+fullscreen = False
+size = 1280, 990
+title = tl-web
+last_active_window = True
+[[[child1]]]
+type = Notebook
+parent = child0
+labels = None, None
+last_active_term = 479d1597-9247-47f3-b82a-5f15e00de800, a8d8103d-e003-4ec6-9ded-aa8d03d502d9
+[[[terminal2]]]
+type = Terminal
+parent = child1
+profile = default
+uuid = 479d1597-9247-47f3-b82a-5f15e00de800
+directory = /home/nelly/code/tradellama/tl-web-main
+[[[terminal3]]]
+type = Terminal
+parent = child1
+profile = default
+uuid = a8d8103d-e003-4ec6-9ded-aa8d03d502d9
+directory = /home/nelly/code/tradellama/tl-web-main
+active_page = 1
+command = ""
+command = ""
+order = 0
+order = 0
+order = 0
+order = 1
+parent = ""
+[plugins]
