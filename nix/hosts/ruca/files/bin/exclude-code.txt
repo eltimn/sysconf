@@ -1,0 +1,8 @@
+*/target/*
+*/.vagrant/*
+*/lib_managed/*
+*/project/boot/*
+*/node_modules/*
+*/bower_components/*
+*.class
+*.pyc

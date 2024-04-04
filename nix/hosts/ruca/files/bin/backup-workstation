@@ -1,0 +1,81 @@
+#!/bin/bash
+
+BACKUP_HOST=illmatic
+
+# delete the temp directories
+function cleanup {
+  rm -rf /tmp/backup-mongo.*
+  echo "Deleted temp working directories"
+}
+
+# register the cleanup function to be called on the EXIT signal
+trap cleanup EXIT
+
+BACKUP_LOC=$BACKUP_HOST:/mnt/backup/ruca
+RSYNC_OPTS='-az --progress --delete-after'
+
+# if [ ! -d "$BACKUP_LOC" ]; then
+#   mkdir -p "$BACKUP_LOC/nelly"
+#   mkdir -p "$BACKUP_LOC/nelly-dbs"
+# fi
+
+backup_local_dir () {
+  #tar -czf $BACKUP_LOC/nelly/$1.tgz -C /home/nelly $1 -X `dirname $0`/exclude-local.txt
+  rsync $RSYNC_OPTS --exclude-from=`dirname $0`/exclude-local.txt /home/nelly/$1 $BACKUP_LOC/nelly/
+}
+
+backup_code_dir () {
+  #tar -czf $BACKUP_LOC/nelly/$1.tgz -C  /home/nelly $1 -X `dirname $0`/exclude-code.txt
+  rsync $RSYNC_OPTS --exclude-from=`dirname $0`/exclude-code.txt /home/nelly/$1 $BACKUP_LOC/nelly/
+}
+
+backup_mongo () {
+  HOSTANDPORT=$1
+  DB=$2
+  WORK_DIR=$(mktemp -d --tmpdir=/tmp backup-mongo.XXXXXXX)
+
+  # check if tmp dir was created
+  if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
+    echo "Could not create temp dir"
+    exit 1
+  fi
+
+  DUMP_DIR=$WORK_DIR/dump
+
+  mkdir -p $DUMP_DIR
+
+  # dump the db to a directory
+  mongodump --host $HOSTANDPORT --db $DB --out $DUMP_DIR
+
+  RESULT=$?   # returns 0 if mongodump succeeds
+
+  if [ $RESULT -eq 0 ]; then
+    echo "backing up: $HOSTANDPORT/$DB"
+    # tar and zip it up
+    tar -cvf $WORK_DIR/$DB.tgz -C $DUMP_DIR $DB
+    # sync to backup server
+    rsync $RSYNC_OPTS $WORK_DIR/$DB.tgz $BACKUP_LOC/nelly-dbs/
+  fi
+}
+
+backup_local_dir Audio
+backup_local_dir Documents
+backup_local_dir Dropbox
+backup_local_dir Enpass
+backup_local_dir Images
+backup_local_dir Notes
+backup_local_dir Pictures
+backup_local_dir secret
+backup_local_dir secret-tl
+backup_local_dir workspaces
+
+backup_code_dir code
+
+# backup databases
+# backup_mongo localhost:2700 acm-web
+#backup_mongo localhost:2700 acmfiles
+# backup_mongo localhost:2800 rotozen
+
+notify-send "Backup Workstation" "Finished processing"
+
+exit 0
