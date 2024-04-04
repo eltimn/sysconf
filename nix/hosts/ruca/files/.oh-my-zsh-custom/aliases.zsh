@@ -15,6 +15,9 @@ alias app="ansible-playbook --ask-become-pass --extra-vars ansible_python_interp
 
 alias myip="curl icanhazip.com"
 
+# alias hmswitch="home-manager --flake ~/sysconf/nix/hosts/$(hostname) switch"
+alias hmswitch="home-manager --flake ~/sysconf/nix/hosts/ruca switch"
+
 # alias rdp='rdesktop -g 1920x1080'
 
 # zsh is able to auto-do some kungfoo
