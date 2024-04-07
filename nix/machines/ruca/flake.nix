@@ -20,8 +20,16 @@
         config.allowUnfree = true;
       };
       username = "nelly";
+
+      # Variables Used In Flake
+      vars = {
+        user = "nelly";
+        # location = "$HOME/.setup";
+        # terminal = "kitty";
+        editor = "nvim";
+      };
     in {
-      homeConfigurations."${username}" =
+      homeConfigurations."${vars.user}" =
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
@@ -31,7 +39,7 @@
 
           # Optionally use extraSpecialArgs
           # to pass through arguments to home.nix
-          extraSpecialArgs = { inherit username; };
+          extraSpecialArgs = { inherit vars; };
         };
 
     };

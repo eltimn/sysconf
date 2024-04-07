@@ -2,12 +2,15 @@
 # https://github.com/Yumasi/nixos-home/tree/main
 # https://github.com/chrisportela/dotfiles
 # https://www.chrisportela.com/posts/home-manager-flake/
-{ config, pkgs, username, ... }: {
+{ config, pkgs, vars, ... }: {
+
+  imports = [ ../../modules/shell/direnv.nix ../../modules/shell/zsh.nix ];
+
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    username = "${username}";
-    homeDirectory = "/home/${username}";
+    username = "${vars.user}";
+    homeDirectory = "/home/${vars.user}";
 
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
@@ -62,8 +65,9 @@
       ./files/.config/Code/User/settings.json;
     # file.".config/git/config".source = ./files/.config/git/config;
     file.".config/git/extra.inc".source = ./files/.config/git/extra.inc;
-    file.".config/terminator/config".source = ./files/.config/terminator/config;
-    file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
+    # file.".config/terminator/config".source = ./files/.config/terminator/config;
+    file.".config/zsh/funcs".source = ./files/.config/zsh/funcs;
+    # file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
     file."bin".source = ./files/bin;
     file.".ackrc".source = ./files/.ackrc;
     file.".ansible.cfg".source = ./files/.ansible.cfg;
@@ -83,12 +87,6 @@
         pager = "less -FR";
         theme = "ansi";
       };
-    };
-
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
     };
 
     eza = {
@@ -194,20 +192,6 @@
     zoxide = {
       enable = true;
       enableZshIntegration = true;
-    };
-
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      enableAutosuggestions = true;
-      syntaxHighlighting.enable = true;
-
-      oh-my-zsh = {
-        enable = true;
-        theme = "alanpeabody"; # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-        custom = "$HOME/.oh-my-zsh-custom";
-        plugins = [ "copyfile" "copypath" "colorize" ];
-      };
     };
   };
 
