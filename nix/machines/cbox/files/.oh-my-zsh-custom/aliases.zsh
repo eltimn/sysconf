@@ -12,20 +12,13 @@ alias tf="terraform"
 
 alias ap="ansible-playbook"
 alias app="ansible-playbook --ask-become-pass --extra-vars ansible_python_interpreter=/usr/bin/python3"
-alias apg="ansible-playbook -i hosts/vagrant"
-alias apv="ansible-playbook --ask-vault-pass"
-alias appv="ansible-playbook --ask-become-pass --ask-vault-pass"
 
-alias nix-search="nix-env -qaP | grep"
-alias nix-update="nix-channel --update; nix-env -iA nixpkgs.nix"
-alias nix-rebuild="sudo nixos-rebuild switch --flake .#workstation"
+alias myip="curl icanhazip.com"
+
+# alias hmswitch="home-manager --flake ~/sysconf/nix/machines/$(hostname) switch"
+alias hmswitch="home-manager --flake ~/sysconf/nix/machines/ruca switch"
 
 # alias rdp='rdesktop -g 1920x1080'
-
-# Add yourself some shortcuts to projects you often work on
-alias tl=~/code/tradellama
-alias lift=~/code/lift/framework
-alias rzen=~/code/rotozen
 
 # zsh is able to auto-do some kungfoo
 # depends on the SUFFIX :)

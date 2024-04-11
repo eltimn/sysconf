@@ -123,6 +123,7 @@
   },
   "metals.javaHome": "/usr/lib/jvm/java-17-openjdk-amd64",
   "editor.fontSize": 16,
+  "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace",
   "remote.SSH.defaultExtensions": [
     "gitpod.gitpod-remote-ssh"
   ],

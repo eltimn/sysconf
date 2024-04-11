@@ -6,6 +6,8 @@
 
   imports = [ ../../modules/shell/direnv.nix ../../modules/shell/zsh.nix ];
 
+  fonts.fontconfig.enable = true;
+
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
@@ -27,6 +29,7 @@
       # ack-grep
       # dnsutils
       enpass
+      entr
       ffmpeg
       git
       htop
@@ -43,6 +46,7 @@
       notify-osd
       parcellite
       sshfs
+      tldr
       tmux
       tmuxinator
       # trash-cli
@@ -61,13 +65,13 @@
     };
 
     # List of files to be symlinked into the user home directory.
-    file.".config/Code/User/settings.json".source =
-      ./files/.config/Code/User/settings.json;
+    # file.".config/Code/User/settings.json".source =
+    #   ./files/.config/Code/User/settings.json;
     # file.".config/git/config".source = ./files/.config/git/config;
     file.".config/git/extra.inc".source = ./files/.config/git/extra.inc;
     # file.".config/terminator/config".source = ./files/.config/terminator/config;
     file.".config/zsh/funcs".source = ./files/.config/zsh/funcs;
-    # file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
+    file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
     file."bin".source = ./files/bin;
     file.".ackrc".source = ./files/.ackrc;
     file.".ansible.cfg".source = ./files/.ansible.cfg;
@@ -158,21 +162,6 @@
       enable = true;
       arguments = [ ];
     };
-
-    # starship = {
-    #   enable = true;
-    #   # settings = {
-    #   #   # add_newline = false;
-
-    #   #   # character = {
-    #   #   #   success_symbol = "[➜](bold green)";
-    #   #   #   error_symbol = "[➜](bold red)";
-    #   #   # };
-
-    #   #   # package.disabled = true;
-    #   # };
-    #   presets = [ "nerd-font-symbols" ];
-    # };
 
     # tmux = {
     #   enable = true;
