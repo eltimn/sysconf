@@ -49,11 +49,11 @@
         pbpaste = "xclip -selection clipboard -o";
       };
 
-      initExtra = ''
-        # add custom functions to fpath
-        fpath=(~/.config/zsh/funcs $fpath);
-        autoload -Uz $fpath[1]/*(.:t)
-      '';
+      # initExtra = ''
+      #   # add custom functions to fpath
+      #   fpath=(~/.config/zsh/funcs $fpath);
+      #   autoload -Uz $fpath[1]/*(.:t)
+      # '';
     };
     # zsh = {
     #   shellInit = ''
