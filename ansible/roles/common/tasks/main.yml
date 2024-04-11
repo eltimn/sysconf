@@ -14,13 +14,14 @@
     - ufw
     - dnsutils
     - tree
-#    - ppa-purge
+    # - ppa-purge
     - sshfs
     - htop
     - libnss3-tools
     - libnotify-bin
     - notify-osd
     - net-tools
+    - tldr
   tags: common
 
 #- name: Create symlink to ack

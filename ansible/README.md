@@ -6,6 +6,9 @@ mkdir -p ~/illmatic/mnt
 sshfs illmatic.home.eltimn.com:/mnt ~/illmatic/mnt
 ```
 
+# Channels DVR
+* installed manually https://getchannels.com/dvr-server/#linux
+
 ## Nvidia Shield
 
 For copying files follow these steps:

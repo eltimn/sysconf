@@ -1,0 +1,63 @@
+---
+# Get custom binary at https://caddyserver.com/download (add caddy-dns/cloudlfare to the list of plugins, this allows using cloudflare to update the dns for verification)
+
+- name: Copy caddy custom binary
+  ansible.builtin.copy:
+    src: caddy_linux_amd64_custom
+    dest: /usr/local/bin/caddy
+    owner: root
+    group: root
+    mode: 0755
+  tags: caddy
+
+- name: Allow caddy binary to bind to port 80 and 443
+  community.general.capabilities:
+    path: /usr/local/bin/caddy
+    capability: cap_net_bind_service=+ep
+    state: present
+  tags: caddy
+
+- name: Create user to run caddy as
+  ansible.builtin.user:
+    name: caddy
+    shell: /usr/sbin/nologin
+    home: /var/lib/caddy
+    system: true
+  register: caddy_user
+  tags: caddy
+
+- name: Print the uid:gid of caddy user
+  ansible.builtin.debug:
+    msg: "user:group {{ caddy_user.uid }}:{{ caddy_user.group }}"
+  when: caddy_user is defined
+  tags: caddy
+
+- name: Create /etc/caddy directory
+  ansible.builtin.file:
+    path: /etc/caddy
+    state: directory
+    owner: root
+    group: root
+  tags: caddy
+
+- name: Generate Caddyfile
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    owner: root
+    group: root
+    mode: 0644
+  tags: caddy
+  notify:
+    - Reload caddy
+
+- name: Copy caddy systemd service file
+  ansible.builtin.copy:
+    src: caddy.service
+    dest: /etc/systemd/system/caddy.service
+    owner: root
+    group: root
+    mode: 0644
+  tags: caddy
+  notify:
+    - Restart caddy

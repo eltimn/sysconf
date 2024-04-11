@@ -11,7 +11,6 @@
 - import_tasks: unifi-network-app.yml
 # - import_tasks: pihole.yml
 - import_tasks: caddy.yml
-
 # - name: plex external
 #   ufw:
 #     to_port: "32400"

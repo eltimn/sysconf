@@ -1,5 +1,4 @@
 ---
-
 - name: create bin dir
   file:
     path: "/home/{{username}}/bin"
@@ -41,15 +40,15 @@
 #     name: nas_net
 #   tags: nas
 
-- import_tasks: caddy.yml
-  tags:
-    - nas
-    - caddy
+# - import_tasks: caddy.yml
+#   tags:
+#     - nas
+#     - caddy
 
-- import_tasks: channels.yml
-  tags:
-    - nas
-    - channels
+# - import_tasks: channels.yml
+#   tags:
+#     - nas
+#     - channels
 
 - import_tasks: plex.yml
   tags:
