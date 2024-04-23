@@ -24,7 +24,16 @@
     user: "{{username}}"
     minute: "0"
     hour: "6"
-    job: "/home/{{username}}/bin/backup-rotozen"
+    job: "/home/{{username}}/bin/backup-rotozen-mongo"
+  tags: nas
+
+- name: Create mongo cert file
+  copy:
+    content: "{{ mongo_backup_cert }}"
+    dest: /home/{{username}}/X509-cert-backup.pem
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0600
   tags: nas
 
 - name: Create the docker network
