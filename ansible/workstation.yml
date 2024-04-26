@@ -25,7 +25,7 @@
     # - common-desktop
     # - hosts
     #- git
-    - java-jdk
+    #- java-jdk
     - docker
     # - docker-compose - comes installed with docker now
     #- franklinkim.docker

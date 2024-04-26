@@ -15,7 +15,7 @@
 
 	@unifi host unifi.home.eltimn.com
 	handle @unifi {
-		reverse_proxy 172.27.0.2:8443 {
+		reverse_proxy {{docker_unifi_ip}}:8443 {
 			transport http {
 				tls_insecure_skip_verify # unifi uses self-signed certs
 			}
@@ -29,7 +29,7 @@
 
 	@plex host plex.home.eltimn.com
 	handle @plex {
-		reverse_proxy 172.27.0.4:32400
+		reverse_proxy {{docker_plex_ip}}:32400
 	}
 
 	@www host www.home.eltimn.com

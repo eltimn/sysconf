@@ -23,7 +23,8 @@ services:
       - /mnt/video:/data/video
     restart: unless-stopped
     networks:
-      - nas_net
+      nas_net:
+          ipv4_address: {{ docker_plex_ip }}
     #ports:
       #- 32400:32400
     labels:

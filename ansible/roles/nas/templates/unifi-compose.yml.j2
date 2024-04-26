@@ -55,8 +55,9 @@ services:
       #- 6789:6789 #optional
       #- 5514:5514/udp #optional
     networks:
-      - nas_net
-      - db_net
+      nas_net:
+          ipv4_address: {{ docker_unifi_ip }}
+      db_net:
     labels:
       - homepage.group=Network
       - homepage.name=Unifi

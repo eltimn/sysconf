@@ -38,7 +38,7 @@
 
 - name: Create the docker network
   ansible.builtin.shell:
-    cmd: docker network create nas_net >> /srv/docker/nas_net
+    cmd: docker network create --subnet={{docker_cidr}} nas_net >> /srv/docker/nas_net
     creates: /srv/docker/nas_net
   tags:
     - nas
