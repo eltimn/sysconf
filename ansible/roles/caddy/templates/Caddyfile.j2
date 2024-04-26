@@ -34,7 +34,7 @@
 
 	@www host www.home.eltimn.com
 	handle @www {
-		reverse_proxy localhost:3000
+		reverse_proxy {{docker_homepage_ip}}:3000
 	}
 
 	# Fallback for otherwise unhandled domains

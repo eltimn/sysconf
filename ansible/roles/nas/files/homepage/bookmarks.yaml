@@ -7,12 +7,19 @@
 #         - abbr: GH
 #           href: https://github.com/
 
-- Social:
-    - Reddit:
-        - abbr: RE
-          href: https://reddit.com/
+# - Social:
+#     - Reddit:
+#         - abbr: RE
+#           href: https://reddit.com/
 
-- Entertainment:
-    - YouTube:
-        - abbr: YT
-          href: https://youtube.com/
+# - Entertainment:
+#     - YouTube:
+#         - abbr: YT
+#           href: https://youtube.com/
+- HomeLab:
+    - Channels DVR:
+        - icon: channels.png
+          href: https://dvr.home.eltimn.com/
+    - EdgeMax Router:
+        - icon: edgeos.png
+          href: https://192.168.1.1

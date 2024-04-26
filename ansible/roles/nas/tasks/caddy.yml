@@ -67,30 +67,3 @@
     owner: caddy
     group: caddy
   tags: caddy
-
-- name: Create /srv/docker/caddy/homepage directory
-  file:
-    path: /srv/docker/caddy/homepage
-    state: directory
-    owner: caddy
-    group: caddy
-  tags:
-    - caddy
-    - homepage
-
-- name: Copy homepage files
-  copy:
-    src: "{{item}}"
-    dest: /srv/docker/caddy/homepage
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - homepage/bookmarks.yaml
-    - homepage/docker.yaml
-    - homepage/services.yaml
-    - homepage/settings.yaml
-    - homepage/widgets.yaml
-  tags:
-    - caddy
-    - homepage

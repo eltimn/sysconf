@@ -38,18 +38,3 @@ services:
       - homepage.description=Caddy Web Server
       #- homepage.widget.type=caddy
       #- homepage.widget.url=http://caddy:2019
-
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    #environment:
-      #PUID: {{caddy_user.uid}}
-      #PGID: {{caddy_user.group}}
-    #ports:
-    #  - 3000:3000
-    volumes:
-      - $PWD/homepage:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
-    restart: unless-stopped
-    networks:
-      - nas_net

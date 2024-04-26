@@ -68,3 +68,8 @@
   tags:
     - nas
     - unifi
+
+- import_tasks: homepage.yml
+  tags:
+    - nas
+    - homepage
