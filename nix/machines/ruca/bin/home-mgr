@@ -1,3 +1,0 @@
-#!/bin/sh
-
-home-manager --flake ~/sysconf/nix/machines/ruca "$@"

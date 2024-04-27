@@ -33,17 +33,12 @@
         sedit = "sudo -i code";
         ubuntu-version = "lsb_release -a";
         fig = "docker-compose";
-        vg = "vagrant";
-        tf = "terraform";
 
         ap = "ansible-playbook";
         app =
           "ansible-playbook --ask-become-pass --extra-vars ansible_python_interpreter=/usr/bin/python3";
 
         myip = "curl icanhazip.com";
-
-        #   hmswitch="home-manager --flake ~/sysconf/nix/machines/$(hostname) switch";
-        hmswitch = "home-manager --flake ~/sysconf/nix/machines/ruca switch";
 
         pbcopy = "xclip -selection clipboard";
         pbpaste = "xclip -selection clipboard -o";
