@@ -49,6 +49,18 @@
     };
   };
 
+  # services.xserver = {
+  #   enable = true;
+  #   libinput.enable = true;
+  #   displayManager.lightdm.enable = true;
+  #   desktopManager = { cinnamon.enable = true; };
+  #   displayManager.defaultSession = "cinnamon";
+  #   xkb = {
+  #     layout = "us";
+  #     variant = "";
+  #   };
+  # };
+
   # Exclude some packages from gnome
   environment.gnome.excludePackages =
     (with pkgs; [ gnome-photos gnome-tour gnome-text-editor ])

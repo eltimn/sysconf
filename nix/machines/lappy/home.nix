@@ -12,12 +12,14 @@ in {
       filen
       ffmpeg
       git
+      google-chrome
       htop
       firefox
       gnome.gnome-tweaks
-      libnotify
       gnomeExtensions.appindicator
+      gnomeExtensions.dash-to-dock
       gnumake
+      libnotify
       neovim
       nixfmt
       notify-osd
