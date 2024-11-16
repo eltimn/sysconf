@@ -50,6 +50,7 @@
         extraGroups = [ "wheel" "networkmanager" "docker" ];
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDklahMXXjjNfToRDOjLsIwUl3a3C3W7/X7wEMBca8lo nelly@pop-os"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy"
         ];
         shell = pkgs.zsh;
       };
