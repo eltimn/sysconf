@@ -20,8 +20,9 @@ in {
       gnomeExtensions.dash-to-dock
       gnumake
       libnotify
+      meld
       neovim
-      nixfmt
+      nixfmt-classic
       notify-osd
       parcellite
       ripgrep
@@ -76,15 +77,18 @@ in {
       enableZshIntegration = true;
     };
 
-    kitty = {
-      enable = true;
-      font = {
-        name = "DejaVu Sans";
-        size = 14;
-      };
-      shellIntegration.enableZshIntegration = true;
-      theme = "Github";
-    };
+    # warning: The option `programs.kitty.theme' defined here'
+    # has been changed to `programs.kitty.themeFile' that has a different type.
+    # Please read `programs.kitty.themeFile' documentation and update your configuration accordingly.
+    # kitty = {
+    #   enable = true;
+    #   font = {
+    #     name = "DejaVu Sans";
+    #     size = 14;
+    #   };
+    #   shellIntegration.enableZshIntegration = true;
+    #   theme = "Github";
+    # };
 
     tmux = {
       enable = true;
@@ -109,7 +113,7 @@ in {
     zsh = {
       enable = true;
       enableCompletion = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
       oh-my-zsh = {
