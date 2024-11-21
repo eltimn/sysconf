@@ -9,48 +9,44 @@ in {
 
     packages = with pkgs; [
       enpass
-      filen
       ffmpeg
-      git
-      google-chrome
-      htop
+      filen
       firefox
+      git
       gnome.gnome-tweaks
       gnomeExtensions.appindicator
       gnomeExtensions.dash-to-dock
       gnumake
-      libnotify
+      google-chrome
+      htop
+      libnotfy
       meld
       neovim
       nixfmt-classic
       notify-osd
       parcellite
-      ripgrep
       sshfs
       stow
       tmux
       vscode
       xclip
       yubikey-manager
-      zsh
     ];
 
     sessionPath = [ "$HOME/.pulumi/bin" ];
     sessionVariables = {
-      EDITOR =
-        "${pkgs.lib.attrsets.getBin pkgs.vscode}/bin/code --new-window --wait";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscode}/bin/code --new-window --wait";
     };
 
     # List of files to be symlinked into the user home directory.
-    file.".config/Code/User/settings.json".source =
-      ./files/.config/Code/User/settings.json;
+    file.".config/Code/User/settings.json".source = ./files/.config/Code/User/settings.json;
     file.".config/git/config".source = ./files/.config/git/config;
     file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
+    file.".abcde.conf".source = ./files/.abcde.conf;
     file.".ackrc".source = ./files/.ackrc;
     file.".ansible.cfg".source = ./files/.ansible.cfg;
     file.".gitignore".source = ./files/.gitignore;
     file.".mongoshrc.js".source = ./files/.mongoshrc.js;
-    file.".abcde.conf".source = ./files/.abcde.conf;
   };
 
   # Packages that are installed as programs also allow for configuration.
@@ -89,6 +85,11 @@ in {
     #   shellIntegration.enableZshIntegration = true;
     #   theme = "Github";
     # };
+
+    ripgrep = {
+      enable = true;
+      arguments = [ ];
+    };
 
     tmux = {
       enable = true;

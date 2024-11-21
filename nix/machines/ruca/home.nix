@@ -27,30 +27,36 @@
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
       # ack-grep
-      devbox
+      bitwarden-cli
+      bitwarden-desktop
+      # devbox
       # dnsutils
-      enpass
-      entr
+      # enpass
+      # entr
       ffmpeg
       git
+      gnome.gnome-tweaks
+      google-chrome
       htop
       # libnss3-tools
       libnotify
-      logseq
+      # logseq
       meld
-      mongodb-compass
-      neofetch
-      neovim
+      # mongodb-compass
+      # neofetch
+      # neovim
       # nerdfonts
       # net-tools
-      nixfmt
+      nixfmt-classic
       notify-osd
+      obsidian
       parcellite
       sshfs
       tldr
       tmux
       tmuxinator
       # trash-cli
+      vscode
       # warp-terminal
       xclip
       yubikey-manager
@@ -61,24 +67,24 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "/usr/bin/code --new-window --wait";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscode}/bin/code --new-window --wait";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
 
     # List of files to be symlinked into the user home directory.
-    # file.".config/Code/User/settings.json".source =
-    #   ./files/.config/Code/User/settings.json;
+    file.".config/Code/User/settings.json".source = ./files/.config/Code/User/settings.json;
     # file.".config/git/config".source = ./files/.config/git/config;
     file.".config/git/extra.inc".source = ./files/.config/git/extra.inc;
     # file.".config/terminator/config".source = ./files/.config/terminator/config;
     file.".config/zsh/funcs".source = ./files/.config/zsh/funcs;
     file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
-    file."bin".source = ./files/bin;
+    file.".abcde.conf".source = ./files/.abcde.conf;
     file.".ackrc".source = ./files/.ackrc;
     file.".ansible.cfg".source = ./files/.ansible.cfg;
     # file.".gitignore".source = ./files/.gitignore;
     file.".mongoshrc.js".source = ./files/.mongoshrc.js;
-    file.".abcde.conf".source = ./files/.abcde.conf;
+
+    file."bin".source = ./files/bin;
   };
 
   # Packages that are installed as programs also allow for configuration.
@@ -151,6 +157,11 @@
         "ehthumbs.db"
         "Icon?"
         "Thumbs.db"
+        ".hg/"
+        ".hgignore"
+        "*.sublime-project"
+        "*.sublime-workspace"
+        ".svn/"
       ];
       includes = [
         { path = "extra.inc"; }
@@ -166,6 +177,8 @@
 
     # tmux = {
     #   enable = true;
+    #   keyMode = "vi";
+    #   mouse = false;
     #   shell = "${pkgs.zsh}/bin/zsh";
     #   shortcut = "a";
     #   terminal = "screen-256color";
