@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BACKUP_HOST=illmatic
+BACKUP_HOST=illmatic.home.eltimn.com
 
 # delete the temp directories
 function cleanup {
@@ -61,15 +61,15 @@ backup_mongo () {
 backup_local_dir Audio
 backup_local_dir Documents
 backup_local_dir Dropbox
-backup_local_dir Enpass
 backup_local_dir Images
+backup_local_dir Music
 backup_local_dir Notes
 backup_local_dir Pictures
 backup_local_dir secret
-backup_local_dir secret-tl
 backup_local_dir workspaces
 
 backup_code_dir code
+# backup_code_dir sandbox
 
 # backup databases
 # backup_mongo localhost:2700 acm-web

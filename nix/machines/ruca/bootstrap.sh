@@ -20,7 +20,7 @@ sudo apt-get -y autoclean
 # sudo fwupdmgr -y update
 
 # install some required tools
-sudo apt-get install -y curl git jq stow wget apt-transport-https tree
+sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh dnsutils
 
 # install ansible and related tools
 # sudo apt-get install -y ansible python3-apt python3-yaml python3-pip python3-gpg
@@ -91,8 +91,8 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 #   git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
 # fi
 
-# change default shell to zsh
-# chsh -s $(which zsh)
+# change default shell to zsh (requires restart)
+chsh -s $(which zsh)
 
 # env zsh
 # . ~/.zshrc

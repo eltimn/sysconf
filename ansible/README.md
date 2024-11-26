@@ -1,15 +1,23 @@
-## Home Server (illmatic)
+# Home Server (illmatic)
 
+## Configuration with Ansible
+
+Install ansible galaxy modules.
+```shell
+ansible-galaxy install -r requirements.yml
+```
+
+## Files
 For copying files use sshfs and mount to a local directory:
 ```shell
 mkdir -p ~/illmatic/mnt
 sshfs illmatic.home.eltimn.com:/mnt ~/illmatic/mnt
 ```
 
-# Channels DVR
+## Channels DVR
 * installed manually https://getchannels.com/dvr-server/#linux
 
-## Nvidia Shield
+# Nvidia Shield
 
 For copying files follow these steps:
 

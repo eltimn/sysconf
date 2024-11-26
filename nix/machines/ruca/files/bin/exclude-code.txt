@@ -6,3 +6,5 @@
 */bower_components/*
 *.class
 *.pyc
+*/.terraform/*
+*/.direnv/*

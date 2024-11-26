@@ -4,9 +4,14 @@
 # https://www.chrisportela.com/posts/home-manager-flake/
 { config, pkgs, vars, ... }: {
 
-  imports = [ ../../modules/shell/direnv.nix ../../modules/shell/zsh.nix ];
+  imports = [
+    ../../home/programs/direnv.nix
+    ../../home/programs/git.nix
+    ../../home/programs/zsh/default.nix
+  ];
 
   fonts.fontconfig.enable = true;
+  xdg.mime.enable = false; # fixes a bug where nautilus crashes
 
   home = {
     # Home Manager needs a bit of information about you and the
@@ -31,7 +36,7 @@
       bitwarden-desktop
       # devbox
       # dnsutils
-      # enpass
+      enpass
       # entr
       ffmpeg
       git
@@ -56,7 +61,7 @@
       tmux
       tmuxinator
       # trash-cli
-      vscode
+      vlc
       # warp-terminal
       xclip
       yubikey-manager
@@ -67,17 +72,16 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscode}/bin/code --new-window --wait";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/code --new-window --wait";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
 
     # List of files to be symlinked into the user home directory.
-    file.".config/Code/User/settings.json".source = ./files/.config/Code/User/settings.json;
+    # file.".config/Code/User/settings.json".source = ./files/.config/Code/User/settings.json;
+    file.".config/VSCodium/User/settings.json".source = ./files/.config/VSCodium/User/settings.json;
     # file.".config/git/config".source = ./files/.config/git/config;
     file.".config/git/extra.inc".source = ./files/.config/git/extra.inc;
     # file.".config/terminator/config".source = ./files/.config/terminator/config;
-    file.".config/zsh/funcs".source = ./files/.config/zsh/funcs;
-    file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
     file.".abcde.conf".source = ./files/.abcde.conf;
     file.".ackrc".source = ./files/.ackrc;
     file.".ansible.cfg".source = ./files/.ansible.cfg;
@@ -92,6 +96,32 @@
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
 
+    # https://mynixos.com/home-manager/options/programs.vscode
+    vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+      # enableExtensionUpdateCheck = false;
+      # enableUpdateCheck = false;
+      extensions = with pkgs.vscode-extensions; [
+        bbenoist.nix
+        hashicorp.terraform
+        yzhang.markdown-all-in-one
+      ];
+      # userSettings = {
+      # };
+      globalSnippets = {
+        fixme = {
+          body = [
+            "$LINE_COMMENT FIXME: $0"
+          ];
+          description = "Insert a FIXME remark";
+          prefix = [
+            "fixme"
+          ];
+        };
+      };
+    };
+
     bat = {
       enable = true;
       config = {
@@ -100,74 +130,15 @@
       };
     };
 
-    eza = {
-      enable = true;
-      git = true;
-      icons = true;
-    };
+    # eza = {
+    #   enable = true;
+    #   git = true;
+    #   icons = true;
+    # };
 
     fzf = {
       enable = true;
       enableZshIntegration = true;
-    };
-
-    git = {
-      enable = true;
-      aliases = {
-        au = "add -u .";
-        br = "branch";
-        ci = "commit";
-        cia = "commit --amend";
-        co = "checkout";
-        df = "difftool";
-        dff = "diff --no-ext-diff";
-        st = "status";
-        cleanup =
-          "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
-        remove = "git rm --cached";
-        lg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph";
-      };
-      difftastic.enable = true;
-      # extraConfig = {
-      #   diff = {
-      #     external =
-      #       "${pkgs.vscode}/bin/code --wait --new-window --diff $LOCAL $REMOTE";
-      #   };
-      # };
-      ignores = [
-        "*.com"
-        "*.class"
-        "*.dll"
-        "*.exe"
-        "*.o"
-        "*.so"
-        "*.pyc"
-        "*.7z"
-        "*.dmg"
-        "*.gz"
-        "*.iso"
-        "*.jar"
-        "*.rar"
-        "*.tar"
-        "*.zip"
-        "*.log"
-        "*.sql"
-        "*.sqlite"
-        ".DS_Store?"
-        "ehthumbs.db"
-        "Icon?"
-        "Thumbs.db"
-        ".hg/"
-        ".hgignore"
-        "*.sublime-project"
-        "*.sublime-workspace"
-        ".svn/"
-      ];
-      includes = [
-        { path = "extra.inc"; }
-        { path = "gitconfig.d/github.inc"; }
-        { path = "gitconfig.d/user.inc"; }
-      ];
     };
 
     ripgrep = {

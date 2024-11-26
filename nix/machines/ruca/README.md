@@ -14,7 +14,7 @@ make switch
 
 ## Nix pkgs bin directory
 NixOS: /etc/profiles/per-user/nelly/bin
-Nix on Pop_OS: /home/nelly/.nix-profile/bin
+Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 
 ## Pop_OS! 22.04
 
@@ -66,11 +66,18 @@ cd ~/sysconf/ansible
 ansible-playbook --ask-become-pass [workstation|laptop].yml
 ```
 
-## Post ansible
+## Additional Manual Configuration
 
-### Install ubuntu restricted extras
+[Watch Videos and Play Music](https://support.system76.com/articles/codecs/)
+
+### Install codecs
 ```shell
-sudo apt install ubuntu-restricted-extras
+sudo apt install ubuntu-restricted-extras gstreamer1.0-plugins-bad
+```
+### Set up DVD Playback
+```shell
+sudo apt install -y libdvd-pkg
+sudo dpkg-reconfigure libdvd-pkg
 ```
 
 ### Set swapiness
@@ -102,4 +109,5 @@ http://askubuntu.com/a/489920
 
 ## References
 
-[managing-your-dotfiles/using-gnu-stow](https://systemcrafters.net/managing-your-dotfiles/using-gnu-stow/)
+* [managing-your-dotfiles/using-gnu-stow](https://systemcrafters.net/managing-your-dotfiles/using-gnu-stow/)
+* USe `testdisk` to check bad harddrive.

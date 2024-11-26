@@ -1,7 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 
 {
-  # users.users.${vars.user} = { shell = pkgs.zsh; };
+  home = {
+    file.".config/zsh/funcs".source = ./files/funcs;
+    file.".oh-my-zsh-custom/themes".source = ./files/themes;
+  };
 
   programs = {
     zsh = {
@@ -25,14 +28,14 @@
 
       shellAliases = {
         reload = ". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'";
-        # zshrc = "/usr/bin/code --new-window --wait ~/.zshrc && reload";
+        # zshrc = "${pkgs.vscodium}/bin/codium --new-window --wait ~/.zshrc && reload";
 
         la = "ls -Alh --group-directories-first";
         ll = "ls -lh --group-directories-first";
 
-        sedit = "sudo -i code";
+        # sedit = "sudo -i ${pkgs.vscodium}/bin/codium --no-sandbox --user-data-dir=/root/.config/VSCodium/";
         ubuntu-version = "lsb_release -a";
-        fig = "docker-compose";
+        fig = "docker compose";
 
         ap = "ansible-playbook";
         app =
@@ -44,11 +47,7 @@
         pbpaste = "xclip -selection clipboard -o";
       };
 
-      # initExtra = ''
-      #   # add custom functions to fpath
-      #   fpath=(~/.config/zsh/funcs $fpath);
-      #   autoload -Uz $fpath[1]/*(.:t)
-      # '';
+      initExtra = "source ${./init.zsh}";
     };
     # zsh = {
     #   shellInit = ''
