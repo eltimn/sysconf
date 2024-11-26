@@ -1,43 +1,44 @@
 { pkgs, ... }:
-let filen = (pkgs.callPackage ./pkgs/filen.nix { });
+let filen = (pkgs.callPackage ../pkgs/filen.nix { });
 in {
   home = {
+    # List of files to be symlinked into the user home directory.
+    file.".abcde.conf".source = ./files/.abcde.conf;
+
+    file.".config/backup" = {
+      source = ./files/config/backup;
+      recursive = true;
+    };
+
+    file."bin/desktop" = {
+      source = ./files/bin;
+      recursive = true;
+    };
+
     packages = with pkgs; [
-      # ack-grep
-      bitwarden-cli
       bitwarden-desktop
       caligula
       # devbox
-      dnsutils
       # dropbox
       enpass
       # entr
       ffmpeg
       filen
-      git
       gnome.gnome-tweaks
       google-chrome
-      htop
       # libnss3-tools
       libnotify
       # logseq
       meld
       # mongodb-compass
       # neofetch
-      # neovim
       # nerdfonts
       # net-tools
       nixfmt-classic
       notify-osd
       obsidian
-      sshfs
-      tldr
-      # tmux
-      # tmuxinator
-      # trash-cli
       vlc
       # warp-terminal
-      xclip
       yubikey-manager
     ];
   };

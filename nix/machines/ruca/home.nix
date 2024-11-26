@@ -1,8 +1,8 @@
 { config, pkgs, vars, ... }: {
 
   imports = [
-    ../../home/desktop.nix
-    ../../home/files.nix
+    ../../home/common
+    ../../home/desktop
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/vscode
@@ -34,11 +34,11 @@
     ];
 
     # List of extra paths to include in the user profile.
-    sessionPath = [ "$HOME/.pulumi/bin" "$HOME/.turso" ];
+    sessionPath = [ "$HOME/bin/common" "$HOME/bin/desktop" ];
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/code --new-window --wait";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
   };

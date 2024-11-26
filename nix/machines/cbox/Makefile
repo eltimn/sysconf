@@ -2,8 +2,8 @@
 switch:
 	sudo nixos-rebuild switch --flake .#cbox
 
-.PHONY: upgrade
-upgrade:
+.PHONY: update
+update:
 	sudo nix flake update
 
 .PHONY: gc

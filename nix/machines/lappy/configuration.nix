@@ -115,7 +115,7 @@
     description = "Tim Nelson";
     extraGroups = [ "wheel" "networkmanager" ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDklahMXXjjNfToRDOjLsIwUl3a3C3W7/X7wEMBca8lo nelly@pop-os"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
     ];
     shell = pkgs.zsh;
   };

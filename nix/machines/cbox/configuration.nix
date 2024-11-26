@@ -49,7 +49,6 @@
         description = "Tim Nelson";
         extraGroups = [ "wheel" "networkmanager" "docker" ];
         openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDklahMXXjjNfToRDOjLsIwUl3a3C3W7/X7wEMBca8lo nelly@pop-os"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
         ];
@@ -161,6 +160,9 @@
   virtualisation.oci-containers = {
     backend = "podman";
 
+    # sudo systemctl status podman-cloudflared.service
+    # journalctl -xeu podman-cloudflared.service
+    # Cloudflare - Zero Trust -> Networks -> Tunnels
     containers = {
       cloudflared = {
         image = "cloudflare/cloudflared:latest";

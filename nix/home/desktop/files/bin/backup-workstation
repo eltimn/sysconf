@@ -2,6 +2,12 @@
 
 BACKUP_HOST=illmatic.home.eltimn.com
 
+USERNAME=$(id -u -n)
+USERNAME=${USERNAME:-unknown}
+
+HOSTNAME=$(hostname -s)
+HOSTNAME=${HOSTNAME:-unknown}
+
 # delete the temp directories
 function cleanup {
   rm -rf /tmp/backup-mongo.*
@@ -11,22 +17,22 @@ function cleanup {
 # register the cleanup function to be called on the EXIT signal
 trap cleanup EXIT
 
-BACKUP_LOC=$BACKUP_HOST:/mnt/backup/ruca
+BACKUP_LOC=$BACKUP_HOST:/mnt/backup/$HOSTNAME
 RSYNC_OPTS='-az --progress --delete-after'
 
 # if [ ! -d "$BACKUP_LOC" ]; then
-#   mkdir -p "$BACKUP_LOC/nelly"
-#   mkdir -p "$BACKUP_LOC/nelly-dbs"
+#   mkdir -p "$BACKUP_LOC/$USERNAME"
+#   mkdir -p "$BACKUP_LOC/$USERNAME-dbs"
 # fi
 
 backup_local_dir () {
-  #tar -czf $BACKUP_LOC/nelly/$1.tgz -C /home/nelly $1 -X `dirname $0`/exclude-local.txt
-  rsync $RSYNC_OPTS --exclude-from=`dirname $0`/exclude-local.txt /home/nelly/$1 $BACKUP_LOC/nelly/
+  #tar -czf $BACKUP_LOC/$USERNAME/$1.tgz -C /home/$USERNAME $1 -X /home/$USERNAME/.config/backup/exclude-local.txt
+  rsync $RSYNC_OPTS --exclude-from=/home/$USERNAME/.config/backup/exclude-local.txt /home/$USERNAME/$1 $BACKUP_LOC/$USERNAME/
 }
 
 backup_code_dir () {
-  #tar -czf $BACKUP_LOC/nelly/$1.tgz -C  /home/nelly $1 -X `dirname $0`/exclude-code.txt
-  rsync $RSYNC_OPTS --exclude-from=`dirname $0`/exclude-code.txt /home/nelly/$1 $BACKUP_LOC/nelly/
+  #tar -czf $BACKUP_LOC/$USERNAME/$1.tgz -C  /home/$USERNAME $1 -X /home/$USERNAME/.config/backup/exclude-code.txt
+  rsync $RSYNC_OPTS --exclude-from=/home/$USERNAME/.config/backup/exclude-code.txt /home/$USERNAME/$1 $BACKUP_LOC/$USERNAME/
 }
 
 backup_mongo () {
@@ -54,7 +60,7 @@ backup_mongo () {
     # tar and zip it up
     tar -cvf $WORK_DIR/$DB.tgz -C $DUMP_DIR $DB
     # sync to backup server
-    rsync $RSYNC_OPTS $WORK_DIR/$DB.tgz $BACKUP_LOC/nelly-dbs/
+    rsync $RSYNC_OPTS $WORK_DIR/$DB.tgz $BACKUP_LOC/$USERNAME-dbs/
   fi
 }
 
@@ -69,7 +75,7 @@ backup_local_dir secret
 backup_local_dir workspaces
 
 backup_code_dir code
-# backup_code_dir sandbox
+backup_code_dir sandbox
 
 # backup databases
 # backup_mongo localhost:2700 acm-web

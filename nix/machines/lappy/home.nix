@@ -2,8 +2,8 @@
 let filen = (pkgs.callPackage ./pkgs/filen.nix { });
 in {
   imports = [
-    ../../home/desktop.nix
-    ../../home/files.nix
+    ../../home/common
+    ../../home/desktop
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/vscode
@@ -25,11 +25,9 @@ in {
       stow
     ];
 
-    sessionPath = [ "$HOME/bin" ];
+    sessionPath = [ "$HOME/bin/common" "$HOME/bin/desktop" ];
     sessionVariables = {
-      EDITOR = "${
-          pkgs.lib.attrsets.getBin pkgs.vscodium
-        }/bin/code --new-window --wait";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
     };
   };
 

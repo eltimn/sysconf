@@ -1,6 +1,7 @@
 { config, pkgs, username, ... }: {
 
   imports = [
+    ../../home/common
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/zsh
@@ -12,8 +13,12 @@
     homeDirectory = "/home/${username}";
     stateVersion = "23.11";
 
-    packages = with pkgs; [ htop gnumake neovim nixfmt-classic stow ];
+    packages = with pkgs; [ gnumake nixfmt-classic stow ];
 
+    sessionPath = [ "$HOME/bin/common" ];
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
   };
 
   # Packages that are installed as programs also allow for configuration.
