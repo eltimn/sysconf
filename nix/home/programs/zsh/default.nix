@@ -36,6 +36,7 @@
 
         # sedit = "sudo -i ${pkgs.vscodium}/bin/codium --no-sandbox --user-data-dir=/root/.config/VSCodium/";
         ubuntu-version = "lsb_release -a";
+        os-release = "cat /etc/os-release";
         fig = "docker compose";
 
         ap = "ansible-playbook";
