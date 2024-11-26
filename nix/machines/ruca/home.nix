@@ -30,8 +30,7 @@
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
-      # parcellite
-      gnomeExtensions.clipboard-indicator
+      parcellite
     ];
 
     # List of extra paths to include in the user profile.

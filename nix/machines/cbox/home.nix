@@ -14,8 +14,6 @@
 
     packages = with pkgs; [ htop gnumake neovim nixfmt-classic stow ];
 
-    # List of files to be symlinked into the user home directory.
-    # file.".tmux.conf".source = ./files/.tmux.conf;
   };
 
   # Packages that are installed as programs also allow for configuration.
