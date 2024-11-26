@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # use `unmount /path/to/mount` to unmount
 
 if [ ! -d "$2" ]; then
