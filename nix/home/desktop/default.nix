@@ -18,7 +18,7 @@ in {
     packages = with pkgs; [
       bitwarden-desktop
       caligula
-      # devbox
+      devbox
       # dropbox
       enpass
       # entr

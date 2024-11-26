@@ -34,7 +34,7 @@
     ];
 
     # List of extra paths to include in the user profile.
-    sessionPath = [ "$HOME/bin/common" "$HOME/bin/desktop" ];
+    sessionPath = [ "$HOME/bin" "$HOME/bin/common" "$HOME/bin/desktop" ];
 
     # List of environment variables.
     sessionVariables = {

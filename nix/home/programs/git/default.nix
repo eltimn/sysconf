@@ -3,6 +3,10 @@
 {
   home = {
     file.".config/git/extra.inc".source = ./files/extra.inc;
+
+    # packages = with pkgs; [
+    #   difftastic
+    # ];
   };
 
   programs.git = {
@@ -13,13 +17,15 @@
       ci = "commit";
       cia = "commit --amend";
       co = "checkout";
-      df = "diff"; # difftastic
+      df = "diff"; # external (difftastic)
       dff = "diff --no-ext-diff"; # plain diff
       dfm = "difftool --tool=meld"; # meld
-      dft = "difftool"; # codium
+      dfc = "difftool"; # codium
       st = "status";
+      # removes references to remote branches that no longer exists. Does not affect local branches.
       cleanup =
         "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
+      prune = "git fetch --prune origin";
       remove = "git rm --cached";
       lg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph";
       lgg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph --grep";
@@ -35,6 +41,7 @@
     extraConfig = {
       diff = {
         tool = "codium";
+        # external = "difft --color auto --background light --display side-by-side";
       };
 
       difftool = {
