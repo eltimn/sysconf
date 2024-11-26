@@ -56,8 +56,7 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 
 ## Todo
 * Logseq: needs newer version than what's in nix-24.05
-* finish squaring away files
-  * syncthing/nextcloud
+* syncthing/nextcloud
 
 ## Run ansible playbook
 
@@ -89,8 +88,8 @@ https://help.ubuntu.com/community/SwapFaq
 Run `crontab -e` and enter the following:
 
 ```
-0 */4 * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/backup-secrets # every 4 hours
-*/20 * * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/backup-workstation # every 20 minutes
+0 */4 * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/desktop/backup-secrets # every 4 hours
+*/20 * * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/desktop/backup-workstation # every 20 minutes
 
 #59 21 * * * amixer set Master mute
 #00 07 * * * amixer set Master unmute
