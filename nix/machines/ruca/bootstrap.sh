@@ -20,7 +20,7 @@ sudo apt-get -y autoclean
 # sudo fwupdmgr -y update
 
 # install some required tools
-sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh dnsutils
+sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh
 
 # install ansible and related tools
 # sudo apt-get install -y ansible python3-apt python3-yaml python3-pip python3-gpg

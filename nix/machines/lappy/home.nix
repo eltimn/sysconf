@@ -2,6 +2,7 @@
 let filen = (pkgs.callPackage ./pkgs/filen.nix { });
 in {
   imports = [
+    ../../home/desktop.nix
     ../../home/files.nix
     ../../home/programs/direnv.nix
     ../../home/programs/git
@@ -16,34 +17,12 @@ in {
     stateVersion = "23.11";
 
     packages = with pkgs; [
-      bitwarden-cli
-      bitwarden-desktop
-      caligula
-      dropbox
-      enpass
-      ffmpeg
-      filen
       firefox
-      git
-      gnome.gnome-tweaks
       gnomeExtensions.appindicator
       gnomeExtensions.clipboard-indicator
       gnomeExtensions.dash-to-dock
       gnumake
-      google-chrome
-      htop
-      # libnotfy
-      meld
-      neovim
-      nixfmt-classic # there's a new version
-      notify-osd
-      #parcellite
-      sshfs
       stow
-      tmux
-      vlc
-      xclip
-      yubikey-manager
     ];
 
     sessionPath = [ "$HOME/bin" ];
@@ -103,14 +82,4 @@ in {
   #     Restart = "on-failure";
   #   };
   # };
-
-  xdg.desktopEntries = {
-    filen = {
-      name = "Filen";
-      genericName = "File Syncer";
-      exec = "filen";
-      terminal = false;
-      categories = [ "Application" "Network" ];
-    };
-  };
 }
