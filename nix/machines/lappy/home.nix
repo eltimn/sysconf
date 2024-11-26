@@ -1,6 +1,14 @@
 { config, pkgs, username, ... }:
 let filen = (pkgs.callPackage ./pkgs/filen.nix { });
 in {
+  imports = [
+    ../../home/files.nix
+    ../../home/programs/direnv.nix
+    ../../home/programs/git
+    ../../home/programs/vscode
+    ../../home/programs/zsh
+  ];
+
   # The User and Path it manages
   home = {
     username = "${username}";
@@ -8,6 +16,8 @@ in {
     stateVersion = "23.11";
 
     packages = with pkgs; [
+      bitwarden-cli
+      bitwarden-desktop
       enpass
       ffmpeg
       filen
@@ -28,50 +38,21 @@ in {
       sshfs
       stow
       tmux
-      vscode
+      vlc
       xclip
       yubikey-manager
     ];
 
     sessionPath = [ "$HOME/.pulumi/bin" ];
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscode}/bin/code --new-window --wait";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/code --new-window --wait";
     };
-
-    # List of files to be symlinked into the user home directory.
-    file.".config/Code/User/settings.json".source = ./files/.config/Code/User/settings.json;
-    file.".config/git/config".source = ./files/.config/git/config;
-    file.".oh-my-zsh-custom".source = ./files/.oh-my-zsh-custom;
-    file.".abcde.conf".source = ./files/.abcde.conf;
-    file.".ackrc".source = ./files/.ackrc;
-    file.".ansible.cfg".source = ./files/.ansible.cfg;
-    file.".gitignore".source = ./files/.gitignore;
-    file.".mongoshrc.js".source = ./files/.mongoshrc.js;
   };
 
   # Packages that are installed as programs also allow for configuration.
   programs = {
     # Let Home Manager manage itself
     home-manager.enable = true;
-
-    bat = {
-      enable = true;
-      config = {
-        pager = "less -FR";
-        theme = "ansi";
-      };
-    };
-
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
 
     # warning: The option `programs.kitty.theme' defined here'
     # has been changed to `programs.kitty.themeFile' that has a different type.
@@ -86,11 +67,6 @@ in {
     #   theme = "Github";
     # };
 
-    ripgrep = {
-      enable = true;
-      arguments = [ ];
-    };
-
     tmux = {
       enable = true;
       keyMode = "vi";
@@ -104,25 +80,6 @@ in {
         set  -g base-index      1
         setw -g pane-base-index 1
       '';
-    };
-
-    zoxide = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-
-      oh-my-zsh = {
-        enable = true;
-        theme = "alanpeabody"; # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-        custom = "$HOME/.oh-my-zsh-custom";
-        plugins = [ "copyfile" "copypath" "colorize" ];
-      };
     };
   };
 

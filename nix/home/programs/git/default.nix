@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  home = {
+    file.".config/git/extra.inc".source = ./files/extra.inc;
+  };
+
   programs.git = {
     enable = true;
     aliases = {
@@ -18,6 +22,7 @@
         "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
       remove = "git rm --cached";
       lg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph";
+      lgg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph --grep";
     };
 
     # diff.external makes it the default when calling `git diff`.

@@ -15,6 +15,7 @@
 
       oh-my-zsh = {
         enable = true;
+        # theme = "alanpeabody";
         theme = "philips"; # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
         custom = "$HOME/.oh-my-zsh-custom";
         plugins = [ "copyfile" "copypath" "colorize" ];
@@ -60,6 +61,35 @@
     #     #eval "$(direnv hook zsh)"
     #   '';
     # };
+
+    bat = {
+      enable = true;
+      config = {
+        pager = "less -FR";
+        theme = "ansi";
+      };
+    };
+
+    # eza = {
+    #   enable = true;
+    #   git = true;
+    #   icons = true;
+    # };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    ripgrep = {
+      enable = true;
+      arguments = [ ];
+    };
+
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 }
 

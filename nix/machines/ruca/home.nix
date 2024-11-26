@@ -5,9 +5,11 @@
 { config, pkgs, vars, ... }: {
 
   imports = [
+    ../../home/files.nix
     ../../home/programs/direnv.nix
-    ../../home/programs/git.nix
-    ../../home/programs/zsh/default.nix
+    ../../home/programs/git
+    ../../home/programs/vscode
+    ../../home/programs/zsh
   ];
 
   fonts.fontconfig.enable = true;
@@ -75,76 +77,12 @@
       EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/code --new-window --wait";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
-
-    # List of files to be symlinked into the user home directory.
-    # file.".config/Code/User/settings.json".source = ./files/.config/Code/User/settings.json;
-    file.".config/VSCodium/User/settings.json".source = ./files/.config/VSCodium/User/settings.json;
-    # file.".config/git/config".source = ./files/.config/git/config;
-    file.".config/git/extra.inc".source = ./files/.config/git/extra.inc;
-    # file.".config/terminator/config".source = ./files/.config/terminator/config;
-    file.".abcde.conf".source = ./files/.abcde.conf;
-    file.".ackrc".source = ./files/.ackrc;
-    file.".ansible.cfg".source = ./files/.ansible.cfg;
-    # file.".gitignore".source = ./files/.gitignore;
-    file.".mongoshrc.js".source = ./files/.mongoshrc.js;
-
-    file."bin".source = ./files/bin;
   };
 
   # Packages that are installed as programs also allow for configuration.
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
-
-    # https://mynixos.com/home-manager/options/programs.vscode
-    vscode = {
-      enable = true;
-      package = pkgs.vscodium;
-      # enableExtensionUpdateCheck = false;
-      # enableUpdateCheck = false;
-      extensions = with pkgs.vscode-extensions; [
-        bbenoist.nix
-        hashicorp.terraform
-        yzhang.markdown-all-in-one
-      ];
-      # userSettings = {
-      # };
-      globalSnippets = {
-        fixme = {
-          body = [
-            "$LINE_COMMENT FIXME: $0"
-          ];
-          description = "Insert a FIXME remark";
-          prefix = [
-            "fixme"
-          ];
-        };
-      };
-    };
-
-    bat = {
-      enable = true;
-      config = {
-        pager = "less -FR";
-        theme = "ansi";
-      };
-    };
-
-    # eza = {
-    #   enable = true;
-    #   git = true;
-    #   icons = true;
-    # };
-
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-
-    ripgrep = {
-      enable = true;
-      arguments = [ ];
-    };
 
     # tmux = {
     #   enable = true;
@@ -162,11 +100,6 @@
     #   '';
     #   tmuxinator.enable = true;
     # };
-
-    zoxide = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 
   # services = {

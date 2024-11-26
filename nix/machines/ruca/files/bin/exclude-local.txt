@@ -1,5 +1,0 @@
-.csync_journal.db
-.SyncID
-.SyncIgnore
-.SyncArchive
-.owncloudsync.log
