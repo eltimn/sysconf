@@ -67,6 +67,7 @@ backup_mongo () {
 backup_local_dir Audio
 backup_local_dir Documents
 backup_local_dir Dropbox
+backup_local_dir Gateway
 backup_local_dir Images
 backup_local_dir Music
 backup_local_dir Notes
