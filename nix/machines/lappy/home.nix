@@ -18,6 +18,8 @@ in {
     packages = with pkgs; [
       bitwarden-cli
       bitwarden-desktop
+      caligula
+      dropbox
       enpass
       ffmpeg
       filen
@@ -25,16 +27,17 @@ in {
       git
       gnome.gnome-tweaks
       gnomeExtensions.appindicator
+      gnomeExtensions.clipboard-indicator
       gnomeExtensions.dash-to-dock
       gnumake
       google-chrome
       htop
-      libnotfy
+      # libnotfy
       meld
       neovim
-      nixfmt-classic
+      nixfmt-classic # there's a new version
       notify-osd
-      parcellite
+      #parcellite
       sshfs
       stow
       tmux
@@ -43,9 +46,11 @@ in {
       yubikey-manager
     ];
 
-    sessionPath = [ "$HOME/.pulumi/bin" ];
+    sessionPath = [ "$HOME/bin" ];
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/code --new-window --wait";
+      EDITOR = "${
+          pkgs.lib.attrsets.getBin pkgs.vscodium
+        }/bin/code --new-window --wait";
     };
   };
 
@@ -83,7 +88,21 @@ in {
     };
   };
 
-  # services.dropbox.enable = true;
+  # services = {
+  #   dropbox = {
+  #     enable = true;
+  #     path = "${config.home.homeDirectory}/Dropbox";
+  #   };
+  # };
+
+  # systemd.user.services.dropbox = {
+  #   Unit = { Description = "Dropbox service"; };
+  #   Install = { WantedBy = [ "default.target" ]; };
+  #   Service = {
+  #     ExecStart = "${pkgs.dropbox}/bin/dropbox";
+  #     Restart = "on-failure";
+  #   };
+  # };
 
   xdg.desktopEntries = {
     filen = {

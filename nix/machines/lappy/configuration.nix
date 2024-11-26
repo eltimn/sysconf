@@ -61,6 +61,7 @@
   #   };
   # };
 
+  # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
   # Exclude some packages from gnome
   environment.gnome.excludePackages =
     (with pkgs; [ gnome-photos gnome-tour gnome-text-editor ])

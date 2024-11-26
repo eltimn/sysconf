@@ -15,11 +15,7 @@
         };
       in {
         devShells.default = pkgs.mkShell {
-          packages = with pkgs;
-            [
-              ansible
-              caddy
-            ];
+          packages = with pkgs; [ ansible caddy ];
 
           shellHook = ''
             echo "Welcome to sysconf ansible!"

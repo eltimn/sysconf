@@ -8,5 +8,11 @@
     file.".mongoshrc.js".source = ./files/.mongoshrc.js;
 
     file."bin".source = ./files/bin;
+
+    # links individual files
+    # file.bin = {
+    #   source = ./files/bin;
+    #   recursive = true;
+    # };
   };
 }
