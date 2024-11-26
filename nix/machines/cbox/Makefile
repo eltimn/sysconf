@@ -4,4 +4,8 @@ switch:
 
 .PHONY: upgrade
 upgrade:
+	sudo nix flake update
 
+.PHONY: gc
+gc:
+	sudo nix-collect-garbage --delete-old
