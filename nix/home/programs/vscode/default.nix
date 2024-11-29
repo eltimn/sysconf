@@ -3,7 +3,7 @@
 {
   home = {
     # file.".config/Code/User/settings.json".source = ./files/settings.json;
-    file.".config/VSCodium/User/settings.json".source = ./files/settings.json;
+    # file.".config/VSCodium/User/settings.json".source = ./files/settings.json;
   };
 
   programs = {
@@ -14,21 +14,20 @@
       # enableExtensionUpdateCheck = false;
       # enableUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
-        bbenoist.nix
         hashicorp.terraform
+        jnoortheen.nix-ide
+        ms-python.python
+        redhat.ansible
+        redhat.vscode-yaml
         yzhang.markdown-all-in-one
       ];
       # userSettings = {
       # };
       globalSnippets = {
         fixme = {
-          body = [
-            "$LINE_COMMENT FIXME: $0"
-          ];
+          body = [ "$LINE_COMMENT FIXME: $0" ];
           description = "Insert a FIXME remark";
-          prefix = [
-            "fixme"
-          ];
+          prefix = [ "fixme" ];
         };
       };
     };

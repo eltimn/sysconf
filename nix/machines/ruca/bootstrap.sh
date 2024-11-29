@@ -29,6 +29,7 @@ sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted z
 # sudo apt-get install -y sublime-text
 
 # install some flatpaks
+flatpak install flathub com.logseq.Logseq
 # flatpak install flathub org.telegram.desktop
 
 # install nix

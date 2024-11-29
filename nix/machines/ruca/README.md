@@ -27,6 +27,7 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 * ~~install chrome~~
 * ~~install vscode~~
 * ~~install filen (get password from enpass on phone)~~
+* install filen via .deb
 * install dropbox (get password from enpass on phone)
 * wait for dropbox to sync
 

@@ -1,9 +1,12 @@
 { pkgs, ... }:
-let filen = (pkgs.callPackage ../pkgs/filen.nix { });
-in {
+let
+  filen = (pkgs.callPackage ../pkgs/filen.nix { });
+in
+{
   home = {
     # List of files to be symlinked into the user home directory.
     file.".abcde.conf".source = ./files/.abcde.conf;
+    file.".background-image".source = ./files/Lightning_Neuro.jpg;
 
     file.".config/backup" = {
       source = ./files/config/backup;
@@ -16,11 +19,11 @@ in {
     };
 
     packages = with pkgs; [
+      ansible-lint
       bitwarden-desktop
       caligula
       devbox
-      # dropbox
-      enpass
+      # enpass
       # entr
       ffmpeg
       filen
@@ -34,7 +37,7 @@ in {
       # neofetch
       # nerdfonts
       # net-tools
-      nixfmt-classic
+      nixfmt-rfc-style
       notify-osd
       obsidian
       vlc
@@ -49,7 +52,10 @@ in {
       genericName = "File Syncer";
       exec = "filen";
       terminal = false;
-      categories = [ "Application" "Network" ];
+      categories = [
+        "Application"
+        "Network"
+      ];
     };
   };
 }
