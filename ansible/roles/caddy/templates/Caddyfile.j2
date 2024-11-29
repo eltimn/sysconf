@@ -32,6 +32,11 @@
 		reverse_proxy {{docker_plex_ip}}:32400
 	}
 
+  @nextcloud host cloud.home.eltimn.com
+	handle @nextcloud {
+		reverse_proxy localhost:8081
+	}
+
 	@www host www.home.eltimn.com
 	handle @www {
 		reverse_proxy {{docker_homepage_ip}}:3000

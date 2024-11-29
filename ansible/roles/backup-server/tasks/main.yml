@@ -1,0 +1,27 @@
+---
+
+- name: Install some packages
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - neovim
+    - rsync
+  tags: backup-server
+
+- name: Copy bash aliases file
+  ansible.builtin.copy:
+    src: bash_aliases
+    dest: "/home/{{ username }}/.bash_aliases"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0644
+  tags: backup-server
+
+- name: Create backup directory
+  file:
+    path: "/home/{{ username }}/backup"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    state: directory
+  tags: backup-server

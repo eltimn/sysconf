@@ -6,7 +6,6 @@
   become_method: sudo
   vars:
     username: nelly
-    node_user: nelly
     computer_type: laptop
     subnet_cidr: "192.168.1.0/24"
   roles:

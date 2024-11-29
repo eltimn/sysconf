@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# backup this server to offsite backup server
+BACKUP_HOST=backup.eltimn.com
+
+HOSTNAME=$(hostname -s)
+HOSTNAME=${HOSTNAME:-unknown}
+
+RSYNC_OPTS='-az --progress --delete-after'
+
+backup_ruca_dir () {
+  rsync $RSYNC_OPTS /mnt/backup/ruca/nelly/$1 $BACKUP_HOST:/home/nelly/backup/$HOSTNAME
+}
+
+backup_ruca_dir Pictures
+
+exit 0

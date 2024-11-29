@@ -15,6 +15,10 @@
     state: reset
   tags: ufw
 
+- import_tasks: ufw-backup.yml
+  when: "computer_type == 'backup'"
+  tags: ufw
+
 - import_tasks: ufw-nas.yml
   when: "computer_type == 'nas'"
   tags: ufw

@@ -49,6 +49,20 @@
 #     name: nas_net
 #   tags: nas
 
+- name: Create /srv/docker directory
+  file:
+    path: /srv/docker
+    owner: root
+    group: root
+    state: directory
+  tags:
+    - nas
+    - caddy
+    - channels
+    - plex
+    - unifi
+    - homepage
+
 # - import_tasks: caddy.yml
 #   tags:
 #     - nas

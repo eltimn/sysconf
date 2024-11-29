@@ -1,0 +1,17 @@
+---
+# Install nix using determinate systems' installer
+# https://github.com/DeterminateSystems/nix-installer/releases
+
+- name: Download nix installer
+  ansible.builtin.get_url:
+    url: https://github.com/DeterminateSystems/nix-installer/releases/download/{{ nix_installer_version }}/nix-installer-x86_64-linux
+    dest: /srv/downloads/nix-installer
+    mode: "0700"
+  tags: nix
+
+- name: Run the nix installer
+  ansible.builtin.shell:
+    cmd: nix-installer >> nix-installer.log
+    chdir: /srv/downloads
+    creates: nix-installer.log
+  tags: nix

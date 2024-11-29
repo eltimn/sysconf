@@ -14,11 +14,3 @@
     block: |
       eval "$(direnv hook bash)"
   tags: common
-
-- name: Create /srv/docker directory
-  file:
-    path: /srv/docker
-    owner: root
-    group: root
-    state: directory
-  tags: common
