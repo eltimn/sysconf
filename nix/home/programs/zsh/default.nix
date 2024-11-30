@@ -18,14 +18,18 @@
         # theme = "alanpeabody";
         theme = "philips"; # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
         custom = "$HOME/.oh-my-zsh-custom";
-        plugins = [ "copyfile" "copypath" "colorize" ];
+        plugins = [
+          "copyfile"
+          "copypath"
+          "colorize"
+        ];
       };
 
-      dirHashes = {
-        docs = "$HOME/Documents";
-        vids = "$HOME/Videos";
-        dl = "$HOME/Downloads";
-      };
+      # dirHashes = {
+      #   docs = "$HOME/Documents";
+      #   vids = "$HOME/Videos";
+      #   dl = "$HOME/Downloads";
+      # };
 
       shellAliases = {
         reload = ". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'";
@@ -40,13 +44,15 @@
         fig = "docker compose";
 
         ap = "ansible-playbook";
-        app =
-          "ansible-playbook --ask-become-pass --extra-vars ansible_python_interpreter=/usr/bin/python3";
+        app = "ansible-playbook --ask-become-pass --extra-vars ansible_python_interpreter=/usr/bin/python3";
 
         myip = "curl icanhazip.com";
 
         pbcopy = "xclip -selection clipboard";
         pbpaste = "xclip -selection clipboard -o";
+
+        fzfiles = "find . -type f | fzf";
+        fzdirs = "cd $(find . -type d -print | fzf)";
       };
 
       initExtra = "source ${./init.zsh}";
@@ -93,4 +99,3 @@
     };
   };
 }
-

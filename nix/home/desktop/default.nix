@@ -38,6 +38,7 @@ in
       # nerdfonts
       # net-tools
       nixfmt-rfc-style
+      nixpkgs-lint-community
       notify-osd
       obsidian
       vlc

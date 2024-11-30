@@ -6,5 +6,5 @@ if [ ! -d "$2" ]; then
   sudo chown nelly:nelly "$2"
 fi
 
-sshfs -o IdentityFile=~/.ssh/id_rsa "illmatic:$1" "$2"
+sshfs -o IdentityFile=~/.ssh/id_ed25519 "illmatic:$1" "$2"
 
