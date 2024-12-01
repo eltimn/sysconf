@@ -1,10 +1,10 @@
 ---
-
 - name: Install some packages
   package:
     name: "{{item}}"
     state: latest
   with_items:
+    - borgbackup
     - neovim
     - rsync
   tags: backup-server

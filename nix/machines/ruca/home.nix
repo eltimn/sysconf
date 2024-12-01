@@ -1,4 +1,10 @@
-{ config, pkgs, vars, ... }: {
+{
+  config,
+  pkgs,
+  vars,
+  ...
+}:
+{
 
   imports = [
     ../../home/common
@@ -29,18 +35,23 @@
     stateVersion = "23.11";
 
     # Packages that should be installed to the user profile.
-    packages = with pkgs; [
-      parcellite
-    ];
+    packages = with pkgs; [ parcellite ];
 
     # List of extra paths to include in the user profile.
-    sessionPath = [ "$HOME/bin" "$HOME/bin/common" "$HOME/bin/desktop" ];
+    sessionPath = [
+      "$HOME/bin"
+      "$HOME/bin/common"
+      "$HOME/bin/desktop"
+    ];
 
     # List of environment variables.
     sessionVariables = {
       EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
+
+    # some files
+    file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='Audio Documents Notes code secret sysconf workspaces'";
   };
 
   # Packages that are installed as programs also allow for configuration.

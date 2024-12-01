@@ -1,6 +1,13 @@
-{ config, pkgs, username, ... }:
-let filen = (pkgs.callPackage ./pkgs/filen.nix { });
-in {
+{
+  config,
+  pkgs,
+  username,
+  ...
+}:
+let
+  filen = (pkgs.callPackage ./pkgs/filen.nix { });
+in
+{
   imports = [
     ../../home/common
     ../../home/desktop
@@ -25,10 +32,16 @@ in {
       stow
     ];
 
-    sessionPath = [ "$HOME/bin/common" "$HOME/bin/desktop" ];
+    sessionPath = [
+      "$HOME/bin/common"
+      "$HOME/bin/desktop"
+    ];
     sessionVariables = {
       EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
     };
+
+    # some files
+    file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='code secret sysconf'";
   };
 
   # Packages that are installed as programs also allow for configuration.
