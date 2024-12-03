@@ -55,7 +55,7 @@
     #- yarn
     #- virtualbox
     # - task
-    - role: spreadcat.appimage
-      tags: appimage
-    - role: gnome-desktop-entries
-      tags: desktop-entries
+    # - role: spreadcat.appimage
+    #   tags: appimage
+    # - role: gnome-desktop-entries
+    #   tags: desktop-entries

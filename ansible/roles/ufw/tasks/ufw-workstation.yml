@@ -2,8 +2,8 @@
 # ufw-workstation
 
 - name: allow ssh
-  ufw:
-    to_port: "22"
+  community.general.ufw:
+    name: OpenSSH
     rule: allow
   tags: ufw
 
@@ -12,7 +12,6 @@
     to_port: "3000"
     rule: allow
   tags: ufw
-
 # - name: allow http access from local network
 #   command: ufw allow from any to any port 80
 #   tags: ufw
