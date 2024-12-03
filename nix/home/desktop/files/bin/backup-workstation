@@ -68,7 +68,6 @@ backup_local_dir Audio
 backup_local_dir Documents
 backup_local_dir Dropbox
 backup_local_dir Gateway
-backup_local_dir Music
 backup_local_dir Notes
 backup_local_dir Pictures
 backup_local_dir secret
@@ -82,6 +81,6 @@ backup_code_dir sandbox
 #backup_mongo localhost:2700 acmfiles
 # backup_mongo localhost:2800 rotozen
 
-notify-send "Backup Workstation" "Finished processing"
+echo "Backup Workstation" "Finished processing"
 
 exit 0

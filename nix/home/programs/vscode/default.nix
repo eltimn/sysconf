@@ -16,9 +16,9 @@
       extensions = with pkgs.vscode-extensions; [
         hashicorp.terraform
         jnoortheen.nix-ide
-        ms-python.python
-        redhat.ansible
-        redhat.vscode-yaml
+        # ms-python.python
+        # redhat.ansible
+        # redhat.vscode-yaml
         yzhang.markdown-all-in-one
       ];
       # userSettings = {

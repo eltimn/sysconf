@@ -13,12 +13,12 @@
       # - name: logsec
       #   url: https://github.com/logseq/logseq/releases/download/0.10.5/Logseq-linux-x64-0.10.5.AppImage
       #   state: present
-      - name: filen
-        url: https://cdn.filen.io/desktop/release/filen_x86_64.AppImage
-        state: present
-      - name: obsidian
-        url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.3/Obsidian-1.5.3.AppImage
-        state: present
+      # - name: filen
+      #   url: https://cdn.filen.io/desktop/release/filen_x86_64.AppImage
+      #   state: present
+      # - name: obsidian
+      #   url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.3/Obsidian-1.5.3.AppImage
+      #   state: present
   roles:
     # - common
     # - common-desktop
@@ -28,7 +28,7 @@
     # - docker
     # - docker-compose - comes installed with docker now
     #- franklinkim.docker
-    - multimedia
+    # - multimedia # music ripping mostly
     #- sublime3
     #- vagrant
     - ufw

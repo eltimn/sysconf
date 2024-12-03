@@ -1,7 +1,7 @@
 { pkgs, ... }:
-let
-  filen = (pkgs.callPackage ../pkgs/filen.nix { });
-in
+# let
+#   filen = (pkgs.callPackage ../pkgs/filen.nix { });
+# in
 {
   home = {
     # List of files to be symlinked into the user home directory.
@@ -27,7 +27,7 @@ in
       # enpass
       # entr
       ffmpeg
-      filen
+      # filen
       gnome.gnome-tweaks
       google-chrome
       # libnss3-tools

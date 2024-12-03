@@ -41,7 +41,7 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 * Delete bootstrap.sh
 
 ## Setup home manager
-* See command above.
+* See switch command switch above.
 
 ## Manual System Config
 * Set mouse primary click to right.
@@ -52,6 +52,7 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
     * enable center new windows
 * Add startup apps
   * Parcellite: /home/nelly/.nix-profile/bin/parcellite
+  * Filen
 
 =========================================================
 
@@ -80,23 +81,8 @@ sudo apt install -y libdvd-pkg
 sudo dpkg-reconfigure libdvd-pkg
 ```
 
-### Set swapiness
+### Set swapiness ??
 https://help.ubuntu.com/community/SwapFaq
-
-
-### Crontab
-
-Run `crontab -e` and enter the following:
-
-```
-0 */4 * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/desktop/backup-secrets # every 4 hours
-*/20 * * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/desktop/backup-workstation # every 20 minutes
-
-#59 21 * * * amixer set Master mute
-#00 07 * * * amixer set Master unmute
-
-#0 */4 * * * export DISPLAY=:0 && export XAUTHORITY=/home/nelly/.Xauthority && /home/nelly/bin/backup-remote # every 4 hours
-```
 
 ### Printer
 Go to system settings and add printer. Should be found on the network.
@@ -110,4 +96,4 @@ http://askubuntu.com/a/489920
 ## References
 
 * [managing-your-dotfiles/using-gnu-stow](https://systemcrafters.net/managing-your-dotfiles/using-gnu-stow/)
-* USe `testdisk` to check bad harddrive.
+* Use `testdisk` to check bad harddrive.

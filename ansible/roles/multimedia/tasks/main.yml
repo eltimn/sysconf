@@ -8,7 +8,7 @@
   tags: multimedia
   with_items:
     - easytag
-    - vlc
+    # - vlc
     #- sound-juicer
     # - gconf-editor
     - abcde

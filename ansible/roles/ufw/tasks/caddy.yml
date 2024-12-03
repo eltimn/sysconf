@@ -1,5 +1,4 @@
 ---
-
 - name: Copy Caddy file
   copy:
     src: caddy

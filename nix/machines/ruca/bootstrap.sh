@@ -20,7 +20,7 @@ sudo apt-get -y autoclean
 # sudo fwupdmgr -y update
 
 # install some required tools
-sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh
+sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh neovim
 
 # install ansible and related tools
 # sudo apt-get install -y ansible python3-apt python3-yaml python3-pip python3-gpg
@@ -91,6 +91,10 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 # if [ ! -e "$HOME/.oh-my-zsh" ]; then
 #   git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
 # fi
+
+# Create a user and group for Ollama
+sudo useradd -r -s /bin/false -U -m -d /usr/share/ollama ollama
+sudo usermod -a -G ollama $(whoami)
 
 # change default shell to zsh (requires restart)
 chsh -s $(which zsh)
