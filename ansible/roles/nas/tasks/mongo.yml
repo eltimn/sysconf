@@ -1,0 +1,16 @@
+---
+- name: Create mongo cert file
+  ansible.builtin.copy:
+    content: "{{ mongo_backup_cert }}"
+    dest: "/home/{{username}}/secret/X509-cert-backup.pem"
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0600
+
+- name: Add mongo cron entry
+  ansible.builtin.cron:
+    name: "backup rotozen"
+    user: "{{username}}"
+    minute: "0"
+    hour: "6"
+    job: "/home/{{username}}/bin/backup-rotozen-mongo"

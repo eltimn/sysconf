@@ -6,22 +6,24 @@
     name: "{{item}}"
     state: latest
   with_items:
-    - curl
-    - vim
     - ack-grep
-    - xclip
-    - trash-cli
-    - ufw
+    - curl
     - dnsutils
-    - tree
-    # - ppa-purge
-    - sshfs
     - htop
     - libnss3-tools
     - libnotify-bin
-    - notify-osd
+    - neovim
     - net-tools
+    - notify-osd
+    - rsync
+    - sshfs
+    - stow
     - tldr
+    - trash-cli
+    - tree
+    - ufw
+    - xclip
+    - zsh
   tags: common
 
 #- name: Create symlink to ack

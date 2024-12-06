@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  username,
+  vars,
   ...
 }:
 {
@@ -14,11 +14,10 @@
     ../../home/programs/zsh
   ];
 
-  # The User and Path it manages
   home = {
     username = "${username}";
     homeDirectory = "/home/${username}";
-    stateVersion = "23.11";
+    stateVersion = "24.05";
 
     packages = with pkgs; [
       gnumake
@@ -34,7 +33,7 @@
 
   # Packages that are installed as programs also allow for configuration.
   programs = {
-    # Let Home Manager manage itself
+    # Let Home Manager install and manage itself.
     home-manager.enable = true;
   };
 }

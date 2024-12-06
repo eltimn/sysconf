@@ -39,9 +39,13 @@ The following commands were used to create zfs pools:
     sudo chown nelly:nelly /mnt/movies
     sudo chown nelly:nelly /mnt/videos
 
+List disk usage:
+
+    sudo zfs list
+
 Destroy a pool:
 
-  sudo zfs destroy datapool/unifi
+    sudo zfs destroy datapool/unifi
 
 Create a snapshot:
 
@@ -51,9 +55,6 @@ List snapshots:
 
     sudo zfs list -rt snapshot
 
-Restore From Strongspace
-========================
-rsync -az --progress --exclude *.log ss:/strongspace/eltimn/backup/archives /mnt/backup
-rsync -az --progress --exclude *.log ss:/strongspace/eltimn/backup/nelly /mnt/backup
-rsync -az --progress --exclude *.log ss:/strongspace/eltimn/rotozen /mnt/backup
+Delete a snapshot:
 
+    sudo zfs destroy datapool/backup@snapshot1

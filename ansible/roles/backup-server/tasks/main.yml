@@ -5,8 +5,6 @@
     state: latest
   with_items:
     - borgbackup
-    - neovim
-    - rsync
   tags: backup-server
 
 - name: Copy bash aliases file
@@ -20,7 +18,7 @@
 
 - name: Create backup directory
   file:
-    path: "/home/{{ username }}/backup"
+    path: "/mnt/backup"
     owner: "{{ username }}"
     group: "{{ username }}"
     state: directory

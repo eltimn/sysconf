@@ -1,6 +1,6 @@
 ---
 - name: create bin dir
-  file:
+  ansible.builtin.file:
     path: "/home/{{username}}/bin"
     state: directory
     owner: "{{username}}"
@@ -8,7 +8,7 @@
   tags: nas
 
 - name: Copy scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "/home/{{username}}/bin"
     owner: "{{username}}"
@@ -18,23 +18,23 @@
     - bin/*
   tags: nas
 
-- name: Add cron entry
-  cron:
-    name: "backup rotozen"
-    user: "{{username}}"
-    minute: "0"
-    hour: "6"
-    job: "/home/{{username}}/bin/backup-rotozen-mongo"
-  tags: nas
-
-- name: Create mongo cert file
-  copy:
-    content: "{{ mongo_backup_cert }}"
-    dest: /home/{{username}}/X509-cert-backup.pem
+- name: Create secret dir
+  ansible.builtin.file:
+    path: "/home/{{username}}/secret"
+    state: directory
     owner: "{{username}}"
     group: "{{username}}"
-    mode: 0600
+    mode: 0700
   tags: nas
+
+- import_tasks: mongo.yml
+  tags:
+    - nas
+    - mongo
+- import_tasks: borg.yml
+  tags:
+    - nas
+    - borg
 
 - name: Create the docker network
   ansible.builtin.shell:
@@ -50,7 +50,7 @@
 #   tags: nas
 
 - name: Create /srv/docker directory
-  file:
+  ansible.builtin.file:
     path: /srv/docker
     owner: root
     group: root

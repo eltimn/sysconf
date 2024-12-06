@@ -1,0 +1,46 @@
+---
+# borg stuff
+
+- name: Install borg
+  package:
+    name: borgbackup
+    state: latest
+
+- name: Create borg secret dir
+  ansible.builtin.file:
+    path: "/home/{{username}}/secret/borg"
+    state: directory
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0700
+
+- name: Create borg settings file
+  ansible.builtin.copy:
+    content: "{{ borg_main_settings }}"
+    dest: "/home/{{username}}/secret/borg/main-settings"
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0600
+
+- name: Create borg config dir
+  ansible.builtin.file:
+    path: "/home/{{username}}/.config/borg"
+    state: directory
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0700
+
+- name: Create borg directory list file
+  ansible.builtin.copy:
+    src: "backup_dirs"
+    dest: "/home/{{username}}/.config/borg/backup_dirs"
+    owner: "{{username}}"
+    group: "{{username}}"
+    mode: 0600
+# - name: Add borg cron entry
+#   ansible.builtin.cron:
+#     name: "backup borg"
+#     user: "{{username}}"
+#     minute: "5"
+#     hour: "8"
+#     job: "/home/{{username}}/bin/backup-borg"

@@ -51,8 +51,18 @@
         pbcopy = "xclip -selection clipboard";
         pbpaste = "xclip -selection clipboard -o";
 
+        nvf = "nvim $(fzf --preview='bat --color=always {}')";
+
         fzfiles = "find . -type f | fzf";
         fzdirs = "cd $(find . -type d -print | fzf)";
+        cdf = "cd $(fzf)";
+
+        ".." = "cd ..";
+        "..." = "cd ../../../";
+        "...." = "cd ../../../../";
+        "....." = "cd ../../../../";
+        ".4" = "cd ../../../../";
+        ".5" = "cd ../../../../..";
       };
 
       initExtra = "source ${./init.zsh}";

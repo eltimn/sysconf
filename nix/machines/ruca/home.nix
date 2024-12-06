@@ -11,6 +11,7 @@
     ../../home/desktop
     ../../home/programs/direnv.nix
     ../../home/programs/git
+    ../../home/programs/tmux.nix
     ../../home/programs/vscode
     ../../home/programs/zsh
   ];
@@ -61,23 +62,6 @@
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
-
-    # tmux = {
-    #   enable = true;
-    #   keyMode = "vi";
-    #   mouse = false;
-    #   shell = "${pkgs.zsh}/bin/zsh";
-    #   shortcut = "a";
-    #   terminal = "screen-256color";
-    #   plugins = with pkgs; [ tmuxPlugins.sensible tmuxPlugins.cpu ];
-    #   extraConfig = ''
-    #     set status-utf8 on
-    #     set utf8 on
-    #     set -g status-bg black
-    #     set -g status-fg white"
-    #   '';
-    #   tmuxinator.enable = true;
-    # };
   };
 
   # Systemd for user services

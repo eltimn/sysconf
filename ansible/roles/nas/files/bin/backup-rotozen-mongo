@@ -9,7 +9,7 @@ timestamp
 # rotozen
 export backup_name=rotozen
 export backup_uri="mongodb+srv://cluster0.f1yxhmc.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&tls=true&tlsCertificateKeyFile=/home/nelly/X509-cert-backup.pem"
-export backup_keyfile=/home/nelly/X509-cert-backup.pem
+export backup_keyfile=/home/nelly/secret/X509-cert-backup.pem
 export backup_path=/mnt/backup/rotozen/mongo-backups
 export backup_gzip=true
 

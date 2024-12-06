@@ -61,21 +61,6 @@ in
     #   shellIntegration.enableZshIntegration = true;
     #   theme = "Github";
     # };
-
-    tmux = {
-      enable = true;
-      keyMode = "vi";
-      mouse = false;
-      shell = "${pkgs.zsh}/bin/zsh";
-      shortcut = "a";
-      terminal = "screen-256color";
-      extraConfig = ''
-        set -g status-bg blue
-        set -g status-fg white
-        set  -g base-index      1
-        setw -g pane-base-index 1
-      '';
-    };
   };
 
   # services = {

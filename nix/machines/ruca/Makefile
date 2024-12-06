@@ -14,8 +14,10 @@ update:
 
 dotfiles:
 	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
+	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles zellij
 
 clean-dotfiles:
 	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
+	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles zellij
 
 .PHONY: all build switch clean update dotfiles clean-dotfiles

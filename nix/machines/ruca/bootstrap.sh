@@ -32,7 +32,7 @@ sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted z
 flatpak install flathub com.logseq.Logseq
 # flatpak install flathub org.telegram.desktop
 
-# install nix
+# install Nix
 # curl -L https://nixos.org/nix/install | sh
 # https://github.com/DeterminateSystems/nix-installer?tab=readme-ov-file
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install

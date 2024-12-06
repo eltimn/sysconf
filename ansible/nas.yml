@@ -19,7 +19,7 @@
     - common-server
     - caddy
     # - nextcloud
-    - byobu
+    # - byobu
     - docker
     # - emby
     # - franklinkim.docker
@@ -27,4 +27,5 @@
     - zfs
     - mongo
     - nas
+    #- nix this was run manually on illmatic, only use if starting new
     - ufw
