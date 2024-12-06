@@ -129,5 +129,11 @@
   "redhat.telemetry.enabled": false,
   "explorer.confirmDragAndDrop": false,
   "workbench.colorTheme": "Default Light+",
-  "nix.formatterPath": "/home/nelly/.nix-profile/bin/nixfmt",
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "nix.enableLanguageServer": true,
+  "nix.serverSettings": {},
 }

@@ -4,6 +4,8 @@
   home = {
     # file.".config/Code/User/settings.json".source = ./files/settings.json;
     # file.".config/VSCodium/User/settings.json".source = ./files/settings.json;
+
+    packages = with pkgs; [ nil ];
   };
 
   programs = {

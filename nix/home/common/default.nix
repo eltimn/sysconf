@@ -20,6 +20,7 @@
       # ack-grep
       bitwarden-cli
       dnsutils
+      gh
       git
       htop
       neovim
