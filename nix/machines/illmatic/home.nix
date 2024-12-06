@@ -15,8 +15,8 @@
   ];
 
   home = {
-    username = "${username}";
-    homeDirectory = "/home/${username}";
+    username = "${vars.user}";
+    homeDirectory = "/home/${vars.user}";
     stateVersion = "24.05";
 
     packages = with pkgs; [
@@ -27,7 +27,7 @@
 
     sessionPath = [ "$HOME/bin/common" ];
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "${vars.editor}";
     };
   };
 

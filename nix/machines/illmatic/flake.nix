@@ -21,13 +21,10 @@
         inherit system;
         config.allowUnfree = true;
       };
-      username = "nelly";
 
       # Variables Used In Flake
       vars = {
         user = "nelly";
-        # location = "$HOME/.setup";
-        # terminal = "kitty";
         editor = "nvim";
       };
     in
