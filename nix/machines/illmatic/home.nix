@@ -25,7 +25,10 @@
       stow
     ];
 
-    sessionPath = [ "$HOME/bin/common" ];
+    sessionPath = [
+      "$HOME/bin/common"
+      "$HOME/bin"
+    ];
     sessionVariables = {
       EDITOR = "${vars.editor}";
     };

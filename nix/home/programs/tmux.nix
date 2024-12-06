@@ -3,7 +3,6 @@
 {
   programs.tmux = {
     enable = true;
-    keyMode = "vi";
     mouse = true;
     shell = "${pkgs.zsh}/bin/zsh";
     shortcut = "a";
@@ -15,6 +14,5 @@
       set -g base-index      1
       setw -g pane-base-index 1
     '';
-    # tmuxinator.enable = true;
   };
 }

@@ -56,6 +56,8 @@
         fzfiles = "find . -type f | fzf";
         fzdirs = "cd $(find . -type d -print | fzf)";
         cdf = "cd $(fzf)";
+        # attach to a tmux session using fzf
+        # tma = "tmux attach -t $(tmux ls  | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\"  | fzf)";
 
         ".." = "cd ..";
         "..." = "cd ../../../";
