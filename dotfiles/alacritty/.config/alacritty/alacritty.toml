@@ -1,0 +1,8 @@
+[general]
+import = [
+    "~/.config/alacritty/catppuccin_latte.toml"
+]
+
+[font]
+size = 16
+
