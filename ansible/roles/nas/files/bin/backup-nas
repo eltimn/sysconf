@@ -3,7 +3,7 @@
 ## Borg Backup
 
 # set the repo and credentials
-source ~/secret/borg/main-settings
+source ~/secret/borg/nas-settings
 source ~/.config/borg/backup_dirs
 
 # some helpers and error handling:

@@ -16,8 +16,8 @@
 
 - name: Create borg settings file
   ansible.builtin.copy:
-    content: "{{ borg_main_settings }}"
-    dest: "/home/{{username}}/secret/borg/main-settings"
+    content: "{{ borg_nas_settings }}"
+    dest: "/home/{{username}}/secret/borg/nas-settings"
     owner: "{{username}}"
     group: "{{username}}"
     mode: 0600
