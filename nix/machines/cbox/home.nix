@@ -22,7 +22,6 @@
 
     packages = with pkgs; [
       gnumake
-      nixfmt-classic
       stow
     ];
 

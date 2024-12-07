@@ -20,8 +20,8 @@
       st = "status";
       # removes references to remote branches that no longer exists. Does not affect local branches.
       cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
-      prune = "git fetch --prune origin";
-      remove = "git rm --cached";
+      prune = "fetch --prune origin";
+      remove = "rm --cached";
       lg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph";
       lgg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph --grep";
     };

@@ -9,11 +9,11 @@
   imports = [
     ../../home/common
     ../../home/desktop
-    ../../home/programs/direnv.nix
     ../../home/programs/git
-    ../../home/programs/tmux.nix
     ../../home/programs/vscode
     ../../home/programs/zsh
+    ../../home/programs/direnv.nix
+    ../../home/programs/tmux.nix
   ];
 
   fonts.fontconfig.enable = true;
