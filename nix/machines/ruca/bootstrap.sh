@@ -6,6 +6,10 @@ COMPUTER_TYPE="${1:-workstation}"
 
 #SECRET_BACKUP_DIR=/media/nelly/A70F-39C0/backup/nelly/`hostname`
 
+# add wezterm ppa repo
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+
 # add sublme text gpg key and repo
 # wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
 # echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
@@ -20,7 +24,7 @@ sudo apt-get -y autoclean
 # sudo fwupdmgr -y update
 
 # install some required tools
-sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh neovim
+sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh neovim wezterm
 
 # install alacritty
 https://medium.com/@V_TNO/tldr-how-to-install-newer-alacritty-on-popos-older-ubuntu-6e211448f0ba
