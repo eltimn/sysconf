@@ -1,11 +1,19 @@
-.PHONY: switch
 switch:
 	sudo nixos-rebuild switch --flake .#laptop
 
-.PHONY: update
 update:
 	sudo nix flake update
 
-.PHONY: gc
 gc:
 	sudo nix-collect-garbage --delete-old
+
+dotfiles:
+	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
+	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles wezterm
+
+clean-dotfiles:
+	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
+	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles wezterm
+
+.PHONY: switch update gc dotfiles clean-dotfiles
+

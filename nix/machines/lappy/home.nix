@@ -1,11 +1,6 @@
-{
-  config,
-  pkgs,
-  username,
-  ...
-}:
+{ pkgs, username, ... }:
 let
-  filen = (pkgs.callPackage ./pkgs/filen.nix { });
+  filen-desktop = (pkgs.callPackage ../../home/pkgs/filen-desktop.nix { });
 in
 {
   imports = [
@@ -24,12 +19,14 @@ in
     stateVersion = "23.11";
 
     packages = with pkgs; [
+      filen-desktop
       firefox
       gnomeExtensions.appindicator
       gnomeExtensions.clipboard-indicator
       gnomeExtensions.dash-to-dock
       gnumake
       stow
+      wezterm
     ];
 
     sessionPath = [
@@ -42,6 +39,7 @@ in
 
     # some files
     file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='code secret sysconf'";
+    file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
   };
 
   # Packages that are installed as programs also allow for configuration.
@@ -78,4 +76,17 @@ in
   #     Restart = "on-failure";
   #   };
   # };
+
+  xdg.desktopEntries = {
+    filen = {
+      name = "Filen";
+      genericName = "File Syncer";
+      exec = "filen-desktop";
+      terminal = false;
+      categories = [
+        "Application"
+        "Network"
+      ];
+    };
+  };
 }

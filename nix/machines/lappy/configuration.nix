@@ -2,10 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
@@ -49,22 +50,14 @@
     };
   };
 
-  # services.xserver = {
-  #   enable = true;
-  #   libinput.enable = true;
-  #   displayManager.lightdm.enable = true;
-  #   desktopManager = { cinnamon.enable = true; };
-  #   displayManager.defaultSession = "cinnamon";
-  #   xkb = {
-  #     layout = "us";
-  #     variant = "";
-  #   };
-  # };
-
   # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
   # Exclude some packages from gnome
   environment.gnome.excludePackages =
-    (with pkgs; [ gnome-photos gnome-tour gnome-text-editor ])
+    (with pkgs; [
+      gnome-photos
+      gnome-tour
+      gnome-text-editor
+    ])
     ++ (with pkgs.gnome; [
       cheese # webcam tool
       gnome-music
@@ -85,6 +78,19 @@
       gnome-contacts
       simple-scan
     ]);
+
+  # Cinnamon desktop
+  # services.xserver = {
+  #   enable = true;
+  #   libinput.enable = true;
+  #   displayManager.lightdm.enable = true;
+  #   desktopManager = { cinnamon.enable = true; };
+  #   displayManager.defaultSession = "cinnamon";
+  #   xkb = {
+  #     layout = "us";
+  #     variant = "";
+  #   };
+  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -113,7 +119,10 @@
   users.users.nelly = {
     isNormalUser = true;
     description = "Tim Nelson";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
     ];
@@ -125,7 +134,12 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [ jq tree vim wget ];
+  environment.systemPackages = with pkgs; [
+    jq
+    tree
+    vim
+    wget
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -164,5 +178,8 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
   # Enable Nix Flakes and nix command
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }

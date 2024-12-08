@@ -1,7 +1,4 @@
 { pkgs, ... }:
-# let
-#   filen = (pkgs.callPackage ../pkgs/filen.nix { });
-# in
 {
   home = {
     # List of files to be symlinked into the user home directory.
@@ -27,7 +24,6 @@
       # enpass
       # entr
       ffmpeg
-      # filen
       gnome.gnome-tweaks
       google-chrome
       # libnss3-tools
@@ -46,18 +42,5 @@
       # warp-terminal
       yubikey-manager
     ];
-  };
-
-  xdg.desktopEntries = {
-    filen = {
-      name = "Filen";
-      genericName = "File Syncer";
-      exec = "filen";
-      terminal = false;
-      categories = [
-        "Application"
-        "Network"
-      ];
-    };
   };
 }
