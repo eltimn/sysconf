@@ -68,7 +68,7 @@
 
         Service = {
           Type = "oneshot";
-          ExecStart = "${config.home.profileDirectory}/bin/notify-send --urgency=critical '%i' 'Error running %i service.'";
+          ExecStart = "curl -H 'Title: %i' https://ntfy.home.eltimn.com/backups -d 'Error running %i service.'";
         };
       };
     };
