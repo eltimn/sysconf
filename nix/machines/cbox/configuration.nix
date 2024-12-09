@@ -134,8 +134,8 @@
         listen-http = ":8080";
         base-url = "https://ntfy.home.eltimn.com";
         behind-proxy = true;
-        auth-file = "/var/lib/ntfy/user.db";
-        auth-default-access = "deny-all";
+        #auth-file = "/var/lib/ntfy/user.db";
+        #auth-default-access = "deny-all";
       };
     };
   };
