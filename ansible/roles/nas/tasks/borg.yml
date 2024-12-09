@@ -37,10 +37,10 @@
     owner: "{{username}}"
     group: "{{username}}"
     mode: 0600
-# - name: Add borg cron entry
-#   ansible.builtin.cron:
-#     name: "backup borg"
-#     user: "{{username}}"
-#     minute: "5"
-#     hour: "8"
-#     job: "/home/{{username}}/bin/backup-borg"
+- name: Add borg cron entry
+  ansible.builtin.cron:
+    name: "backup borg"
+    user: "{{username}}"
+    minute: "5"
+    hour: "4"
+    job: "/home/{{username}}/bin/backup-nas"
