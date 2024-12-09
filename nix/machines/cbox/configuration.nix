@@ -57,6 +57,7 @@
   users = {
     groups = {
       podman = { };
+      ntfy = { };
     };
 
     users = {
@@ -79,6 +80,12 @@
         isSystemUser = true;
         group = "podman";
         description = "User to run podman containers";
+      };
+
+      ntfy = {
+        isSystemUser = true;
+        group = "ntfy";
+        description = "User to run ntfy.sh";
       };
     };
   };
@@ -108,13 +115,24 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    allowSFTP = true;
-    openFirewall = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
+  services = {
+    openssh = {
+      enable = true;
+      allowSFTP = true;
+      openFirewall = true;
+      settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+      };
+    };
+
+    ntfy-sh = {
+      enable = true;
+      user = "ntfy";
+      group = "ntfy";
+      settings = {
+        listen-http = ":8080";
+      };
     };
   };
 
