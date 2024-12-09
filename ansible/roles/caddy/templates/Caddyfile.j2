@@ -1,6 +1,6 @@
 {
-	email {{caddy_email}}
-	#acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+  email {{caddy_email}}
+  #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
 # home.eltimn.com {
@@ -9,46 +9,52 @@
 # }
 
 *.home.eltimn.com {
-	tls {
-		dns cloudflare {{caddy_cloudflare_token}}
-	}
+  tls {
+    dns cloudflare {{caddy_cloudflare_token}}
+  }
 
-	@unifi host unifi.home.eltimn.com
-	handle @unifi {
-		reverse_proxy {{docker_unifi_ip}}:8443 {
-			transport http {
-				tls_insecure_skip_verify # unifi uses self-signed certs
-			}
-		}
-	}
+  @unifi host unifi.home.eltimn.com
+  handle @unifi {
+    reverse_proxy {{docker_unifi_ip}}:8443 {
+      transport http {
+        tls_insecure_skip_verify # unifi uses self-signed certs
+      }
+    }
+  }
 
-	@channels host dvr.home.eltimn.com
-	handle @channels {
-		reverse_proxy localhost:8089
-	}
+  @channels host dvr.home.eltimn.com
+  handle @channels {
+    reverse_proxy localhost:8089
+  }
 
-	@plex host plex.home.eltimn.com
-	handle @plex {
-		reverse_proxy {{docker_plex_ip}}:32400
-	}
+  @plex host plex.home.eltimn.com
+  handle @plex {
+    reverse_proxy {{docker_plex_ip}}:32400
+  }
 
   @nextcloud host cloud.home.eltimn.com
-	handle @nextcloud {
-		reverse_proxy localhost:8081
-	}
+  handle @nextcloud {
+    reverse_proxy localhost:8081
+  }
 
-	@www host www.home.eltimn.com
-	handle @www {
-		reverse_proxy {{docker_homepage_ip}}:3000
-	}
+  @www host www.home.eltimn.com
+  handle @www {
+    reverse_proxy {{docker_homepage_ip}}:3000
+  }
 
   @ntfy host ntfy.home.eltimn.com
-	handle @ntfy {
-		reverse_proxy cbox.home.eltimn.com:8080
-	}
+  handle @ntfy {
+    reverse_proxy cbox.home.eltimn.com:8080
+    @httpget {
+      protocol http
+      method GET
+      path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
+    }
+    redir @httpget https://{host}{uri}
+  }
 
-	# Fallback for otherwise unhandled domains
-	handle {
-		abort
-	}
+  # Fallback for otherwise unhandled domains
+  handle {
+    abort
+  }
 }
