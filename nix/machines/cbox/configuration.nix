@@ -132,6 +132,7 @@
       group = "ntfy";
       settings = {
         listen-http = ":8080";
+	base-url = "https://ntfy.home.eltimn.com";
       };
     };
   };
@@ -231,11 +232,10 @@
 
   # The firewall is enabled when not set.
   # Open ports in the firewall.
-  # networking.firewall = {
-  #   enable = truee;
-  #   allowedTCPPorts = [ ... ];
-  #   allowedUDPPorts = [ ... ];
-  # }
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 8080 ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
