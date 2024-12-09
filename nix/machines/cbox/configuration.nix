@@ -2,15 +2,29 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
-  # Enable Nix Flakes and nix command
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Optimization settings and garbage collection automation
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+  };
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -41,13 +55,19 @@
 
   # Define a user account.
   users = {
-    groups = { podman = { }; };
+    groups = {
+      podman = { };
+    };
 
     users = {
       nelly = {
         isNormalUser = true;
         description = "Tim Nelson";
-        extraGroups = [ "wheel" "networkmanager" "docker" ];
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "docker"
+        ];
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
@@ -68,7 +88,13 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [ jq tree vim wget turso-cli ];
+  environment.systemPackages = with pkgs; [
+    jq
+    tree
+    vim
+    wget
+    turso-cli
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -201,4 +227,3 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 }
-
