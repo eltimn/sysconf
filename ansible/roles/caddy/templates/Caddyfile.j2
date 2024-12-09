@@ -42,6 +42,11 @@
 		reverse_proxy {{docker_homepage_ip}}:3000
 	}
 
+  @ntfy host ntfy.home.eltimn.com
+	handle @ntfy {
+		reverse_proxy cbox.home.eltimn.com:8080
+	}
+
 	# Fallback for otherwise unhandled domains
 	handle {
 		abort

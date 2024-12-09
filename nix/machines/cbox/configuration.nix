@@ -132,7 +132,8 @@
       group = "ntfy";
       settings = {
         listen-http = ":8080";
-	base-url = "https://ntfy.home.eltimn.com";
+        base-url = "https://ntfy.home.eltimn.com";
+        behind-proxy = true;
       };
     };
   };
