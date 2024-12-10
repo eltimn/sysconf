@@ -37,6 +37,7 @@
     owner: "{{username}}"
     group: "{{username}}"
     mode: 0600
+
 - name: Add borg cron entry
   ansible.builtin.cron:
     name: "backup borg"
