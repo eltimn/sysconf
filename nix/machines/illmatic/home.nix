@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 {
 
   imports = [
@@ -30,9 +25,6 @@
     ];
     sessionVariables = {
       EDITOR = "${vars.editor}";
-      # not sure why these are not set already. systemctl doesn't work without them.
-      XDG_RUNTIME_DIR = "/run/user/\$(id -u)";
-      DBUS_SESSION_BUS_ADDRESS = "unix:path=$XDG_RUNTIME_DIR/bus";
     };
   };
 
