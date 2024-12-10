@@ -27,10 +27,6 @@
     mode: 0700
   tags: nas
 
-- import_tasks: mongo.yml
-  tags:
-    - nas
-    - mongo
 - import_tasks: borg.yml
   tags:
     - nas
