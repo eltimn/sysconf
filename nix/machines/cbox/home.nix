@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, vars, ... }:
 {
 
   imports = [
@@ -11,9 +11,9 @@
 
   # The User and Path it manages
   home = {
-    username = "${username}";
-    homeDirectory = "/home/${username}";
-    stateVersion = "23.11";
+    username = "${vars.user}";
+    homeDirectory = "/home/${vars.user}";
+    stateVersion = "23.11"; # don't change unless reinstalling from scratch
 
     packages = with pkgs; [
       gnumake
@@ -22,7 +22,7 @@
 
     sessionPath = [ "$HOME/bin/common" ];
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "${vars.editor}";
     };
   };
 

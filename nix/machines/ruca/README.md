@@ -56,10 +56,6 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 
 =========================================================
 
-## Todo
-* Logseq: needs newer version than what's in nix-24.05
-* syncthing/nextcloud
-
 ## Run ansible playbook
 
 ```shell

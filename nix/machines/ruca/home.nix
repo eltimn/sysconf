@@ -50,7 +50,7 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
+      EDITOR = "${vars.editor}";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
 

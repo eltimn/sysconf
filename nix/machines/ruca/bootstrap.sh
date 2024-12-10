@@ -27,7 +27,7 @@ sudo apt-get -y autoclean
 sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh neovim wezterm
 
 # install alacritty
-https://medium.com/@V_TNO/tldr-how-to-install-newer-alacritty-on-popos-older-ubuntu-6e211448f0ba
+# https://medium.com/@V_TNO/tldr-how-to-install-newer-alacritty-on-popos-older-ubuntu-6e211448f0ba
 
 # install ansible and related tools
 # sudo apt-get install -y ansible python3-apt python3-yaml python3-pip python3-gpg

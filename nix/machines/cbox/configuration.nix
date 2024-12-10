@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 
 {
   imports = [
@@ -30,7 +30,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "cbox";
+  networking.hostName = "${vars.host}";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -61,7 +61,7 @@
     };
 
     users = {
-      nelly = {
+      "${vars.user}" = {
         isNormalUser = true;
         description = "Tim Nelson";
         extraGroups = [

@@ -46,6 +46,8 @@
         ap = "ansible-playbook";
         app = "ansible-playbook --ask-become-pass --extra-vars ansible_python_interpreter=/usr/bin/python3";
 
+        home-manager = "home-manager --flake ~/sysconf/nix/machines/${vars.host}";
+
         myip = "curl icanhazip.com";
 
         pbcopy = "xclip -selection clipboard";

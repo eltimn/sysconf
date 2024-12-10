@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, vars, ... }:
 let
   filen-desktop = (pkgs.callPackage ../../home/pkgs/filen-desktop.nix { });
 in
@@ -14,8 +14,8 @@ in
 
   # The User and Path it manages
   home = {
-    username = "${username}";
-    homeDirectory = "/home/${username}";
+    username = "${vars.user}";
+    homeDirectory = "/home/${vars.user}";
     stateVersion = "23.11";
 
     packages = with pkgs; [
@@ -34,7 +34,7 @@ in
       "$HOME/bin/desktop"
     ];
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
+      EDITOR = "${vars.editor}";
     };
 
     # some files

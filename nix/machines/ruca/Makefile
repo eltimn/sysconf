@@ -12,6 +12,9 @@ clean:
 update:
 	nix flake update
 
+gc:
+	nix-collect-garbage --delete-old # home-manager stuff in user's home directory
+
 dotfiles:
 	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
 	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles wezterm
@@ -22,4 +25,4 @@ clean-dotfiles:
 	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles wezterm
 	# stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles zellij
 
-.PHONY: all build switch clean update dotfiles clean-dotfiles
+.PHONY: all build switch clean update gc dotfiles clean-dotfiles

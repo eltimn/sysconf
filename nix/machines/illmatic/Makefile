@@ -12,4 +12,7 @@ clean:
 update:
 	nix flake update
 
-.PHONY: all build switch clean update
+gc:
+	nix-collect-garbage --delete-old
+
+.PHONY: all build switch clean update gc

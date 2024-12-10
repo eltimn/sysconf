@@ -24,7 +24,7 @@
       # enpass
       # entr
       ffmpeg
-      gnome.gnome-tweaks
+      gnome-tweaks
       google-chrome
       # libnss3-tools
       libnotify
