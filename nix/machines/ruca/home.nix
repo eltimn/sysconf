@@ -132,7 +132,7 @@
 
         Timer = {
           Unit = "backup-borg.service";
-          OnStartupSec = "2h"; # once a day, 2 hours after logging in
+          OnCalendar = "*-*-* 18:00:00"; # daily at 6:00 PM
         };
 
         Install = {
