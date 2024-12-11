@@ -18,6 +18,7 @@
       dfm = "difftool --tool=meld"; # meld
       dfc = "difftool"; # codium
       st = "status";
+      sw = "switch";
       # removes references to remote branches that no longer exists. Does not affect local branches.
       cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
       prune = "fetch --prune origin";

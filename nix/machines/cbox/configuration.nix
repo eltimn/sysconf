@@ -5,11 +5,6 @@
 { pkgs, vars, ... }:
 
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
   # Optimization settings and garbage collection automation
   nix = {
     settings = {
@@ -30,10 +25,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "${vars.host}";
-
-  # Enable networking
+  # networking
   networking.networkmanager.enable = true;
+  networking.hostName = "${vars.host}";
 
   # Set your time zone.
   time.timeZone = "America/Chicago";

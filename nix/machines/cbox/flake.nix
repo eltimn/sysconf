@@ -29,9 +29,10 @@
         cbox = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs;
+            inherit inputs vars;
           };
           modules = [
+            ./hardware-configuration.nix
             ./configuration.nix
             home-manager.nixosModules.home-manager
             {

@@ -5,19 +5,13 @@
 { pkgs, vars, ... }:
 
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "${vars.host}";
-
-  # Enable networking
+  # networking
   networking.networkmanager.enable = true;
+  networking.hostName = "${vars.host}";
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
@@ -35,6 +29,20 @@
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
+  };
+
+  # Define a user account.
+  users.users."${vars.user}" = {
+    isNormalUser = true;
+    description = "Tim Nelson";
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
+    ];
+    shell = pkgs.zsh;
   };
 
   # Enable the X11 windowing system.
@@ -58,7 +66,7 @@
       gnome-tour
       gnome-text-editor
     ])
-    ++ (with pkgs.gnome; [
+    ++ (with pkgs; [
       cheese # webcam tool
       gnome-music
       #gnome-terminal
@@ -96,7 +104,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -114,20 +121,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  # Define a user account.
-  users.users."${vars.user}" = {
-    isNormalUser = true;
-    description = "Tim Nelson";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
-    ];
-    shell = pkgs.zsh;
-  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

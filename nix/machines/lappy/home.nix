@@ -26,6 +26,9 @@ in
       gnomeExtensions.dash-to-dock
       gnumake
       stow
+      system76-firmware
+      vivaldi
+      vivaldi-ffmpeg-codecs
       wezterm
     ];
 
@@ -34,7 +37,7 @@ in
       "$HOME/bin/desktop"
     ];
     sessionVariables = {
-      EDITOR = "${vars.editor}";
+      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
     };
 
     # some files

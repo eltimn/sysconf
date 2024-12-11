@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   description = "NixOS configuration";
 
@@ -23,7 +22,7 @@
       vars = {
         user = "nelly";
         host = "lappy";
-        editor = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
+        editor = "nvim";
       };
     in
     {
@@ -31,9 +30,10 @@
         laptop = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs;
+            inherit inputs vars;
           };
           modules = [
+            ./hardware-configuration.nix
             ./configuration.nix
             home-manager.nixosModules.home-manager
             {

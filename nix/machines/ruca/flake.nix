@@ -1,6 +1,6 @@
 {
   # https://nixos.wiki/wiki/Flakes
-  # Inspiration: https://github.com/the-nix-way/nomey/home-manager";
+  # Inspiration: https://github.com/the-nix-way/nome";
   description = "Home Manager configuration of nelly";
 
   inputs = {
