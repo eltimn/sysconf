@@ -39,6 +39,7 @@
     packages = with pkgs; [
       ollama
       parcellite
+      sqlitebrowser
     ];
 
     # List of extra paths to include in the user profile.
@@ -55,7 +56,8 @@
     };
 
     # some files
-    file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='Audio Documents Dropbox Notes Pictures code secret sysconf workspaces'";
+    file.".config/borg/backup_dirs".text =
+      "export BACKUP_DIRS='Audio Documents Dropbox Notes Pictures code secret sysconf workspaces'";
   };
 
   # Packages that are installed as programs also allow for configuration.

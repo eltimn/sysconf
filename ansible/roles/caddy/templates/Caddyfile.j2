@@ -13,6 +13,15 @@
     dns cloudflare {{caddy_cloudflare_token}}
   }
 
+  @router host router.home.eltimn.com
+  handle @router {
+    reverse_proxy https://{{router_ip}} {
+      transport http {
+        tls_insecure_skip_verify # edge router uses self-signed certs
+      }
+    }
+  }
+
   @unifi host unifi.home.eltimn.com
   handle @unifi {
     reverse_proxy {{docker_unifi_ip}}:8443 {

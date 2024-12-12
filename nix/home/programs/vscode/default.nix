@@ -5,7 +5,10 @@
     # file.".config/Code/User/settings.json".source = ./files/settings.json;
     # file.".config/VSCodium/User/settings.json".source = ./files/settings.json;
 
-    packages = with pkgs; [ nil nixfmt-rfc-style ];
+    packages = with pkgs; [
+      nil
+      nixfmt-rfc-style
+    ];
   };
 
   programs = {
@@ -16,11 +19,13 @@
       # enableExtensionUpdateCheck = false;
       # enableUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
+        golang.go
         hashicorp.terraform
         jnoortheen.nix-ide
         # ms-python.python
         # redhat.ansible
         # redhat.vscode-yaml
+        sumneko.lua
         yzhang.markdown-all-in-one
       ];
       # userSettings = {
