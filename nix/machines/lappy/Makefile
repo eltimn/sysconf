@@ -1,3 +1,5 @@
+all: switch dotfiles
+
 switch:
 	sudo nixos-rebuild switch --flake .#laptop
 
@@ -11,10 +13,12 @@ gc:
 dotfiles:
 	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
 	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles wezterm
+	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles zsh
 
 clean-dotfiles:
 	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles code
 	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles wezterm
+	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles zsh
 
-.PHONY: switch update gc dotfiles clean-dotfiles
+.PHONY: all switch update gc dotfiles clean-dotfiles
 

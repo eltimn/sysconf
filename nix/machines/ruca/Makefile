@@ -1,4 +1,4 @@
-all: switch
+all: switch dotfiles
 
 build:
 	nix run . -- build --flake .

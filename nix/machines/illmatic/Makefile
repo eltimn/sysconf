@@ -1,4 +1,4 @@
-all: switch
+all: switch dotfiles
 
 build:
 	nix run . -- build --flake .
@@ -15,4 +15,11 @@ update:
 gc:
 	nix-collect-garbage --delete-old
 
-.PHONY: all build switch clean update gc
+dotfiles:
+	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles zsh
+
+clean-dotfiles:
+	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles zsh
+
+
+.PHONY: all build switch clean update gc dotfiles clean-dotfiles
