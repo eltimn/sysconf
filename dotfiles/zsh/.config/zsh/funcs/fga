@@ -1,0 +1,6 @@
+# Fuzzy git add: Type fga and select file via fzf
+local selection=$(git status --porcelain | fzf | awk '{print $2}')
+
+if [ "$selection" != "" ]; then
+  git add "$selection"
+fi

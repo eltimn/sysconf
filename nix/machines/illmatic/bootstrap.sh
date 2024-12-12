@@ -12,5 +12,5 @@ sudo apt-get -y autoremove
 sudo apt-get -y autoclean
 
 # install some required tools
-sudo apt-get install -y wezterm
+sudo apt-get install -y wezterm unzip
 

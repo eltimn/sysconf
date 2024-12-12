@@ -1,0 +1,8 @@
+# fuzzy find a file and open with neovim
+local path_to_search=${1:-.}
+
+local selection=$(find $path_to_search -type f | fzf --preview='bat --color=always {}')
+
+if [ "$selection" != "" ]; then
+  nvim "$selection"
+fi

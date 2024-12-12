@@ -1,0 +1,19 @@
+# Fuzzy process killer
+
+# The signal passed to kill defaults to TERM.
+# Call this function with KILL or 9 to forcefully kill it.
+local signal=${1:-TERM}
+
+local selection=$(ps -e -o pid,comm,command | fzf)
+local pid=$(echo "$selection" | awk '{print $1}')
+local pname=$(echo "$selection" | awk '{print $2}')
+
+if [ "$pid" != "" ]; then
+  kill -"${signal}" "$pid"
+  retVal=$?
+  if [ $retVal -eq 0 ]; then
+    echo "Process $pname (PID $pid) has been successfully terminated."
+  fi
+  return $retVal
+fi
+

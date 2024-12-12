@@ -1,8 +1,7 @@
-{ pkgs, vars, ... }:
+{ vars, ... }:
 
 {
   home = {
-    file.".config/zsh/funcs".source = ./files/funcs;
     file.".oh-my-zsh-custom/themes".source = ./files/themes;
   };
 
@@ -53,21 +52,17 @@
         pbcopy = "xclip -selection clipboard";
         pbpaste = "xclip -selection clipboard -o";
 
-        nvf = "nvim $(fzf --preview='bat --color=always {}')";
-
-        fzfiles = "find . -type f | fzf";
-        fzdirs = "cd $(find . -type d -print | fzf)";
-        # fuzzy search my personal doc notes
-        fzdocs = "bat $(find ~/Notes/Obsidian/Personal/computers/docs -type f | fzf)";
-        # attach to a tmux session using fzf
-        # tma = "tmux attach -t $(tmux ls  | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\"  | fzf)";
-
         ".." = "cd ..";
         "..." = "cd ../../../";
         "...." = "cd ../../../../";
         "....." = "cd ../../../../";
         ".4" = "cd ../../../../";
         ".5" = "cd ../../../../..";
+
+        # fzf functions: https://gist.github.com/cschindlbeck/db0ac894a46aac42861e96437d8ed763
+
+        # attach to a tmux session using fzf
+        # tma = "tmux attach -t $(tmux ls  | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\"  | fzf)";
       };
 
       initExtra = "source ${./init.zsh}";

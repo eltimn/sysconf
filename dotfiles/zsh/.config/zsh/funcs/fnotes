@@ -1,0 +1,6 @@
+# fuzzy search my personal notes
+local selection=$(find ~/Notes/Obsidian/Personal -type f | fzf --preview='bat --color=always {}')
+
+if [ "$selection" != "" ]; then
+  bat "$selection"
+fi

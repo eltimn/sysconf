@@ -1,0 +1,6 @@
+# fuzzy search project workspaces and open in cod(e/ium)
+local selection=$(find ~/workspaces -type f | fzf)
+
+if [ "$selection" != "" ]; then
+  codium --new-window "$selection"
+fi

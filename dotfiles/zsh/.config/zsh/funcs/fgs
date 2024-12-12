@@ -1,0 +1,6 @@
+# Fuzzy git branch switch: Type fgs and select branch via fzf
+local selection=$(git branch -v | fzf | awk '{print $1}')
+
+if [ "$selection" != "" ]; then
+  git switch "$selection"
+fi

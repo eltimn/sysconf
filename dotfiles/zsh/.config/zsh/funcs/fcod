@@ -1,0 +1,8 @@
+# fuzzy find a directory and open with cod(e/ium)
+local path_to_search=${1:-.}
+
+local selection=$(find $path_to_search -type d | fzf)
+
+if [ "$selection" != "" ]; then
+  codium --new-window "$selection"
+fi
