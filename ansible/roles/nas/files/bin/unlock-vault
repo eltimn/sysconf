@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+vault_name=${1:-Test1}
+
+/opt/cryptomator-cli/bin/cryptomator-cli unlock \
+  --password:stdin \
+  --mounter=org.cryptomator.frontend.fuse.mount.LinuxFuseMountProvider \
+  --mountPoint ~/${vault_name} \
+  ~/vaults/${vault_name}
