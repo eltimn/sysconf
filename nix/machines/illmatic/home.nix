@@ -22,6 +22,7 @@
     sessionPath = [
       "$HOME/bin/common"
       "$HOME/bin"
+      "/opt/cryptomator-cli/bin"
     ];
     sessionVariables = {
       EDITOR = "${vars.editor}";
