@@ -1,5 +1,5 @@
 # fuzzy search my personal doc notes
-local selection=$(find ~/Notes/Obsidian/Personal/computers/docs -type f | fzf --preview='bat --color=always {}')
+local selection=$(find ~/Notes/Obsidian/Personal/2-areas/computers/docs -type f | fzf --preview='bat --color=always {}')
 
 if [ "$selection" != "" ]; then
   bat "$selection"
