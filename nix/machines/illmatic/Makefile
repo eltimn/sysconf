@@ -1,25 +1,25 @@
 all: switch dotfiles
 
 build:
-	nix run . -- build --flake .
+	nixos-rebuild build --flake .#illmatic
 
 switch:
-	nix run . -- switch --flake .
+	sudo nixos-rebuild switch --flake .#illmatic
 
 clean:
 	rm -rf result
 
 update:
-	nix flake update
+	sudo nix flake update
 
 gc:
-	nix-collect-garbage --delete-old
+	sudo nix-collect-garbage --delete-older-than 7d # system wide
+	nix-collect-garbage --delete-older-than 7d # home-manager stuff in user's home directory
 
 dotfiles:
 	stow --verbose --stow --dotfiles --target=$$HOME --dir=$$HOME/sysconf/dotfiles zsh
 
 clean-dotfiles:
 	stow --verbose --delete --target=$$HOME --dir=$$HOME/sysconf/dotfiles zsh
-
 
 .PHONY: all build switch clean update gc dotfiles clean-dotfiles
