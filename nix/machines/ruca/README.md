@@ -54,6 +54,10 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
   * Parcellite: /home/nelly/.nix-profile/bin/parcellite
   * Filen
 
+## TODO:
+* Things to do before ditching ansible:
+  * configure sshd
+
 =========================================================
 
 ## Run ansible playbook

@@ -24,7 +24,7 @@ sudo apt-get -y autoclean
 # sudo fwupdmgr -y update
 
 # install some required tools
-sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh neovim wezterm
+sudo apt-get install -y curl git jq stow wget apt-transport-https tree gparted zsh neovim wezterm sshd
 
 # install alacritty
 # https://medium.com/@V_TNO/tldr-how-to-install-newer-alacritty-on-popos-older-ubuntu-6e211448f0ba
