@@ -28,7 +28,7 @@
         host = "ruca";
         # location = "$HOME/.setup";
         # terminal = "kitty";
-        editor = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
+        editor = "codium --new-window --wait";
       };
     in
     {
