@@ -110,6 +110,8 @@
           ];
           specialArgs = { inherit inputs readSecretFile sshKeys; };
         };
+
+        illmatic = nixosConfig "illmatic";
       };
 
       # tools for managing this repository and the host machines
