@@ -12,18 +12,10 @@ fi
 DATE=$(date -u +%Y%m%d.1)
 
 zfs snapshot datapool/backup@$DATE
-zfs snapshot datapool/camera@$DATE
-zfs snapshot datapool/dvr@$DATE
-zfs snapshot datapool/dvr-config@$DATE
-zfs snapshot datapool/dvr-recordings@$DATE
 zfs snapshot datapool/mobile@$DATE
-zfs snapshot datapool/movies@$DATE
 zfs snapshot datapool/music@$DATE
 zfs snapshot datapool/pictures@$DATE
 zfs snapshot datapool/plex@$DATE
-zfs snapshot datapool/stuff@$DATE
-zfs snapshot datapool/tv@$DATE
 zfs snapshot datapool/video@$DATE
-zfs snapshot datapool/videos@$DATE
 
 exit 0

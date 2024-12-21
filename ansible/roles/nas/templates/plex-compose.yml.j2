@@ -17,10 +17,12 @@ services:
       #- PLEX_CLAIM=''
     volumes:
       - /mnt/plex:/config
+      - /mnt/comedy:/data/comedy
+      - /mnt/movies:/data/movies
       - /mnt/music:/data/music
       - /mnt/pictures:/data/pictures
       - /mnt/tv:/data/tv
-      - /mnt/video:/data/video
+      - /mnt/videos:/data/videos
     restart: unless-stopped
     networks:
       nas_net:
