@@ -33,8 +33,10 @@ in
     ];
 
     sessionPath = [
+      "$HOME/bin"
       "$HOME/bin/common"
       "$HOME/bin/desktop"
+      "$HOME/go/bin"
     ];
     sessionVariables = {
       EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";

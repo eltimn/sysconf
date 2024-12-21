@@ -37,6 +37,7 @@
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
+      btop
       ollama
       parcellite
       sqlitebrowser
@@ -47,6 +48,7 @@
       "$HOME/bin"
       "$HOME/bin/common"
       "$HOME/bin/desktop"
+      "$HOME/go/bin"
     ];
 
     # List of environment variables.

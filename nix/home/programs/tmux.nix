@@ -6,8 +6,11 @@
     mouse = true;
     shell = "${pkgs.zsh}/bin/zsh";
     shortcut = "a";
-    # terminal = "screen-256color";
-    # plugins = with pkgs; [ tmuxPlugins.sensible tmuxPlugins.cpu ];
+    keyMode = "vi";
+    terminal = "screen-256color";
+    plugins = with pkgs; [
+      tmuxPlugins.sensible
+    ];
     extraConfig = ''
       set -g status-bg blue
       set -g status-fg white

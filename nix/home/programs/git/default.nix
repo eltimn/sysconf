@@ -80,6 +80,8 @@
       "*.sublime-project"
       "*.sublime-workspace"
       ".svn/"
+      ".direnv/"
+      ".envrc"
     ];
     includes = [
       { path = "extra.inc"; }
