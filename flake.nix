@@ -110,6 +110,8 @@
           ];
           specialArgs = { inherit inputs readSecretFile sshKeys; };
         };
+
+        demo = nixosConfig "demo";
       };
 
       # tools for managing this repository and the host machines
