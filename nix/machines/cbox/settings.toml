@@ -1,0 +1,3 @@
+host = "cbox"
+user = "nelly"
+editor = "nvim"

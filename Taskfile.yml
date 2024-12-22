@@ -1,0 +1,72 @@
+version: "3"
+
+env:
+  NIX_CMD:
+    sh: ./set_nix_cmd.sh
+
+tasks:
+  echo:
+    cmds:
+      - echo $IS_NIXOS
+
+  build:
+    desc: Build the flake.
+    cmds:
+      - $NIX_CMD build --flake .
+
+  switch:
+    desc: Build then switch to the new build.
+    cmds:
+      - $NIX_CMD switch --flake .
+      - task: dotfiles
+
+  clean:
+    desc: Delete the result directory that the build task creates.
+    cmds:
+      - rm -rf result
+
+  update:
+    desc: Update packages and the lock file.
+    cmds:
+      - nix flake update
+
+  gc:
+    desc: Run both gc tasks.
+    deps: [gc-os, gc-hm]
+
+  gc-hm:
+    desc: Delete old unused home manager packages.
+    cmds:
+      - nix-collect-garbage --delete-older-than 5d # home-manager stuff in user's home directory
+
+  gc-os:
+    desc: Delete old unused system packages.
+    preconditions:
+      - test -f /etc/NIXOS
+    cmds:
+      - sudo nix-collect-garbage --delete-older-than 5d # system wide
+
+  news:
+    desc: Display Home Manager news
+    cmds:
+      - home-manager news --flake .
+
+  dotfiles:
+    desc: Stow the dotfiles.
+    cmds:
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles code
+      # - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles wezterm
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zsh
+      # - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
+
+  clean-dotfiles:
+    desc: Unstow the dotfiles.
+    cmds:
+      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles code
+      # - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles wezterm
+      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zsh
+      # - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
+
+  history:
+    desc: List all previous generations available.
+    cmd: nix profile history --profile /nix/var/nix/profiles/system

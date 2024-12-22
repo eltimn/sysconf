@@ -1,0 +1,3 @@
+host = "ruca"
+user = "nelly"
+editor = "codium --new-window --wait"

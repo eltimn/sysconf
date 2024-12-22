@@ -1,21 +1,5 @@
 # nix-home-manager
 
-## Directions
-
-### Build without applying
-```shell
-make build
-```
-
-### Switch to current build
-```shell
-make switch
-```
-
-## Nix pkgs bin directory
-NixOS: /etc/profiles/per-user/nelly/bin
-Nix on Pop_OS!: /home/nelly/.nix-profile/bin
-
 ## Ubuntu 22.04
 
 * Create the user
