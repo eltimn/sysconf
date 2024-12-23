@@ -88,6 +88,7 @@
       nixosConfigurations = {
         cbox = nixosConfig "cbox";
         lappy = nixosConfig "lappy";
+        demo = nixosConfig "demo";
       };
 
       # tools for managing this repository and the host machines
