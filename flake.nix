@@ -106,5 +106,12 @@
         '';
       };
 
+      templates = {
+        go-templ = {
+          path = ./nix/templates/go-templ;
+          description = "A go/templ flake";
+        };
+      };
+
     };
 }
