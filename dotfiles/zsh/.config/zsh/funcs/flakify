@@ -1,0 +1,11 @@
+# [available-templates](https://github.com/the-nix-way/dev-templates?tab=readme-ov-file#available-templates)
+local dev_env=${1:-empty}
+
+if [ ! -e flake.nix ]; then
+  # nix flake new -t github:nix-community/nix-direnv .
+  nix flake init --template "https://flakehub.com/f/the-nix-way/dev-templates/*#$dev_env"
+elif [ ! -e .envrc ]; then
+  echo "use flake" > .envrc
+  direnv allow
+fi
+${"EDITOR:-nvim"} flake.nix

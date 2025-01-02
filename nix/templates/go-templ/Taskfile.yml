@@ -1,0 +1,130 @@
+version: "3"
+
+output: "group"
+interval: 500ms
+
+tasks:
+  pre-build:
+    cmds:
+      - mkdir -p bin
+      # - go get github.com/a-h/templ
+
+  pre-css:
+    cmd: mkdir -p dist/assets/css
+
+  pre-js:
+    cmds:
+      - mkdir -p dist/assets/js
+      # - cp web/assets/js/htmx.min.js dist/assets/js/htmx.min.js
+      # - cp web/assets/js/htmx-response-targets.min.js dist/assets/js/htmx-response-targets.min.js
+
+  copy-images:
+    cmds:
+      - mkdir -p dist/assets/img
+      - cp web/assets/img/* dist/assets/img/
+
+  build:
+    desc: Build the go binary.
+    deps: [pre-build]
+    cmds:
+      - templ generate
+      - go build -o ./bin/server main.go
+
+  test:
+    desc: Run the tests.
+    cmd: go test ./...
+
+  testv:
+    desc: Run the tests.
+    cmd: go test -v ./...
+
+  css:
+    desc: Build the css.
+    deps: [pre-css]
+    vars:
+      OPTS: '{{default "" .OPTS}}'
+    cmd: tailwindcss -i ./web/assets/css/main.css -o dist/assets/css/main.css {{.OPTS}}
+    sources:
+      - web/assets/css/**/*.css
+    generates:
+      - dist/assets/css/main.css
+
+  js:
+    desc: Build the js.
+    deps: [pre-js]
+    vars:
+      OPTS: '{{default "" .OPTS}}'
+    cmd: esbuild web/assets/js/main.mjs --outdir=dist/assets/js --bundle --target='esnext' --format=esm {{.OPTS}}
+    sources:
+      - web/assets/js/**/*.js
+      - web/assets/js/**/*.mjs
+    generates:
+      - dist/assets/js/main.js
+
+  dist:
+    desc: Build everything for distribution.
+    deps: [pre-build]
+    cmds:
+      - task: css
+        vars: { OPTS: --minify }
+      - task: js
+        vars: { OPTS: --minify }
+      - templ generate
+      - go build -o ./bin/server main.go
+
+  clean:
+    desc: Delete the bin, dist, and tmp dirs and all templ generated go files.
+    prompt: This will delete the bin, dist, and tmp dirs and all templ generated go files... Continue?
+    cmds:
+      - task: clean-dist
+      - task: clean-go
+      - task: clean-task
+
+  clean-dist:
+    desc: Delete the dist dir.
+    cmd: rm -rf dist
+
+  clean-go:
+    desc: Delete the bin and tmp dirs and all templ generated go files.
+    cmds:
+      - rm -rf tmp
+      - rm -rf bin
+      - find . -type f -name '*_templ.go' -delete
+
+  clean-task:
+    desc: Delete the task cache dir.
+    cmd: rm -rf .task
+
+  run:
+    desc: Run the server.
+    cmd: ./bin/server
+
+  # This causes both tasks to run when a file changes in either one.
+  dev:
+    watch: true
+    sources:
+      - "web/assets/css/**/*.css"
+      - "web/assets/js/**/*.js"
+      - "web/assets/js/**/*.mjs"
+    cmds:
+      - task: css
+      - task: js
+
+  atlas-apply-dev:
+    desc: Apply the db schema hcl file to the local dev database.
+    cmd: atlas schema apply --to file://models/atlas.hcl -u "$DB_ATLAS_URL"
+    interactive: true
+
+  docker-build:
+    desc: Build the docker image.
+    cmd: docker build -t DOCKER_IMAGE:latest .
+
+  docker-run:
+    desc: Run the docker image.
+    cmd: docker run -p $WEB_PORT:$WEB_PORT -e ASSETS_PATH='/app/assets' -e DB_URL=$DB_URL todo-plus
+
+  tidy:
+    desc: Run go mod tidy and others that are required to follow.
+    cmds:
+      - go mod tidy
+      - templ generate
