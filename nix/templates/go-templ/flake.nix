@@ -2,85 +2,91 @@
   description = "Go/Templ Application";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    templ.url = "github:a-h/templ/v0.3.819";
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      nixpkgs-unstable,
+      templ,
     }:
     let
       # System types to support.
       supportedSystems = [ "x86_64-linux" ];
       # [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
-      # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          f {
+            inherit system;
+            pkgs = import nixpkgs { inherit system; };
+            pkgs-unstable = import nixpkgs-unstable { inherit system; };
+          }
+        );
 
-      #   goVersion = 22; # Change this to update the whole stack
-      #   overlays = [ (final: prev: { go = prev."go_1_${toString goVersion}"; }) ];
-      # Nixpkgs instantiated for supported system types.
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+      templForSystem = system: templ.packages.${system}.templ;
 
       goPkgName = "go"; # 1.23
       nodePkgName = "nodejs_22";
-      templPkgName = "templ";
     in
     {
-      # Add dependencies that are only needed for development
-      devShells = forAllSystems (
-        system:
+      devShell = forAllSystems (
+        {
+          system,
+          pkgs,
+          pkgs-unstable,
+          ...
+        }:
         let
-          pkgs = nixpkgsFor.${system};
           goPkg = pkgs.${goPkgName};
           nodePkg = pkgs.${nodePkgName};
-          templPkg = pkgs.${templPkgName};
+          templPkg = templForSystem (system);
         in
-        {
-          default = pkgs.mkShell {
-            buildInputs =
-              with pkgs;
-              [
-                esbuild
-                tailwindcss
-              ]
-              ++ [
-                goPkg
-                nodePkg
-                templPkg
-              ];
+        pkgs.mkShell {
+          buildInputs =
+            with pkgs;
+            [
+              esbuild
+              tailwindcss
+            ]
+            ++ [
+              goPkg
+              nodePkg
+              templPkg
+            ];
 
-            packages = with pkgs; [
+          packages =
+            with pkgs;
+            [
               air
               atlas
               go-task
               go-tools
               golangci-lint
-              gopls
               gotools
               sqlite
-            ];
+            ]
+            ++ [ pkgs-unstable.gopls ];
 
-            # env = {
-
-            # };
-
-            shellHook = ''
-              echo "Welcome to Go/Templ App!"
-              echo "`${goPkg}/bin/go version`"
-              echo "templ: `${templPkg}/bin/templ --version`"
-              echo "node: `${nodePkg}/bin/node --version`"
-              echo "npm: `${nodePkg}/bin/npm --version`"
-            '';
+          env = {
+            CGO_ENABLED = 1;
           };
+
+          shellHook = ''
+            echo "Welcome to Go/Templ App!"
+            echo "`${goPkg}/bin/go version`"
+            echo "templ: `${templPkg}/bin/templ --version`"
+            echo "node: `${nodePkg}/bin/node --version`"
+            echo "npm: `${nodePkg}/bin/npm --version`"
+          '';
         }
       );
-
-      # The default package for 'nix build'. This makes sense if the
-      # flake provides only one package or there is a clear "main"
-      # package.
-      # defaultPackage =
-      #   forAllSystems (system: self.packages.${system}.server);
     };
 }

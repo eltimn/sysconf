@@ -97,16 +97,19 @@
           nixos-generators
         ];
 
-        env = {
-          DUMMY_VAR = "templ";
-        };
-
         shellHook = ''
           echo "Welcome to sysconf!"
         '';
       };
 
-      templates = {
+      templates = rec {
+        default = basic;
+
+        basic = {
+          path = ./nix/templates/basic;
+          description = "A basic flake";
+        };
+
         go-templ = {
           path = ./nix/templates/go-templ;
           description = "A go/templ flake";
