@@ -43,6 +43,21 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 ## Setup home manager
 * See switch command switch above.
 
+### Add Data drive
+
+Prepare the directory.
+
+```shell
+sudo mkdir -p /media/nelly/Data
+sudo chown nelly:nelly /media/nelly/Data
+sudo chmod +rw /media/nelly/Data
+```
+
+Add the following to /etc/fstab. Use `blkid` to get the proper UUID.
+```
+UUID=8b52c88f-d083-47cd-81a1-82bd6644d00a  /media/nelly/Data  ext4  defaults  0  2
+```
+
 ## Manual System Config
 * Set mouse primary click to right.
 * Set desktop background image to ~/Images/85942-Lightning_Neuro.jpg
@@ -57,6 +72,7 @@ Nix on Pop_OS!: /home/nelly/.nix-profile/bin
 ## TODO:
 * Things to do before ditching ansible:
   * configure sshd
+
 
 =========================================================
 

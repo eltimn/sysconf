@@ -57,7 +57,6 @@
   "javascript.suggestionActions.enabled": false,
   "typescript.format.enable": false,
   "workbench.editor.tabSizing": "shrink",
-  "sync.gist": "c27fdc4ce7e5bb11fd197cb51343ed79",
   "terraform.indexing": {
     "enabled": false,
     "liveIndexing": false,
@@ -80,8 +79,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "python.jediEnabled": false,
-  "java.requirements.JDK11Warning": false,
   "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "editor.formatOnSave": true,
   "[terraform]": {

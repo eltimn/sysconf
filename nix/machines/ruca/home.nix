@@ -38,6 +38,7 @@
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
       btop
+      fd
       ollama
       parcellite
       sqlitebrowser
@@ -66,6 +67,14 @@
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
+
+    lazygit.enable = true;
+
+    yazi = {
+      enable = true;
+      enableZshIntegration = true;
+      shellWrapperName = "y";
+    };
   };
 
   # Systemd for user services

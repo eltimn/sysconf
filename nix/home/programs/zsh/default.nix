@@ -94,6 +94,7 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
+      tmux.enableShellIntegration = true;
     };
 
     ripgrep = {

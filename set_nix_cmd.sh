@@ -4,8 +4,8 @@
 
 if [ -f /etc/NIXOS ]; then
   echo -n "sudo nixos-rebuild"
-else
-  echo -n "home-manager"
+  exit 0
 fi
 
+echo -n "home-manager"
 exit 0
