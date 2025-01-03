@@ -1,4 +1,4 @@
-# Go/Temp App
+# Go/Templ App
 
 ## Dev Shell
 

@@ -25,7 +25,7 @@
         # ms-python.python
         # redhat.ansible
         # redhat.vscode-yaml
-        sumneko.lua
+        # sumneko.lua
         yzhang.markdown-all-in-one
       ];
       # userSettings = {
