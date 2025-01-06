@@ -100,6 +100,16 @@
       nixosConfigurations = {
         cbox = nixosConfig "cbox";
         lappy = nixosConfig "lappy";
+
+        iso = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
+            ./nix/machines/iso/configuration.nix
+          ];
+          specialArgs = { inherit inputs readSecretFile sshKeys; };
+        };
       };
 
       # tools for managing this repository and the host machines
@@ -112,6 +122,7 @@
           NIX_CMD = "${nixSwitchCmd}";
           IS_NIXOS = "${builtins.toString nixIsNixOS}";
         };
+
         shellHook = ''
           echo "Welcome to sysconf!"
         '';

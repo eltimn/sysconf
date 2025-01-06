@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+gsettings set org.gnome.desktop.session idle-delay 0
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+
+section_header() {
+  gum style \
+    --foreground 212 --border-foreground 212 --border double \
+    --align center --width 50 --margin "1 1"  \
+    "${1}"
+}
+
+if [ "$(id -u)" -eq 0 ]; then
+  echo "ERROR! $(basename "$0") should be run as a regular user"
+  exit 1
+fi
+
+section_header "Sysconf"
+
+if [ ! -d "$HOME/sysconf/.git" ]; then
+  echo "Cloning sysconf repo."
+  git clone https://github.com/eltimn/sysconf.git "$HOME/sysconf"
+  cd "$HOME/sysconf"
+  # if the user does not select a branch and closes the script (ctrl-c), sysconf may be left on the wrong branch.
+  selected_branch=$(git branch -a --format="%(refname:short)" | gum choose --header="Choose branch to checkout:")
+  if [ "${selected_branch}" -ne "main" ]; then
+    git checkout -t "${selected_branch}"
+  fi
+fi
+
+section_header "Target Host"
+
+TARGET_HOST=$(ls -1 $HOME/sysconf/nix/machines/ | grep -v iso | gum choose --header="Choose the target host:")
+echo "Using host: $TARGET_HOST"
+
+section_header "Disks"
+
+lsblk --nodeps -o name,size,type,serial
+echo ""
+
+DISKS_TOML_FILE="$HOME/sysconf/nix/machines/$TARGET_HOST/disks.toml"
+DISK_ID=$(ls /dev/disk/by-id | cut -d' ' -f1 | gum choose --header="Choose the disk to format and install the os on:")
+cat > $DISKS_TOML_FILE<< EOF
+[disks]
+main = "$DISK_ID"
+EOF
+
+echo "Created file $DISKS_TOML_FILE"
+echo "Contents:"
+cat $DISKS_TOML_FILE
+
+if [ ! -e "$HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix" ]; then
+  echo "ERROR! $(basename "$0") could not find the required $HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix"
+  exit 1
+fi
+
+gum confirm --default=false \
+"🔥 🔥 🔥 WARNING!!!! This will ERASE ALL DATA on the disk $DISK_ID. Are you sure you want to continue?"
+
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
+  --mode destroy,format,mount $HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix
+
+echo "Generating the hardware config"
+nixos-generate-config --dir $HOME/sysconf/nix/machines/$TARGET_HOST #--no-filesystems
+echo "Config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
+
+section_header "Install OS"
+
+gum confirm --default=false "You are about to start the OS installation. Do you want to continue?"
+
+sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
+
+cp $HOME/sysconf /mnt/home/nelly/sysconf-install
+
