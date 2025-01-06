@@ -1,13 +1,13 @@
 version: "3"
 
-env:
-  NIX_CMD:
-    sh: ./set_nix_cmd.sh
+# NIX_CMD and IS_NIXOS are set in the devShell of flake.nix
 
 tasks:
   echo:
+    preconditions:
+      - "[ $IS_NIXOS -eq 1 ]"
     cmds:
-      - echo $IS_NIXOS
+      - echo $NIX_CMD
 
   build:
     desc: Build the flake.
@@ -37,14 +37,14 @@ tasks:
   gc-hm:
     desc: Delete old unused home manager packages.
     cmds:
-      - nix-collect-garbage --delete-older-than 5d # home-manager stuff in user's home directory
+      - nix-collect-garbage --delete-older-than 7d # home-manager stuff in user's home directory
 
   gc-os:
     desc: Delete old unused system packages.
     preconditions:
-      - test -f /etc/NIXOS
+      - "[ $IS_NIXOS -eq 1 ]"
     cmds:
-      - sudo nix-collect-garbage --delete-older-than 5d # system wide
+      - sudo nix-collect-garbage --delete-older-than 7d # system wide
 
   news:
     desc: Display Home Manager news
@@ -55,18 +55,26 @@ tasks:
     desc: Stow the dotfiles.
     cmds:
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles code
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles common
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles wezterm
-      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zsh
       # - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
   clean-dotfiles:
     desc: Unstow the dotfiles.
     cmds:
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles code
+      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles common
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles wezterm
-      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zsh
       # - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
   history:
     desc: List all previous generations available.
     cmd: nix profile history --profile /nix/var/nix/profiles/system
+
+  iso:
+    desc: Build an installer ISO
+    cmd: nix build .#nixosConfigurations.iso.config.system.build.isoImage
+
+  iso-burn:
+    desc: Burn an iso to a USB drive
+    cmd: caligula burn $(gum file result/iso)

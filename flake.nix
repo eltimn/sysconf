@@ -25,6 +25,7 @@
         config.allowUnfree = true;
       };
 
+      # a function to load host specific settings
       loadVars = host: builtins.fromTOML (builtins.readFile ./nix/machines/${host}/settings.toml);
 
       # a function to create a home manager configuration
@@ -74,17 +75,28 @@
             }
           ];
         };
+
+      nixIsNixOS = builtins.pathExists /etc/NIXOS;
+      nixSwitchCmd = if nixIsNixOS then "sudo nixos-rebuild" else "home-manager";
+
+      # path to the secrets directory
+      homeDir = builtins.getEnv "HOME";
+      secretsPath = builtins.toPath "${homeDir}/secret/nix";
+
+      # a function to read a secret file
+      readSecretFile = p: builtins.readFile (secretsPath + p);
+
+      # public ssh keys
+      sshKeys = builtins.fromTOML readSecretFile /ssh_keys.toml;
     in
     {
-      # so you can use `nix run . -- switch --flake .`
-      # defaultPackage.${system} = home-manager.defaultPackage.${system};
-
       # Home Manager configurations. Non-nixos hosts.
       homeConfigurations = {
         "nelly@ruca" = hmConfig "ruca";
         "nelly@illmatic" = hmConfig "illmatic";
       };
 
+      # NixOS hosts
       nixosConfigurations = {
         cbox = nixosConfig "cbox";
         lappy = nixosConfig "lappy";
@@ -94,9 +106,12 @@
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
           go-task
-          nixos-generators
         ];
 
+        env = {
+          NIX_CMD = "${nixSwitchCmd}";
+          IS_NIXOS = "${builtins.toString nixIsNixOS}";
+        };
         shellHook = ''
           echo "Welcome to sysconf!"
         '';
@@ -115,6 +130,5 @@
           description = "A go/templ flake";
         };
       };
-
     };
 }

@@ -16,6 +16,7 @@
 
     packages = with pkgs; [
       gnumake
+      gum
       stow
     ];
 

@@ -8,7 +8,8 @@
   programs.git = {
     enable = true;
     aliases = {
-      au = "add -u .";
+      au = "add -u ."; # add all files that are already being tracked
+      adu = "git-adu"; # choose untracked files to add
       br = "branch";
       ci = "commit";
       cia = "commit --amend";
@@ -19,7 +20,6 @@
       dfc = "difftool"; # codium
       st = "status";
       sw = "switch";
-      # removes references to remote branches that no longer exists. Does not affect local branches.
       cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
       prune = "fetch --prune origin";
       remove = "rm --cached";

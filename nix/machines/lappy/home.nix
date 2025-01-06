@@ -39,7 +39,7 @@ in
       "$HOME/go/bin"
     ];
     sessionVariables = {
-      EDITOR = "${pkgs.lib.attrsets.getBin pkgs.vscodium}/bin/codium --new-window --wait";
+      EDITOR = "${vars.editor}";
     };
 
     # some files
