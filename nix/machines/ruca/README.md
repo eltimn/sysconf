@@ -4,12 +4,12 @@
 
 ### Build without applying
 ```shell
-make build
+task build
 ```
 
 ### Switch to current build
 ```shell
-make switch
+task switch
 ```
 
 ## Nix pkgs bin directory

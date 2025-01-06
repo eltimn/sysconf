@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Pop_OS! 22.04
 
 set -e
 

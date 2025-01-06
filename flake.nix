@@ -101,6 +101,7 @@
       nixosConfigurations = {
         cbox = nixosConfig "cbox";
         lappy = nixosConfig "lappy";
+        ruca = nixosConfig "ruca";
 
         iso = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
