@@ -80,3 +80,7 @@ tasks:
   iso-burn:
     desc: Burn an iso to a USB drive
     cmd: caligula burn $(gum file result/iso)
+
+  iso-copy:
+    desc: Copy the iso to a USB drive
+    cmd: cp result/iso/*.iso /media/$USER/Ventoy

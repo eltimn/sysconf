@@ -1,3 +1,5 @@
 host = "ruca"
 user = "nelly"
 editor = "code --new-window --wait"
+stow_packages = ["common", "code", "wezterm"]
+# backup_dirs = []

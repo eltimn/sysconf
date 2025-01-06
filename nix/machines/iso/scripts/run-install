@@ -24,7 +24,7 @@ if [ ! -d "$HOME/sysconf/.git" ]; then
   cd "$HOME/sysconf"
   # if the user does not select a branch and closes the script (ctrl-c), sysconf may be left on the wrong branch.
   selected_branch=$(git branch -a --format="%(refname:short)" | gum choose --header="Choose branch to checkout:")
-  if [ "${selected_branch}" -ne "main" ]; then
+  if [ "${selected_branch}" != "main" ]; then
     git checkout -t "${selected_branch}"
   fi
 fi

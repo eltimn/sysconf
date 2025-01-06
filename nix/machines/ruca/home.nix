@@ -4,6 +4,9 @@
   vars,
   ...
 }:
+let
+  filen-desktop = (pkgs.callPackage ../../home/pkgs/filen-desktop.nix { });
+in
 {
 
   imports = [
@@ -16,24 +19,15 @@
     ../../home/programs/tmux.nix
   ];
 
-  fonts.fontconfig.enable = true;
-  xdg.mime.enable = false; # fixes a bug where nautilus crashes
+  # fonts.fontconfig.enable = true;
+  # xdg.mime.enable = false; # fixes a bug where nautilus crashes
 
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
     username = "${vars.user}";
     homeDirectory = "/home/${vars.user}";
-
-    # This value determines the Home Manager release that your
-    # configuration is compatible with. This helps avoid breakage
-    # when a new Home Manager release introduces backwards
-    # incompatible changes.
-    #
-    # You can update Home Manager without changing this value. See
-    # the Home Manager release notes for a list of state version
-    # changes in each release.
-    stateVersion = "23.11";
+    stateVersion = "24.11";
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
@@ -42,11 +36,22 @@
       fd
       gocryptfs
       gum
+      shellcheck
+      # fd
+      filen-desktop
+      firefox
+      gnomeExtensions.appindicator
+      gnomeExtensions.clipboard-indicator
+      gnomeExtensions.dash-to-dock
+      gnumake
       nushell
       ollama
-      parcellite
-      shellcheck
-      sqlitebrowser
+      # parcellite
+      # sqlitebrowser
+      stow
+      vivaldi
+      vivaldi-ffmpeg-codecs
+      wezterm
     ];
 
     # List of extra paths to include in the user profile.
@@ -66,6 +71,7 @@
     # some files
     file.".config/borg/backup_dirs".text =
       "export BACKUP_DIRS='Audio Documents Dropbox Notes Pictures code secret sysconf workspaces'";
+    file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
   };
 
   # Packages that are installed as programs also allow for configuration.
@@ -199,6 +205,19 @@
           WantedBy = [ "timers.target" ];
         };
       };
+    };
+  };
+
+  xdg.desktopEntries = {
+    filen = {
+      name = "Filen";
+      genericName = "File Syncer";
+      exec = "filen-desktop";
+      terminal = false;
+      categories = [
+        "Application"
+        "Network"
+      ];
     };
   };
 }

@@ -74,21 +74,28 @@
               };
             }
           ];
+
           security.sudo.execWheelOnly = true;
         };
 
       nixIsNixOS = builtins.pathExists /etc/NIXOS;
       nixSwitchCmd = if nixIsNixOS then "sudo nixos-rebuild" else "home-manager";
 
+      # `builtins.readFile` doesn't work with files that are not part of the git repo.
       # path to the secrets directory
-      homeDir = builtins.getEnv "HOME";
-      secretsPath = builtins.toPath "${homeDir}/secret/nix";
+      # homeDir = builtins.getEnv "HOME";
+      # secretsPath = builtins.toPath "${homeDir}/secret/nix";
 
       # a function to read a secret file
-      readSecretFile = p: builtins.readFile (secretsPath + p);
+      # readSecretFile = p: builtins.readFile (secretsPath + p);
+
+      # sshKeys = {
+      #   lappy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy";
+      #   ruca = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca";
+      # };
 
       # public ssh keys
-      sshKeys = builtins.fromTOML readSecretFile /ssh_keys.toml;
+      sshKeys = builtins.fromTOML (builtins.readFile ./ssh_keys.toml);
     in
     {
       # Home Manager configurations. Non-nixos hosts.
@@ -101,6 +108,7 @@
       nixosConfigurations = {
         cbox = nixosConfig "cbox";
         lappy = nixosConfig "lappy";
+        ruca = nixosConfig "ruca";
 
         iso = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
