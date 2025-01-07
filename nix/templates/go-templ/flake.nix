@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    templ.url = "github:a-h/templ/v0.3.819";
+    templ-flake.url = "github:a-h/templ/v0.3.819";
   };
 
   outputs =
@@ -13,12 +13,16 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      templ,
+      templ-flake,
     }:
     let
       # System types to support.
-      supportedSystems = [ "x86_64-linux" ];
-      # [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
+      supportedSystems = [
+        "x86_64-linux"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
 
       forAllSystems =
         f:
@@ -26,17 +30,29 @@
           system:
           f {
             inherit system;
-            pkgs = import nixpkgs { inherit system; };
-            pkgs-unstable = import nixpkgs-unstable { inherit system; };
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = [ self.overlays.default ];
+            };
+            pkgs-unstable = import nixpkgs-unstable {
+              inherit system;
+              overlays = [ self.overlays.default ];
+            };
           }
         );
 
-      templForSystem = system: templ.packages.${system}.templ;
-
-      goPkgName = "go"; # 1.23
       nodePkgName = "nodejs_22";
+      goPkgName = "go"; # 1.23
+      cgoEnabled = 1;
     in
     {
+      # overlays to use a specific version as the main package
+      overlays.default = final: prev: {
+        nodejs = prev.${nodePkgName};
+        go = prev.${goPkgName};
+        templ = templ-flake.packages.${prev.system}.templ;
+      };
+
       devShell = forAllSystems (
         {
           system,
@@ -44,23 +60,14 @@
           pkgs-unstable,
           ...
         }:
-        let
-          goPkg = pkgs.${goPkgName};
-          nodePkg = pkgs.${nodePkgName};
-          templPkg = templForSystem (system);
-        in
         pkgs.mkShell {
-          buildInputs =
-            with pkgs;
-            [
-              esbuild
-              tailwindcss
-            ]
-            ++ [
-              goPkg
-              nodePkg
-              templPkg
-            ];
+          buildInputs = with pkgs; [
+            esbuild
+            go
+            nodejs
+            tailwindcss
+            templ
+          ];
 
           packages =
             with pkgs;
@@ -76,15 +83,15 @@
             ++ [ pkgs-unstable.gopls ];
 
           env = {
-            CGO_ENABLED = 1;
+            CGO_ENABLED = cgoEnabled;
           };
 
           shellHook = ''
             echo "Welcome to Go/Templ App!"
-            echo "`${goPkg}/bin/go version`"
-            echo "templ: `${templPkg}/bin/templ --version`"
-            echo "node: `${nodePkg}/bin/node --version`"
-            echo "npm: `${nodePkg}/bin/npm --version`"
+            echo "`${pkgs.go}/bin/go version`"
+            echo "templ: `${pkgs.templ}/bin/templ --version`"
+            echo "node: `${pkgs.nodejs}/bin/node --version`"
+            echo "npm: `${pkgs.nodejs}/bin/npm --version`"
           '';
         }
       );
