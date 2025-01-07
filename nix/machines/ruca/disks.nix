@@ -48,7 +48,6 @@ in
                     mountpoint = "/home";
                     mountOptions = [
                       "subvol=home"
-                      "compress=zstd"
                       "noatime"
                     ];
                   };
