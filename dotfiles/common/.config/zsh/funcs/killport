@@ -1,9 +1,9 @@
 # kill a process running on the given port
 readonly port=${1:?"The port must be specified."}
 
-selection=$(lsof -i6TCP:$port -sTCP:LISTEN -n -P | gum choose --limit=1 --select-if-one)
+local selection=$(lsof -i6TCP:$port -sTCP:LISTEN -n -P | gum choose --limit=1 --select-if-one)
 
-if [ $? != 0 ]; then
+if [ "${selection}" -eq "" ]; then
   return 1
 fi
 

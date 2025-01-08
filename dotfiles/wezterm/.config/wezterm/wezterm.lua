@@ -59,6 +59,12 @@ config.keys = {
       end),
     },
   },
+  -- close tab
+  {
+    key = 'w',
+    mods = 'LEADER',
+    action = wezterm.action.CloseCurrentTab { confirm = true },
+  },
 }
 
 -- ssh stuff, still messing around
@@ -73,14 +79,14 @@ config.ssh_domains = {
   }
 }
 
--- display the current workspace in the upper right corner for tab bar
+-- display the current workspace in the upper right corner of tab bar
 wezterm.on('update-right-status', function(window, pane)
   window:set_right_status(window:active_workspace() .. ' ')
 end)
 
 -- wezterm won't exit without killing all workspaces
 -- creating them on the fly doesn't allow for creating multiple tabs, it's
--- a simple SpawnCommand. See wezterm.action.SwitchToWorkspace
+-- a simple SpawnCommand. See wezterm.action.SwitchToWorkspace -TN
 -- wezterm.on('gui-startup', function(cmd)
 --   -- allow `wezterm start -- something` to affect what we spawn
 --   -- in our initial window

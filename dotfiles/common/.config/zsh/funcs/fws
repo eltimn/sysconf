@@ -1,6 +1,6 @@
-# fuzzy search project workspaces and open in codeium
+# fuzzy search project workspaces and open in code
 local selection=$(find ~/workspaces -type f | fzf)
 
 if [ "$selection" != "" ]; then
-  codeium --new-window "$selection"
+  code --new-window "$selection"
 fi

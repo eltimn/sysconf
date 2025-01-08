@@ -1,0 +1,8 @@
+# use gum to choose untracked files to add to git
+local selected=$(git ls-files --others --exclude-standard | gum choose --no-limit)
+echo "selected: ${selected}"
+if [ "${selected}" != "" ]; then
+  echo "${selected}" | while read f; do
+    git add "${f}"
+  done
+fi

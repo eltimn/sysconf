@@ -1,0 +1,14 @@
+# Open vscode by first searching for a workspace file in the current directory,
+# otherwise open in the current directory.
+
+local arg="."
+local cnt=$((ls *.code-workspace) 2> /dev/null | wc -l)
+
+if [ "${cnt}" != "0" ]; then
+  local selection=$(ls *.code-workspace | gum choose --limit=1 --select-if-one)
+  if [ "${selection}" != "" ]; then
+    arg="${selection}"
+  fi
+fi
+
+code "${arg}"

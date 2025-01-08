@@ -1,0 +1,9 @@
+# fuzzy search for git files to restore
+
+local selection=$(git diff --name-only --staged | gum choose --no-limit)
+
+if [ "${selection}" != "" ]; then
+  echo "${selection}" | while read line; do
+    git restore --staged "${line}"
+  done
+fi
