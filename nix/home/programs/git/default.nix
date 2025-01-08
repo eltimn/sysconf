@@ -9,7 +9,6 @@
     enable = true;
     aliases = {
       au = "add -u ."; # add all files that are already being tracked
-      adu = "git-adu"; # choose untracked files to add
       br = "branch";
       ci = "commit";
       cia = "commit --amend";

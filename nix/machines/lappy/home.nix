@@ -25,6 +25,7 @@ in
       gnomeExtensions.clipboard-indicator
       gnomeExtensions.dash-to-dock
       gnumake
+      shellcheck
       stow
       system76-firmware
       vivaldi

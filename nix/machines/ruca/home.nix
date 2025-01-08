@@ -39,8 +39,10 @@
     packages = with pkgs; [
       btop
       fd
+      gum
       ollama
       parcellite
+      shellcheck
       sqlitebrowser
     ];
 
