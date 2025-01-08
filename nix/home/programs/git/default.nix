@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   home = {
@@ -16,7 +16,7 @@
       df = "diff"; # external (difftastic)
       dff = "diff --no-ext-diff"; # plain diff
       dfm = "difftool --tool=meld"; # meld
-      dfc = "difftool"; # codium
+      dfc = "difftool"; # codeium
       st = "status";
       sw = "switch";
       cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
@@ -39,14 +39,14 @@
       };
 
       diff = {
-        tool = "codium";
+        tool = "codeium";
         # external = "difft --color auto --background light --display side-by-side";
       };
 
       difftool = {
         prompt = false;
-        codium = {
-          cmd = "${pkgs.vscodium}/bin/codium --wait --new-window --diff $LOCAL $REMOTE";
+        codeium = {
+          cmd = "codeium --wait --new-window --diff $LOCAL $REMOTE";
         };
       };
     };

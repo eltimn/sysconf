@@ -31,13 +31,13 @@
       # };
 
       shellAliases = {
+        codeium = "code";
         reload = ". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'";
-        # zshrc = "${pkgs.vscodium}/bin/codium --new-window --wait ~/.zshrc && reload";
+        # zshrc = "codeium --new-window --wait ~/.zshrc && reload";
 
         la = "ls -Alh --group-directories-first";
         ll = "ls -lh --group-directories-first";
 
-        # sedit = "sudo -i ${pkgs.vscodium}/bin/codium --no-sandbox --user-data-dir=/root/.config/VSCodium/";
         ubuntu-version = "lsb_release -a";
         os-release = "cat /etc/os-release";
         fig = "docker compose";

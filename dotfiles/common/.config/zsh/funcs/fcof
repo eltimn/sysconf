@@ -1,8 +1,8 @@
-# fuzzy find a file and open with codium
+# fuzzy find a file and open with codeium
 local path_to_search=${1:-.}
 
 local selection=$(find $path_to_search -type f | fzf --preview='bat --color=always {}')
 
 if [ "$selection" != "" ]; then
-  codium --new-window "$selection"
+  codeium --new-window "$selection"
 fi

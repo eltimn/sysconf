@@ -1,10 +1,7 @@
-{ pkgs, vars, ... }:
+{ pkgs, ... }:
 
 {
   home = {
-    # file.".config/Code/User/settings.json".source = ./files/settings.json;
-    # file.".config/VSCodium/User/settings.json".source = ./files/settings.json;
-
     packages = with pkgs; [
       nil
       nixfmt-rfc-style
@@ -15,7 +12,7 @@
     # https://mynixos.com/home-manager/options/programs.vscode
     vscode = {
       enable = true;
-      package = pkgs.vscodium;
+      package = pkgs.vscode;
       # enableExtensionUpdateCheck = false;
       # enableUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
