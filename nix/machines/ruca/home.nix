@@ -38,6 +38,7 @@
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
       btop
+      dust # better `du`
       fd
       gum
       ollama
