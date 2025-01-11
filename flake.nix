@@ -108,7 +108,7 @@
             "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
             ./nix/machines/iso/configuration.nix
           ];
-          specialArgs = { inherit inputs readSecretFile sshKeys; };
+          specialArgs = { inherit inputs sshKeys; };
         };
       };
 
@@ -136,9 +136,14 @@
           description = "A basic flake";
         };
 
+        go-basic = {
+          path = ./nix/templates/go-basic;
+          description = "A basic Go flake";
+        };
+
         go-templ = {
           path = ./nix/templates/go-templ;
-          description = "A go/templ flake";
+          description = "A Go/Templ flake";
         };
       };
     };
