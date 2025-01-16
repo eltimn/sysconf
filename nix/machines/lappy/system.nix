@@ -149,11 +149,20 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    allowSFTP = true;
     openFirewall = true;
+    allowSFTP = false;
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
+      AllowUsers = [ "${vars.user}" ];
+      X11Forwarding = false;
+      UsePAM = true;
+      extraConfig = ''
+        AllowTcpForwarding yes
+        AllowAgentForwarding no
+        AllowStreamLocalForwarding no
+        AuthenticationMethods publickey
+      '';
     };
   };
 

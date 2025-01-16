@@ -7,4 +7,3 @@ if [ ! -d "$2" ]; then
 fi
 
 sshfs -o IdentityFile=~/.ssh/id_ed25519 "illmatic:$1" "$2"
-

@@ -74,6 +74,7 @@
               };
             }
           ];
+          security.sudo.execWheelOnly = true;
         };
 
       nixIsNixOS = builtins.pathExists /etc/NIXOS;

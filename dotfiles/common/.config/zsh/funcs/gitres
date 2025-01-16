@@ -1,4 +1,4 @@
-# fuzzy search for git files to restore
+# fuzzy search for git files to restore (formerly reset)
 
 local selection=$(git diff --name-only --staged | gum choose --no-limit)
 
