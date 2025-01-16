@@ -74,6 +74,7 @@
               };
             }
           ];
+
           security.sudo.execWheelOnly = true;
         };
 
@@ -86,6 +87,11 @@
 
       # a function to read a secret file
       readSecretFile = p: builtins.readFile (secretsPath + p);
+
+      # sshKeys = {
+      #   lappy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy";
+      #   ruca = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca";
+      # };
 
       # public ssh keys
       sshKeys = builtins.fromTOML readSecretFile /ssh_keys.toml;

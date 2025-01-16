@@ -67,3 +67,20 @@
     name: caddy.service
     enabled: true
   tags: caddy
+
+- name: Create /var/www directory
+  ansible.builtin.file:
+    path: /var/www
+    state: directory
+    owner: root
+    group: root
+  tags: caddy
+
+- name: Create /var/www/html directory
+  ansible.builtin.file:
+    path: /var/www/html
+    state: directory
+    owner: root
+    group: www-data
+    mode: "2774"
+  tags: caddy

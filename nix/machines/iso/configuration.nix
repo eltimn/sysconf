@@ -1,5 +1,6 @@
 {
   pkgs,
+  sshKeys,
   ...
 }:
 let
@@ -22,4 +23,14 @@ in
     neovim
     runInstall
   ];
+
+  users.users = {
+    nixos = {
+      openssh.authorizedKeys.keys = [
+        sshKeys.lappy
+        sshKeys.ruca
+      ];
+      # shell = pkgs.zsh;
+    };
+  };
 }
