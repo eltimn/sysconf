@@ -65,6 +65,8 @@ in
     #   shellIntegration.enableZshIntegration = true;
     #   theme = "Github";
     # };
+
+    lazygit.enable = true;
   };
 
   # services = {

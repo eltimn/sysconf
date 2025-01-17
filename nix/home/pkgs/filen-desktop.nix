@@ -5,7 +5,7 @@ pkgs.appimageTools.wrapType2 {
   name = "filen-desktop";
   src = pkgs.fetchurl {
     url = "https://cdn.filen.io/@filen/desktop/release/latest/Filen_linux_x86_64.AppImage";
-    sha256 = "628b5203f2f897e6ece4908b9c5198d251996e97bd00d497869d8bdea24965d6";
+    sha256 = "35aa39072f19f2531b45ca76320c3ec5a8a21735310a6e92dd2004e457c36699";
   };
   # extraPkgs = pkgs: with pkgs; [ ];
 }
