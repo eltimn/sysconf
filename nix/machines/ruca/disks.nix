@@ -14,9 +14,9 @@ in
               priority = 1;
               name = "ESP";
               label = "boot";
-              # size = "512M";
+              # size = "1024M";
               start = "1M";
-              end = "512M";
+              end = "1024M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -27,53 +27,63 @@ in
             };
             root = {
               size = "100%";
-              label = "root";
               content = {
-                type = "btrfs";
-                extraArgs = [
-                  "-L"
-                  "nixos"
-                  "-f"
-                ];
-                subvolumes = {
-                  "/root" = {
-                    mountpoint = "/";
-                    mountOptions = [
-                      "subvol=root"
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "/home" = {
-                    mountpoint = "/home";
-                    mountOptions = [
-                      "subvol=home"
-                      "noatime"
-                    ];
-                  };
-                  "/data" = {
-                    mountpoint = "/data";
-                    mountOptions = [
-                      "subvol=data"
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "/nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = [
-                      "subvol=nix"
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "/swap" = {
-                    mountpoint = "/swap";
-                    swap.swapfile.size = "32G";
-                  };
-                };
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
               };
             };
+
+            # btrfs
+            # root = {
+            #   size = "100%";
+            #   label = "root";
+            #   content = {
+            #     type = "btrfs";
+            #     extraArgs = [
+            #       "-L"
+            #       "nixos"
+            #       "-f"
+            #     ];
+            #     subvolumes = {
+            #       "/root" = {
+            #         mountpoint = "/";
+            #         mountOptions = [
+            #           "subvol=root"
+            #           "compress=zstd"
+            #           "noatime"
+            #         ];
+            #       };
+            #       "/home" = {
+            #         mountpoint = "/home";
+            #         mountOptions = [
+            #           "subvol=home"
+            #           "noatime"
+            #         ];
+            #       };
+            #       "/data" = {
+            #         mountpoint = "/data";
+            #         mountOptions = [
+            #           "subvol=data"
+            #           "compress=zstd"
+            #           "noatime"
+            #         ];
+            #       };
+            #       "/nix" = {
+            #         mountpoint = "/nix";
+            #         mountOptions = [
+            #           "subvol=nix"
+            #           "compress=zstd"
+            #           "noatime"
+            #         ];
+            #       };
+            #       "/swap" = {
+            #         mountpoint = "/swap";
+            #         swap.swapfile.size = "32G";
+            #       };
+            #     };
+            #   };
+            # };
           };
         };
       };
