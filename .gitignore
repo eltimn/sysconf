@@ -2,3 +2,4 @@
 .direnv
 *.code-workspace
 result
+history.txt

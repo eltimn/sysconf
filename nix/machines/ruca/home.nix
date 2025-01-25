@@ -79,6 +79,16 @@
       enableZshIntegration = true;
       shellWrapperName = "y";
     };
+
+    # ghostty doesn't work with current ruca hardware
+    # (ghostty:80405): Gtk-WARNING **: 20:23:38.051: No IM module matching GTK_IM_MODULE=ibus found
+    # error(gtk_surface): surface failed to realize: Failed to create EGL display
+    # warning(gtk_surface): this error is usually due to a driver or gtk bug
+    # warning(gtk_surface): this is a common cause of this issue: https://gitlab.gnome.org/GNOME/gtk/-/issues/4950
+    # ghostty = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    # };
   };
 
   # Systemd for user services
