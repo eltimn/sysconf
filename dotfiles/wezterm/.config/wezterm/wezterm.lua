@@ -13,23 +13,37 @@ config.font_size = 14.0
 -- make CTRL-A the LEADER key combo (puts in command mode)
 config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 
+-- {
+--   key = 'w',
+--   mods = 'CMD',
+--   action = act.CloseCurrentPane { confirm = true },
+-- },
+
+
+-- https://wezfurlong.org/wezterm/config/lua/keyassignment/index.html
+
 -- key bindings
 config.keys = {
   -- Send "CTRL-A" to the terminal when pressing CTRL - A, CTRL - A
   {
     key = 'a',
     mods = 'LEADER|CTRL',
-    action = wezterm.action.SendKey { key = 'a', mods = 'CTRL' },
+    action = act.SendKey { key = 'a', mods = 'CTRL' },
   },
   {
     key = '|',
     mods = 'LEADER|SHIFT',
-    action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+    action = act.SplitHorizontal { domain = 'CurrentPaneDomain' },
   },
   {
     key = '-',
     mods = 'LEADER',
-    action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+    action = act.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = 'c',
+    mods = 'LEADER',
+    action = act.SpawnTab 'CurrentPaneDomain',
   },
   -- Choose a workspace based on a list of directories --
   {
@@ -37,11 +51,11 @@ config.keys = {
     mods = 'LEADER',
     action = workspaces.choose_workspace(),
   },
+  -- Present a list of existing workspaces --
   {
     key = 'f',
     mods = 'LEADER',
-    -- Present a list of existing workspaces
-    action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES' },
+    action = act.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES' },
   },
   {
     key = 't',
@@ -63,9 +77,23 @@ config.keys = {
   {
     key = 'w',
     mods = 'LEADER',
-    action = wezterm.action.CloseCurrentTab { confirm = true },
+    action = act.CloseCurrentTab { confirm = true },
   },
 }
+
+for i = 1, 8 do
+  -- LEADER + number to activate that tab
+  table.insert(config.keys, {
+    key = tostring(i),
+    mods = 'LEADER',
+    action = act.ActivateTab(i - 1),
+  })
+  -- F1 through F8 to activate that tab
+  -- table.insert(config.keys, {
+  --   key = 'F' .. tostring(i),
+  --   action = act.ActivateTab(i - 1),
+  -- })
+end
 
 -- ssh stuff, still messing around
 config.ssh_domains = {
@@ -86,7 +114,7 @@ end)
 
 -- wezterm won't exit without killing all workspaces
 -- creating them on the fly doesn't allow for creating multiple tabs, it's
--- a simple SpawnCommand. See wezterm.action.SwitchToWorkspace -TN
+-- a simple SpawnCommand. See act.SwitchToWorkspace -TN
 -- wezterm.on('gui-startup', function(cmd)
 --   -- allow `wezterm start -- something` to affect what we spawn
 --   -- in our initial window

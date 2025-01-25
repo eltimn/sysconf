@@ -41,6 +41,7 @@
       dust # better `du`
       fd
       gum
+      nushell
       ollama
       parcellite
       shellcheck

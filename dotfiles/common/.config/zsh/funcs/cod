@@ -2,9 +2,11 @@
 # otherwise open in the current directory.
 
 local arg="."
+# count the number of workspace files in the current directory
 local cnt=$((ls *.code-workspace) 2> /dev/null | wc -l)
 
 if [ "${cnt}" != "0" ]; then
+  # if there is only one workspace file, open it directly, otherwise prompt the user to choose
   local selection=$(ls *.code-workspace | gum choose --limit=1 --select-if-one)
   if [ "${selection}" != "" ]; then
     arg="${selection}"
