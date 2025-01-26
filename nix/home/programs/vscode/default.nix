@@ -16,6 +16,7 @@
       # enableExtensionUpdateCheck = false;
       # enableUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
+        editorconfig.editorconfig
         golang.go
         hashicorp.terraform
         jnoortheen.nix-ide
