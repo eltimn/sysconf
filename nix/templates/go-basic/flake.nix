@@ -1,5 +1,5 @@
 {
-  description = "Go/Templ Application";
+  description = "Go Application";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
