@@ -27,5 +27,5 @@
 [init]
   defaultBranch = main
 
-[url "ssh://git@github.com/edda"]
-  insteadOf = https://github.com/edda
+[url "ssh://git@github.com/"]
+  insteadOf = https://github.com/

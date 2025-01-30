@@ -145,5 +145,6 @@
       }
     }
   },
-  "explorer.confirmDelete": false
+  "explorer.confirmDelete": false,
+  "makefile.configureOnOpen": false
 }
