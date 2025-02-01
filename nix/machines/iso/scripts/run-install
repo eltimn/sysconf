@@ -72,4 +72,3 @@ gum confirm --default=false "You are about to start the OS installation. Do you 
 sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
 
 cp $HOME/sysconf /mnt/home/nelly/sysconf-install
-

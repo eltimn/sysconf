@@ -129,6 +129,7 @@
         '';
       };
 
+      # nix flake templates
       templates = rec {
         default = basic;
 

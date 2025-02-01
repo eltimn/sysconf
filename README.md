@@ -19,6 +19,15 @@ $ nix-shell -p caligula
 [nix-shell:~/Downloads]$ caligula burn <file>.iso
 ```
 
+### gocryptfs
+
+--idle duration                  Auto-unmount after specified idle duration (ignored in reverse mode). Durations are specified like "500s" or "2h45m". 0 means stay mounted indefinitely.
+
+```shell
+gocryptfs --idle "2h" ~/secret-cipher ~/secret # mount
+fusermount -u ~/secret             # unmount
+```
+
 ### Nix pkgs bin directory
 - NixOS: /etc/profiles/per-user/nelly/bin
 - Nix on Pop_OS!: /home/nelly/.nix-profile/bin
