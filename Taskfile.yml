@@ -56,6 +56,7 @@ tasks:
     cmds:
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles code
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles common
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles desktop
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles wezterm
       # - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
@@ -64,6 +65,7 @@ tasks:
     cmds:
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles code
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles common
+      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles desktop
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles wezterm
       # - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
