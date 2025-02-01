@@ -64,7 +64,7 @@ backup_mongo () {
   fi
 }
 
-backup_zen_browser () {
+backup_zen_profile () {
 	local zen_profile_dir=$(1:-"")
 	# pmd2fg35.Default (release)
 	# places.sqlite: Contains bookmarks and history.
@@ -102,7 +102,7 @@ backup_local_dir workspaces
 backup_code_dir code
 backup_code_dir sandbox
 
-backup_zen_browser "pmd2fg35.Default\ \(release\)"
+backup_zen_profile "pmd2fg35.Default\ \(release\)"
 
 # backup databases
 # backup_mongo localhost:2700 acm-web
