@@ -64,8 +64,12 @@ backup_mongo () {
   fi
 }
 
+backup_zen_data () {
+	rsync $RSYNC_OPTS "/home/$USERNAME/.zen/" $BACKUP_LOC/$USERNAME/zen
+}
+
 backup_zen_profile () {
-	local zen_profile_dir=$(1:-"")
+	local zen_profile_dir="$1"
 	# pmd2fg35.Default (release)
 	# places.sqlite: Contains bookmarks and history.
 	# cookies.sqlite: Stores login sessions.
@@ -86,9 +90,11 @@ backup_zen_profile () {
 	# rsync $RSYNC_OPTS $zen_profile_dir/sessionstore.jsonlz4 $BACKUP_LOC/$USERNAME/zen-profile
 	# rsync $RSYNC_OPTS $zen_profile_dir/prefs.js $BACKUP_LOC/$USERNAME/zen-profile
 
-	rsync $RSYNC_OPTS /home/$USERNAME/.zen/$zen_profile_dir $BACKUP_LOC/$USERNAME/zen-profile
-
+	rsync $RSYNC_OPTS "/home/$USERNAME/.zen/$zen_profile_dir" $BACKUP_LOC/$USERNAME/zen-profile
 }
+
+# backup_zen_profile "pmd2fg35.Default (release)"
+backup_zen_data
 
 backup_local_dir Audio
 backup_local_dir Documents
@@ -101,8 +107,6 @@ backup_local_dir workspaces
 
 backup_code_dir code
 backup_code_dir sandbox
-
-backup_zen_profile "pmd2fg35.Default\ \(release\)"
 
 # backup databases
 # backup_mongo localhost:2700 acm-web
