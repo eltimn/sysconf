@@ -40,6 +40,7 @@
       btop
       dust # better `du`
       fd
+      gocryptfs
       gum
       nushell
       ollama

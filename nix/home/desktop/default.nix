@@ -1,20 +1,6 @@
 { pkgs, ... }:
 {
   home = {
-    # List of files to be symlinked into the user home directory.
-    file.".abcde.conf".source = ./files/.abcde.conf;
-    file.".background-image".source = ./files/Lightning_Neuro.jpg;
-
-    file.".config/backup" = {
-      source = ./files/config/backup;
-      recursive = true;
-    };
-
-    file."bin/desktop" = {
-      source = ./files/bin;
-      recursive = true;
-    };
-
     packages = with pkgs; [
       ansible-lint
       bitwarden-desktop
