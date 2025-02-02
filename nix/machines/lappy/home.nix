@@ -44,7 +44,7 @@ in
     };
 
     # some files
-    file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='code secret sysconf'";
+    file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='code secret-cipher sysconf'";
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
   };
 

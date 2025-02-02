@@ -70,7 +70,7 @@ in
 
     # some files
     file.".config/borg/backup_dirs".text =
-      "export BACKUP_DIRS='Audio Documents Dropbox Notes Pictures code secret sysconf workspaces'";
+      "export BACKUP_DIRS='Audio Documents Dropbox Notes Pictures code secret-cipher sysconf workspaces'";
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
   };
 
