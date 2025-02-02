@@ -43,7 +43,7 @@ DISKS_TOML_FILE="$HOME/sysconf/nix/machines/$TARGET_HOST/disks.toml"
 DISK_ID=$(ls /dev/disk/by-id | cut -d' ' -f1 | gum choose --header="Choose the disk to format and install the os on:")
 cat > $DISKS_TOML_FILE<< EOF
 [disks]
-main = "$DISK_ID"
+main = "/dev/disk/by-id/$DISK_ID"
 EOF
 
 echo "Created file $DISKS_TOML_FILE"
