@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   sshKeys,
   ...
@@ -7,7 +8,9 @@ let
   runInstall = pkgs.writeShellScriptBin "run-install" (builtins.readFile ./scripts/run-install);
 in
 {
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  # linux kernel
+  boot.kernelPackages = pkgs.linuxPackages_6_13;
+  boot.supportedFilesystems.zfs = lib.mkForce false;
 
   # gnome power settings do not turn off screen
   systemd = {

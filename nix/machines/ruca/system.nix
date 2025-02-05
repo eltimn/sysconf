@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   vars,
   readSecretFile,
@@ -7,7 +8,8 @@
 
 {
   # linux kernel
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.kernelPackages = pkgs.linuxPackages_6_13;
+  boot.supportedFilesystems.zfs = lib.mkForce false;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
