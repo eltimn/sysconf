@@ -83,4 +83,4 @@ tasks:
 
   iso-copy:
     desc: Copy the iso to a USB drive
-    cmd: cp result/iso/*.iso /media/$USER/Ventoy
+    cmd: cp result/iso/*.iso /run/media/$USER/Ventoy

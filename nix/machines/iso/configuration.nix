@@ -7,6 +7,8 @@ let
   runInstall = pkgs.writeShellScriptBin "run-install" (builtins.readFile ./scripts/run-install);
 in
 {
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+
   # gnome power settings do not turn off screen
   systemd = {
     targets = {

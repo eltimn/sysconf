@@ -6,6 +6,9 @@
 }:
 
 {
+  # linux kernel
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
