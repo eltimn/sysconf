@@ -17,7 +17,7 @@ tasks:
   switch:
     desc: Build then switch to the new build.
     cmds:
-      - $NIX_CMD switch --flake .
+      - sudo nixos-rebuild switch --flake .
       - task: dotfiles
 
   clean:

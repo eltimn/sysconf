@@ -67,6 +67,11 @@ in
     # };
 
     lazygit.enable = true;
+
+    ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 
   # services = {
