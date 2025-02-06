@@ -22,6 +22,8 @@
     enable32Bit = true;
   };
 
+  # security.sudo.execWheelOnly = true;
+
   # Enable the windowing system.
   # services.xserver is a misnomer, it was created before wayland existed.
   services.xserver = {

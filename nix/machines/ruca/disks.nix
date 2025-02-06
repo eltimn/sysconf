@@ -1,12 +1,9 @@
-let
-  disks = builtins.fromTOML (builtins.readFile ./disks.toml);
-in
 {
   disko.devices = {
     disk = {
       main = {
         type = "disk";
-        device = disks.main;
+        device = "/dev/disk/by-id/disk-by-id";
         content = {
           type = "gpt";
           partitions = {

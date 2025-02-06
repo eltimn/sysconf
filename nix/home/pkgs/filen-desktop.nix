@@ -1,3 +1,5 @@
+# TODO: also install a desktop entry
+# https://github.com/MarceColl/zen-browser-flake/blob/e6ab73f405e9a2896cce5956c549a9cc359e5fcc/flake.nix#L59
 {
   pkgs ? import <nixpkgs> { },
 }:

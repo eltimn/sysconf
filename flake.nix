@@ -10,12 +10,17 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       nixpkgs,
       home-manager,
+      disko,
       ...
     }@inputs:
     let
@@ -58,6 +63,8 @@
             inherit inputs vars;
           };
           modules = [
+             disko.nixosModules.disko
+            ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
             home-manager.nixosModules.home-manager
@@ -74,8 +81,6 @@
               };
             }
           ];
-
-          security.sudo.execWheelOnly = true;
         };
 
       nixIsNixOS = builtins.pathExists /etc/NIXOS;
@@ -95,7 +100,7 @@
       # };
 
       # public ssh keys
-      sshKeys = builtins.fromTOML (builtins.readFile ./ssh_keys.toml);
+      sshKeys = nixpkgs.lib.importTOML ./ssh_keys.toml;
     in
     {
       # Home Manager configurations. Non-nixos hosts.

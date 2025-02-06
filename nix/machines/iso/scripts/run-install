@@ -39,30 +39,38 @@ section_header "Disks"
 lsblk --nodeps -o name,size,type,serial
 echo ""
 
-DISKS_TOML_FILE="$HOME/sysconf/nix/machines/$TARGET_HOST/disks.toml"
-DISK_ID=$(ls /dev/disk/by-id | cut -d' ' -f1 | gum choose --header="Choose the disk to format and install the os on:")
-cat > $DISKS_TOML_FILE<< EOF
-[disks]
-main = "/dev/disk/by-id/$DISK_ID"
-EOF
-
-echo "Created file $DISKS_TOML_FILE"
-echo "Contents:"
-cat $DISKS_TOML_FILE
-
-if [ ! -e "$HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix" ]; then
-  echo "ERROR! $(basename "$0") could not find the required $HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix"
+DISKS_NIX_FILE=$HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix
+if [ ! -e "$DISKS_NIX_FILE" ]; then
+  echo "ERROR! $(basename "$0") could not find the required $DISKS_NIX_FILE"
   exit 1
 fi
+
+# DISKS_TOML_FILE="$HOME/sysconf/nix/machines/$TARGET_HOST/disks.toml"
+DISK_ID=$(ls /dev/disk/by-id | cut -d' ' -f1 | gum choose --header="Choose the disk to format and install the os on:")
+# cat > $DISKS_TOML_FILE<< EOF
+# [disks]
+# main = "/dev/disk/by-id/$DISK_ID"
+# EOF
+
+# echo "Created file $DISKS_TOML_FILE"
+# echo "Contents:"
+# cat $DISKS_TOML_FILE
+
+# replace disk-by-id with the actual disk id in disks.nix
+sed -i -e "s/disk-by-id/$DISK_ID/g" $DISKS_NIX_FILE
+
+echo "Edited disks.nix with actual disk id"
+echo "Contents:"
+cat $DISKS_NIX_FILE
 
 gum confirm --default=false \
 "🔥 🔥 🔥 WARNING!!!! This will ERASE ALL DATA on the disk $DISK_ID. Are you sure you want to continue?"
 
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
-  --mode destroy,format,mount $HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix
+  --mode destroy,format,mount $DISKS_NIX_FILE
 
 echo "Generating the hardware config"
-nixos-generate-config --dir $HOME/sysconf/nix/machines/$TARGET_HOST #--no-filesystems
+nixos-generate-config --dir $HOME/sysconf/nix/machines/$TARGET_HOST --no-filesystems
 echo "Config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
 
 section_header "Install OS"
@@ -71,4 +79,5 @@ gum confirm --default=false "You are about to start the OS installation. Do you 
 
 sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
 
+mkdir -p /mnt/home//sysconf-install
 cp $HOME/sysconf /mnt/home/nelly/sysconf-install
