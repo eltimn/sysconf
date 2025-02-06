@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Application;Network
+Exec=filen-desktop --hidden
+GenericName=File Syncer
+Name=Filen
+Terminal=false
+Type=Application
+Version=1.4

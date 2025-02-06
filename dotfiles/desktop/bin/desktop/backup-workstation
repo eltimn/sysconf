@@ -98,12 +98,12 @@ backup_zen_data
 
 backup_local_dir Audio
 backup_local_dir Documents
-backup_local_dir Dropbox
+# backup_local_dir Dropbox
 backup_local_dir Gateway
 backup_local_dir Notes
 backup_local_dir Pictures
 backup_local_dir secret-cipher
-backup_local_dir workspaces
+# backup_local_dir workspaces
 
 backup_code_dir code
 backup_code_dir sandbox

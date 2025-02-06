@@ -31,7 +31,7 @@
       };
 
       # a function to load host specific settings
-      loadVars = host: builtins.fromTOML (builtins.readFile ./nix/machines/${host}/settings.toml);
+      loadVars = host: nixpkgs.lib.importTOML ./nix/machines/${host}/settings.toml;
 
       # a function to create a home manager configuration
       hmConfig =
@@ -63,7 +63,7 @@
             inherit inputs vars;
           };
           modules = [
-             disko.nixosModules.disko
+            disko.nixosModules.disko
             ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
@@ -83,8 +83,8 @@
           ];
         };
 
-      nixIsNixOS = builtins.pathExists /etc/NIXOS;
-      nixSwitchCmd = if nixIsNixOS then "sudo nixos-rebuild" else "home-manager";
+      # nixIsNixOS = builtins.pathExists /etc/NIXOS;
+      # nixSwitchCmd = if nixIsNixOS then "sudo nixos-rebuild" else "home-manager";
 
       # `builtins.readFile` doesn't work with files that are not part of the git repo.
       # path to the secrets directory
@@ -128,14 +128,14 @@
 
       # tools for managing this repository and the host machines
       devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          go-task
+        packages = [
+          pkgs.go-task
         ];
 
-        env = {
-          NIX_CMD = "${nixSwitchCmd}";
-          IS_NIXOS = "${builtins.toString nixIsNixOS}";
-        };
+        # env = {
+        #   NIX_CMD = "${nixSwitchCmd}";
+        #   IS_NIXOS = "${builtins.toString true}";
+        # };
 
         shellHook = ''
           echo "Welcome to sysconf!"

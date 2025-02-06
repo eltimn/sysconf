@@ -49,8 +49,8 @@ in
       # parcellite
       # sqlitebrowser
       stow
-      vivaldi
-      vivaldi-ffmpeg-codecs
+      # vivaldi
+      # vivaldi-ffmpeg-codecs
       wezterm
     ];
 
@@ -70,7 +70,7 @@ in
 
     # some files
     file.".config/borg/backup_dirs".text =
-      "export BACKUP_DIRS='Audio Documents Dropbox Notes Pictures code secret-cipher sysconf workspaces'";
+      "export BACKUP_DIRS='${builtins.concatStringsSep " " vars.backup_dirs}'";
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
   };
 

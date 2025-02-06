@@ -1,23 +1,35 @@
 version: "3"
 
 # NIX_CMD and IS_NIXOS are set in the devShell of flake.nix
+vars:
+  IS_NIXOS:
+    sh: if [ -e /etc/NIXOS ]; then echo "true"; else echo "false"; fi
+  NIX_CMD:
+    sh: if [ -e /etc/NIXOS ]; then echo "sudo nixos-rebuild"; else echo "home-manager"; fi
 
 tasks:
   echo:
+    requires:
+      vars:
+        - "IS_NIXOS"
+        - "NIX_CMD"
     preconditions:
-      - "[ $IS_NIXOS -eq 1 ]"
+      - '[ {{.IS_NIXOS}} -eq "true" ]'
     cmds:
-      - echo $NIX_CMD
+      - echo {{.NIX_CMD}}
 
   build:
     desc: Build the flake.
+    requires:
+      vars:
+        - "NIX_CMD"
     cmds:
-      - $NIX_CMD build --flake .
+      - "{{.NIX_CMD}} build --flake ."
 
   switch:
     desc: Build then switch to the new build.
     cmds:
-      - sudo nixos-rebuild switch --flake .
+      - "{{.NIX_CMD}} switch --flake ."
       - task: dotfiles
 
   clean:
@@ -41,8 +53,11 @@ tasks:
 
   gc-os:
     desc: Delete old unused system packages.
+    requires:
+      vars:
+        - "IS_NIXOS"
     preconditions:
-      - "[ $IS_NIXOS -eq 1 ]"
+      - '[ {{.IS_NIXOS}} -eq "true" ]'
     cmds:
       - sudo nix-collect-garbage --delete-older-than 7d # system wide
 

@@ -15,8 +15,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # amd gpu
-  # boot.initrd.kernelModules = [ "amdgpu" ];
+  # graphics
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -113,7 +112,7 @@
       "wheel"
       "networkmanager"
     ];
-    initialHashedPassword = readSecretFile /nelly_passwd;
+    initialHashedPassword = "$y$j9T$gBvMn/QrY5RosPhMxJ3.21$iwvCDJ3H41QrsRuBzBUQfYwKW1.WjRfnybFMiGJnIx8";
     openssh.authorizedKeys.keys = [
       # sshKeys.lappy
     ];
