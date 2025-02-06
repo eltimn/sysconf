@@ -31,7 +31,7 @@
       # };
 
       shellAliases = {
-        codeium = "code";
+        codeium = "codium"; # Used by git diff tool. Doesn't  work for zsh funcs. For easily switching between code and codium.
         reload = ". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'";
         # zshrc = "codeium --new-window --wait ~/.zshrc && reload";
 

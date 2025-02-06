@@ -1,5 +1,5 @@
 host = "ruca"
 user = "nelly"
-editor = "code --new-window --wait"
+editor = "codium --new-window --wait"
 stow_packages = ["common", "code", "wezterm"]
 backup_dirs = ["Audio", "Documents", "Notes", "Pictures", "code", "secret-cipher", "sysconf"]

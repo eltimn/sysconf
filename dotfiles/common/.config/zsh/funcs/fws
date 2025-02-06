@@ -2,5 +2,5 @@
 local selection=$(find ~/workspaces -type f | fzf)
 
 if [ "$selection" != "" ]; then
-  code --new-window "$selection"
+  codeium --new-window "$selection"
 fi

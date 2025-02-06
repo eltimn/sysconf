@@ -6,6 +6,7 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,6 +22,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       disko,
       zen-browser-flake,
@@ -29,6 +31,11 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [ self.overlays.default ];
+      };
+      pkgs-unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
         overlays = [ self.overlays.default ];
@@ -63,6 +70,7 @@
         in
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
+          # these get inherited by the modules??
           specialArgs = {
             inherit inputs vars;
           };
@@ -73,14 +81,15 @@
             ./nix/machines/${vars.host}/system.nix
             home-manager.nixosModules.home-manager
             {
+              # https://nix-community.github.io/home-manager/nixos-options.xhtml
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${vars.user} = import ./nix/machines/${vars.host}/home.nix;
 
-                # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+                # passes arguments to all modules in home.nix
                 extraSpecialArgs = {
-                  inherit vars;
+                  inherit vars pkgs-unstable;
                 };
               };
             }

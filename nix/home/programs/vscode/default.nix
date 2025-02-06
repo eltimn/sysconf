@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
   home = {
@@ -12,11 +12,11 @@
     # https://mynixos.com/home-manager/options/programs.vscode
     vscode = {
       enable = true;
-      package = pkgs.vscode;
-      # enableExtensionUpdateCheck = false;
-      # enableUpdateCheck = false;
+      package = pkgs-unstable.vscodium;
       extensions = with pkgs.vscode-extensions; [
         editorconfig.editorconfig
+        github.copilot
+        github.copilot-chat
         golang.go
         hashicorp.terraform
         jnoortheen.nix-ide
@@ -26,8 +26,6 @@
         # sumneko.lua
         yzhang.markdown-all-in-one
       ];
-      # userSettings = {
-      # };
       globalSnippets = {
         fixme = {
           body = [ "$LINE_COMMENT FIXME: $0" ];
