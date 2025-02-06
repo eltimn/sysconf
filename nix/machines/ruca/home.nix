@@ -44,6 +44,7 @@ in
       gnomeExtensions.clipboard-indicator
       gnomeExtensions.dash-to-dock
       gnumake
+      lm_sensors
       nushell
       ollama
       # parcellite
@@ -52,6 +53,7 @@ in
       # vivaldi
       # vivaldi-ffmpeg-codecs
       wezterm
+      zen-browser
     ];
 
     # List of extra paths to include in the user profile.

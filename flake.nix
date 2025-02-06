@@ -14,13 +14,16 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser-flake.url = "github:0xc000022070/zen-browser-flake";
   };
 
   outputs =
     {
+      self,
       nixpkgs,
       home-manager,
       disko,
+      zen-browser-flake,
       ...
     }@inputs:
     let
@@ -28,6 +31,7 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ self.overlays.default ];
       };
 
       # a function to load host specific settings
@@ -58,7 +62,7 @@
           vars = loadVars host;
         in
         nixpkgs.lib.nixosSystem {
-          inherit system;
+          inherit system pkgs;
           specialArgs = {
             inherit inputs vars;
           };
@@ -103,6 +107,12 @@
       sshKeys = nixpkgs.lib.importTOML ./ssh_keys.toml;
     in
     {
+      # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
+      # Also some flakes and other misc things that are referred to differently than regular packages.
+      overlays.default = final: prev: {
+        zen-browser = zen-browser-flake.packages.${prev.system}.default;
+      };
+
       # Home Manager configurations. Non-nixos hosts.
       homeConfigurations = {
         "nelly@ruca" = hmConfig "ruca";
