@@ -5,6 +5,9 @@
 - set up filen
 - `mkdir ~/secret`
 - `mount-secret`
+- Dropbox ??
+
+## gnome
 - tweak gnome settings
   - mouse - right click is primary
   - sound
@@ -18,4 +21,3 @@
 	- dash to dock
 	- system monitor
 	- user themes
-- Dropbox ??

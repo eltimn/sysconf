@@ -20,7 +20,7 @@
       st = "status";
       sw = "switch";
       cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
-      prune = "fetch --prune origin";
+      prune = "fetch --prune origin"; # git remote update origin --prune (are these the same ???)
       remove = "rm --cached";
       lg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph";
       lgg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph --grep";
