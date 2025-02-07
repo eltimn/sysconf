@@ -7,8 +7,8 @@
 
 {
   # linux kernel
-  boot.kernelPackages = pkgs.linuxPackages_6_13;
-  boot.supportedFilesystems.zfs = lib.mkForce false;
+  boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
+  boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -18,6 +18,7 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = [ pkgs.rocmPackages.clr.icd ];
   };
 
   # security.sudo.execWheelOnly = true;
@@ -182,8 +183,11 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    clinfo
     gum
     jq
+    rocmPackages.clr.icd
+    rocmPackages.rocm-smi
     tree
     ventoy
     vim
@@ -211,6 +215,39 @@
       PasswordAuthentication = false;
     };
   };
+
+  services.ollama = {
+    enable = true;
+
+    # home = "/var/lib/ollama";
+    # home = "/data/ollama";
+    loadModels = [
+      "llama3.2:3b"
+      "deepseek-r1:7b"
+      "deepseek-r1:8b"
+    ];
+
+    acceleration = "rocm";
+
+    # https://github.com/NixOS/nixpkgs/issues/308206
+    # https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html
+    rocmOverrideGfx = "11.0.2"; # it's actually gfx1103
+
+    host = "127.0.0.1";
+    port = 11434;
+    openFirewall = true;
+  };
+
+  # services.nextjs-ollama-llm-ui = {
+  #   enable = true;
+  #   port = 8080;
+  #   ollamaUrl = "http://127.0.0.1:11434";
+  # };
+
+  # ollama config
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
