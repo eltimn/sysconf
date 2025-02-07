@@ -5,6 +5,10 @@
   osConfig,
   ...
 }:
+let
+  ollamaUrl =
+    "http://" + osConfig.services.ollama.host + ":" + toString osConfig.services.ollama.port;
+in
 {
 
   imports = [
@@ -54,7 +58,7 @@
     # List of environment variables.
     sessionVariables = {
       EDITOR = "codium --new-window --wait";
-      OLLAMA_HOST = "http://localhost:8080";
+      OLLAMA_HOST = ollamaUrl;
       # Global defaults for goose
       GOOSE_PROVIDER = "ollama";
       GOOSE_MODEL = "qwen3-next:80b-cloud";
@@ -100,11 +104,7 @@
             npm = "@ai-sdk/openai-compatible";
             name = "Ollama (local)";
             options = {
-              baseURL =
-                "http://"
-                + config.sysconf.home.services.ollama.host
-                + ":"
-                + toString config.sysconf.home.services.ollama.port;
+              baseURL = "http://" + osConfig.services.ollama.host + ":" + toString osConfig.services.ollama.port;
             };
             models = {
               llama = {
@@ -116,13 +116,6 @@
         };
       };
     };
-  };
-
-  # sysconf home services
-  sysconf.home.services.ollama = {
-    enable = true;
-    port = 8080; # optional, defaults to 8080
-    host = "127.0.0.1"; # optional, defaults to 127.0.0.1
   };
 
   # Systemd for user services

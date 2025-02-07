@@ -50,7 +50,10 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+          rocmSupport = true;
+        };
         overlays = [ self.overlays.default ];
       };
       pkgs-unstable = import nixpkgs-unstable {

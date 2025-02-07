@@ -22,10 +22,14 @@
     "sd_mod"
     "sr_mod"
   ];
+
   # amd gpu
   # boot.initrd.kernelModules = [ "amdgpu" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "amdgpu"
+  ];
   boot.extraModulePackages = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

@@ -40,6 +40,7 @@
         ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
+        linger = true; # so podman can run containers even when not logged in
       };
 
       # podman = {

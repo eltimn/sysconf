@@ -12,7 +12,7 @@ in
     enable = lib.mkEnableOption "ollama";
     port = lib.mkOption {
       type = lib.types.int;
-      default = 8080;
+      default = 11434;
       description = "The port number for the ollama service.";
     };
     host = lib.mkOption {
@@ -28,6 +28,7 @@ in
       package = pkgs-unstable.ollama;
       port = cfg.port;
       host = cfg.host;
+      # acceleration = "rocm";
 
       # Optional extra flags – for example, enable verbose logging:
       # extraOptions = [ "--verbose" ];

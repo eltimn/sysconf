@@ -127,6 +127,8 @@
           "${config.home.homeDirectory}/containers/storage/channels-dvr:/channels-dvr"
           "/mnt/channels:/shares/DVR"
         ];
+        autoStart = true;
+        autoUpdate = "registry";
       };
     };
   };

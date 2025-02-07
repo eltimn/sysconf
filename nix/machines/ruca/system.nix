@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 
@@ -23,6 +24,7 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = [ pkgs.rocmPackages.clr.icd ];
   };
 
   # security.sudo.execWheelOnly = true;
@@ -151,6 +153,7 @@
     ];
     # logLevel = "debug";
   };
+
   # Allow network discovery
   services.avahi = {
     enable = true;
@@ -178,10 +181,15 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     age
+    clinfo
     gum
     isd
     jq
     parted
+    pciutils
+    rocmPackages.clr.icd
+    rocmPackages.rocm-smi
+    rocmPackages.rocminfo
     tree
     # ventoy
     vim
@@ -189,13 +197,6 @@
     whois
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
   programs.zsh.enable = true;
   programs.gnupg.agent.enable = true;
 
@@ -213,11 +214,41 @@
   # Needed for yubikey
   services.pcscd.enable = true;
 
+  # Ollama service
+  services.ollama = {
+    enable = true;
+    package = pkgs-unstable.ollama;
+
+    # loadModels = [
+    #   "llama3.2:3b"
+    #   "deepseek-r1:7b"
+    #   "deepseek-r1:8b"
+    # ];
+
+    acceleration = "rocm";
+    host = "127.0.0.1";
+    port = 11434;
+    openFirewall = false;
+    environmentVariables = {
+      OLLAMA_DEBUG = "2";
+    };
+  };
+
+  services.nextjs-ollama-llm-ui = {
+    enable = true;
+    port = 8080;
+    ollamaUrl = "http://127.0.0.1:" + toString config.services.ollama.port;
+  };
+
+  # ollama config
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  ];
+
   # sysconf services
   sysconf.services.coredns = {
     enable = true;
   };
-
 
   # state version
   system.stateVersion = "24.11"; # Don't touch
