@@ -25,7 +25,11 @@ $ nix-shell -p caligula
 
 ```shell
 gocryptfs --idle "2h" ~/secret-cipher ~/secret # mount
-fusermount -u ~/secret             # unmount
+fusermount -u ~/secret                         # unmount
+
+# store the password in seahorse and mount with --extpass
+secret-tool store --label='gocryptfs - secret' gocryptfs secret
+gocryptfs --extpass="secret-tool lookup gocryptfs secret" ~/secret-cipher ~/secret
 ```
 
 ### Nix pkgs bin directory

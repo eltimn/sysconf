@@ -8,6 +8,7 @@
       gh
       git
       htop
+      libsecret
       neovim
       sshfs
       tldr
