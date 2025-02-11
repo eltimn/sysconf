@@ -54,7 +54,7 @@ in
       stow
       # vivaldi
       # vivaldi-ffmpeg-codecs
-      wezterm
+      wezterm # https://github.com/wezterm/wezterm/issues/6025
       zen-browser
     ];
 
@@ -100,14 +100,6 @@ in
     ghostty = {
       enable = true;
       enableZshIntegration = true;
-      settings = {
-        theme = "Adwaita";
-        font-family = "Source Code Pro";
-        font-size = 14;
-        keybind = [
-
-        ];
-      };
     };
   };
 

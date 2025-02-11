@@ -1,0 +1,15 @@
+font-family = Source Code Pro
+font-size = 14
+theme = catppuccin-latte
+keybind = ctrl+a>c=new_tab
+keybind = ctrl+a>w=close_surface
+keybind = ctrl+a>v=new_split:right
+keybind = ctrl+a>h=new_split:down
+keybind = ctrl+a>1=goto_tab:1
+keybind = ctrl+a>2=goto_tab:2
+keybind = ctrl+a>3=goto_tab:3
+keybind = ctrl+a>4=goto_tab:4
+keybind = ctrl+a>5=goto_tab:5
+keybind = ctrl+a>6=goto_tab:6
+keybind = ctrl+a>7=goto_tab:7
+keybind = ctrl+a>8=goto_tab:8
