@@ -35,7 +35,7 @@ in
       dust # better `du`
       fastfetch
       fd
-      gnome-terminal
+      gnome-terminal # needed to run mount-secret on log in
       gocryptfs
       gum
       shellcheck
@@ -100,6 +100,14 @@ in
     ghostty = {
       enable = true;
       enableZshIntegration = true;
+      settings = {
+        theme = "Adwaita";
+        font-family = "Source Code Pro";
+        font-size = 14;
+        keybind = [
+
+        ];
+      };
     };
   };
 
