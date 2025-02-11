@@ -97,10 +97,10 @@ in
     # error(gtk_surface): surface failed to realize: Failed to create EGL display
     # warning(gtk_surface): this error is usually due to a driver or gtk bug
     # warning(gtk_surface): this is a common cause of this issue: https://gitlab.gnome.org/GNOME/gtk/-/issues/4950
-    # ghostty = {
-    #   enable = true;
-    #   enableZshIntegration = true;
-    # };
+    ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 
   # Systemd for user services

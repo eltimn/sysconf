@@ -128,7 +128,6 @@
     ])
     ++ (with pkgs; [
       cheese # webcam tool
-      gnome-console # terminal
       gnome-music
       epiphany # web browser
       geary # email reader
