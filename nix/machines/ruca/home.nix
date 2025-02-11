@@ -33,7 +33,9 @@ in
     packages = with pkgs; [
       btop
       dust # better `du`
+      fastfetch
       fd
+      gnome-terminal
       gocryptfs
       gum
       shellcheck

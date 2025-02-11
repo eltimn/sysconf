@@ -7,8 +7,8 @@
 
 {
   # linux kernel
-  boot.kernelPackages = pkgs.linuxPackages_6_13;
-  boot.supportedFilesystems.zfs = lib.mkForce false;
+  boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
+  boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -128,8 +128,8 @@
     ])
     ++ (with pkgs; [
       cheese # webcam tool
+      gnome-console # terminal
       gnome-music
-      #gnome-terminal
       epiphany # web browser
       geary # email reader
       evince # document viewer
