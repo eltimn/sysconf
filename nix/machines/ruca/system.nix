@@ -181,6 +181,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     gum
+    isd
     jq
     tree
     ventoy

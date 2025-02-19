@@ -16,6 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser-flake.url = "github:0xc000022070/zen-browser-flake";
+    isd-flake.url = "github:isd-project/isd"; # systemd tui
   };
 
   outputs =
@@ -26,6 +27,7 @@
       home-manager,
       disko,
       zen-browser-flake,
+      isd-flake,
       ...
     }@inputs:
     let
@@ -120,6 +122,7 @@
       # Also some flakes and other misc things that are referred to differently than regular packages.
       overlays.default = final: prev: {
         zen-browser = zen-browser-flake.packages.${prev.system}.default;
+        isd = isd-flake.packages.${prev.system}.default;
       };
 
       # Home Manager configurations. Non-nixos hosts.
