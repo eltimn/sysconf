@@ -30,7 +30,6 @@ in
       system76-firmware
       vivaldi
       vivaldi-ffmpeg-codecs
-      wezterm
     ];
 
     sessionPath = [

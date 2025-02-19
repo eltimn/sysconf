@@ -54,7 +54,7 @@ in
       stow
       # vivaldi
       # vivaldi-ffmpeg-codecs
-      wezterm # https://github.com/wezterm/wezterm/issues/6025
+      # wezterm # https://github.com/wezterm/wezterm/issues/6025
       zen-browser
     ];
 

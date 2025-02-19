@@ -52,8 +52,7 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
+          # Specify your home configuration modules here
           modules = [ ./nix/machines/${host}/home.nix ];
 
           # Optionally use extraSpecialArgs
@@ -72,7 +71,6 @@
         in
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
-          # these get inherited by the modules??
           specialArgs = {
             inherit inputs vars;
           };
@@ -98,9 +96,6 @@
           ];
         };
 
-      # nixIsNixOS = builtins.pathExists /etc/NIXOS;
-      # nixSwitchCmd = if nixIsNixOS then "sudo nixos-rebuild" else "home-manager";
-
       # `builtins.readFile` doesn't work with files that are not part of the git repo.
       # path to the secrets directory
       # homeDir = builtins.getEnv "HOME";
@@ -108,11 +103,6 @@
 
       # a function to read a secret file
       # readSecretFile = p: builtins.readFile (secretsPath + p);
-
-      # sshKeys = {
-      #   lappy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy";
-      #   ruca = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca";
-      # };
 
       # public ssh keys
       sshKeys = nixpkgs.lib.importTOML ./ssh_keys.toml;
@@ -127,7 +117,6 @@
 
       # Home Manager configurations. Non-nixos hosts.
       homeConfigurations = {
-        "nelly@ruca" = hmConfig "ruca";
         "nelly@illmatic" = hmConfig "illmatic";
       };
 
@@ -153,11 +142,6 @@
         packages = [
           pkgs.go-task
         ];
-
-        # env = {
-        #   NIX_CMD = "${nixSwitchCmd}";
-        #   IS_NIXOS = "${builtins.toString true}";
-        # };
 
         shellHook = ''
           echo "Welcome to sysconf!"
