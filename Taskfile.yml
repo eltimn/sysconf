@@ -48,7 +48,7 @@ tasks:
   gc-hm:
     desc: Delete old unused home manager packages.
     cmds:
-      - nix-collect-garbage --delete-older-than 7d # home-manager stuff in user's home directory
+      - nix-collect-garbage --delete-older-than 14d # home-manager stuff in user's home directory
 
   gc-os:
     desc: Delete old unused system packages.
@@ -58,7 +58,7 @@ tasks:
     preconditions:
       - '[ {{.IS_NIXOS}} -eq "true" ]'
     cmds:
-      - sudo nix-collect-garbage --delete-older-than 7d # system wide
+      - sudo nix-collect-garbage --delete-older-than 14d # system wide
 
   news:
     desc: Display Home Manager news
