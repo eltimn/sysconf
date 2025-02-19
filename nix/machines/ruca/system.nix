@@ -138,7 +138,6 @@
       iagno # go game
       hitori # sudoku game
       atomix # puzzle game
-      gnome-calculator
       yelp # help viewer
       gnome-maps
       gnome-weather
