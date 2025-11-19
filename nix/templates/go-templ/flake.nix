@@ -2,10 +2,10 @@
   description = "Go/Templ Application";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    templ-flake.url = "github:a-h/templ/v0.3.819";
+    templ-flake.url = "github:a-h/templ/v0.3.960";
   };
 
   outputs =
