@@ -1,7 +1,4 @@
 { pkgs, vars, ... }:
-let
-  filen-desktop = (pkgs.callPackage ../../home/pkgs/filen-desktop.nix { });
-in
 {
   imports = [
     ../../home/common

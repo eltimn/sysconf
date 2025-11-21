@@ -4,9 +4,6 @@
   vars,
   ...
 }:
-let
-  filen-desktop = (pkgs.callPackage ../../home/pkgs/filen-desktop.nix { });
-in
 {
 
   imports = [
@@ -75,6 +72,7 @@ in
     # some files
     file.".config/borg/backup_dirs".text =
       "export BACKUP_DIRS='${builtins.concatStringsSep " " vars.backup_dirs}'";
+    # autostart files (run on login)
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
     file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
   };

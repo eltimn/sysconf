@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   vars,
   ...
@@ -7,8 +6,8 @@
 
 {
   # linux kernel
-  boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
-  boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
+  # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
+  # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -175,7 +174,7 @@
   };
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -197,7 +196,7 @@
     isd
     jq
     tree
-    ventoy
+    # ventoy
     vim
     wget
   ];

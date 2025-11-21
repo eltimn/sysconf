@@ -23,7 +23,7 @@ tasks:
       vars:
         - "NIX_CMD"
     cmds:
-      - "{{.NIX_CMD}} build --flake ."
+      - "{{.NIX_CMD}} build --flake ." # --print-build-logs --verbose
 
   switch:
     desc: Build then switch to the new build.

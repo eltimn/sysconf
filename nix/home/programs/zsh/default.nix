@@ -66,7 +66,7 @@
         unmount-secret = "fusermount -u ~/secret";
       };
 
-      initExtra = "source ${./init.zsh}";
+      initContent = "source ${./init.zsh}";
     };
     # zsh = {
     #   shellInit = ''

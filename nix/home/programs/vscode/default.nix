@@ -13,24 +13,27 @@
     vscode = {
       enable = true;
       package = pkgs-unstable.vscodium;
-      extensions = with pkgs.vscode-extensions; [
-        editorconfig.editorconfig
-        github.copilot
-        github.copilot-chat
-        golang.go
-        hashicorp.terraform
-        jnoortheen.nix-ide
-        # ms-python.python
-        # redhat.ansible
-        # redhat.vscode-yaml
-        # sumneko.lua
-        yzhang.markdown-all-in-one
-      ];
-      globalSnippets = {
-        fixme = {
-          body = [ "$LINE_COMMENT FIXME: $0" ];
-          description = "Insert a FIXME remark";
-          prefix = [ "fixme" ];
+
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          editorconfig.editorconfig
+          github.copilot
+          github.copilot-chat
+          golang.go
+          hashicorp.terraform
+          jnoortheen.nix-ide
+          # ms-python.python
+          # redhat.ansible
+          # redhat.vscode-yaml
+          # sumneko.lua
+          yzhang.markdown-all-in-one
+        ];
+        globalSnippets = {
+          fixme = {
+            body = [ "$LINE_COMMENT FIXME: $0" ];
+            description = "Insert a FIXME remark";
+            prefix = [ "fixme" ];
+          };
         };
       };
     };
