@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-gsettings set org.gnome.desktop.session idle-delay 0
-gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+# FIXME: turn these on only when using gnome graphical installer
+# gsettings set org.gnome.desktop.session idle-delay 0
+# gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
 section_header() {
   gum style \
@@ -39,25 +40,18 @@ section_header "Disks"
 lsblk --nodeps -o name,size,type,serial
 echo ""
 
+# look for a disks.nix file for the target host
 DISKS_NIX_FILE=$HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix
 if [ ! -e "$DISKS_NIX_FILE" ]; then
   echo "ERROR! $(basename "$0") could not find the required disks file: $DISKS_NIX_FILE"
   exit 1
 fi
 
-# DISKS_TOML_FILE="$HOME/sysconf/nix/machines/$TARGET_HOST/disks.toml"
+# Prompt user to select the disk to install the OS on
 DISK_ID=$(ls /dev/disk/by-id | cut -d' ' -f1 | gum choose --header="Choose the disk to format and install the os on:")
-# cat > $DISKS_TOML_FILE<< EOF
-# [disks]
-# main = "/dev/disk/by-id/$DISK_ID"
-# EOF
-
-# echo "Created file $DISKS_TOML_FILE"
-# echo "Contents:"
-# cat $DISKS_TOML_FILE
 
 # replace disk-by-id with the actual disk id in disks.nix
-sed -i -e "s/disk-by-id/$DISK_ID/g" $DISKS_NIX_FILE
+sed -i -e "s/DISK_ID/$DISK_ID/g" $DISKS_NIX_FILE
 
 echo "Edited disks.nix with actual disk id"
 echo "Contents:"
@@ -73,11 +67,20 @@ echo "Generating the hardware config"
 nixos-generate-config --dir $HOME/sysconf/nix/machines/$TARGET_HOST --no-filesystems
 echo "Config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
 
+# Add the hardware-configuration.nix to git
+git -C $HOME/sysconf add $HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix
+
 section_header "Install OS"
 
 gum confirm --default=false "You are about to start the OS installation. Do you want to continue?"
 
 sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
 
+# copy the hardware-configuration.nix and disks.nix to the new system for future reference
 mkdir -p /mnt/home/nelly/sysconf-install
 cp -r $HOME/sysconf /mnt/home/nelly
+# cp -r $HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix /mnt/home/nelly
+# cp -r $HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix /mnt/home/nelly
+
+# Afterwards: set password according to the manual, then create an ssh key:
+# ssh-keygen -t ed25519 -C "your_email@example.com"

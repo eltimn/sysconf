@@ -31,6 +31,14 @@ tasks:
       - "{{.NIX_CMD}} switch --flake ."
       - task: dotfiles
 
+  boot:
+    desc: Build the flake and set for next boot.
+    requires:
+      vars:
+        - "NIX_CMD"
+    cmds:
+      - "{{.NIX_CMD}} boot --flake .{{.CLI_ARGS}}"
+
   option:
     desc: Show the calculated value of a flake option.
     cmds:

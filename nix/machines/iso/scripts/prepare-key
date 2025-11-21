@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+sops_age_key_dir="$HOME/.config/sops/age"
+
+if [ $# -eq 0 ]; then
+  echo "Error: please provide the device where the key is located as an argument, e.g., /dev/sdb1"
+  exit 1
+fi
+
+section_header() {
+  gum style \
+    --foreground 212 --border-foreground 212 --border double \
+    --align center --width 50 --margin "1 1"  \
+    "${1}"
+}
+
+function cleanup {
+  echo "Removing /mnt/age-key"
+  sudo umount /mnt/age-key
+	sudo rm -rf /mnt/age-key
+}
+
+trap cleanup EXIT
+
+section_header "AGE Key"
+
+# select the device where the key is stored
+# selected_device_full=$(lsblk -dpno NAME,SIZE,MODEL | gum choose --header="Select the device where your AGE key is stored:")
+# selected_device=$(echo "$selected_device_full" | awk '{print $1}')
+# echo "You selected device: $selected_device"
+
+selected_device="$1"
+echo "You selected device: $selected_device"
+
+sudo mkdir -p /mnt/age-key
+sudo mount "$selected_device" /mnt/age-key
+mkdir -p "$sops_age_key_dir"
+cp /mnt/age-key/keys.txt.gpg "$sops_age_key_dir/keys.txt.gpg"
+chmod 600 "$sops_age_key_dir/keys.txt.gpg"
+gpg -d --output "$sops_age_key_dir/keys.txt" "$sops_age_key_dir/keys.txt.gpg"
+chmod 400 "$sops_age_key_dir/keys.txt"
+echo "AGE key prepared in $sops_age_key_dir"
+echo "You can now run the install script: nix/machines/iso/scripts/run-install"

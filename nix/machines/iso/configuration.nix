@@ -4,6 +4,8 @@
   ...
 }:
 let
+  mountDisks = pkgs.writeShellScriptBin "mount-disks" (builtins.readFile ./scripts/mount-disks);
+  prepareKey = pkgs.writeShellScriptBin "prepare-key" (builtins.readFile ./scripts/prepare-key);
   runInstall = pkgs.writeShellScriptBin "run-install" (builtins.readFile ./scripts/run-install);
 in
 {
@@ -21,10 +23,16 @@ in
     };
   };
 
+  programs.gnupg.agent.enable = true;
+
   environment.systemPackages = with pkgs; [
     git
     gum
     neovim
+    sops
+    tmux
+    mountDisks
+    prepareKey
     runInstall
   ];
 

@@ -176,9 +176,11 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    age
     gum
     isd
     jq
+    parted
     tree
     # ventoy
     vim
@@ -194,8 +196,6 @@
   # };
   programs.zsh.enable = true;
   programs.gnupg.agent.enable = true;
-
-  # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh = {

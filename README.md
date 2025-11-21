@@ -2,7 +2,7 @@
 
 ## Usage
 
-Tasks are run using [Task](https://taskfile.dev). Use `task --list` to see the available tasks, or see Taskfile.yml. The build and switch tasks should automatically figure out which nix command (home-manager or nixos-rebuild) to use.
+Tasks are run using [Task](https://taskfile.dev). Use `task --list` to see the available tasks, or see Taskfile.yml. The build and switch tasks should automatically figure out which nix command (home-manager or nixos-rebuild) and host to use. The boot task allows adding a command line parameter (`task boot -- cbox`) to select the host.
 
 For running the first time, use a nix shell to use the task app:
 
@@ -12,24 +12,10 @@ nix shell nxpkgs#go-task
 
 ## Notes
 
-Use [caligula](https://github.com/ifd3f/caligula) in a nix shell to write to USB drives.
+Use [caligula](https://github.com/ifd3f/caligula) to write to USB drives.
 
 ```shell
-$ nix-shell -p caligula
-[nix-shell:~/Downloads]$ caligula burn <file>.iso
-```
-
-### gocryptfs
-
---idle duration                  Auto-unmount after specified idle duration (ignored in reverse mode). Durations are specified like "500s" or "2h45m". 0 means stay mounted indefinitely.
-
-```shell
-gocryptfs --idle "2h" ~/secret-cipher ~/secret # mount
-fusermount -u ~/secret                         # unmount
-
-# store the password in seahorse and mount with --extpass
-secret-tool store --label='gocryptfs - secret' gocryptfs secret
-gocryptfs --extpass="secret-tool lookup gocryptfs secret" ~/secret-cipher ~/secret
+caligula burn <file>.iso
 ```
 
 ### Nix pkgs bin directory
@@ -41,6 +27,11 @@ gocryptfs --extpass="secret-tool lookup gocryptfs secret" ~/secret-cipher ~/secr
 nix profile history --profile /nix/var/nix/profiles/system # list all versions
 sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 1d  # wipe out old histories, similar to collect garbage with --delete-old flag
 ```
+
+### Installation
+
+See [Installation Guide](./docs/installation-guide.md)
+
 
 ## Resources
 * https://nix-community.github.io/home-manager/options.xhtml

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# use `unmount /path/to/mount` to unmount
+# use `umount /path/to/mount` to unmount
+# NOTE: umount *not* unmount
 
 if [ ! -d "$2" ]; then
   sudo mkdir -p "$2"

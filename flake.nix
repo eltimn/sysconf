@@ -147,12 +147,13 @@
 
       # Home Manager configurations. Non-nixos hosts.
       homeConfigurations = {
-        "nelly@illmatic" = hmConfig "illmatic";
+        # "nelly@illmatic" = hmConfig "illmatic";
       };
 
       # NixOS hosts
       nixosConfigurations = {
         cbox = nixosConfig "cbox";
+        illmatic = nixosConfig "illmatic";
         lappy = nixosConfig "lappy";
         ruca = nixosConfig "ruca";
 

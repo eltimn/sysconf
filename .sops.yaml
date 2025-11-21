@@ -1,15 +1,19 @@
 # pub keys
 keys:
   users:
-    - &nelly age1t9wdp4gya7hqkh3ge08nqsh0jhsfvu52d0qhqvdvrgsxe7c0eeeqnc5ta5
+    - &nelly-ruca-age age1t9wdp4gya7hqkh3ge08nqsh0jhsfvu52d0qhqvdvrgsxe7c0eeeqnc5ta5
+    - &nelly-illmatic age1xx3g7hl89lzlev4rhxdc8nqw0uh7g9tn2v4z82v45ckpcanfvf3s04jpjm
   hosts:
     - &ruca age1znnu0vzuz75xgzw5kr74zrvqy9yeqcatcwkzmxvmcy9hvhas396q4mtcn9
     - &lappy age1xfhncyzagtkash7uhw2sl9p907hr30fccrs0ugx6kpum9ry8td5q2gemny
+    - &illmatic age1zldfz9l823zm4vwgcxy0cwvl68m93rjkfhrdm5jpr95pha0934ksf0kx9m
 
 creation_rules:
   - path_regex: secrets/[^/]+\-enc.(yaml|json|env|ini)$
     key_groups:
       - age:
-        - *nelly
+        - *nelly-ruca-age
+        - *nelly-illmatic
         - *ruca
         - *lappy
+        - *illmatic

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home = {
     packages = with pkgs; [
@@ -30,7 +30,7 @@
   };
 
   sops = {
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
     defaultSopsFile = ../../../secrets/secrets-enc.yaml;
     defaultSopsFormat = "yaml";
   };
