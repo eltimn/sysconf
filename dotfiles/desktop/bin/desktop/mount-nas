@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# use `unmount /path/to/mount` to unmount
+
+local_dir=~/nas
+remote_dir=/mnt
+
+if [ ! -d "$local_dir" ]; then
+  mkdir -p "$local_dir"
+  # sudo chown nelly:users "$local_dir"
+fi
+
+sshfs -o IdentityFile=~/.ssh/id_ed25519 "illmatic:$remote_dir" "$local_dir"
