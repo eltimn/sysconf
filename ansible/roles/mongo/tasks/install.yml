@@ -1,21 +1,19 @@
 ---
+# https://github.com/nephelaiio/ansible-role-mongodb-repo
 
-# - name: Add an Apt signing key
-#   apt_key:
-#     url: "https://www.mongodb.org/static/pgp/server-4.2.asc"
-#     id: E162F504A20CDF15827F718D4B7C549A058F8B6B
-#     state: absent
-
-- name: Add an Apt signing key
-  apt_key:
-    url: "https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc"
+- name: Install mongo repository
+  ansible.builtin.deb822_repository:
+    name: mongodb
+    uris: "{{ mongo_repo_baseurl }}/apt/{{ ansible_distribution | lower }}"
+    suites: "{{ ansible_distribution_release }}/mongodb-org/{{ mongo_version }}"
+    components: "{{ 'main' if (ansible_distribution == 'Debian') else 'multiverse' }}"
+    signed_by: "{{ mongo_repo_gpg_key }}"
     state: present
+    enabled: true
 
-- name: "Add mongo {{ mongo_version }} repo"
-  apt_repository:
-    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ansible_distribution_release}}/mongodb-org/{{ mongo_version }} multiverse"
-    mode: "0644"
-    state: present
+- name: Update apt repos
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: Install mongodb-shell
   package:

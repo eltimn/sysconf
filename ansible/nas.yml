@@ -19,7 +19,7 @@
     - common
     - common-server
     - caddy
-    - cryptomator-cli
+    # - cryptomator-cli
     # - nextcloud
     # - byobu
     - docker
@@ -27,7 +27,7 @@
     # - franklinkim.docker
     - sshd
     - zfs
-    - mongo
+    - mongo # shell and tools
     - nas
     #- nix this was run manually on illmatic, only use if starting new
     - ufw
