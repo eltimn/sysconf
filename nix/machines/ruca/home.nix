@@ -149,7 +149,7 @@
       # @ means it's a template that accepts a single parameter. e.g. you could run `systemctl --user start notify@mysvc.service`
       "notify@" = {
         Unit = {
-          Description = "Send Desktop Notification";
+          Description = "Send Notification";
         };
 
         Service = {

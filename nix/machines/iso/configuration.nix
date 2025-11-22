@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   sshKeys,
   ...
@@ -9,8 +8,8 @@ let
 in
 {
   # linux kernel
-  boot.kernelPackages = pkgs.linuxPackages_6_13;
-  boot.supportedFilesystems.zfs = lib.mkForce false;
+  # boot.kernelPackages = pkgs.linuxPackages_6_13;
+  # boot.supportedFilesystems.zfs = lib.mkForce false;
 
   # gnome power settings do not turn off screen
   systemd = {

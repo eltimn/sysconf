@@ -4,19 +4,23 @@
   description = "NixOS and Home Manager configurations for all machines";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
+    # Specify the source of Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+
+    # Flake modules
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser-flake.url = "github:0xc000022070/zen-browser-flake";
+
     isd-flake.url = "github:isd-project/isd"; # systemd tui
+
   };
 
   outputs =
@@ -72,7 +76,11 @@
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
           specialArgs = {
-            inherit inputs vars;
+            inherit
+              inputs
+              vars
+              sshKeys
+              ;
           };
           modules = [
             disko.nixosModules.disko

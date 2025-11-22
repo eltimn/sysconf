@@ -41,7 +41,7 @@ echo ""
 
 DISKS_NIX_FILE=$HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix
 if [ ! -e "$DISKS_NIX_FILE" ]; then
-  echo "ERROR! $(basename "$0") could not find the required $DISKS_NIX_FILE"
+  echo "ERROR! $(basename "$0") could not find the required disks file: $DISKS_NIX_FILE"
   exit 1
 fi
 

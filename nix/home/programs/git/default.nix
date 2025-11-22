@@ -46,7 +46,7 @@
       difftool = {
         prompt = false;
         codeium = {
-          cmd = "codeium --wait --new-window --diff $LOCAL $REMOTE";
+          cmd = "codium --wait --new-window --diff $LOCAL $REMOTE";
         };
       };
     };
