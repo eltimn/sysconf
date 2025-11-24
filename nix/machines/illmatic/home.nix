@@ -89,4 +89,25 @@
       };
     };
   };
+
+  # services.podman = {
+  #   enable = true;
+
+  #   containers = {
+  #     "channels-dvr" = {
+  #       image = "docker.io/fancybits/channels-dvr:latest";
+  #       devices = [
+  #         "/dev/dri:/dev/dri"
+  #       ];
+  #       volumes = [
+  #         "/home/${vars.user}/containers/storage/channels-dvr:/channels-dvr"
+  #         "/mnt/channels:/shares/DVR"
+  #       ];
+  #       ports = [ "8089:8089" ];
+  #       labels = {
+  #         "io.containers.autoupdate" = "true";
+  #       };
+  #     };
+  #   };
+  # };
 }
