@@ -1,0 +1,17 @@
+[Container]
+Image=docker.io/jellyfin/jellyfin:latest
+AutoUpdate=registry
+PublishPort=8096:8096/tcp
+UserNS=keep-id
+Volume={{ rootless_storage_path }}/jellyfin/config:/config:Z
+Volume={{ rootless_storage_path }}/jellyfin/cache:/cache:Z
+Volume={{ rootless_storage_path }}/jellyfin/media:/media:Z
+Mount=type=bind,src=/mnt,dst=/nas-mnt
+
+[Service]
+# Inform systemd of additional exit status
+SuccessExitStatus=0 143
+
+[Install]
+# Start by default on boot
+WantedBy=default.target

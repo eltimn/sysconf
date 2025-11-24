@@ -1,0 +1,23 @@
+---
+
+- name: Create directories for jellyfin storage
+  ansible.builtin.file:
+    path: "{{ rootless_storage_path }}/jellyfin/{{ item }}"
+    state: directory
+    owner: "{{ rootless_user }}"
+    group: "{{ rootless_user }}"
+    mode: '0755'
+  with_items:
+    - config
+    - cache
+    - media
+
+- name: Generate jellyfin container quadlet file
+  template:
+    src: jellyfin.container.j2
+    dest: "{{ rootless_user_home }}/.config/containers/systemd/jellyfin.container"
+    owner: "{{ rootless_user }}"
+    group: "{{ rootless_user }}"
+  notify:
+    - Reload user systemd daemon
+    - Restart jellyfin service

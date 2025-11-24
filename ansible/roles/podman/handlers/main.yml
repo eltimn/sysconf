@@ -1,0 +1,19 @@
+---
+
+# - name: Reload user systemd daemon
+#   become_user: "{{ rootless_user }}"
+#   ansible.builtin.systemd:
+#     daemon_reload: true
+#     scope: "user"
+
+- name: Reload user systemd daemon
+  # become: yes
+  # become_method: sudo
+  # ansible.builtin.command: systemctl --user -M {{ rootless_user }}& daemon-reload
+  # ansible.builtin.command: systemctl --machine {{ rootless_user }}@ --user daemon-reload
+  ansible.builtin.command: machinectl shell podman@.host /usr/bin/systemctl --user daemon-reload
+
+- name: Restart jellyfin service
+  # become: yes
+  # become_method: sudo
+  ansible.builtin.command: machinectl shell podman@.host /usr/bin/systemctl --user restart jellyfin.service

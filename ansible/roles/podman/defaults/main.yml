@@ -1,0 +1,5 @@
+rootless_state: "present"
+rootless_user: "podman"
+rootless_user_home: "/var/lib/{{ rootless_user }}"
+rootless_storage_path: "{{ rootless_user_home }}/containers/storage"
+system_containers_path: /etc/containers/systemd

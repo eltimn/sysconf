@@ -36,6 +36,12 @@
     reverse_proxy localhost:8089
   }
 
+	# jellyfin
+	@media host media.home.eltimn.com
+  handle @media {
+    reverse_proxy localhost:8096
+  }
+
   @plex host plex.home.eltimn.com
   handle @plex {
     reverse_proxy {{docker_plex_ip}}:32400

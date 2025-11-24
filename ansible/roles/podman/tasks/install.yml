@@ -1,0 +1,18 @@
+---
+
+- name: Install podman and related packages
+  ansible.builtin.package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - podman
+    - systemd-container
+
+# echo "kernel.keys.maxkeys=1000" | sudo tee -a /etc/sysctl.d/custom.conf
+# Increase the maximum number of keys that the kernel should host for our container user, preventing the “Disk quota exceeded: OCI runtime error” issue
+- name: Increase maximum number of kernel keys
+  ansible.posix.sysctl:
+    name: kernel.keys.maxkeys
+    value: 1000
+    state: present
+    reload: yes

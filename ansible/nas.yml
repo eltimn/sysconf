@@ -15,6 +15,8 @@
     docker_unifi_ip: "172.27.0.3"
     docker_homepage_ip: "172.27.0.4"
     router_ip: "192.168.1.1"
+    podman_rootless_user: "podman"
+    podman_rootless_user_home: "/var/lib/podman"
   roles:
     - common
     - common-server
@@ -28,6 +30,11 @@
     - sshd
     - zfs
     - mongo # shell and tools
+    - role: podman
+      vars:
+        rootless_user: "{{ podman_rootless_user }}"
+        rootless_user_home: "{{ podman_rootless_user_home }}"
+      tags: podman
     - nas
     #- nix this was run manually on illmatic, only use if starting new
     - ufw

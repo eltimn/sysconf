@@ -88,6 +88,7 @@ set service dns forwarding options address=/cbox.home.eltimn.com/192.168.1.158
 set service dns forwarding options address=/cloud.home.eltimn.com/192.168.1.50
 set service dns forwarding options address=/ntfy.home.eltimn.com/192.168.1.50
 set service dns forwarding options address=/router.home.eltimn.com/192.168.1.50
+set service dns forwarding options address=/media.home.eltimn.com/192.168.1.50
 ```
 
 List all forwarding addresses (#):

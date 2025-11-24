@@ -1,0 +1,23 @@
+---
+# https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+
+
+
+# - name: Get info about the rootless container user
+#   getent:
+#     database: passwd
+#     key: "{{ rootless_user }}"
+# - debug:
+#     var: getent_passwd
+
+- import_tasks: install.yml
+  when: rootless_state == "present"
+
+- import_tasks: user.yml
+  when: rootless_state == "present"
+
+- import_tasks: jellyfin.yml
+  tags:
+    - jellyfin
+    - podman-containers
+  when: rootless_state == "present"

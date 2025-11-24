@@ -1,5 +1,14 @@
 ---
 roles:
-  #- src: franklinkim.docker
-  #- src: ocha.yarn
-  - name: spreadcat.appimage
+  # - src: franklinkim.docker
+  # - src: ocha.yarn
+  # - name: spreadcat.appimage
+  - name: philnewm.podman_rootless_user
+    version: 0.1.0
+  - name: eltimn.podman_rootless_user
+    src: git+https://github.com/eltimn/ansible-podman-rootless-user.git
+    version: main
+
+collections:
+  - name: containers.podman
+    version: 1.18.0

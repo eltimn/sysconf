@@ -1,0 +1,52 @@
+---
+
+# - name: Create a user to run rootless containers
+#   ansible.builtin.include_role:
+#     name: eltimn.podman_rootless_user
+#   vars:
+#     state: "{{ rootless_state }}"
+
+- name: Ensure container user exists
+  become: true
+  ansible.builtin.user:
+    name: "{{ rootless_user }}"
+    comment: "Container service account"
+    home: "{{ rootless_user_home }}"
+    create_home: true
+    system: true
+    shell: /usr/sbin/nologin
+    state: present
+  register: podman_rootless_user_result
+
+- name: Enable lingering for rootless user
+  become: true
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ rootless_user }}"
+  args:
+    creates: "/var/lib/systemd/linger/{{ rootless_user }}"
+
+- name: Debug rootless container user creation result
+  debug:
+    var: podman_rootless_user_result
+
+# - name: Migrate new kernel settings to systemd
+#   ansible.builtin.command: sudo su - podman -c "podman system migrate"
+#   when: rootless_state == "present"
+
+- name: Create directory for rootless quadlet containers
+  ansible.builtin.file:
+    path: "{{ rootless_user_home }}/.config/containers/systemd"
+    state: directory
+    owner: "{{ rootless_user }}"
+    group: "{{ rootless_user }}"
+    mode: '0755'
+  when: rootless_state == "present"
+
+- name: Create directory for rootless container storage
+  ansible.builtin.file:
+    path: "{{ rootless_user_home }}/containers/storage"
+    state: directory
+    owner: "{{ rootless_user }}"
+    group: "{{ rootless_user }}"
+    mode: '0755'
+  when: rootless_state == "present"
