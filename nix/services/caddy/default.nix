@@ -57,6 +57,11 @@ in
             reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
           }
 
+          @dvr host dvr.${cfg.domain}
+          handle @dvr {
+            reverse_proxy localhost:8089
+          }
+
           @ntfy host ntfy.${cfg.domain}
           handle @ntfy {
             reverse_proxy localhost:${toString config.sysconf.services.ntfy.port}

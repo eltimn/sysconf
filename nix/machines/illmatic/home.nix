@@ -1,4 +1,5 @@
 {
+  config,
   ...
 }:
 {
@@ -87,4 +88,22 @@
   #     };
   #   };
   # };
+
+  services.podman = {
+    enable = true;
+
+    containers = {
+      "channels-dvr" = {
+        image = "docker.io/fancybits/channels-dvr:latest";
+        devices = [
+          "/dev/dri:/dev/dri"
+        ];
+        volumes = [
+          "${config.home.homeDirectory}/containers/storage/channels-dvr:/channels-dvr"
+          "/mnt/channels:/shares/DVR"
+        ];
+        ports = [ "8089:8089" ];
+      };
+    };
+  };
 }

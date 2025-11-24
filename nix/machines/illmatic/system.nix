@@ -50,6 +50,15 @@
     };
   };
 
+  # tmpfiles
+  # Check current configuration: `systemd-tmpfiles --user --tldr`
+  systemd.user.tmpfiles.users."${config.sysconf.settings.primaryUsername}".rules = [
+    "d ${
+      config.users.users.${config.sysconf.settings.primaryUsername}.home
+    }/containers/storage/channels-dvr 0770 ${config.sysconf.settings.primaryUsername} users -"
+  ];
+
+  # sops
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
@@ -136,16 +145,6 @@
   #     #   ];
   #     # };
   #   };
-  # };
-
-  # The firewall is enabled when not set.
-  # Open ports in the firewall.
-  # networking.firewall = {
-  #   enable = true;
-  #   allowedTCPPorts = [
-  #     80
-  #     443
-  #   ];
   # };
 
   # service options
