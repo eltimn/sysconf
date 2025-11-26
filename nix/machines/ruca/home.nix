@@ -13,6 +13,7 @@
     ../../home/programs/vscode
     ../../home/programs/zsh
     ../../home/programs/direnv.nix
+    ../../home/programs/firefox.nix
     ../../home/programs/tmux.nix
   ];
 

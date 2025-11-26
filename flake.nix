@@ -13,14 +13,19 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     zen-browser-flake.url = "github:0xc000022070/zen-browser-flake";
-
     isd-flake.url = "github:isd-project/isd"; # systemd tui
-
   };
 
   outputs =
@@ -28,10 +33,6 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      home-manager,
-      disko,
-      zen-browser-flake,
-      isd-flake,
       ...
     }@inputs:
     let
@@ -53,7 +54,7 @@
       # a function to create a home manager configuration
       hmConfig =
         host:
-        home-manager.lib.homeManagerConfiguration {
+        inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
           # Specify your home configuration modules here
@@ -83,11 +84,11 @@
               ;
           };
           modules = [
-            disko.nixosModules.disko
+            inputs.disko.nixosModules.disko
             ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
-            home-manager.nixosModules.home-manager
+            inputs.home-manager.nixosModules.home-manager
             {
               # https://nix-community.github.io/home-manager/nixos-options.xhtml
               home-manager = {
@@ -119,8 +120,9 @@
       # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
       # Also some flakes and other misc things that are referred to differently than regular packages.
       overlays.default = final: prev: {
-        zen-browser = zen-browser-flake.packages.${prev.system}.default;
-        isd = isd-flake.packages.${prev.system}.default;
+        zen-browser = inputs.zen-browser-flake.packages.${prev.system}.default;
+        isd = inputs.isd-flake.packages.${prev.system}.default;
+        firefox-addons = inputs.firefox-addons.packages.${prev.system};
       };
 
       # Home Manager configurations. Non-nixos hosts.
