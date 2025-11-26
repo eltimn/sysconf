@@ -210,17 +210,4 @@
       };
     };
   };
-
-  xdg.desktopEntries = {
-    filen = {
-      name = "Filen";
-      genericName = "File Syncer";
-      exec = "filen-desktop";
-      terminal = false;
-      categories = [
-        "Application"
-        "Network"
-      ];
-    };
-  };
 }
