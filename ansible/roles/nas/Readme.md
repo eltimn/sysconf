@@ -78,7 +78,7 @@ Enter configuration mode by running `configure`. When done run `commit` then `sa
 Add forwarding addresses (#):
 
 ```shell
-set service dns forwarding options address=/ruca.home.eltimn.com/192.168.1.43
+set service dns forwarding options address=/ruca.home.eltimn.com/192.168.1.163
 set service dns forwarding options address=/illmatic.home.eltimn.com/192.168.1.50
 set service dns forwarding options address=/dvr.home.eltimn.com/192.168.1.50
 set service dns forwarding options address=/plex.home.eltimn.com/192.168.1.50
