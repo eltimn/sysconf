@@ -1,0 +1,53 @@
+home.eltimn.com {
+	file /etc/coredns/home-eltimn-com.zone
+	cache
+	log
+	errors
+
+	acl {
+		allow net 127.0.0.1
+		allow net 192.168.1.0/24
+		block
+	}
+}
+
+.:53 {
+	acl {
+		allow net 127.0.0.1
+		allow net 192.168.1.0/24
+		block
+	}
+	cache {
+		prefetch 2 30m
+	}
+	forward . 127.0.0.1:5301 [::1]:5301 127.0.0.1:5302 [::1]:5302 127.0.0.1:5303 [::1]:5303 {
+		policy random
+	}
+	log
+	errors
+}
+
+.:5301 {
+	cache
+	forward . tls://9.9.9.9 {
+		tls_servername dns.quad9.net
+	}
+	log
+	errors
+}
+
+.:5302 {
+	forward . tls://1.1.1.1 tls://1.0.0.1 {
+		tls_servername cloudflare-dns.com
+	}
+	log
+	errors
+}
+
+.:5303 {
+	forward . tls://8.8.8.8 tls://8.8.4.4 {
+		tls_servername dns.google
+	}
+	log
+	errors
+}
