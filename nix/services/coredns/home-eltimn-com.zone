@@ -13,6 +13,7 @@ $ORIGIN home.eltimn.com.
 cbox       IN A     192.168.1.158
 illmatic   IN A     192.168.1.50
 ruca       IN A     192.168.1.163
+shield     IN A     192.168.1.49
 
 dvr        IN CNAME illmatic
 plex       IN CNAME illmatic
@@ -21,3 +22,5 @@ www        IN CNAME illmatic
 cloud      IN CNAME illmatic
 ntfy       IN CNAME illmatic
 router     IN CNAME illmatic
+jellyfin   IN CNAME ruca
+caddy      IN CNAME ruca

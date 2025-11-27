@@ -24,6 +24,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     zen-browser-flake.url = "github:0xc000022070/zen-browser-flake";
     isd-flake.url = "github:isd-project/isd"; # systemd tui
   };
@@ -72,7 +77,9 @@
       nixosConfig =
         host:
         let
-          vars = loadVars host;
+          vars = loadVars host // {
+            secrets_path = ./secrets;
+          };
         in
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
@@ -81,6 +88,7 @@
               inputs
               vars
               sshKeys
+              pkgs-unstable
               ;
           };
           modules = [
@@ -89,6 +97,7 @@
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
             inputs.home-manager.nixosModules.home-manager
+            inputs.sops-nix.nixosModules.sops
             {
               # https://nix-community.github.io/home-manager/nixos-options.xhtml
               home-manager = {
@@ -149,8 +158,11 @@
 
       # tools for managing this repository and the host machines
       devShells.${system}.default = pkgs.mkShell {
-        packages = [
-          pkgs.go-task
+        packages = with pkgs; [
+          go-task
+          age
+          sops
+          ssh-to-age
         ];
 
         shellHook = ''

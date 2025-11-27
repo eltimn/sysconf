@@ -8,6 +8,10 @@
   };
 
   environment.etc."coredns/home-eltimn-com.zone".source = ./home-eltimn-com.zone;
+
+  # Open ports in the firewall.
+  networking.firewall.allowedTCPPorts = [ 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
 }
 
 # References

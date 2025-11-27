@@ -6,7 +6,10 @@
 
 {
   imports = [
+    ../../services/caddy
     ../../services/coredns
+    # ../../services/traefik
+    ../../services/jellyfin.nix
   ];
 
   # linux kernel
@@ -227,9 +230,12 @@
     };
   };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 53 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  # SOPS
+  sops = {
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    defaultSopsFile = "${vars.secrets_path}/secrets-enc.yaml";
+    defaultSopsFormat = "yaml";
+  };
 
   system.stateVersion = "24.11"; # Don't touch
 

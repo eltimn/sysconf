@@ -1,0 +1,15 @@
+# pub keys
+keys:
+  users:
+    - &nelly age1t9wdp4gya7hqkh3ge08nqsh0jhsfvu52d0qhqvdvrgsxe7c0eeeqnc5ta5
+  hosts:
+    - &ruca age1znnu0vzuz75xgzw5kr74zrvqy9yeqcatcwkzmxvmcy9hvhas396q4mtcn9
+  #   - &illmatic ageXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+creation_rules:
+  - path_regex: secrets/[^/]+\-enc.(env|ini|yaml)$
+    key_groups:
+      - age:
+        - *nelly
+        - *ruca
+        # - *illmatic

@@ -2,7 +2,6 @@
 {
   home = {
     packages = with pkgs; [
-      ansible-lint
       bitwarden-desktop
       borgbackup
       caligula
