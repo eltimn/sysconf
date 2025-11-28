@@ -1,12 +1,18 @@
-{ pkgs, vars, ... }:
 {
+  pkgs,
+  vars,
+  ...
+}:
+{
+
   imports = [
     ../../home/common
     ../../home/desktop
-    ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/vscode
     ../../home/programs/zsh
+    ../../home/programs/direnv.nix
+    ../../home/programs/tmux.nix
   ];
 
   # The User and Path it manages
@@ -15,33 +21,51 @@
     homeDirectory = "/home/${vars.user}";
     stateVersion = "23.11";
 
+    # Packages that should be installed to the user profile.
     packages = with pkgs; [
+      btop
+      dust # better `du`
+      fastfetch
+      fd
+      gnome-terminal # needed to run mount-secret on log in
+      gocryptfs
+      gum
+      shellcheck
+      # fd
       filen-desktop
       firefox
       gnomeExtensions.appindicator
       gnomeExtensions.clipboard-indicator
       gnomeExtensions.dash-to-dock
       gnumake
+      nushell
       shellcheck
       stow
       system76-firmware
-      vivaldi
-      vivaldi-ffmpeg-codecs
+      #vivaldi
+      #vivaldi-ffmpeg-codecs
+      zen-browser
     ];
 
+    # List of extra paths to include in the user profile.
     sessionPath = [
       "$HOME/bin"
       "$HOME/bin/common"
       "$HOME/bin/desktop"
       "$HOME/go/bin"
     ];
+
+    # List of environment variables.
     sessionVariables = {
       EDITOR = "${vars.editor}";
     };
 
     # some files
-    file.".config/borg/backup_dirs".text = "export BACKUP_DIRS='code secret-cipher sysconf'";
+    file.".config/borg/backup_dirs".text =
+      "export BACKUP_DIRS='${builtins.concatStringsSep " " vars.backup_dirs}'";
+    # autostart files (run on login)
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
+    file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
   };
 
   # Packages that are installed as programs also allow for configuration.

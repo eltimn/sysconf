@@ -1,3 +1,5 @@
 host = "lappy"
 user = "nelly"
-editor = "nvim"
+editor = "codium --new-window --wait"
+stow_packages = ["common", "code"]
+backup_dirs = ["Documents", "Notes", "code", "secret-cipher", "sysconf"]

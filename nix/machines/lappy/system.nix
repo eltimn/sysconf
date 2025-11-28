@@ -69,7 +69,6 @@
     ++ (with pkgs; [
       cheese # webcam tool
       gnome-music
-      #gnome-terminal
       epiphany # web browser
       geary # email reader
       evince # document viewer
@@ -79,7 +78,6 @@
       iagno # go game
       hitori # sudoku game
       atomix # puzzle game
-      gnome-calculator
       yelp # help viewer
       gnome-maps
       gnome-weather
@@ -144,24 +142,24 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    allowSFTP = false;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-      AllowUsers = [ "${vars.user}" ];
-      X11Forwarding = false;
-      UsePAM = true;
-      extraConfig = ''
-        AllowTcpForwarding yes
-        AllowAgentForwarding no
-        AllowStreamLocalForwarding no
-        AuthenticationMethods publickey
-      '';
-    };
-  };
+  # services.openssh = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   allowSFTP = false;
+  #   settings = {
+  #     PermitRootLogin = "no";
+  #     PasswordAuthentication = false;
+  #     AllowUsers = [ "${vars.user}" ];
+  #     X11Forwarding = false;
+  #     UsePAM = true;
+  #     extraConfig = ''
+  #       AllowTcpForwarding yes
+  #       AllowAgentForwarding no
+  #       AllowStreamLocalForwarding no
+  #       AuthenticationMethods publickey
+  #     '';
+  #   };
+  # };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
