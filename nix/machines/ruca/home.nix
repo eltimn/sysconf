@@ -29,31 +29,7 @@
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
-      btop
-      dust # better `du`
-      fastfetch
-      fd
-      gnome-terminal # needed to run mount-secret on log in
-      gocryptfs
-      gum
-      shellcheck
-      # fd
-      filen-desktop
-      firefox
-      gnomeExtensions.appindicator
-      gnomeExtensions.clipboard-indicator
-      gnomeExtensions.dash-to-dock
-      gnumake
-      lm_sensors
-      nushell
       ollama
-      # parcellite
-      # sqlitebrowser
-      stow
-      # vivaldi
-      # vivaldi-ffmpeg-codecs
-      # wezterm # https://github.com/wezterm/wezterm/issues/6025
-      zen-browser
     ];
 
     # List of extra paths to include in the user profile.

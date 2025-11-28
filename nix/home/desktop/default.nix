@@ -10,10 +10,17 @@
       # enpass
       # entr
       ffmpeg
+      filen-desktop
+      firefox
+      gnome-terminal # needed to run mount-secret on log in
       gnome-tweaks
+      gnomeExtensions.appindicator
+      gnomeExtensions.clipboard-indicator
+      gnomeExtensions.dash-to-dock
       google-chrome
       # libnss3-tools
       libnotify
+      lm_sensors
       # logseq
       meld
       # mongodb-compass
@@ -24,9 +31,15 @@
       nixpkgs-lint-community
       notify-osd
       obsidian
+      # parcellite
+      # sqlitebrowser
+      # vivaldi
+      # vivaldi-ffmpeg-codecs
       vlc
       # warp-terminal
+      # wezterm # https://github.com/wezterm/wezterm/issues/6025
       yubikey-manager
+      zen-browser
     ];
   };
 }
