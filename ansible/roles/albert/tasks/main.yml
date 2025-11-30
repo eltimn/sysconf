@@ -1,8 +1,0 @@
----
-- name: Add repo
-  apt_repository: repo="ppa:nilarimogard/webupd8" state=present
-  tags: albert
-
-- name: Install albert
-  apt: pkg=albert state=latest
-  tags: albert

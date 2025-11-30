@@ -1,5 +1,0 @@
----
-# Install qtfaststart
-
-- easy_install: name=qtfaststart
-  tags: qtfaststart

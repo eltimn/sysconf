@@ -1,4 +1,0 @@
-[com.canonical.unity-greeter]
-draw-user-backgrounds=false
-background='/home/$USER/Lightning_Neuro.jpg'
-# After changing use: sudo glib-compile-schemas /usr/share/glib-2.0/schemas

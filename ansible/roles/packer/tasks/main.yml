@@ -1,8 +1,0 @@
----
-# packer
-
-- name: install
-  import_tasks: install.yml
-  tags:
-    - packer
-    - packer-install

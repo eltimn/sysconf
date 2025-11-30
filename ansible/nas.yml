@@ -23,8 +23,6 @@
     # - nextcloud
     # - byobu
     - docker
-    # - emby
-    # - franklinkim.docker
     - sshd
     - zfs
     - mongo # shell and tools
