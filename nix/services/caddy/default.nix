@@ -35,7 +35,7 @@ in
 
     # config settings
     # https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates
-    acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
+    # acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
     email = "{env.CF_EMAIL}";
     globalConfig = ''
       acme_dns cloudflare {env.CF_API_TOKEN}
