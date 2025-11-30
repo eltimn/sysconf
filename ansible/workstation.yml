@@ -8,7 +8,7 @@
   vars:
     username: nelly
     computer_type: workstation
-    subnet_cidr: "192.168.1.0/24"
+    subnet_cidr: "192.168.0.0/24"
     appimage_download_urls:
       # - name: logsec
       #   url: https://github.com/logseq/logseq/releases/download/0.10.5/Logseq-linux-x64-0.10.5.AppImage

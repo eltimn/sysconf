@@ -27,14 +27,14 @@ docker exec -w /etc/caddy caddy caddy reload
 
 ## SSH
 
-You can SSH into an AP (Access Point) using the IP address and the default credentials (ubnt/ubnt). Once it's been configured it, will use the configured credentials (Settings -> System -> Advanced) or the SSH certificate. ```ssh eltimn@192.168.1.40```
+You can SSH into an AP (Access Point) using the IP address and the default credentials (ubnt/ubnt). Once it's been configured, it will use the configured credentials (Settings -> System -> Advanced) or the SSH certificate. ```ssh eltimn@192.168.0.16```
 
 ## Access Point Adoption
 
 If the AP can't find the network app, try setting the inform address by SSHing into the device and running:
 
 ```shell
-set-inform http://192.168.1.50:8080/inform
+set-inform http://192.168.0.1:80/inform
 ```
 
 [Source](https://lazyadmin.nl/home-network/unifi-set-inform/)

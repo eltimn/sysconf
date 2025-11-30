@@ -24,7 +24,7 @@
 
   @unifi host unifi.home.eltimn.com
   handle @unifi {
-    reverse_proxy {{docker_unifi_ip}}:8443 {
+    reverse_proxy https://{{router_ip}} {
       transport http {
         tls_insecure_skip_verify # unifi uses self-signed certs
       }
