@@ -30,6 +30,7 @@
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
       ollama
+      yubioath-flutter
     ];
 
     # List of extra paths to include in the user profile.

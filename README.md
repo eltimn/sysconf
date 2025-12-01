@@ -48,3 +48,4 @@ sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-tha
 * https://github.com/chrisportela/dotfiles
 * https://www.chrisportela.com/posts/home-manager-flake/
 * https://gitlab.com/hmajid2301/nixicle
+* https://tsawyer87.github.io/posts/top_level_attributes_explained/
