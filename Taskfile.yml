@@ -31,6 +31,11 @@ tasks:
       - "{{.NIX_CMD}} switch --flake ."
       - task: dotfiles
 
+  option:
+    desc: Show the calculated value of a flake option.
+    cmds:
+      - nixos-option --flake . {{.CLI_ARGS}}
+
   clean:
     desc: Delete the result directory that the build task creates.
     cmds:

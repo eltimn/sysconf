@@ -3,23 +3,9 @@
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
-# home.eltimn.com {
-# 	root * /srv
-# 	file_server
-# }
-
 *.home.eltimn.com {
   tls {
     dns cloudflare {{caddy_cloudflare_token}}
-  }
-
-  @router host router.home.eltimn.com
-  handle @router {
-    reverse_proxy https://{{router_ip}} {
-      transport http {
-        tls_insecure_skip_verify # edge router uses self-signed certs
-      }
-    }
   }
 
   @unifi host unifi.home.eltimn.com
@@ -36,30 +22,9 @@
     reverse_proxy localhost:8089
   }
 
-  @plex host plex.home.eltimn.com
-  handle @plex {
-    reverse_proxy {{docker_plex_ip}}:32400
-  }
-
-  @nextcloud host cloud.home.eltimn.com
-  handle @nextcloud {
-    reverse_proxy localhost:8081
-  }
-
   @www host www.home.eltimn.com
   handle @www {
     reverse_proxy {{docker_homepage_ip}}:3000
-  }
-
-  @ntfy host ntfy.home.eltimn.com
-  handle @ntfy {
-    reverse_proxy cbox.home.eltimn.com:8080
-    @httpget {
-      protocol http
-      method GET
-      path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
-    }
-    redir @httpget https://{host}{uri}
   }
 
   @web host web.home.eltimn.com

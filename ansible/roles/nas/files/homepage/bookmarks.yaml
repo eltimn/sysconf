@@ -17,9 +17,15 @@
 #         - abbr: YT
 #           href: https://youtube.com/
 - HomeLab:
+    - Unifi Gateway:
+        - icon: unifi.png
+          href: https://unifi.home.eltimn.com/
+    - ntfy.sh:
+        - icon: ntfy.png
+          href: https://ntfy.home.eltimn.com/
     - Channels DVR:
         - icon: channels.png
           href: https://dvr.home.eltimn.com/
-    - EdgeMax Router:
-        - icon: edgeos.png
-          href: https://router.home.eltimn.com/
+    - Jellyfin:
+        - icon: jellyfin.png
+          href: https://jellyfin.home.eltimn.com/

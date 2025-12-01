@@ -159,8 +159,9 @@
       # tools for managing this repository and the host machines
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
-          go-task
           age
+          caddy
+          go-task
           sops
           ssh-to-age
         ];

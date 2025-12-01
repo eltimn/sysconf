@@ -1,18 +1,28 @@
-{ ... }:
-
+{ config, lib, ... }:
+let
+  cfg = config.eltimn.services.jellyfin;
+in
 {
-  services.jellyfin = {
-    enable = true;
-    openFirewall = false;
+  options.eltimn.services.jellyfin = {
+    enable = lib.mkEnableOption "jellyfin";
+    port = lib.mkOption {
+      type = lib.types.int;
+      default = 8096; # there doesn't appear to be any way to actually set this port in jellyfin nixos module
+      description = "The port number for the jellyfin service.";
+    };
   };
 
-  # Bind Jellyfin to isolated subnet IP
-  # environment.etc."jellyfin/network.json".text = builtins.toJSON {
-  #   host = "192.168.20.115";
-  #   port = 8096;
-  #   protocol = "http";
-  # };
+  config = lib.mkIf cfg.enable {
+    services.jellyfin = {
+      enable = true;
+      openFirewall = false;
+    };
 
-  # Firewall scoped to correct NIC
-  # networking.firewall.allowedTCPPorts = [ 8096 ];
+    # Bind Jellyfin to isolated subnet IP
+    # environment.etc."jellyfin/network.json".text = builtins.toJSON {
+    #   host = "192.168.20.115";
+    #   port = 8096;
+    #   protocol = "http";
+    # };
+  };
 }

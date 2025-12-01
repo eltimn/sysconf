@@ -7,7 +7,6 @@ home.eltimn.com {
 	acl {
 		allow net 127.0.0.1
 		allow net 192.168.0.0/24
-		allow net 192.168.1.0/24
 		block
 	}
 }
@@ -16,7 +15,6 @@ home.eltimn.com {
 	acl {
 		allow net 127.0.0.1
 		allow net 192.168.0.0/24
-		allow net 192.168.1.0/24
 		block
 	}
 	cache {

@@ -44,9 +44,9 @@
   ansible.builtin.template:
     src: Caddyfile.j2
     dest: /etc/caddy/Caddyfile
-    owner: root
-    group: root
-    mode: 0644
+    owner: caddy
+    group: caddy
+    mode: 0400
   tags: caddy
   notify:
     - Reload caddy

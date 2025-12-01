@@ -11,17 +11,16 @@ $ORIGIN home.eltimn.com.
 	3600 IN NS b.iana-servers.net.
 
 router     IN A     192.168.0.1
-cbox       IN A     192.168.0.23
-illmatic   IN A     192.168.0.22
 ruca       IN A     192.168.0.21
+illmatic   IN A     192.168.0.22
+cbox       IN A     192.168.0.23
 shield     IN A     192.168.0.24
 hdhr       IN A     192.168.0.25
 
 dvr        IN CNAME illmatic
-plex       IN CNAME illmatic
 unifi      IN CNAME illmatic
+web        IN CNAME illmatic
 www        IN CNAME illmatic
-cloud      IN CNAME illmatic
-ntfy       IN CNAME illmatic
+
 jellyfin   IN CNAME ruca
-caddy      IN CNAME ruca
+ntfy       IN CNAME ruca

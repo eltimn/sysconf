@@ -1,17 +1,30 @@
-{ pkgs, ... }:
-
 {
-  services.coredns = {
-    enable = true;
-    package = pkgs.coredns;
-    config = (builtins.readFile ./Corefile);
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.eltimn.services.coredns;
+in
+{
+  options.eltimn.services.coredns = {
+    enable = lib.mkEnableOption "coredns";
   };
 
-  environment.etc."coredns/home-eltimn-com.zone".source = ./home-eltimn-com.zone;
+  config = lib.mkIf cfg.enable {
+    services.coredns = {
+      enable = true;
+      package = pkgs.coredns;
+      config = (builtins.readFile ./Corefile);
+    };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 53 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+    environment.etc."coredns/home-eltimn-com.zone".source = ./home-eltimn-com.zone;
+
+    # Open ports in the firewall.
+    networking.firewall.allowedTCPPorts = [ 53 ];
+    networking.firewall.allowedUDPPorts = [ 53 ];
+  };
 }
 
 # References

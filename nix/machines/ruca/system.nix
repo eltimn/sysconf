@@ -6,11 +6,12 @@
 
 {
   imports = [
-    ../../services/caddy
-    ../../services/coredns
-    # ../../services/traefik
-    ../../services/jellyfin.nix
+    ../../services
   ];
+
+  # sops.secrets."user_nelly/hashed_password" = {
+  #   owner = vars.user;
+  # };
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
@@ -237,6 +238,7 @@
     defaultSopsFormat = "yaml";
   };
 
+  # state version
   system.stateVersion = "24.11"; # Don't touch
 
   # Optimization settings and garbage collection automation
@@ -253,6 +255,23 @@
       dates = "weekly";
       options = "--delete-older-than 14d";
     };
+  };
+
+  # service options
+  eltimn.services.caddy = {
+    enable = true;
+    domain = "home.eltimn.com";
+  };
+  eltimn.services.coredns = {
+    enable = true;
+  };
+  eltimn.services.jellyfin = {
+    enable = true;
+  };
+  eltimn.services.ntfy = {
+    enable = true;
+    port = 8082;
+    baseUrl = "https://ntfy.home.eltimn.com";
   };
 
 }
