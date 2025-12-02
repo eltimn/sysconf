@@ -77,9 +77,7 @@
       nixosConfig =
         host:
         let
-          vars = loadVars host // {
-            secrets_path = ./secrets;
-          };
+          vars = loadVars host;
         in
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
@@ -96,8 +94,8 @@
             ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
+            ./nix/system/default.nix # system modules
             inputs.home-manager.nixosModules.home-manager
-            inputs.sops-nix.nixosModules.sops
             {
               # https://nix-community.github.io/home-manager/nixos-options.xhtml
               home-manager = {
@@ -113,14 +111,6 @@
             }
           ];
         };
-
-      # `builtins.readFile` doesn't work with files that are not part of the git repo.
-      # path to the secrets directory
-      # homeDir = builtins.getEnv "HOME";
-      # secretsPath = builtins.toPath "${homeDir}/secret/nix";
-
-      # a function to read a secret file
-      # readSecretFile = p: builtins.readFile (secretsPath + p);
 
       # public ssh keys
       sshKeys = nixpkgs.lib.importTOML ./ssh_keys.toml;

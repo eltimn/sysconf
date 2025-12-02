@@ -22,7 +22,7 @@ in
     sops.secrets."caddy_env" = {
       owner = "caddy";
       reloadUnits = [ "caddy.service" ];
-      sopsFile = "${vars.secrets_path}/caddy-enc.env";
+      sopsFile = "${config.eltimn.system.sops.secretsPath}/caddy-enc.env";
       format = "dotenv";
       key = ""; # get the whole file
     };

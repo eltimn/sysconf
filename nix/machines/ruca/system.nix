@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   vars,
   ...
@@ -8,10 +9,6 @@
   imports = [
     ../../services
   ];
-
-  # sops.secrets."user_nelly/hashed_password" = {
-  #   owner = vars.user;
-  # };
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
@@ -110,6 +107,8 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  sops.secrets."users/nelly/password".neededForUsers = true;
+
   # Define a user account.
   users.users."${vars.user}" = {
     isNormalUser = true;
@@ -118,7 +117,7 @@
       "wheel"
       "networkmanager"
     ];
-    initialHashedPassword = "$y$j9T$gBvMn/QrY5RosPhMxJ3.21$iwvCDJ3H41QrsRuBzBUQfYwKW1.WjRfnybFMiGJnIx8";
+    hashedPasswordFile = config.sops.secrets."users/${vars.user}/password".path;
     openssh.authorizedKeys.keys = [
       # sshKeys.lappy
     ];
@@ -229,13 +228,6 @@
       PermitRootLogin = "no";
       PasswordAuthentication = false;
     };
-  };
-
-  # SOPS
-  sops = {
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    defaultSopsFile = "${vars.secrets_path}/secrets-enc.yaml";
-    defaultSopsFormat = "yaml";
   };
 
   # state version

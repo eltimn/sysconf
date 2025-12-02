@@ -18,10 +18,11 @@ in
       openFirewall = false;
     };
 
-    # Bind Jellyfin to isolated subnet IP
+    # Set jellyfin to listen on localhost only
+    # This didn't work when I tried it.
     # environment.etc."jellyfin/network.json".text = builtins.toJSON {
-    #   host = "192.168.20.115";
-    #   port = 8096;
+    #   host = "localhost";
+    #   port = cfg.port;
     #   protocol = "http";
     # };
   };
