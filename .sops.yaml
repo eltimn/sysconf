@@ -7,7 +7,7 @@ keys:
     - &lappy age1xfhncyzagtkash7uhw2sl9p907hr30fccrs0ugx6kpum9ry8td5q2gemny
 
 creation_rules:
-  - path_regex: secrets/[^/]+\-enc.(env|ini|yaml)$
+  - path_regex: secrets/[^/]+\-enc.(yaml|json|env|ini)$
     key_groups:
       - age:
         - *nelly

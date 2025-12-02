@@ -13,7 +13,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  sops.secrets."users/nelly/password".neededForUsers = true;
+  sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
 
   # Define a user account.
   users.users."${config.sysconf.settings.primaryUsername}" = {
