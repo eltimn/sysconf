@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  osConfig,
   ...
 }:
 {
@@ -15,8 +14,8 @@
   ];
 
   home = {
-    username = "${osConfig.sysconf.settings.primaryUsername}";
-    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
+    username = "nelly";
+    homeDirectory = "/home/nelly";
     stateVersion = "24.05";
 
     packages = with pkgs; [
