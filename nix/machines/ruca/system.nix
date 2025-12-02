@@ -93,7 +93,6 @@
     extraGroups = [
       "wheel"
       "networkmanager"
-      # "incus-admin"
     ];
     hashedPasswordFile =
       config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;

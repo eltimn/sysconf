@@ -4,7 +4,7 @@ keys:
     - &nelly age1t9wdp4gya7hqkh3ge08nqsh0jhsfvu52d0qhqvdvrgsxe7c0eeeqnc5ta5
   hosts:
     - &ruca age1znnu0vzuz75xgzw5kr74zrvqy9yeqcatcwkzmxvmcy9hvhas396q4mtcn9
-  #   - &illmatic ageXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    - &lappy age1xfhncyzagtkash7uhw2sl9p907hr30fccrs0ugx6kpum9ry8td5q2gemny
 
 creation_rules:
   - path_regex: secrets/[^/]+\-enc.(env|ini|yaml)$
@@ -12,4 +12,4 @@ creation_rules:
       - age:
         - *nelly
         - *ruca
-        # - *illmatic
+        - *lappy
