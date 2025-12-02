@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.eltimn.services.jellyfin;
+  cfg = config.sysconf.services.jellyfin;
 in
 {
-  options.eltimn.services.jellyfin = {
+  options.sysconf.services.jellyfin = {
     enable = lib.mkEnableOption "jellyfin";
     port = lib.mkOption {
       type = lib.types.int;

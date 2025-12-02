@@ -84,12 +84,15 @@
           specialArgs = {
             inherit
               inputs
-              vars
-              sshKeys
               pkgs-unstable
               ;
           };
           modules = [
+            ./nix/settings.nix # sysconf settings
+            {
+              config.sysconf.settings.hostName = vars.host;
+              config.sysconf.settings.primaryUsername = vars.user;
+            }
             inputs.disko.nixosModules.disko
             ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
@@ -105,15 +108,12 @@
 
                 # passes arguments to all modules in home.nix
                 extraSpecialArgs = {
-                  inherit vars pkgs-unstable;
+                  inherit pkgs-unstable;
                 };
               };
             }
           ];
         };
-
-      # public ssh keys
-      sshKeys = nixpkgs.lib.importTOML ./ssh_keys.toml;
     in
     {
       # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
@@ -142,7 +142,7 @@
             "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
             ./nix/machines/iso/configuration.nix
           ];
-          specialArgs = { inherit inputs sshKeys; };
+          specialArgs = { inherit inputs; };
         };
       };
 

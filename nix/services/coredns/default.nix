@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.eltimn.services.coredns;
+  cfg = config.sysconf.services.coredns;
 in
 {
-  options.eltimn.services.coredns = {
+  options.sysconf.services.coredns = {
     enable = lib.mkEnableOption "coredns";
   };
 

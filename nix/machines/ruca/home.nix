@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  vars,
+  osConfig,
   ...
 }:
 {
@@ -23,8 +23,8 @@
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    username = "${vars.user}";
-    homeDirectory = "/home/${vars.user}";
+    username = "${osConfig.sysconf.settings.primaryUsername}";
+    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
     stateVersion = "24.11";
 
     # Packages that should be installed to the user profile.
@@ -43,13 +43,13 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "${vars.editor}";
+      EDITOR = "codium --new-window --wait";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
     };
 
     # some files
     file.".config/borg/backup_dirs".text =
-      "export BACKUP_DIRS='${builtins.concatStringsSep " " vars.backup_dirs}'";
+      "export BACKUP_DIRS='Audio Documents Notes Pictures code secret-cipher sysconf'";
     # autostart files (run on login)
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
     file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
@@ -96,7 +96,7 @@
         };
         Service = {
           Type = "simple";
-          ExecStart = "/home/${vars.user}/bin/desktop/backup-borg";
+          ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-borg";
         };
       };
 
@@ -108,7 +108,7 @@
         };
         Service = {
           Type = "simple";
-          ExecStart = "/home/${vars.user}/bin/desktop/backup-secrets";
+          ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-secrets";
         };
       };
 
@@ -120,7 +120,7 @@
         };
         Service = {
           Type = "simple";
-          ExecStart = "/home/${vars.user}/bin/desktop/backup-workstation";
+          ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-workstation";
         };
       };
 

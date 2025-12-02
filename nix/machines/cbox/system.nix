@@ -2,44 +2,28 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 
 {
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking
-  networking.networkmanager.enable = true;
-  networking.hostName = "${vars.host}";
-
-  # Set your time zone.
-  time.timeZone = "America/Chicago";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
+  sops.secrets."users/nelly/password".neededForUsers = true;
 
   # Define a user account.
   users = {
     groups = {
       podman = { };
-      ntfy = { };
+      # ntfy = { };
     };
 
     users = {
-      "${vars.user}" = {
+      "${config.sysconf.settings.primaryUsername}" = {
         isNormalUser = true;
         description = "Tim Nelson";
         extraGroups = [
@@ -47,10 +31,9 @@
           "networkmanager"
           "docker"
         ];
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij tim@lappy"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
-        ];
+        hashedPasswordFile =
+          config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
+        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
       };
 
@@ -60,11 +43,11 @@
         description = "User to run podman containers";
       };
 
-      ntfy = {
-        isSystemUser = true;
-        group = "ntfy";
-        description = "User to run ntfy.sh";
-      };
+      # ntfy = {
+      #   isSystemUser = true;
+      #   group = "ntfy";
+      #   description = "User to run ntfy.sh";
+      # };
     };
   };
 
@@ -102,18 +85,18 @@
       };
     };
 
-    ntfy-sh = {
-      enable = true;
-      user = "ntfy";
-      group = "ntfy";
-      settings = {
-        listen-http = ":8080";
-        base-url = "https://ntfy.home.eltimn.com";
-        behind-proxy = true;
-        #auth-file = "/var/lib/ntfy/user.db";
-        #auth-default-access = "deny-all";
-      };
-    };
+    # ntfy-sh = {
+    #   enable = true;
+    #   user = "ntfy";
+    #   group = "ntfy";
+    #   settings = {
+    #     listen-http = ":8080";
+    #     base-url = "https://ntfy.home.eltimn.com";
+    #     behind-proxy = true;
+    #     #auth-file = "/var/lib/ntfy/user.db";
+    #     #auth-default-access = "deny-all";
+    #   };
+    # };
   };
 
   # services.vaultwarden = {

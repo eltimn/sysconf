@@ -1,6 +1,6 @@
 {
+  config,
   pkgs,
-  sshKeys,
   ...
 }:
 let
@@ -30,10 +30,7 @@ in
 
   users.users = {
     nixos = {
-      openssh.authorizedKeys.keys = [
-        sshKeys.lappy
-        sshKeys.ruca
-      ];
+      openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
       # shell = pkgs.zsh;
     };
   };

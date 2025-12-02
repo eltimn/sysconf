@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.eltimn.services.caddy;
+  cfg = config.sysconf.services.caddy;
 in
 {
-  options.eltimn.services.caddy = {
+  options.sysconf.services.caddy = {
     enable = lib.mkEnableOption "caddy";
     domain = lib.mkOption {
       type = lib.types.str;
@@ -46,12 +46,12 @@ in
         extraConfig = ''
           					@jellyfin host jellyfin.${cfg.domain}
           					handle @jellyfin {
-          						reverse_proxy localhost:${toString config.eltimn.services.jellyfin.port}
+          						reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
           					}
 
           					@ntfy host ntfy.${cfg.domain}
           					handle @ntfy {
-          						reverse_proxy localhost:${toString config.eltimn.services.ntfy.port}
+          						reverse_proxy localhost:${toString config.sysconf.services.ntfy.port}
           						@httpget {
           							protocol http
           							method GET

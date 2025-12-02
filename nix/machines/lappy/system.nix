@@ -2,46 +2,30 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 
 {
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking
-  networking.networkmanager.enable = true;
-  networking.hostName = "${vars.host}";
-
-  # Set your time zone.
-  time.timeZone = "America/Chicago";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
+  sops.secrets."users/nelly/password".neededForUsers = true;
 
   # Define a user account.
-  users.users."${vars.user}" = {
+  users.users."${config.sysconf.settings.primaryUsername}" = {
     isNormalUser = true;
     description = "Tim Nelson";
     extraGroups = [
       "wheel"
       "networkmanager"
     ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
-    ];
+    hashedPasswordFile =
+      config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
+    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
     shell = pkgs.zsh;
   };
 
@@ -149,7 +133,7 @@
   #   settings = {
   #     PermitRootLogin = "no";
   #     PasswordAuthentication = false;
-  #     AllowUsers = [ "${vars.user}" ];
+  #     AllowUsers = [ "${config.sysconf.settings.primaryUsername}" ];
   #     X11Forwarding = false;
   #     UsePAM = true;
   #     extraConfig = ''

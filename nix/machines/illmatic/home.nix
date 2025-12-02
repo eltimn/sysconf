@@ -1,4 +1,9 @@
-{ pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  osConfig,
+  ...
+}:
 {
 
   imports = [
@@ -10,8 +15,8 @@
   ];
 
   home = {
-    username = "${vars.user}";
-    homeDirectory = "/home/${vars.user}";
+    username = "${osConfig.sysconf.settings.primaryUsername}";
+    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
     stateVersion = "24.05";
 
     packages = with pkgs; [
@@ -26,7 +31,7 @@
       "/opt/cryptomator-cli/bin"
     ];
     sessionVariables = {
-      EDITOR = "${vars.editor}";
+      EDITOR = "nvim";
     };
   };
 
@@ -53,7 +58,7 @@
         };
         Service = {
           Type = "simple";
-          ExecStart = "/home/${vars.user}/bin/backup-nas";
+          ExecStart = "${config.home.homeDirectory}/bin/backup-nas";
         };
       };
 

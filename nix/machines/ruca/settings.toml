@@ -1,5 +1,2 @@
 host = "ruca"
 user = "nelly"
-editor = "codium --new-window --wait"
-stow_packages = ["common", "code"]
-backup_dirs = ["Audio", "Documents", "Notes", "Pictures", "code", "secret-cipher", "sysconf"]

@@ -1,4 +1,8 @@
-{ pkgs, vars, ... }:
+{
+  pkgs,
+  osConfig,
+  ...
+}:
 {
 
   imports = [
@@ -11,8 +15,8 @@
 
   # The User and Path it manages
   home = {
-    username = "${vars.user}";
-    homeDirectory = "/home/${vars.user}";
+    username = "${osConfig.sysconf.settings.primaryUsername}";
+    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
     stateVersion = "23.11"; # don't change unless reinstalling from scratch
 
     packages = with pkgs; [
@@ -22,7 +26,7 @@
 
     sessionPath = [ "$HOME/bin/common" ];
     sessionVariables = {
-      EDITOR = "${vars.editor}";
+      EDITOR = "nvim";
     };
   };
 

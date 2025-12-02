@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  vars,
   ...
 }:
 
@@ -85,42 +84,20 @@
   #   package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   # };
 
-  # networking
-  networking.networkmanager.enable = true;
-  networking.hostName = "${vars.host}";
-
-  # Set your time zone.
-  time.timeZone = "America/Chicago";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
   sops.secrets."users/nelly/password".neededForUsers = true;
 
   # Define a user account.
-  users.users."${vars.user}" = {
+  users.users."${config.sysconf.settings.primaryUsername}" = {
     isNormalUser = true;
     description = "Tim Nelson";
     extraGroups = [
       "wheel"
       "networkmanager"
+      # "incus-admin"
     ];
-    hashedPasswordFile = config.sops.secrets."users/${vars.user}/password".path;
-    openssh.authorizedKeys.keys = [
-      # sshKeys.lappy
-    ];
+    hashedPasswordFile =
+      config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
+    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
     shell = pkgs.zsh;
   };
 
@@ -250,17 +227,17 @@
   };
 
   # service options
-  eltimn.services.caddy = {
+  sysconf.services.caddy = {
     enable = true;
     domain = "home.eltimn.com";
   };
-  eltimn.services.coredns = {
+  sysconf.services.coredns = {
     enable = true;
   };
-  eltimn.services.jellyfin = {
+  sysconf.services.jellyfin = {
     enable = true;
   };
-  eltimn.services.ntfy = {
+  sysconf.services.ntfy = {
     enable = true;
     port = 8082;
     baseUrl = "https://ntfy.home.eltimn.com";

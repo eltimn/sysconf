@@ -4,10 +4,10 @@
   ...
 }:
 let
-  cfg = config.eltimn.services.ntfy;
+  cfg = config.sysconf.services.ntfy;
 in
 {
-  options.eltimn.services.ntfy = {
+  options.sysconf.services.ntfy = {
     enable = lib.mkEnableOption "ntfy";
     port = lib.mkOption {
       type = lib.types.int;

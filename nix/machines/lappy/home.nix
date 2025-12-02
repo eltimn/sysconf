@@ -1,6 +1,6 @@
 {
   pkgs,
-  vars,
+  osConfig,
   ...
 }:
 {
@@ -18,8 +18,8 @@
 
   # The User and Path it manages
   home = {
-    username = "${vars.user}";
-    homeDirectory = "/home/${vars.user}";
+    username = "${osConfig.sysconf.settings.primaryUsername}";
+    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
     stateVersion = "23.11";
 
     # Packages that should be installed to the user profile.
@@ -37,12 +37,12 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "${vars.editor}";
+      EDITOR = "codium --new-window --wait";
     };
 
     # some files
     file.".config/borg/backup_dirs".text =
-      "export BACKUP_DIRS='${builtins.concatStringsSep " " vars.backup_dirs}'";
+      "export BACKUP_DIRS='Documents Notes code secret-cipher sysconf'";
     # autostart files (run on login)
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
     file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
