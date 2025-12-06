@@ -60,8 +60,6 @@
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
 
-    lazygit.enable = true;
-
     yazi = {
       enable = true;
       enableZshIntegration = true;

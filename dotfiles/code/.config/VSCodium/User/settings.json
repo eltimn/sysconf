@@ -146,5 +146,6 @@
 		}
 	},
 	"explorer.confirmDelete": false,
-	"makefile.configureOnOpen": false
+	"makefile.configureOnOpen": false,
+	"chat.disableAIFeatures": false
 }

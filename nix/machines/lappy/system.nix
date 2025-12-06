@@ -34,13 +34,14 @@
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
     xkb = {
       layout = "us";
       variant = "";
     };
   };
+
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
   # Exclude some packages from gnome

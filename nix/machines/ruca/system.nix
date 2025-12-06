@@ -30,8 +30,6 @@
   services.xserver = {
     enable = true;
     # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
     # Configure keymap
     xkb = {
       layout = "us";
@@ -41,6 +39,9 @@
     # videoDrivers = [ "nvidia" ]; # Load nvidia driver for Xorg and Wayland
     videoDrivers = [ "amdgpu" ]; # amd drivers
   };
+
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # boot.postBootCommands = ''
   #   mount -o remount,ro,bind,noatime,discard /nix/store

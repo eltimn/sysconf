@@ -5,7 +5,7 @@
 
   inputs = {
     # Specify the source of Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Flake modules
@@ -20,7 +20,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -119,9 +119,9 @@
       # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
       # Also some flakes and other misc things that are referred to differently than regular packages.
       overlays.default = final: prev: {
-        zen-browser = inputs.zen-browser-flake.packages.${prev.system}.default;
-        isd = inputs.isd-flake.packages.${prev.system}.default;
-        firefox-addons = inputs.firefox-addons.packages.${prev.system};
+        zen-browser = inputs.zen-browser-flake.packages.${prev.stdenv.hostPlatform.system}.default;
+        isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
+        firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
       };
 
       # Home Manager configurations. Non-nixos hosts.
@@ -147,7 +147,7 @@
       };
 
       # tools for managing this repository and the host machines
-      devShells.${system}.default = pkgs.mkShell {
+      devShells.${pkgs.stdenv.hostPlatform.system}.default = pkgs.mkShell {
         packages = with pkgs; [
           age
           caddy
