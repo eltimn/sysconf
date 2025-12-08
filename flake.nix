@@ -110,6 +110,10 @@
                 extraSpecialArgs = {
                   inherit pkgs-unstable;
                 };
+
+                sharedModules = [
+                  inputs.sops-nix.homeManagerModules.sops
+                ];
               };
             }
           ];

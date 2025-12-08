@@ -1,6 +1,11 @@
-{ ... }:
+{ config, ... }:
 
 {
+  sops.secrets = {
+    "git/github" = { };
+    "git/user" = { };
+  };
+
   home = {
     file.".config/git/extra.inc".source = ./files/extra.inc;
   };
@@ -85,8 +90,8 @@
     ];
     includes = [
       { path = "extra.inc"; }
-      { path = "gitconfig.d/github.inc"; }
-      { path = "gitconfig.d/user.inc"; }
+      { path = config.sops.secrets."git/github".path; }
+      { path = config.sops.secrets."git/user".path; }
     ];
   };
 }
