@@ -114,6 +114,23 @@
             }
           ];
         };
+
+      isoConfig =
+        installerName:
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./nix/settings.nix # sysconf settings
+            {
+              config.sysconf.settings.hostName = "iso";
+              config.sysconf.settings.primaryUsername = "nixos";
+            }
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/${installerName}.nix"
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
+            ./nix/machines/iso/configuration.nix
+          ];
+          specialArgs = { inherit inputs; };
+        };
     in
     {
       # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
@@ -135,15 +152,8 @@
         lappy = nixosConfig "lappy";
         ruca = nixosConfig "ruca";
 
-        iso = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
-            "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
-            ./nix/machines/iso/configuration.nix
-          ];
-          specialArgs = { inherit inputs; };
-        };
+        iso-gnome = isoConfig "installation-cd-graphical-gnome";
+        iso-min = isoConfig "installation-cd-minimal";
       };
 
       # tools for managing this repository and the host machines

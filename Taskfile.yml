@@ -91,12 +91,12 @@ tasks:
     cmd: nix profile history --profile /nix/var/nix/profiles/system
 
   iso:
-    desc: Build an installer ISO
-    cmd: nix build .#nixosConfigurations.iso.config.system.build.isoImage
+    desc: Build an installer ISO [gnome|min]
+    cmd: nix build .#nixosConfigurations.iso-{{.CLI_ARGS}}.config.system.build.isoImage
 
   iso-burn:
     desc: Burn an iso to a USB drive
-    cmd: caligula burn $(gum file result/iso)
+    cmd: caligula burn $(gum file ./result/iso)
 
   iso-copy:
     desc: Copy the iso to a USB drive
