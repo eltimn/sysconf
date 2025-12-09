@@ -5,7 +5,13 @@
 
 if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="green"; fi
 
-PROMPT='%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(git_prompt_info)%{$fg[cyan]%}%{$reset_color%}%(!.#.$) '
+if [ -n "$SSH_CONNECTION" ]; then
+  HOSTNAME_PROMPT="@%m"
+else
+  HOSTNAME_PROMPT=""
+fi
+
+PROMPT='%{$fg[$NCOLOR]%}%B%n$HOSTNAME_PROMPT%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(git_prompt_info)%{$fg[cyan]%}%{$reset_color%}%(!.#.$) '
 RPROMPT='[%*]'
 
 # git theming
