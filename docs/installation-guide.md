@@ -11,7 +11,7 @@ TODO: Create a first install "host" machine configuration that doesn't include a
 ## Guide
 
 1. Configure and format disks as described in [NixOS Manual Installation Guide](https://nixos.org/manual/nixos/stable/#sec-installation-manual) either beforehand or after booting into iso LiveCD.
-2. Boot into iso LiveCD
+2. Boot into iso LiveCD.
 3. Set some env vars:
 ```shell
 export TARGET_HOST=illmatic
@@ -28,7 +28,7 @@ nixos-generate-config \
 	--dir $HOME/sysconf/nix/machines/$TARGET_HOST \
 	--no-filesystems
 ```
-6. Add the hardware-configuration.nix to git
+6. Add the hardware-configuration.nix to git.
 ```shell
 git -C $HOME/sysconf add \
 	$HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix
@@ -41,7 +41,7 @@ sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
 ```shell
 sudo nixos-enter --root /mnt -c 'passwd nelly'
 ```
-9. Copy any code changes to the new system. Will include `hardware-configuration.nix`
+9. Copy any code changes to the new system. Will include `hardware-configuration.nix`.
 ```shell
 mkdir -p /mnt/home/nelly/sysconf-install
 cp -r $HOME/sysconf /mnt/home/nelly
@@ -49,7 +49,7 @@ cp -r $HOME/sysconf /mnt/home/nelly
 
 ## After First Boot
 
-1. Get age version of host's public ssh key
+1. Get age version of host's public ssh key.
 ```shell
 # using the sysconf dev shell
 cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age
@@ -58,8 +58,9 @@ cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age
 ```shell
 ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
-3. Get age version of user's ssh key
+3. Get age version of user's ssh key.
 ```shell
-cat ~/.ssh/id_ed25519 | ssh-to-age
+cat ~/.ssh/id_ed25519.pub | ssh-to-age
 ```
-4. Add those keys to `.sops.yaml` to allow decryption of secrets. See [sops](sops.md).
+4. Add the age keys to `.sops.yaml` to allow decryption of secrets. See [sops](sops.md).
+5. Add the primary user's public ssh key to `settings.nix`.
