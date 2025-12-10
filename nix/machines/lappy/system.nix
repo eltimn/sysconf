@@ -49,13 +49,11 @@
 
   # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
   # Exclude some packages from gnome
-  environment.gnome.excludePackages =
-    (with pkgs; [
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
       gnome-photos
       gnome-tour
-      gnome-text-editor
-    ])
-    ++ (with pkgs; [
       cheese # webcam tool
       gnome-music
       epiphany # web browser
@@ -72,7 +70,8 @@
       gnome-weather
       gnome-contacts
       simple-scan
-    ]);
+    ]
+  );
 
   # Cinnamon desktop
   # services.xserver = {

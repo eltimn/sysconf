@@ -28,6 +28,12 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPuurkk9SbjlyP27n5qSA17WCHkqL+3skETa/jIZsGH6 nelly@illmatic"
       ];
     };
+
+    gitEditor = lib.mkOption {
+      type = lib.types.str;
+      default = "nvim";
+      description = "The git editor command.";
+    };
   };
 
   # common config settings

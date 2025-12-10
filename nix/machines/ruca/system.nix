@@ -9,6 +9,8 @@
     ../../services
   ];
 
+  sysconf.settings.gitEditor = "gnome-text-editor -ns";
+
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
@@ -103,13 +105,11 @@
 
   # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
   # Exclude some packages from gnome
-  environment.gnome.excludePackages =
-    (with pkgs; [
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
       gnome-photos
       gnome-tour
-      gnome-text-editor
-    ])
-    ++ (with pkgs; [
       cheese # webcam tool
       gnome-music
       epiphany # web browser
@@ -126,7 +126,8 @@
       gnome-weather
       gnome-contacts
       simple-scan
-    ]);
+    ]
+  );
 
   # Cinnamon desktop
   # services.xserver = {

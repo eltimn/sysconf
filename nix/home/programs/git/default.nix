@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, osConfig, ... }:
 
 {
   sops.secrets = {
@@ -41,7 +41,7 @@
       };
 
       core = {
-        editor = "nvim";
+        editor = osConfig.sysconf.settings.gitEditor;
       };
 
       diff = {
