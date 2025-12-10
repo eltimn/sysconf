@@ -1,4 +1,11 @@
-home.eltimn.com {
+# so caddy doesn't use my local CoreDNS for ACME DNS-01 challenges,
+# which is authoritative for home.eltimn.com locally, but doesn't exist publicly.
+_acme-challenge.home.eltimn.com:53 {
+	forward . 1.1.1.1
+	log
+}
+
+home.eltimn.com:53 {
 	file /etc/coredns/home-eltimn-com.zone
 	cache
 	log

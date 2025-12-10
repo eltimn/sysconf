@@ -5,6 +5,10 @@
 }:
 
 {
+  imports = [
+    ../../services
+  ];
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -20,7 +24,6 @@
   networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
   # Define a user account.
-  # sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
   users = {
     # groups = {
     #   podman = { };
@@ -35,8 +38,6 @@
           "networkmanager"
           "podman"
         ];
-        # hashedPasswordFile =
-        #   config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
       };
@@ -48,6 +49,10 @@
       # };
     };
   };
+
+  sops.age.sshKeyPaths = [
+    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -143,21 +148,22 @@
   #   ];
   # };
 
-  system.stateVersion = "25.11"; # Don't touch unless installing a new system
-
-  # Optimization settings and garbage collection automation
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
-    };
+  # service options
+  sysconf.services.caddy = {
+    enable = true;
+    domain = "home.eltimn.com";
   };
+  sysconf.services.coredns = {
+    enable = true;
+  };
+  sysconf.services.jellyfin = {
+    enable = true;
+  };
+  sysconf.services.ntfy = {
+    enable = true;
+    port = 8082;
+    baseUrl = "https://ntfy.home.eltimn.com";
+  };
+
+  system.stateVersion = "25.11"; # Don't touch unless installing a new system
 }

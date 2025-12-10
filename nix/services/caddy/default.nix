@@ -38,33 +38,41 @@ in
       # https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates
       # acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
       email = "{env.CF_EMAIL}";
-      globalConfig = ''
-        				acme_dns cloudflare {env.CF_API_TOKEN}
-        			'';
 
       virtualHosts."*.${cfg.domain}" = {
         extraConfig = ''
-          					@jellyfin host jellyfin.${cfg.domain}
-          					handle @jellyfin {
-          						reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
-          					}
+          tls {
+            dns cloudflare {env.CF_API_TOKEN}
+          }
+          @unifi host unifi.${cfg.domain}
+          handle @unifi {
+            reverse_proxy https://router.${cfg.domain} {
+              transport http {
+                tls_insecure_skip_verify # unifi uses self-signed certs
+              }
+            }
+          }
+          @jellyfin host jellyfin.${cfg.domain}
+          handle @jellyfin {
+            reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
+          }
 
-          					@ntfy host ntfy.${cfg.domain}
-          					handle @ntfy {
-          						reverse_proxy localhost:${toString config.sysconf.services.ntfy.port}
-          						@httpget {
-          							protocol http
-          							method GET
-          							path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
-          						}
-          						redir @httpget https://{host}{uri}
-          					}
+          @ntfy host ntfy.${cfg.domain}
+          handle @ntfy {
+            reverse_proxy localhost:${toString config.sysconf.services.ntfy.port}
+            @httpget {
+              protocol http
+              method GET
+              path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
+            }
+            redir @httpget https://{host}{uri}
+          }
 
-          					# Fallback for otherwise unhandled domains
-          					handle {
-          						abort
-          					}
-          				'';
+          # Fallback for otherwise unhandled domains
+          handle {
+            abort
+          }
+        '';
       };
     };
 

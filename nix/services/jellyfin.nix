@@ -27,3 +27,7 @@ in
     # };
   };
 }
+
+# Manual settings
+# Guide data provider: https://www.xmltvlistings.com/xmltv/download/VU3PEWZMXJ/10125
+# M3U tuner example: https://iptv-org.github.io/iptv/categories/outdoor.m3u

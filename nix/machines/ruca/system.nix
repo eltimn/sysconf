@@ -85,8 +85,6 @@
   #   package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   # };
 
-  sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
-
   # Define a user account.
   users.users."${config.sysconf.settings.primaryUsername}" = {
     isNormalUser = true;
@@ -95,11 +93,13 @@
       "wheel"
       "networkmanager"
     ];
-    hashedPasswordFile =
-      config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
     openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
     shell = pkgs.zsh;
   };
+
+  sops.age.sshKeyPaths = [
+    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
+  ];
 
   # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
   # Exclude some packages from gnome
@@ -208,40 +208,10 @@
     };
   };
 
-  # state version
-  system.stateVersion = "24.11"; # Don't touch
-
-  # Optimization settings and garbage collection automation
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
-    };
-  };
-
-  # service options
-  sysconf.services.caddy = {
-    enable = true;
-    domain = "home.eltimn.com";
-  };
   sysconf.services.coredns = {
     enable = true;
   };
-  sysconf.services.jellyfin = {
-    enable = true;
-  };
-  sysconf.services.ntfy = {
-    enable = true;
-    port = 8082;
-    baseUrl = "https://ntfy.home.eltimn.com";
-  };
 
+  # state version
+  system.stateVersion = "24.11"; # Don't touch
 }
