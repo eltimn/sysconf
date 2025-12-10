@@ -11,6 +11,20 @@ TODO: Create a first install "host" machine configuration that doesn't include a
 ## Guide
 
 1. Configure and format disks as described in [NixOS Manual Installation Guide](https://nixos.org/manual/nixos/stable/#sec-installation-manual) either beforehand or after booting into iso LiveCD.
+```shell
+# partition table
+parted /dev/sda -- mklabel gpt
+# root and swap partitions
+parted /dev/sda -- mkpart root ext4 512MB -8GB
+parted /dev/sda -- mkpart swap linux-swap -8GB 100%
+# boot partition
+parted /dev/sda -- mkpart ESP fat32 1MB 512MB
+parted /dev/sda -- set 3 esp on
+# format
+mkfs.ext4 -L nixos /dev/sda1
+mkswap -L swap /dev/sda2
+mkfs.fat -F 32 -n boot /dev/sda3
+```
 2. Boot into iso LiveCD.
 3. Set some env vars:
 ```shell
