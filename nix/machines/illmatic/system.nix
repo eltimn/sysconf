@@ -164,6 +164,11 @@
     port = 8082;
     baseUrl = "https://ntfy.home.eltimn.com";
   };
+  sysconf.services.opencloud = {
+    enable = true;
+    port = 8083;
+    baseUrl = "https://cloud.home.eltimn.com";
+  };
 
   system.stateVersion = "25.11"; # Don't touch unless installing a new system
 }

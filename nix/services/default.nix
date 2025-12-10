@@ -4,6 +4,6 @@
     ./coredns
     ./jellyfin.nix
     ./ntfy
-    #./traefik
+    ./opencloud.nix
   ];
 }

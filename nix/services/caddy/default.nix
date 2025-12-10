@@ -44,6 +44,7 @@ in
           tls {
             dns cloudflare {env.CF_API_TOKEN}
           }
+
           @unifi host unifi.${cfg.domain}
           handle @unifi {
             reverse_proxy https://router.${cfg.domain} {
@@ -52,6 +53,7 @@ in
               }
             }
           }
+
           @jellyfin host jellyfin.${cfg.domain}
           handle @jellyfin {
             reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
@@ -66,6 +68,11 @@ in
               path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
             }
             redir @httpget https://{host}{uri}
+          }
+
+          @cloud host cloud.${cfg.domain}
+          handle @cloud {
+            reverse_proxy localhost:${toString config.sysconf.services.opencloud.port}
           }
 
           # Fallback for otherwise unhandled domains
