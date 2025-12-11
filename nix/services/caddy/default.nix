@@ -72,7 +72,7 @@ in
 
           @cloud host cloud.${cfg.domain}
           handle @cloud {
-            reverse_proxy localhost:${toString config.sysconf.services.opencloud.port}
+            reverse_proxy https://localhost:${toString config.sysconf.services.opencloud.port}
           }
 
           # Fallback for otherwise unhandled domains

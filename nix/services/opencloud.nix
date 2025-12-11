@@ -22,6 +22,11 @@ in
       enable = true;
       url = cfg.baseUrl;
       port = cfg.port;
+      settings = {
+        environment = {
+          FRONTEND_CHECK_FOR_UPDATES = false;
+        };
+      };
     };
   };
 }
