@@ -49,7 +49,7 @@ in
           handle @unifi {
             reverse_proxy https://router.${cfg.domain} {
               transport http {
-                tls_insecure_skip_verify # unifi uses self-signed certs
+                tls_insecure_skip_verify # uses self-signed certs
               }
             }
           }
@@ -72,10 +72,12 @@ in
 
           @cloud host cloud.${cfg.domain}
           handle @cloud {
-            reverse_proxy https://localhost:${toString config.sysconf.services.opencloud.port}
-            transport http {
-              tls_insecure_skip_verify # uses self-signed certs
+            reverse_proxy https://localhost:${toString config.sysconf.services.opencloud.port} {
+              transport http {
+                tls_insecure_skip_verify # uses self-signed certs
+              }
             }
+
           }
 
           # Fallback for otherwise unhandled domains
