@@ -73,6 +73,9 @@ in
           @cloud host cloud.${cfg.domain}
           handle @cloud {
             reverse_proxy https://localhost:${toString config.sysconf.services.opencloud.port}
+            transport http {
+              tls_insecure_skip_verify # uses self-signed certs
+            }
           }
 
           # Fallback for otherwise unhandled domains
