@@ -5,9 +5,9 @@
   "explorer.openEditors.visible": 3,
   "editor.tabSize": 2,
   "files.trimTrailingWhitespace": true,
-  // "workbench.colorCustomizations": {
-  //   "editor.background": "#eef5eb",
-  // },
+  "workbench.colorCustomizations": {
+    "editor.background": "#eef5eb",
+  },
   "window.titleBarStyle": "custom",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "none",
@@ -144,5 +144,5 @@
   "explorer.confirmDelete": false,
   "makefile.configureOnOpen": false,
   "chat.disableAIFeatures": false,
-  "workbench.colorTheme": "Visual Studio Dark"
+  "workbench.colorTheme": "Visual Studio Light"
 }
