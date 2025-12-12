@@ -15,7 +15,6 @@
     ../../home/programs/direnv.nix
     ../../home/programs/firefox.nix
     ../../home/programs/tmux.nix
-    # ../../system/sops.nix
   ];
 
   # fonts.fontconfig.enable = true;

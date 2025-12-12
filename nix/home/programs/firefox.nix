@@ -15,6 +15,7 @@
       extensions.packages = with pkgs.firefox-addons; [
         bitwarden
         privacy-badger
+        tranquility-1
         # video-downloadhelper # can't get allowUnfree to work
       ];
 

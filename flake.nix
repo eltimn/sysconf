@@ -29,7 +29,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zen-browser-flake.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser-flake = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
     isd-flake.url = "github:isd-project/isd"; # systemd tui
   };
 
