@@ -86,17 +86,17 @@
     # journalctl --user -u backup-XXX -f # follows
     # journalctl --user -xeu backup-XXX # pages down to end and adds more info
     services = {
-      backup-borg = {
-        Unit = {
-          Description = "Backup computer files using borg.";
-          Requires = "backup-borg.timer";
-          OnFailure = "notify@%i.service";
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-borg";
-        };
-      };
+      # backup-borg = {
+      #   Unit = {
+      #     Description = "Backup computer files using borg.";
+      #     Requires = "backup-borg.timer";
+      #     OnFailure = "notify@%i.service";
+      #   };
+      #   Service = {
+      #     Type = "simple";
+      #     ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-borg";
+      #   };
+      # };
 
       backup-secrets = {
         Unit = {
@@ -138,20 +138,20 @@
     # OnStartupSec - Triggers the service to run this amount of time after login, since this is a user service.
     # OnUnitActiveSec - Triggers the service to run this amount of time after the last execution ("last activated").
     timers = {
-      backup-borg = {
-        Unit = {
-          Description = "Timer for the backup-borg.service";
-        };
+      # backup-borg = {
+      #   Unit = {
+      #     Description = "Timer for the backup-borg.service";
+      #   };
 
-        Timer = {
-          Unit = "backup-borg.service";
-          OnCalendar = "*-*-* 18:00:00"; # daily at 6:00 PM
-        };
+      #   Timer = {
+      #     Unit = "backup-borg.service";
+      #     OnCalendar = "*-*-* 18:00:00"; # daily at 6:00 PM
+      #   };
 
-        Install = {
-          WantedBy = [ "timers.target" ];
-        };
-      };
+      #   Install = {
+      #     WantedBy = [ "timers.target" ];
+      #   };
+      # };
 
       backup-secrets = {
         Unit = {
