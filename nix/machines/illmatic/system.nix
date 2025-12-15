@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ../../services
+    ../../system/services
   ];
 
   # Bootloader

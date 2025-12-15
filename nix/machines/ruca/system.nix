@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ../../services
+    ../../system/services
   ];
 
   sysconf.settings.gitEditor = "gnome-text-editor -ns";
