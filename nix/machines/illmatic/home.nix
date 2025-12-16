@@ -95,6 +95,8 @@
     containers = {
       "channels-dvr" = {
         image = "docker.io/fancybits/channels-dvr:latest";
+        # Use host networking so that Bonjour/mDNS works properly
+        network = "host";
         devices = [
           "/dev/dri:/dev/dri"
         ];
@@ -102,7 +104,6 @@
           "${config.home.homeDirectory}/containers/storage/channels-dvr:/channels-dvr"
           "/mnt/channels:/shares/DVR"
         ];
-        ports = [ "8089:8089" ];
       };
     };
   };

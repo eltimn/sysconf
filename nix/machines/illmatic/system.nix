@@ -50,14 +50,6 @@
     };
   };
 
-  # tmpfiles
-  # Check current configuration: `systemd-tmpfiles --user --tldr`
-  systemd.user.tmpfiles.users."${config.sysconf.settings.primaryUsername}".rules = [
-    "d ${
-      config.users.users.${config.sysconf.settings.primaryUsername}.home
-    }/containers/storage/channels-dvr 0770 ${config.sysconf.settings.primaryUsername} users -"
-  ];
-
   # sops
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
@@ -163,6 +155,23 @@
     port = 8082;
     baseUrl = "https://ntfy.home.eltimn.com";
   };
+
+  # Channels DVR settings
+  # Check current configuration: `systemd-tmpfiles --user --tldr`
+  systemd.user.tmpfiles.users."${config.sysconf.settings.primaryUsername}".rules = [
+    "d ${
+      config.users.users.${config.sysconf.settings.primaryUsername}.home
+    }/containers/storage/channels-dvr 0770 ${config.sysconf.settings.primaryUsername} users -"
+  ];
+
+  # It only seems to work with these ports opened and `network = "host"` set in the container.
+  networking.firewall.allowedTCPPorts = [
+    8089 # channels-dvr web interface
+  ];
+
+  networking.firewall.allowedUDPPorts = [
+    5353 # channels-dvr Bonjour/mDNS
+  ];
 
   system.stateVersion = "25.11"; # Don't touch unless installing a new system
 }
