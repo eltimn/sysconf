@@ -171,6 +171,7 @@
       devShells.${pkgs.stdenv.hostPlatform.system}.default = pkgs.mkShell {
         packages = with pkgs; [
           age
+          borgbackup
           caddy
           go-task
           sops

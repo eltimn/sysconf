@@ -209,6 +209,7 @@
     };
   };
 
+  # sysconf services
   sysconf.services.coredns = {
     enable = true;
   };

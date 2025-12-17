@@ -59,7 +59,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     age
-    # borgbackup
+    borgbackup
     gum
     jq
     parted
@@ -173,5 +173,6 @@
     5353 # channels-dvr Bonjour/mDNS
   ];
 
+  ## system
   system.stateVersion = "25.11"; # Don't touch unless installing a new system
 }

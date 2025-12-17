@@ -107,6 +107,7 @@ backup_local_dir secret-cipher
 
 backup_code_dir code
 backup_code_dir sandbox
+backup_code_dir sysconf
 
 # backup databases
 # backup_mongo localhost:2700 acm-web

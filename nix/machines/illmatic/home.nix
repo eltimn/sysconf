@@ -6,6 +6,7 @@
 
   imports = [
     ../../home/common
+    ../../home/programs/backup.nix
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/tmux.nix
@@ -33,6 +34,28 @@
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
+  };
+
+  # sysconf programs
+  sysconf = {
+    programs.backup = {
+      enable = true;
+      repo = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
+      host = "illmatic";
+      backupPaths = [
+        "/mnt/backup/archives"
+        "/mnt/backup/rotozen"
+        "/mnt/backup/ruca/nelly/Audio"
+        "/mnt/backup/ruca/nelly/Documents"
+        "/mnt/backup/ruca/nelly/Notes"
+        "/mnt/backup/ruca/nelly/Pictures"
+        "/mnt/backup/ruca/nelly/secret-cipher"
+        "/mnt/backup/ruca/nelly/sysconf"
+        "/mnt/backup/ruca/nelly/workspaces"
+        "/mnt/backup/ruca/nelly/zen"
+        "/mnt/music"
+      ];
+    };
   };
 
   # Systemd for user services
