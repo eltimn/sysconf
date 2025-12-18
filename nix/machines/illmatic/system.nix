@@ -82,6 +82,11 @@
         PasswordAuthentication = false;
       };
     };
+
+    immich = {
+      enable = true;
+      port = 2283; # default is 2283
+    };
   };
 
   # systemd.tmpfiles.rules = [ "d /srv/nocodb 2770 podman podman -" ];
@@ -149,6 +154,7 @@
   };
   sysconf.services.jellyfin = {
     enable = true;
+    # port = 8096;
   };
   sysconf.services.ntfy = {
     enable = true;

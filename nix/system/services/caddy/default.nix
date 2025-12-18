@@ -73,6 +73,11 @@ in
             redir @httpget https://{host}{uri}
           }
 
+          @pics host pics.${cfg.domain}
+          handle @pics {
+            reverse_proxy localhost:${toString config.services.immich.port}
+          }
+
           # Fallback for otherwise unhandled domains
           handle {
             abort

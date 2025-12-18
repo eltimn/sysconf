@@ -20,6 +20,7 @@ hdhr       IN A     192.168.0.25
 dns0       IN CNAME illmatic
 dns1       IN CNAME ruca
 dvr        IN CNAME illmatic
+pics       IN CNAME illmatic
 unifi      IN CNAME illmatic
 web        IN CNAME illmatic
 www        IN CNAME illmatic
