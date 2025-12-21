@@ -3,7 +3,7 @@ keys:
   users:
     - &nelly-ruca-age age1t9wdp4gya7hqkh3ge08nqsh0jhsfvu52d0qhqvdvrgsxe7c0eeeqnc5ta5
     - &nelly-illmatic age1xx3g7hl89lzlev4rhxdc8nqw0uh7g9tn2v4z82v45ckpcanfvf3s04jpjm
-    - &nelly-lappy age1z9zf7ufj8xnjvphaz845ucpttj0djwz9eet8q3yh0pngrsk53g9swthfn7
+    - &nelly-lappy age1nxdhez8z2fqyz28gy7mfcr0ej3p37twkxueqjxhpyk87kv3x5qkque5gay
   hosts:
     - &illmatic age13wrx8lnaalcp8czcde4z9h8xuagn98xh8kvxz7y0svwygvy7jghq7uqfpk
     - &lappy age1xfhncyzagtkash7uhw2sl9p907hr30fccrs0ugx6kpum9ry8td5q2gemny
