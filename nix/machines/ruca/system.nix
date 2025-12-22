@@ -186,6 +186,7 @@
     # ventoy
     vim
     wget
+    whois
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -208,6 +209,9 @@
       PasswordAuthentication = false;
     };
   };
+
+  # Needed for yubikey
+  services.pcscd.enable = true;
 
   # sysconf services
   sysconf.services.coredns = {

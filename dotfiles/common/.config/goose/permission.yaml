@@ -1,0 +1,5 @@
+user:
+  always_allow: []
+  ask_before:
+  - developer__shell
+  never_allow: []

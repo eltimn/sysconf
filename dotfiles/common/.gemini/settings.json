@@ -1,5 +1,13 @@
 {
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
   "ui": {
-    "theme": "Google Code"
+    "theme": "Default Light"
+  },
+  "ide": {
+    "hasSeenNudge": true
   }
 }

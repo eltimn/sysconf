@@ -42,7 +42,7 @@
         );
 
       nodePkgName = "nodejs_22";
-      goPkgName = "go"; # 1.23
+      goPkgName = "go";
       cgoEnabled = 1;
     in
     {

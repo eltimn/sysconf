@@ -31,14 +31,6 @@ in
   ];
 
   # This section ensures the mount point directory exists and is managed by Nix.
-  # Gemini pipe dream
-  # home.file."${mountPoint}" = {
-  #   type = "directory";
-  #   # Optional: set desired permissions (default is usually fine)
-  #   # The directory must be empty for the FUSE mount to succeed.
-  #   # The 'Private' name will show up as a normal empty folder before mount.
-  #   mode = "0700"; # Owner-only read/write/execute (recommended for private data)
-  # };
   home.activation.createGocryptfsMountPoint = lib.hm.dag.entryAfter [ "copyQuirks" ] ''
     # Create the mount point directory if it does not exist
     mkdir -p ${mountPoint}

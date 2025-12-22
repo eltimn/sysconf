@@ -20,8 +20,9 @@
           github.copilot
           github.copilot-chat
           golang.go
-          hashicorp.terraform
+          # hashicorp.terraform
           jnoortheen.nix-ide
+          kilocode.kilo-code
           # ms-python.python
           # redhat.ansible
           # redhat.vscode-yaml

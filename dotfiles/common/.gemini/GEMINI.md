@@ -1,0 +1,5 @@
+## Gemini Added Memories
+- The user prefers that when I provide a shell command, I should pipe the command string to their clipboard using `echo "command" | xclip -selection clipboard` rather than just displaying it in the chat.
+- I analyzed the 'vaultbinding.pdf' for a customer onboarding process. The process requires customers to send their raw cloud secret keys to a PDS service, which is a major security risk. My recommendation is to replace this with a secure, standard method using AWS IAM Roles and an External ID, which avoids sharing secrets. The manual cURL commands should be automated with a dedicated CLI tool or a Terraform module.
+- To initialize a Nix flake from a GitHub repository template, use the command `nix flake init --template github:OWNER/REPO#TEMPLATE_NAME`. The user will provide the OWNER/REPO and TEMPLATE_NAME. The `flake.nix` file in the root of the project will have a `templates` setting that lists each template and where they are. `nix flake show templates` will show a list of builtin templates.
+- The user uses `codium` as their editor, not `code`. I should use `codium` when referring to their editor.

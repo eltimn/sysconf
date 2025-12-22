@@ -5,8 +5,8 @@
   # ----------- Ollama service -----------------
   services.ollama = {
     enable = true;
-    port = 8888;
-    listenAddress = "127.0.0.1";
+    port = 8080;
+    host = "127.0.0.1"; # default
 
     # Optional extra flags – for example, enable verbose logging:
     # extraOptions = [ "--verbose" ];

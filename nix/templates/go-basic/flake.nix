@@ -38,7 +38,7 @@
           }
         );
 
-      goPkgName = "go"; # 1.23
+      goPkgName = "go";
       cgoEnabled = 0;
     in
     {

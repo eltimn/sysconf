@@ -15,6 +15,7 @@
     ../../home/programs/direnv.nix
     ../../home/programs/firefox.nix
     ../../home/programs/tmux.nix
+    ../../home/services/ollama.nix
   ];
 
   # fonts.fontconfig.enable = true;
@@ -29,8 +30,11 @@
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
-      ollama
+      gemini-cli
+      goose-cli
+      nodejs # needed for gemini nanobanana extension
       yubioath-flutter
+      vhs
     ];
 
     # List of extra paths to include in the user profile.
@@ -44,7 +48,12 @@
     # List of environment variables.
     sessionVariables = {
       EDITOR = "codium --new-window --wait";
+      OLLAMA_HOST = "http://localhost:8080";
       # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
+      GOOSE_PROVIDER = "ollama";
+      GOOSE_MODEL = "qwen3-coder:480b-cloud";
+      GOOSE_LEAD_PROVIDER = "gemini-cli";
+      GOOSE_LEAD_MODEL = "gemini-3-pro";
     };
 
     # some files

@@ -144,5 +144,9 @@
   "explorer.confirmDelete": false,
   "makefile.configureOnOpen": false,
   "chat.disableAIFeatures": false,
-  "workbench.colorTheme": "Visual Studio Light"
+  "workbench.colorTheme": "Visual Studio Light",
+  "http.systemCertificatesNode": true,
+  "geminicodeassist.project": "tim-sandbox-481415",
+  "github.copilot.chat.byok.ollamaEndpoint": "http://127.0.0.1:8080",
+  "claudeCode.preferredLocation": "panel"
 }
