@@ -47,3 +47,18 @@ extensions:
     timeout: 300
     bundled: true
     available_tools: []
+  goosedocs:
+    enabled: true
+    type: stdio
+    name: goose Docs
+    description: GitMCP for goose documentation
+    cmd: npx
+    args:
+    - mcp-remote
+    - https://block.gitmcp.io/goose/
+    envs: {}
+    env_keys: []
+    timeout: 300
+    bundled: null
+    available_tools: []
+GOOSE_MODE: smart_approve

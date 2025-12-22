@@ -218,6 +218,7 @@
     enable = true;
   };
 
+
   # state version
   system.stateVersion = "24.11"; # Don't touch
 }

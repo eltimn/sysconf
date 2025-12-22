@@ -32,7 +32,7 @@
     packages = with pkgs; [
       gemini-cli
       goose-cli
-      nodejs # needed for gemini nanobanana extension
+      nodejs # npx is needed for MCP servers
       yubioath-flutter
       vhs
     ];
@@ -49,11 +49,10 @@
     sessionVariables = {
       EDITOR = "codium --new-window --wait";
       OLLAMA_HOST = "http://localhost:8080";
-      # JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64";
+      # Global defaults for goose
       GOOSE_PROVIDER = "ollama";
-      GOOSE_MODEL = "qwen3-coder:480b-cloud";
-      GOOSE_LEAD_PROVIDER = "gemini-cli";
-      GOOSE_LEAD_MODEL = "gemini-3-pro";
+      GOOSE_MODEL = "qwen3-next:80b-cloud";
+      GOOSE_MODE = "smart_approve";
     };
 
     # some files

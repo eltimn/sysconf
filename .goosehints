@@ -1,0 +1,36 @@
+# Goose Sysconf Hints
+This file provides context for AI assistants interacting with this repository.
+## Project Overview
+This repository contains the complete NixOS and Home Manager configurations for managing multiple computer systems. The primary goal is to define the entire system state declaratively using the Nix language, facilitating reproducible builds and simplified system management.
+- **Primary Technology**: Nix, NixOS, Home Manager
+- **Configuration Language**: Nix
+- **Secret Management**: SOPS with age
+- **Previous Technology (Deprecated)**: Ansible
+## Repository Structure
+- `nix/`: Contains all NixOS and Home Manager configurations.
+- `machines/`: Host-specific configurations (e.g., `cbox`, `illmatic`, `lappy`, `ruca`). Each host has a `system.nix` for system-level settings and a `home.nix` for user-level (Home Manager) settings.
+- `home/`: Shared Home Manager configurations, organized into common settings, programs, and services.
+- `system/`: Shared NixOS system-level configurations.
+- `templates/`: Nix flake templates for bootstrapping new projects.
+- `dotfiles/`: Contains dotfiles managed outside of Nix/Home Manager, symlinked into place.
+- `ansible/`: Deprecated Ansible playbooks. Not in active use.
+- `flake.nix`: The entry point for the Nix configuration, defining flake outputs for each machine.
+## Host Information
+The following hosts are managed by this configuration:
+- **cbox**: Home Server
+- **illmatic**: Home Server/NAS
+- **lappy**: Laptop
+- **ruca**: Main desktop
+## Common Tasks
+
+This project uses `task` (from [taskfile.dev](https://taskfile.dev)) to automate common operations.
+
+- **`task build`**: Build the current flake configuration.
+- **`task switch`**: Build and switch to the new system configuration.
+- **`task boot`**: Build the configuration and set it as the boot default.
+- **`task update`**: Update all flake inputs and the lock file.
+- **`task dotfiles`**: Symlink dotfiles into the home directory using `stow`.
+- **`task gc`**: Run garbage collection to remove old, unused packages.
+- **`task iso`**: Build a bootable installer ISO.
+## Secret Management
+Secrets are managed using `sops-nix`. Encrypted files are stored in the `secrets/` directory and are decrypted at build time using age keys. The master key is not stored in this repository.
