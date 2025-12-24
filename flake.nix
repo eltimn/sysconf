@@ -174,6 +174,7 @@
           borgbackup
           caddy
           go-task
+          pipx
           sops
           ssh-to-age
         ];

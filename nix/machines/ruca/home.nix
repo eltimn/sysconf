@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   osConfig,
   ...
 }:
@@ -29,13 +30,17 @@
     stateVersion = "24.11";
 
     # Packages that should be installed to the user profile.
-    packages = with pkgs; [
-      gemini-cli
-      goose-cli
-      nodejs # npx is needed for MCP servers
-      yubioath-flutter
-      vhs
-    ];
+    packages =
+      with pkgs;
+      [
+        claude-code
+        gemini-cli
+        goose-cli
+        nodejs # npx is needed for MCP servers
+        yubioath-flutter
+        vhs
+      ]
+      ++ [ pkgs-unstable.lmstudio ];
 
     # List of extra paths to include in the user profile.
     sessionPath = [
@@ -43,6 +48,7 @@
       "$HOME/bin/common"
       "$HOME/bin/desktop"
       "$HOME/go/bin"
+      "$HOME/.local/bin"
     ];
 
     # List of environment variables.
@@ -83,6 +89,40 @@
       enable = true;
       enableZshIntegration = true;
     };
+
+    opencode = {
+      enable = true;
+      package = pkgs-unstable.opencode;
+
+      settings = {
+        provider = {
+          ollama = {
+            npm = "@ai-sdk/openai-compatible";
+            name = "Ollama (local)";
+            options = {
+              baseURL =
+                "http://"
+                + config.sysconf.home.services.ollama.host
+                + ":"
+                + toString config.sysconf.home.services.ollama.port;
+            };
+            models = {
+              llama = {
+                name = "Llama 3.2";
+                id = "a80c4f17acd5";
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+
+  # sysconf home services
+  sysconf.home.services.ollama = {
+    enable = true;
+    port = 8080; # optional, defaults to 8080
+    host = "127.0.0.1"; # optional, defaults to 127.0.0.1
   };
 
   # Systemd for user services
