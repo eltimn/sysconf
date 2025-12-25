@@ -173,6 +173,7 @@
   # It only seems to work with these ports opened and `network = "host"` set in the container.
   networking.firewall.allowedTCPPorts = [
     8089 # channels-dvr web interface
+    5353
   ];
 
   networking.firewall.allowedUDPPorts = [
