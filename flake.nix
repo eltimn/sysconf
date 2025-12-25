@@ -157,7 +157,7 @@
           src = prev.fetchFromGitHub {
             owner = "NixOS";
             repo = "nix";
-            rev = "2.33.0"; # or specific commit
+            rev = "231d5b41ed1b4b65f4cb875994691a4e40b150d9"; # or specific commit
             hash = "sha256-pdq+D7UXGaWbmc0Y9ZUQl2oswoYc4Om4EVePKKa9CK8=";
           };
         });
