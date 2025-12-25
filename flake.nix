@@ -152,6 +152,15 @@
         zen-browser = inputs.zen-browser-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
+        nix-2-33 = prev.nix.overrideAttrs (oldAttrs: {
+          version = "2.33.0";
+          src = prev.fetchFromGitHub {
+            owner = "NixOS";
+            repo = "nix";
+            rev = "2.33.0"; # or specific commit
+            hash = "sha256-pdq+D7UXGaWbmc0Y9ZUQl2oswoYc4Om4EVePKKa9CK8=";
+          };
+        });
       };
 
       # Home Manager configurations. Non-nixos hosts.

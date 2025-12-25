@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   options.sysconf.settings = {
@@ -62,6 +67,7 @@
 
     # Optimization settings and garbage collection automation
     nix = {
+      package = pkgs.nix-2-33;
       settings = {
         auto-optimise-store = true;
         experimental-features = [

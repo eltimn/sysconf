@@ -23,9 +23,7 @@
     "sr_mod"
   ];
 
-  # amd gpu
-  # boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.initrd.kernelModules = [ ];
+  # kernel modules
   boot.kernelModules = [
     "kvm-amd"
     "amdgpu"
