@@ -158,7 +158,7 @@
             owner = "NixOS";
             repo = "nix";
             rev = "231d5b41ed1b4b65f4cb875994691a4e40b150d9"; # or specific commit
-            hash = "sha256-pdq+D7UXGaWbmc0Y9ZUQl2oswoYc4Om4EVePKKa9CK8=";
+            hash = "sha256-aVwmNDnTOYZZQbTy++rYS0NOGEu9Zwljg3+TXJmw4TE=";
           };
         });
       };
