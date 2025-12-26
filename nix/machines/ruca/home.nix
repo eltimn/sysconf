@@ -37,6 +37,7 @@ in
     packages =
       with pkgs;
       [
+        amdgpu
         claude-code
         gemini-cli
         goose-cli
@@ -63,6 +64,8 @@ in
       GOOSE_PROVIDER = "ollama";
       GOOSE_MODEL = "qwen3-next:80b-cloud";
       GOOSE_MODE = "smart_approve";
+      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
+      OLLAMA_CONTEXT_LENGTH = "32000";
     };
 
     # some files

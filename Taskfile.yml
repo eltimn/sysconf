@@ -39,6 +39,11 @@ tasks:
     cmds:
       - "{{.NIX_CMD}} boot --flake .{{.CLI_ARGS}}"
 
+  deploy:
+    desc: Deploy configuration to remote host
+    cmds:
+      - sudo nixos-rebuild switch --flake .#{{.CLI_ARGS}} --target-host {{.CLI_ARGS}} --use-remote-sudo
+
   option:
     desc: Show the calculated value of a flake option.
     cmds:

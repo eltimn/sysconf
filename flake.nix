@@ -37,6 +37,7 @@
       };
     };
     isd-flake.url = "github:isd-project/isd"; # systemd tui
+    fresh-flake.url = "github:sinelaw/fresh"; # terminal text editor
   };
 
   outputs =
@@ -152,6 +153,7 @@
         zen-browser = inputs.zen-browser-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
+        fresh-editor = inputs.fresh-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         nix-2-33 = prev.nix.overrideAttrs (oldAttrs: {
           version = "2.33.0";
           src = prev.fetchFromGitHub {
