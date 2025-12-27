@@ -148,5 +148,11 @@
   "geminicodeassist.project": "tim-sandbox-481415",
   "github.copilot.chat.byok.ollamaEndpoint": "http://127.0.0.1:8080",
   "claudeCode.preferredLocation": "panel",
-  "workbench.colorTheme": "Default Light Modern"
+  "workbench.colorTheme": "Default Light Modern",
+  "kilo-code.allowedCommands": [
+    "git log",
+    "git diff",
+    "git show"
+  ],
+  "kilo-code.deniedCommands": []
 }

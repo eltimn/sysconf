@@ -53,7 +53,6 @@
         inherit system;
         config = {
           allowUnfree = true;
-          rocmSupport = true;
         };
         overlays = [ self.overlays.default ];
       };

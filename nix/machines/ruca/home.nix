@@ -37,15 +37,18 @@ in
     packages =
       with pkgs;
       [
-        amdgpu
         claude-code
         gemini-cli
         goose-cli
         nodejs # npx is needed for MCP servers
         yubioath-flutter
         vhs
+        vulkan-tools
       ]
-      ++ [ pkgs-unstable.lmstudio ];
+      ++ [
+        pkgs-unstable.lmstudio
+        pkgs-unstable.radeontop
+      ];
 
     # List of extra paths to include in the user profile.
     sessionPath = [
@@ -65,7 +68,6 @@ in
       GOOSE_MODEL = "qwen3-next:80b-cloud";
       GOOSE_MODE = "smart_approve";
       LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
-      OLLAMA_CONTEXT_LENGTH = "32000";
     };
 
     # some files

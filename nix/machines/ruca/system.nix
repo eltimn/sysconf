@@ -24,7 +24,12 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages = [ pkgs.rocmPackages.clr.icd ];
+    extraPackages = [
+      pkgs.rocmPackages.clr.icd
+      pkgs.vulkan-loader
+      pkgs.vulkan-tools
+      pkgs.vulkan-headers
+    ];
   };
 
   # security.sudo.execWheelOnly = true;
@@ -217,20 +222,25 @@
   # Ollama service
   services.ollama = {
     enable = true;
-    package = pkgs-unstable.ollama;
+    package = pkgs-unstable.ollama-vulkan;
 
-    # loadModels = [
-    #   "llama3.2:3b"
-    #   "deepseek-r1:7b"
-    #   "deepseek-r1:8b"
-    # ];
+    loadModels = [
+      "gpt-oss:20b"
+      "llama3.2:3b"
+      "devstral-small-2:24b"
+      "qwen3-coder:30b"
+      # "deepseek-r1:7b"
+      # "deepseek-r1:8b"
+    ];
 
-    acceleration = "rocm";
+    acceleration = "vulkan";
     host = "127.0.0.1";
     port = 11434;
     openFirewall = false;
     environmentVariables = {
       OLLAMA_DEBUG = "2";
+      OLLAMA_CONTEXT_LENGTH = "8192";
+      GGML_VK_VISIBLE_DEVICES = "1"; # Use only R9700 (GPU1 in Vulkan), not iGPU (GPU0)
     };
   };
 
@@ -240,9 +250,10 @@
     ollamaUrl = "http://127.0.0.1:" + toString config.services.ollama.port;
   };
 
-  # ollama config
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  # Add Ollama to video and render groups for GPU access
+  systemd.services.ollama.serviceConfig.SupplementaryGroups = [
+    "video"
+    "render"
   ];
 
   # sysconf services

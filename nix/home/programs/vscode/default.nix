@@ -16,6 +16,7 @@
 
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
+          continue.continue
           editorconfig.editorconfig
           github.copilot
           github.copilot-chat
