@@ -6,7 +6,7 @@
 
   imports = [
     ../../home/common
-    ../../home/programs/backup.nix
+    ../../home/programs
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/tmux.nix

@@ -14,13 +14,13 @@ in
   imports = [
     ../../home/common
     ../../home/desktop
+    ../../home/programs
     ../../home/programs/git
     ../../home/programs/vscode
     ../../home/programs/zsh
     ../../home/programs/direnv.nix
     ../../home/programs/firefox.nix
     ../../home/programs/tmux.nix
-    ../../home/services/ollama.nix
   ];
 
   # fonts.fontconfig.enable = true;
@@ -38,6 +38,8 @@ in
       with pkgs;
       [
         claude-code
+        crush
+        fresh-editor
         gemini-cli
         goose-cli
         nodejs # npx is needed for MCP servers
@@ -46,7 +48,7 @@ in
         vulkan-tools
       ]
       ++ [
-        pkgs-unstable.lmstudio
+        # pkgs-unstable.lmstudio
         pkgs-unstable.radeontop
       ];
 
@@ -94,36 +96,18 @@ in
     # error(gtk_surface): surface failed to realize: Failed to create EGL display
     # warning(gtk_surface): this error is usually due to a driver or gtk bug
     # warning(gtk_surface): this is a common cause of this issue: https://gitlab.gnome.org/GNOME/gtk/-/issues/4950
-    ghostty = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+    # ghostty = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    # };
 
-    opencode = {
-      enable = true;
-      package = pkgs-unstable.opencode;
-
-      settings = {
-        provider = {
-          ollama = {
-            npm = "@ai-sdk/openai-compatible";
-            name = "Ollama (local)";
-            options = {
-              baseURL = "http://" + osConfig.services.ollama.host + ":" + toString osConfig.services.ollama.port;
-            };
-            models = {
-              llama = {
-                name = "Llama 3.2";
-                id = "a80c4f17acd5";
-              };
-            };
-          };
-        };
-      };
-    };
+    zed-editor.enable = true;
   };
 
-  # Systemd for user services
+  # Enable any program modules
+  sysconf.home.programs.opencode.enable = true;
+
+  # Systemd user services
   systemd.user = {
     enable = true;
 

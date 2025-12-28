@@ -38,6 +38,7 @@
     };
     isd-flake.url = "github:isd-project/isd"; # systemd tui
     fresh-flake.url = "github:sinelaw/fresh"; # terminal text editor
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs =
@@ -54,7 +55,10 @@
         config = {
           allowUnfree = true;
         };
-        overlays = [ self.overlays.default ];
+        overlays = [
+          inputs.nix-vscode-extensions.overlays.default
+          self.overlays.default
+        ];
       };
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;

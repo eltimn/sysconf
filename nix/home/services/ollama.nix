@@ -1,3 +1,4 @@
+# Not in use. See system.services.ollama in machine system.nix
 {
   config,
   lib,
