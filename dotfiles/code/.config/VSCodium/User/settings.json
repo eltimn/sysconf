@@ -5,9 +5,9 @@
   "explorer.openEditors.visible": 3,
   "editor.tabSize": 2,
   "files.trimTrailingWhitespace": true,
-  "workbench.colorCustomizations": {
-    "editor.background": "#eef5eb",
-  },
+  // "workbench.colorCustomizations": {
+  //   "editor.background": "#eef5eb",
+  // },
   "window.titleBarStyle": "custom",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "none",
@@ -151,5 +151,5 @@
     "git show"
   ],
   "kilo-code.deniedCommands": [],
-  "workbench.colorTheme": "Default Light+"
+  "workbench.colorTheme": "Yukinord"
 }

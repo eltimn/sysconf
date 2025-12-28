@@ -77,7 +77,7 @@ in
       "export BACKUP_DIRS='Audio Documents Notes Pictures code secret-cipher sysconf'";
     # autostart files (run on login)
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
-    file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
+    # file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
   };
 
   # Packages that are installed as programs also allow for configuration.
@@ -127,6 +127,22 @@ in
       #     ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-borg";
       #   };
       # };
+
+      mount-secret = {
+        Unit = {
+          Description = "Mount encrypted secret directory with gocryptfs";
+          After = "gnome-keyring.service";
+        };
+        Service = {
+          Type = "forking";
+          Environment = "PATH=/run/wrappers/bin:${pkgs.gocryptfs}/bin:${pkgs.libsecret}/bin";
+          ExecStart = "${pkgs.gocryptfs}/bin/gocryptfs --extpass='${pkgs.libsecret}/bin/secret-tool lookup gocryptfs secret' ${config.home.homeDirectory}/secret-cipher ${config.home.homeDirectory}/secret";
+          ExecStop = "/run/wrappers/bin/fusermount -u ${config.home.homeDirectory}/secret";
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+      };
 
       backup-secrets = {
         Unit = {

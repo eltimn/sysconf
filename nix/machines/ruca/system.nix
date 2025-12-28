@@ -8,19 +8,22 @@
 {
   imports = [
     ../../system
-    ../../system/gnome.nix
+    # ../../system/gnome.nix
+    ../../system/cosmic.nix
   ];
 
-  sysconf.settings.gitEditor = "gnome-text-editor -ns";
+  # sysconf.settings.gitEditor = "gnome-text-editor -ns";
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
 
   # GNOME specific configuration
-  sysconf.system.gnome = {
-    videoDrivers = [ "amdgpu" ];
-  };
+  # sysconf.system.gnome = {
+  #   videoDrivers = [ "amdgpu" ];
+  # };
+
+  sysconf.system.cosmic.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -54,19 +57,6 @@
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
-
-  # Cinnamon desktop
-  # services.xserver = {
-  #   enable = true;
-  #   libinput.enable = true;
-  #   displayManager.lightdm.enable = true;
-  #   desktopManager = { cinnamon.enable = true; };
-  #   displayManager.defaultSession = "cinnamon";
-  #   xkb = {
-  #     layout = "us";
-  #     variant = "";
-  #   };
-  # };
 
   # Enable CUPS to print documents.
   services.printing = {

@@ -6,7 +6,11 @@
       "Bash(nix eval:*)",
       "Bash(nix-instantiate:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(nix search:*)",
+      "Bash(journalctl:*)",
+      "Bash(echo:*)",
+      "Bash(env)"
     ],
     "deny": [],
     "ask": []
