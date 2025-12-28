@@ -10,7 +10,8 @@
       "Bash(nix search:*)",
       "Bash(journalctl:*)",
       "Bash(echo:*)",
-      "Bash(env)"
+      "Bash(env)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
