@@ -34,19 +34,6 @@
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
 
-  # Cinnamon desktop
-  # services.xserver = {
-  #   enable = true;
-  #   libinput.enable = true;
-  #   displayManager.lightdm.enable = true;
-  #   desktopManager = { cinnamon.enable = true; };
-  #   displayManager.defaultSession = "cinnamon";
-  #   xkb = {
-  #     layout = "us";
-  #     variant = "";
-  #   };
-  # };
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -89,26 +76,6 @@
   programs.zsh.enable = true;
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh = {
-  #   enable = true;
-  #   openFirewall = true;
-  #   allowSFTP = false;
-  #   settings = {
-  #     PermitRootLogin = "no";
-  #     PasswordAuthentication = false;
-  #     AllowUsers = [ "${config.sysconf.settings.primaryUsername}" ];
-  #     X11Forwarding = false;
-  #     UsePAM = true;
-  #     extraConfig = ''
-  #       AllowTcpForwarding yes
-  #       AllowAgentForwarding no
-  #       AllowStreamLocalForwarding no
-  #       AuthenticationMethods publickey
-  #     '';
-  #   };
-  # };
 
   # Needed for yubikey
   services.pcscd.enable = true;
