@@ -29,46 +29,6 @@
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
 
-  # Enable the X11 windowing system.
-  # Enable the GNOME Desktop Environment.
-  # Configure keymap in X11
-  services.xserver = {
-    enable = true;
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-  };
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
-  # Exclude some packages from gnome
-  environment.gnome.excludePackages = (
-    with pkgs;
-    [
-      gnome-photos
-      gnome-tour
-      cheese # webcam tool
-      gnome-music
-      epiphany # web browser
-      geary # email reader
-      evince # document viewer
-      gnome-characters
-      totem # video player
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
-      yelp # help viewer
-      gnome-maps
-      gnome-weather
-      gnome-contacts
-      simple-scan
-    ]
-  );
-
   # Cinnamon desktop
   # services.xserver = {
   #   enable = true;

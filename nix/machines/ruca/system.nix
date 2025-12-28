@@ -7,7 +7,7 @@
 
 {
   imports = [
-    ../../system/services
+    ../../system
   ];
 
   sysconf.settings.gitEditor = "gnome-text-editor -ns";
@@ -15,6 +15,11 @@
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
+
+  # GNOME specific configuration
+  eltimn.system.gnome = {
+    videoDrivers = [ "amdgpu" ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -33,24 +38,6 @@
   };
 
   # security.sudo.execWheelOnly = true;
-
-  # Enable the windowing system.
-  # services.xserver is a misnomer, it was created before wayland existed.
-  services.xserver = {
-    enable = true;
-    # Enable the GNOME Desktop Environment.
-    # Configure keymap
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-    # libinput.enable = false; # Disable touchpad support (enabled default in most desktopManager).
-    # videoDrivers = [ "nvidia" ]; # Load nvidia driver for Xorg and Wayland
-    videoDrivers = [ "amdgpu" ]; # amd drivers
-  };
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
 
   # boot.postBootCommands = ''
   #   mount -o remount,ro,bind,noatime,discard /nix/store
@@ -109,32 +96,6 @@
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
-
-  # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
-  # Exclude some packages from gnome
-  environment.gnome.excludePackages = (
-    with pkgs;
-    [
-      gnome-photos
-      gnome-tour
-      cheese # webcam tool
-      gnome-music
-      epiphany # web browser
-      geary # email reader
-      evince # document viewer
-      gnome-characters
-      totem # video player
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
-      yelp # help viewer
-      gnome-maps
-      gnome-weather
-      gnome-contacts
-      simple-scan
-    ]
-  );
 
   # Cinnamon desktop
   # services.xserver = {
