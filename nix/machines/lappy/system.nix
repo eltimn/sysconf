@@ -5,6 +5,11 @@
 }:
 
 {
+  imports = [
+    ../../system
+    ../../system/gnome.nix
+  ];
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
