@@ -6,10 +6,10 @@
   ...
 }:
 let
-  cfg = config.sysconf.home.programs.opencode;
+  cfg = config.sysconf.programs.opencode;
 in
 {
-  options.sysconf.home.programs.opencode = {
+  options.sysconf.programs.opencode = {
     enable = lib.mkEnableOption "opencode";
   };
 

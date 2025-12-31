@@ -98,13 +98,12 @@ in
       enable = true;
       enableZshIntegration = true;
     };
-
-    chromium.enable = true;
   };
 
-  # Enable any program modules
-  sysconf.home.programs.opencode.enable = true;
-  sysconf.home.programs.zed-editor.enable = true;
+  # Enable program modules
+  sysconf.programs.chromium.enable = true;
+  sysconf.programs.opencode.enable = true;
+  sysconf.programs.zed-editor.enable = true;
 
   # Systemd user services
   systemd.user = {
