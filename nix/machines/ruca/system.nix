@@ -8,11 +8,11 @@
 {
   imports = [
     ../../system
-    # ../../system/gnome.nix
-    ../../system/cosmic.nix
+    # ../../system/de/gnome.nix
+    ../../system/de/cosmic.nix
   ];
 
-  # sysconf.settings.gitEditor = "gnome-text-editor -ns";
+  sysconf.settings.gitEditor = "fresh";
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC

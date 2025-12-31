@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+# Search for VSCode extensions in nix-vscode-extensions
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <search-term>"
+    echo "       $0 --publisher <publisher-name>"
+    echo ""
+    echo "Examples:"
+    echo "  $0 rust-analyzer         # Search for extensions by name"
+    echo "  $0 --publisher rust-lang # List extensions from publisher"
+    exit 1
+fi
+
+if [ "$1" == "--publisher" ] || [ "$1" == "-p" ]; then
+    if [ -z "$2" ]; then
+        echo "Error: --publisher requires a publisher name"
+        exit 1
+    fi
+    PUBLISHER="$2"
+
+    echo "Extensions from publisher '$PUBLISHER':"
+    echo ""
+
+    # Check nixpkgs vscode-extensions
+    echo "From nixpkgs (vscode-extensions):"
+    nixpkgs_exts=$(nix eval nixpkgs#vscode-extensions.$PUBLISHER \
+        --apply 'exts: builtins.attrNames exts' --json 2>/dev/null \
+        | jq -r '.[]' 2>/dev/null \
+        | grep -v '^recurseForDerivations$')
+
+    if [ -n "$nixpkgs_exts" ]; then
+        echo "$nixpkgs_exts" | while read ext; do
+            echo "  pkgs.vscode-extensions.$PUBLISHER.$ext"
+        done
+    else
+        echo "  (none found)"
+    fi
+
+    # Check vscode-marketplace
+    echo ""
+    echo "From vscode-marketplace:"
+    marketplace_exts=$(nix eval "github:nix-community/nix-vscode-extensions#extensions.x86_64-linux.vscode-marketplace.$PUBLISHER" \
+        --apply 'exts: builtins.attrNames exts' --json 2>/dev/null \
+        | jq -r '.[]' 2>/dev/null)
+
+    if [ -n "$marketplace_exts" ]; then
+        echo "$marketplace_exts" | while read ext; do
+            echo "  pkgs.vscode-marketplace.$PUBLISHER.$ext"
+        done
+    else
+        echo "  (none found)"
+    fi
+
+    # Check open-vsx
+    echo ""
+    echo "From open-vsx:"
+    openvsx_exts=$(nix eval "github:nix-community/nix-vscode-extensions#extensions.x86_64-linux.open-vsx.$PUBLISHER" \
+        --apply 'exts: builtins.attrNames exts' --json 2>/dev/null \
+        | jq -r '.[]' 2>/dev/null)
+
+    if [ -n "$openvsx_exts" ]; then
+        echo "$openvsx_exts" | while read ext; do
+            echo "  pkgs.open-vsx.$PUBLISHER.$ext"
+        done
+    else
+        echo "  (none found)"
+    fi
+else
+    SEARCH_TERM="$1"
+
+    echo "Searching for extensions matching '$SEARCH_TERM'..."
+    echo ""
+
+    # Note: Skipping nixpkgs vscode-extensions for general search due to complexity
+    # Use --publisher flag to search within nixpkgs for a specific publisher
+
+    # Search vscode-marketplace
+    echo ""
+    echo "From vscode-marketplace:"
+    nix eval 'github:nix-community/nix-vscode-extensions#extensions.x86_64-linux.vscode-marketplace' \
+        --apply "exts: builtins.concatLists (builtins.map (pub:
+            builtins.map (ext: pub + \".\" + ext)
+            (builtins.attrNames (exts.\${pub} or {}))
+        ) (builtins.attrNames exts))" \
+        --json 2>&1 \
+        | grep -v '^warning:' | grep -v '^Using saved' \
+        | jq -r '.[]' \
+        | grep -i "$SEARCH_TERM" \
+        | head -25 \
+        | while read ext; do
+            echo "  pkgs.vscode-marketplace.$ext"
+        done
+
+    # Search open-vsx
+    echo ""
+    echo "From open-vsx:"
+    nix eval 'github:nix-community/nix-vscode-extensions#extensions.x86_64-linux.open-vsx' \
+        --apply "exts: builtins.concatLists (builtins.map (pub:
+            builtins.map (ext: pub + \".\" + ext)
+            (builtins.attrNames (exts.\${pub} or {}))
+        ) (builtins.attrNames exts))" \
+        --json 2>&1 \
+        | grep -v '^warning:' | grep -v '^Using saved' \
+        | jq -r '.[]' \
+        | grep -i "$SEARCH_TERM" \
+        | head -15 \
+        | while read ext; do
+            echo "  pkgs.open-vsx.$ext"
+        done
+
+    echo ""
+    echo "💡 Tip: Showing up to 25-15 matches per source. Use --publisher to browse a specific publisher"
+    echo "💡 Note: pkgs.vscode-extensions.* (from nixpkgs) are pre-packaged and better tested"
+    echo "💡      Use --publisher to search nixpkgs vscode-extensions for a specific publisher"
+fi

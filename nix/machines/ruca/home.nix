@@ -14,6 +14,7 @@ in
   imports = [
     ../../home/common
     ../../home/desktop
+    ../../home/cosmic.nix
     ../../home/programs
     ../../home/programs/git
     ../../home/programs/vscode
@@ -63,7 +64,9 @@ in
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "codium --new-window --wait";
+      # EDITOR = "codium --new-window --wait";
+      EDITOR = "fresh --no-session";
+      COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
       # Global defaults for goose
       GOOSE_PROVIDER = "ollama";
@@ -91,25 +94,26 @@ in
       shellWrapperName = "y";
     };
 
-    # ghostty doesn't work with current ruca hardware
-    # (ghostty:80405): Gtk-WARNING **: 20:23:38.051: No IM module matching GTK_IM_MODULE=ibus found
-    # error(gtk_surface): surface failed to realize: Failed to create EGL display
-    # warning(gtk_surface): this error is usually due to a driver or gtk bug
-    # warning(gtk_surface): this is a common cause of this issue: https://gitlab.gnome.org/GNOME/gtk/-/issues/4950
-    # ghostty = {
-    #   enable = true;
-    #   enableZshIntegration = true;
-    # };
+    ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+    };
 
-    zed-editor.enable = true;
+    chromium.enable = true;
   };
 
   # Enable any program modules
   sysconf.home.programs.opencode.enable = true;
+  sysconf.home.programs.zed-editor.enable = true;
 
   # Systemd user services
   systemd.user = {
     enable = true;
+
+    # Set PATH for all systemd user services
+    sessionVariables = {
+      PATH = "/run/current-system/sw/bin";
+    };
 
     # systemctl --user status backup-XXX.timer
     # systemctl --user status backup-XXX.service
@@ -164,6 +168,7 @@ in
         };
         Service = {
           Type = "simple";
+          Environment = "SSH_AUTH_SOCK=%t/gcr/ssh";
           ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-workstation";
         };
       };

@@ -1,6 +1,5 @@
 font-family = Source Code Pro
 font-size = 14
-theme = catppuccin-latte
 keybind = ctrl+a>c=new_tab
 keybind = ctrl+a>w=close_surface
 keybind = ctrl+a>v=new_split:right

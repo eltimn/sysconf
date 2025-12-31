@@ -8,6 +8,7 @@
   imports = [
     ../../home/common
     ../../home/desktop
+    ../../home/gnome.nix
     ../../home/programs/git
     ../../home/programs/vscode
     ../../home/programs/zsh

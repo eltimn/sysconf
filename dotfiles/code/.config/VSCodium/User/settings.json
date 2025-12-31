@@ -151,5 +151,10 @@
     "git show"
   ],
   "kilo-code.deniedCommands": [],
-  "workbench.colorTheme": "Yukinord"
+  "workbench.colorTheme": "Visual Studio Dark",
+  "yaml.schemas": {
+    "file:///home/nelly/.vscode-oss/extensions/continue.continue/config-yaml-schema.json": [
+      ".continue/**/*.yaml"
+    ]
+  }
 }

@@ -11,7 +11,9 @@
       "Bash(journalctl:*)",
       "Bash(echo:*)",
       "Bash(env)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(./search-vscode-ext rust-analyzer)",
+      "Bash(systemctl --user show-environment:*)"
     ],
     "deny": [],
     "ask": []

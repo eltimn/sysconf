@@ -9,6 +9,14 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Flake modules
+    cosmic-manager = {
+      url = "github:HeitorAugustoLN/cosmic-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,6 +47,7 @@
     isd-flake.url = "github:isd-project/isd"; # systemd tui
     fresh-flake.url = "github:sinelaw/fresh"; # terminal text editor
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    cosmic-applets.url = "github:wingej0/ext-cosmic-applets-flake";
   };
 
   outputs =
@@ -70,21 +79,21 @@
       loadVars = host: nixpkgs.lib.importTOML ./nix/machines/${host}/settings.toml;
 
       # a function to create a home manager configuration
-      hmConfig =
-        host:
-        inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+      # hmConfig =
+      #   host:
+      #   inputs.home-manager.lib.homeManagerConfiguration {
+      #     inherit pkgs;
 
-          # Specify your home configuration modules here
-          modules = [ ./nix/machines/${host}/home.nix ];
+      #     # Specify your home configuration modules here
+      #     modules = [ ./nix/machines/${host}/home.nix ];
 
-          # Optionally use extraSpecialArgs
-          # to pass through arguments to home.nix
-          extraSpecialArgs = {
-            # load the settings
-            vars = loadVars host;
-          };
-        };
+      #     # Optionally use extraSpecialArgs
+      #     # to pass through arguments to home.nix
+      #     extraSpecialArgs = {
+      #       # load the settings
+      #       vars = loadVars host;
+      #     };
+      #   };
 
       # a function to create a nixos configuration
       nixosConfig =
@@ -117,7 +126,12 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.${vars.user} = import ./nix/machines/${vars.host}/home.nix;
+                users.${vars.user} = {
+                  imports = [
+                    ./nix/machines/${vars.host}/home.nix
+                    inputs.cosmic-manager.homeManagerModules.cosmic-manager
+                  ];
+                };
 
                 # passes arguments to all modules in home.nix
                 extraSpecialArgs = {
@@ -157,6 +171,8 @@
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
         fresh-editor = inputs.fresh-flake.packages.${prev.stdenv.hostPlatform.system}.default;
+        cosmic-ext-applet-clipboard-manager =
+          inputs.cosmic-applets.packages.${prev.stdenv.hostPlatform.system}.cosmic-ext-applet-clipboard-manager;
         nix-2-33 = prev.nix.overrideAttrs (oldAttrs: {
           version = "2.33.0";
           src = prev.fetchFromGitHub {
