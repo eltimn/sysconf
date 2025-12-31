@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.eltimn.system.sops;
+  cfg = config.sysconf.system.sops;
 in
 {
-  options.eltimn.system.sops = {
+  options.sysconf.system.sops = {
     secretsPath = lib.mkOption {
       type = lib.types.path;
       default = ../../secrets;
