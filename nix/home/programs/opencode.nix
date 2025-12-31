@@ -63,7 +63,7 @@ in
       settings = {
         tools = {
           lsp = true;
-          nixos = false; # don't allow by default
+          nixos = false; # don't enable by default
         };
 
         mcp = {
