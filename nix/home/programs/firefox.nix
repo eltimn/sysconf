@@ -23,6 +23,7 @@
         "browser.shell.checkDefaultBrowser" = false;
         "browser.startup.homepage" = "about:blank";
         "sidebar.verticalTabs" = true;
+        "widget.gtk.libadwaita-colors.enabled" = false; # disable libadwaita theming for Firefox
 
         # "accessibility.force_disabled" = 1;
         # "app.normandy.api_url" = "";

@@ -7,14 +7,23 @@
 
 {
   imports = [
-    ../../system/services
+    ../../system
+    # ../../system/de/gnome.nix
+    ../../system/de/cosmic.nix
   ];
 
-  sysconf.settings.gitEditor = "gnome-text-editor -ns";
+  sysconf.settings.gitEditor = "fresh";
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
+
+  # GNOME specific configuration
+  # sysconf.system.gnome = {
+  #   videoDrivers = [ "amdgpu" ];
+  # };
+
+  sysconf.system.cosmic.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -25,7 +34,6 @@
     enable = true;
     enable32Bit = true;
     extraPackages = [
-      pkgs.rocmPackages.clr.icd
       pkgs.vulkan-loader
       pkgs.vulkan-tools
       pkgs.vulkan-headers
@@ -33,66 +41,6 @@
   };
 
   # security.sudo.execWheelOnly = true;
-
-  # Enable the windowing system.
-  # services.xserver is a misnomer, it was created before wayland existed.
-  services.xserver = {
-    enable = true;
-    # Enable the GNOME Desktop Environment.
-    # Configure keymap
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-    # libinput.enable = false; # Disable touchpad support (enabled default in most desktopManager).
-    # videoDrivers = [ "nvidia" ]; # Load nvidia driver for Xorg and Wayland
-    videoDrivers = [ "amdgpu" ]; # amd drivers
-  };
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  # boot.postBootCommands = ''
-  #   mount -o remount,ro,bind,noatime,discard /nix/store
-  # '';
-
-  # nvidia stuff - video card needs legacy_470
-  # Enable OpenGL
-  # hardware.graphics = {
-  #   enable = true;
-  # };
-
-  # hardware.nvidia = {
-
-  #   # Modesetting is required.
-  #   modesetting.enable = true;
-
-  #   # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-  #   # Enable this if you have graphical corruption issues or application crashes after waking
-  #   # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-  #   # of just the bare essentials.
-  #   powerManagement.enable = false;
-
-  #   # Fine-grained power management. Turns off GPU when not in use.
-  #   # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-  #   powerManagement.finegrained = false;
-
-  #   # Use the NVidia open source kernel module (not to be confused with the
-  #   # independent third-party "nouveau" open source driver).
-  #   # Support is limited to the Turing and later architectures. Full list of
-  #   # supported GPUs is at:
-  #   # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-  #   # Only available from driver 515.43.04+
-  #   # Currently alpha-quality/buggy, so false is currently the recommended setting.
-  #   open = false;
-
-  #   # Enable the Nvidia settings menu,
-  #   # accessible via `nvidia-settings`.
-  #   nvidiaSettings = true;
-
-  #   # Optionally, you may need to select the appropriate driver version for your specific GPU.
-  #   package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  # };
 
   # Define a user account.
   users.users."${config.sysconf.settings.primaryUsername}" = {
@@ -109,45 +57,6 @@
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
-
-  # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
-  # Exclude some packages from gnome
-  environment.gnome.excludePackages = (
-    with pkgs;
-    [
-      gnome-photos
-      gnome-tour
-      cheese # webcam tool
-      gnome-music
-      epiphany # web browser
-      geary # email reader
-      evince # document viewer
-      gnome-characters
-      totem # video player
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
-      yelp # help viewer
-      gnome-maps
-      gnome-weather
-      gnome-contacts
-      simple-scan
-    ]
-  );
-
-  # Cinnamon desktop
-  # services.xserver = {
-  #   enable = true;
-  #   libinput.enable = true;
-  #   displayManager.lightdm.enable = true;
-  #   desktopManager = { cinnamon.enable = true; };
-  #   displayManager.defaultSession = "cinnamon";
-  #   xkb = {
-  #     layout = "us";
-  #     variant = "";
-  #   };
-  # };
 
   # Enable CUPS to print documents.
   services.printing = {
@@ -192,9 +101,6 @@
     jq
     parted
     pciutils
-    rocmPackages.clr.icd
-    rocmPackages.rocm-smi
-    rocmPackages.rocminfo
     tree
     # ventoy
     vim

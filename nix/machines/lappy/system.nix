@@ -5,6 +5,11 @@
 }:
 
 {
+  imports = [
+    ../../system
+    ../../system/de/gnome.nix
+  ];
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -28,59 +33,6 @@
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
-
-  # Enable the X11 windowing system.
-  # Enable the GNOME Desktop Environment.
-  # Configure keymap in X11
-  services.xserver = {
-    enable = true;
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-  };
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
-  # Exclude some packages from gnome
-  environment.gnome.excludePackages = (
-    with pkgs;
-    [
-      gnome-photos
-      gnome-tour
-      cheese # webcam tool
-      gnome-music
-      epiphany # web browser
-      geary # email reader
-      evince # document viewer
-      gnome-characters
-      totem # video player
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
-      yelp # help viewer
-      gnome-maps
-      gnome-weather
-      gnome-contacts
-      simple-scan
-    ]
-  );
-
-  # Cinnamon desktop
-  # services.xserver = {
-  #   enable = true;
-  #   libinput.enable = true;
-  #   displayManager.lightdm.enable = true;
-  #   desktopManager = { cinnamon.enable = true; };
-  #   displayManager.defaultSession = "cinnamon";
-  #   xkb = {
-  #     layout = "us";
-  #     variant = "";
-  #   };
-  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -124,26 +76,6 @@
   programs.zsh.enable = true;
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh = {
-  #   enable = true;
-  #   openFirewall = true;
-  #   allowSFTP = false;
-  #   settings = {
-  #     PermitRootLogin = "no";
-  #     PasswordAuthentication = false;
-  #     AllowUsers = [ "${config.sysconf.settings.primaryUsername}" ];
-  #     X11Forwarding = false;
-  #     UsePAM = true;
-  #     extraConfig = ''
-  #       AllowTcpForwarding yes
-  #       AllowAgentForwarding no
-  #       AllowStreamLocalForwarding no
-  #       AuthenticationMethods publickey
-  #     '';
-  #   };
-  # };
 
   # Needed for yubikey
   services.pcscd.enable = true;

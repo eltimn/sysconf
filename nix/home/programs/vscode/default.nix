@@ -17,25 +17,34 @@
       profiles.default = {
         # Access extensions from nix-vscode-extensions overlay
         # https://nix-community.github.io/nix-vscode-extensions
-        # Format: pkgs.vscode-extensions.<publisher>.<extension-name>
-        extensions = with pkgs.vscode-extensions; [
-          editorconfig.editorconfig
-          github.copilot
-          github.copilot-chat
-          golang.go
-          # hongquan.dragon-jinja
-          jnoortheen.nix-ide
-          # kilocode.kilo-code
-          matthewpi.caddyfile-support
-          # opentofu.vscode-opentofu
-          yzhang.markdown-all-in-one
+        extensions =
+          # standard nix packages
+          (with pkgs.vscode-extensions; [
+            editorconfig.editorconfig
+            github.copilot
+            github.copilot-chat
+            golang.go
+            jnoortheen.nix-ide
+            matthewpi.caddyfile-support
+            yzhang.markdown-all-in-one
 
-          # continue.continue
-          # hashicorp.terraform
-          # ms-python.python
-          # redhat.ansible
-          # redhat.vscode-yaml
-        ];
+            # hashicorp.terraform
+            # ms-python.python
+            # redhat.ansible
+            redhat.vscode-yaml
+          ])
+          # Open VSX via nix-vscode-extensions
+          ++ (with pkgs.open-vsx; [
+            continue.continue
+            hongquan.dragon-jinja
+            # kilocode.kilo-code
+            # kochan.vs-nord-theme
+            opentofu.vscode-opentofu
+          ]);
+        # VSCode Marketplace via nix-vscode-extensions
+        # ++ (with pkgs.vscode-marketplace; [
+        #   # kilocode.kilo-code
+        # ]);
         globalSnippets = {
           fixme = {
             body = [ "$LINE_COMMENT FIXME: $0" ];

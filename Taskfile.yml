@@ -5,6 +5,8 @@ vars:
     sh: if [ -e /etc/NIXOS ]; then echo "true"; else echo "false"; fi
   NIX_CMD:
     sh: if [ -e /etc/NIXOS ]; then echo "sudo nixos-rebuild"; else echo "home-manager"; fi
+  NIX_BUILD_CMD:
+    sh: if [ -e /etc/NIXOS ]; then echo "nixos-rebuild"; else echo "home-manager"; fi
 
 tasks:
   echo:
@@ -21,9 +23,9 @@ tasks:
     desc: Build the flake.
     requires:
       vars:
-        - "NIX_CMD"
+        - "NIX_BUILD_CMD"
     cmds:
-      - "{{.NIX_CMD}} build --flake ." # --print-build-logs --verbose
+      - "{{.NIX_BUILD_CMD}} build --flake .{{.CLI_ARGS}}" # --print-build-logs --verbose
 
   switch:
     desc: Build then switch to the new build.
@@ -43,6 +45,11 @@ tasks:
     desc: Deploy configuration to remote host
     cmds:
       - sudo nixos-rebuild switch --flake .#{{.CLI_ARGS}} --target-host nelly@{{.CLI_ARGS}} --sudo
+
+  eval:
+    desc: Show a configuration value.
+    cmds:
+      - nix eval .#{{.CLI_ARGS}} # task eval -- nixosConfigurations.ruca.config.services.xserver.videoDrivers
 
   option:
     desc: Show the calculated value of a flake option.
@@ -89,6 +96,7 @@ tasks:
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles code
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles common
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles desktop
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zen
       # - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
   clean-dotfiles:
@@ -97,6 +105,7 @@ tasks:
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles code
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles common
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles desktop
+      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zen
       # - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
   history:

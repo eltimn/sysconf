@@ -36,7 +36,7 @@
 
     gitEditor = lib.mkOption {
       type = lib.types.str;
-      default = "nvim";
+      default = "nvim"; # gnome-text-editor -ns
       description = "The git editor command.";
     };
   };

@@ -21,7 +21,7 @@ in
     sops.secrets."caddy_env" = {
       owner = "caddy";
       reloadUnits = [ "caddy.service" ];
-      sopsFile = "${config.eltimn.system.sops.secretsPath}/caddy-enc.env";
+      sopsFile = "${config.sysconf.system.sops.secretsPath}/caddy-enc.env";
       format = "dotenv";
       key = ""; # get the whole file
     };
