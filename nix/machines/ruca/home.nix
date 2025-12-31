@@ -135,12 +135,12 @@ in
       mount-secret = {
         Unit = {
           Description = "Mount encrypted secret directory with gocryptfs";
-          After = "gnome-keyring.service";
+          After = "xdg-desktop-autostart.target";
         };
         Service = {
-          Type = "forking";
+          Type = "exec";
           Environment = "PATH=/run/wrappers/bin:${pkgs.gocryptfs}/bin:${pkgs.libsecret}/bin";
-          ExecStart = "${pkgs.gocryptfs}/bin/gocryptfs --extpass='${pkgs.libsecret}/bin/secret-tool lookup gocryptfs secret' ${config.home.homeDirectory}/secret-cipher ${config.home.homeDirectory}/secret";
+          ExecStart = "${pkgs.gocryptfs}/bin/gocryptfs -fg --extpass='${pkgs.libsecret}/bin/secret-tool lookup gocryptfs secret' ${config.home.homeDirectory}/secret-cipher ${config.home.homeDirectory}/secret";
           ExecStop = "/run/wrappers/bin/fusermount -u ${config.home.homeDirectory}/secret";
         };
         Install = {
