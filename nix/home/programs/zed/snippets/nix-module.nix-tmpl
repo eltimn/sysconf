@@ -4,10 +4,10 @@
   ...
 }:
 let
-  cfg = config.sysconf.$1;
+  cfg = config.sysconf.$1.$2;
 in
 {
-  options.sysconf.$1 = {
+  options.sysconf.$1.$2 = {
     enable = lib.mkEnableOption "$2";
   };
 

@@ -1,11 +1,11 @@
 {
-  config,
   ...
 }:
 {
 
   imports = [
     ../../home/common
+    ../../home/containers
     ../../home/programs
     ../../home/programs/direnv.nix
     ../../home/programs/git
@@ -17,9 +17,6 @@
     username = "nelly";
     homeDirectory = "/home/nelly";
     stateVersion = "25.11";
-
-    # packages = with pkgs; [
-    # ];
 
     sessionPath = [
       "$HOME/bin/common"
@@ -36,7 +33,7 @@
     home-manager.enable = true;
   };
 
-  # sysconf programs
+  # sysconf programs & containers
   sysconf = {
     programs.backup = {
       enable = true;
@@ -56,6 +53,8 @@
         "/mnt/music"
       ];
     };
+
+    containers.channels-dvr.enable = true;
   };
 
   # Systemd for user services
@@ -111,25 +110,4 @@
   #     };
   #   };
   # };
-
-  services.podman = {
-    enable = true;
-
-    containers = {
-      "channels-dvr" = {
-        image = "docker.io/fancybits/channels-dvr:latest";
-        # Use host networking so that Bonjour/mDNS works properly
-        network = "host";
-        devices = [
-          "/dev/dri:/dev/dri"
-        ];
-        volumes = [
-          "${config.home.homeDirectory}/containers/storage/channels-dvr:/channels-dvr"
-          "/mnt/channels:/shares/DVR"
-        ];
-        autoStart = true;
-        autoUpdate = "registry";
-      };
-    };
-  };
 }

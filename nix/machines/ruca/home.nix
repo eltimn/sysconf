@@ -13,6 +13,7 @@ in
 
   imports = [
     ../../home/common
+    ../../home/containers
     ../../home/desktop
     ../../home/cosmic.nix
     ../../home/programs
@@ -23,9 +24,6 @@ in
     ../../home/programs/firefox.nix
     ../../home/programs/tmux.nix
   ];
-
-  # fonts.fontconfig.enable = true;
-  # xdg.mime.enable = false; # fixes a bug where nautilus crashes
 
   home = {
     # Home Manager needs a bit of information about you and the
@@ -100,10 +98,14 @@ in
     };
   };
 
-  # Enable program modules
-  sysconf.programs.chromium.enable = true;
-  sysconf.programs.opencode.enable = true;
-  sysconf.programs.zed-editor.enable = true;
+  # Enable sysconf modules
+  sysconf = {
+    programs.chromium.enable = true;
+    programs.opencode.enable = true;
+    programs.zed-editor.enable = true;
+
+    containers.mongodb-rz.enable = true;
+  };
 
   # Systemd user services
   systemd.user = {
