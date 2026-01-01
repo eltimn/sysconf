@@ -15,7 +15,7 @@ in
     ../../home/common
     ../../home/containers
     ../../home/desktop
-    ../../home/cosmic.nix
+    ../../home/cosmic
     ../../home/programs
     ../../home/programs/git
     ../../home/programs/vscode
@@ -40,6 +40,7 @@ in
         crush
         fresh-editor
         gemini-cli
+        git-worktree-runner
         goose-cli
         nodejs # npx is needed for MCP servers
         yubioath-flutter
@@ -100,11 +101,14 @@ in
 
   # Enable sysconf modules
   sysconf = {
+    cosmic.primaryMonitor = "HDMI-A-1";
+
     programs.chromium.enable = true;
     programs.opencode.enable = true;
     programs.zed-editor.enable = true;
 
     containers.mongodb-rz.enable = true;
+    containers.postgresql-rz.enable = true;
   };
 
   # Systemd user services

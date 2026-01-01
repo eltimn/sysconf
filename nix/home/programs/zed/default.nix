@@ -33,9 +33,12 @@ in
     programs.zed-editor = {
       enable = true;
       extensions = [
+        "git-firefly"
         "html"
         "nix"
+        "sql"
         "templ"
+        "toml"
       ];
     };
 
