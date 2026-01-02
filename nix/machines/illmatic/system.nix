@@ -6,6 +6,7 @@
 
 {
   imports = [
+    ../../system/containers
     ../../system/services
   ];
 
@@ -22,16 +23,15 @@
   ];
 
   # Allow sysconf user to receive unsigned store paths for remote deployment
-  nix.settings.trusted-users = [ "root" "sysconf" ];
+  nix.settings.trusted-users = [
+    "root"
+    "sysconf"
+  ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
   # Define a user account.
   users = {
-    # groups = {
-    #   podman = { };
-    # };
-
     users = {
       "${config.sysconf.settings.primaryUsername}" = {
         isNormalUser = true;
@@ -39,12 +39,9 @@
         extraGroups = [
           "wheel"
           "networkmanager"
-          "podman"
-          "channelsdvr"
         ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
-        linger = true; # so podman can run containers even when not logged in
       };
 
       sysconf = {
@@ -55,24 +52,9 @@
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = "/run/current-system/sw/bin/bash";
       };
-
-      channelsdvr = {
-        isSystemUser = true;
-        group = "channelsdvr";
-        home = "/var/lib/channelsdvr";
-        createHome = true;
-        shell = "/run/current-system/sw/bin/bash";
-      };
-
-      # podman = {
-      #   isSystemUser = true;
-      #   group = "podman";
-      #   description = "User to run podman containers";
-      # };
     };
 
-    groups.sysconf = {};
-    groups.channelsdvr = {};
+    groups.sysconf = { };
   };
 
   # sops
@@ -94,22 +76,22 @@
     wget
   ];
 
-   programs.zsh.enable = true;
+  programs.zsh.enable = true;
 
-   # Allow sysconf user to run all commands without password for deployment
-   security.sudo.extraRules = [
-     {
-       users = [ "sysconf" ];
-       commands = [
-         {
-           command = "ALL";
-           options = [ "NOPASSWD" ];
-         }
-       ];
-     }
-   ];
+  # Allow sysconf user to run all commands without password for deployment
+  security.sudo.extraRules = [
+    {
+      users = [ "sysconf" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
-   # Enable services
+  # Enable services
   services = {
     openssh = {
       enable = true;
@@ -182,34 +164,31 @@
   #   };
   # };
 
-  # service options
-  sysconf.services.caddy = {
-    enable = true;
-    domain = "home.eltimn.com";
-  };
-  sysconf.services.coredns = {
-    enable = true;
-  };
-  sysconf.services.jellyfin = {
-    enable = true;
-    # port = 8096;
-  };
-  sysconf.services.ntfy = {
-    enable = true;
-    port = 8082;
-    baseUrl = "https://ntfy.home.eltimn.com";
-  };
+  # sysconf containers & services
+  sysconf = {
+    containers = {
+      channels-dvr.enable = true;
+    };
 
-  ## Needed for channels-dvr that runs as a user container
-  # It only seems to work with these ports opened and `network = "host"` set in the container.
-  networking.firewall.allowedTCPPorts = [
-    8089 # channels-dvr web interface
-    5353
-  ];
-
-  networking.firewall.allowedUDPPorts = [
-    5353 # channels-dvr Bonjour/mDNS
-  ];
+    services = {
+      caddy = {
+        enable = true;
+        domain = "home.eltimn.com";
+      };
+      coredns = {
+        enable = true;
+      };
+      jellyfin = {
+        enable = true;
+        # port = 8096;
+      };
+      ntfy = {
+        enable = true;
+        port = 8082;
+        baseUrl = "https://ntfy.home.eltimn.com";
+      };
+    };
+  };
 
   ## system
   system.stateVersion = "25.11"; # Don't touch unless installing a new system
