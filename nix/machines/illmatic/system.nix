@@ -20,6 +20,9 @@
     "zfs"
     "ext4"
   ];
+
+  # Allow sysconf user to receive unsigned store paths for remote deployment
+  nix.settings.trusted-users = [ "root" "sysconf" ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
@@ -37,6 +40,7 @@
           "wheel"
           "networkmanager"
           "podman"
+          "channelsdvr"
         ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
@@ -52,6 +56,14 @@
         shell = "/run/current-system/sw/bin/bash";
       };
 
+      channelsdvr = {
+        isSystemUser = true;
+        group = "channelsdvr";
+        home = "/var/lib/channelsdvr";
+        createHome = true;
+        shell = "/run/current-system/sw/bin/bash";
+      };
+
       # podman = {
       #   isSystemUser = true;
       #   group = "podman";
@@ -60,6 +72,7 @@
     };
 
     groups.sysconf = {};
+    groups.channelsdvr = {};
   };
 
   # sops

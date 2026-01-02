@@ -13,6 +13,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Allow sysconf user to receive unsigned store paths for remote deployment
+  nix.settings.trusted-users = [ "root" "sysconf" ];
+
   sops.secrets."users/nelly/password".neededForUsers = true;
 
   # Define a user account.
