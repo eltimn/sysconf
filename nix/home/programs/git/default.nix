@@ -28,6 +28,7 @@
         cia = "commit --amend";
         co = "checkout";
         df = "diff"; # external (difftastic)
+        dfl = "diff HEAD~1"; # diff last commit
         dff = "diff --no-ext-diff"; # plain diff
         dfm = "difftool --tool=meld"; # meld
         dfc = "difftool"; # codeium

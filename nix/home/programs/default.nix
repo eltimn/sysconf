@@ -1,8 +1,8 @@
 {
   imports = [
     ./backup.nix
-    # ./chromium.nix
+    ./chromium.nix
     ./opencode.nix
-    ./zed.nix
+    ./zed
   ];
 }

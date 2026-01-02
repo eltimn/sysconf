@@ -173,6 +173,7 @@
         fresh-editor = inputs.fresh-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         cosmic-ext-applet-clipboard-manager =
           inputs.cosmic-applets.packages.${prev.stdenv.hostPlatform.system}.cosmic-ext-applet-clipboard-manager;
+        git-worktree-runner = prev.callPackage ./nix/pkgs/git-worktree-runner.nix { };
         nix-2-33 = prev.nix.overrideAttrs (oldAttrs: {
           version = "2.33.0";
           src = prev.fetchFromGitHub {
@@ -182,6 +183,11 @@
             hash = "sha256-aVwmNDnTOYZZQbTy++rYS0NOGEu9Zwljg3+TXJmw4TE=";
           };
         });
+      };
+
+      # Packages
+      packages.${pkgs.stdenv.hostPlatform.system} = {
+        git-worktree-runner = pkgs.git-worktree-runner;
       };
 
       # Home Manager configurations. Non-nixos hosts.

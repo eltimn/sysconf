@@ -13,8 +13,9 @@ in
 
   imports = [
     ../../home/common
+    ../../home/containers
     ../../home/desktop
-    ../../home/cosmic.nix
+    ../../home/cosmic
     ../../home/programs
     ../../home/programs/git
     ../../home/programs/vscode
@@ -23,9 +24,6 @@ in
     ../../home/programs/firefox.nix
     ../../home/programs/tmux.nix
   ];
-
-  # fonts.fontconfig.enable = true;
-  # xdg.mime.enable = false; # fixes a bug where nautilus crashes
 
   home = {
     # Home Manager needs a bit of information about you and the
@@ -42,6 +40,7 @@ in
         crush
         fresh-editor
         gemini-cli
+        git-worktree-runner
         goose-cli
         nodejs # npx is needed for MCP servers
         yubioath-flutter
@@ -98,13 +97,19 @@ in
       enable = true;
       enableZshIntegration = true;
     };
-
-    chromium.enable = true;
   };
 
-  # Enable any program modules
-  sysconf.home.programs.opencode.enable = true;
-  sysconf.home.programs.zed-editor.enable = true;
+  # Enable sysconf modules
+  sysconf = {
+    cosmic.primaryMonitor = "HDMI-A-1";
+
+    programs.chromium.enable = true;
+    programs.opencode.enable = true;
+    programs.zed-editor.enable = true;
+
+    containers.mongodb-rz.enable = true;
+    containers.postgresql-rz.enable = true;
+  };
 
   # Systemd user services
   systemd.user = {
