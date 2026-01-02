@@ -27,6 +27,7 @@
       obsidian
       # parcellite
       # sqlitebrowser
+      # sqlitestudio
       # vivaldi
       # vivaldi-ffmpeg-codecs
       vlc

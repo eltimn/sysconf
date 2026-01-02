@@ -16,8 +16,11 @@
       gum
       htop
       libsecret
+      mongodb-tools
+      mongosh
       neovim
       nushell
+      podman-tui
       shellcheck
       sshfs
       stow

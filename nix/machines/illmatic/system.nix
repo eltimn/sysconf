@@ -43,12 +43,23 @@
         linger = true; # so podman can run containers even when not logged in
       };
 
+      sysconf = {
+        isSystemUser = true;
+        group = "sysconf";
+        home = "/var/lib/sysconf";
+        createHome = true;
+        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
+        shell = "/run/current-system/sw/bin/bash";
+      };
+
       # podman = {
       #   isSystemUser = true;
       #   group = "podman";
       #   description = "User to run podman containers";
       # };
     };
+
+    groups.sysconf = {};
   };
 
   # sops
@@ -70,9 +81,22 @@
     wget
   ];
 
-  programs.zsh.enable = true;
+   programs.zsh.enable = true;
 
-  # Enable services
+   # Allow sysconf user to run all commands without password for deployment
+   security.sudo.extraRules = [
+     {
+       users = [ "sysconf" ];
+       commands = [
+         {
+           command = "ALL";
+           options = [ "NOPASSWD" ];
+         }
+       ];
+     }
+   ];
+
+   # Enable services
   services = {
     openssh = {
       enable = true;
@@ -163,14 +187,7 @@
     baseUrl = "https://ntfy.home.eltimn.com";
   };
 
-  # Channels DVR settings
-  # Check current configuration: `systemd-tmpfiles --user --tldr`
-  systemd.user.tmpfiles.users."${config.sysconf.settings.primaryUsername}".rules = [
-    "d ${
-      config.users.users.${config.sysconf.settings.primaryUsername}.home
-    }/containers/storage/channels-dvr 0770 ${config.sysconf.settings.primaryUsername} users -"
-  ];
-
+  ## Needed for channels-dvr that runs as a user container
   # It only seems to work with these ports opened and `network = "host"` set in the container.
   networking.firewall.allowedTCPPorts = [
     8089 # channels-dvr web interface

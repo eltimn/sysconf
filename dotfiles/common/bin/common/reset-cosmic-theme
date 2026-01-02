@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Reset COSMIC theme configuration directories
+# This allows cosmic-manager to apply fresh theme settings
+
+set -euo pipefail
+
+COSMIC_CONFIG="$HOME/.config/cosmic"
+
+# Theme-related directories to remove
+THEME_DIRS=(
+    "com.system76.CosmicTheme.Dark"
+    "com.system76.CosmicTheme.Dark.Builder"
+    "com.system76.CosmicTheme.Light"
+    "com.system76.CosmicTheme.Light.Builder"
+    "com.system76.CosmicTheme.Mode"
+)
+
+echo "This will remove the following COSMIC theme directories:"
+for dir in "${THEME_DIRS[@]}"; do
+    if [[ -d "$COSMIC_CONFIG/$dir" ]]; then
+        echo "  - $COSMIC_CONFIG/$dir"
+    fi
+done
+
+echo ""
+read -p "Continue? [y/N] " -n 1 -r
+echo ""
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    for dir in "${THEME_DIRS[@]}"; do
+        if [[ -d "$COSMIC_CONFIG/$dir" ]]; then
+            echo "Removing $dir..."
+            rm -rf "$COSMIC_CONFIG/$dir"
+        fi
+    done
+    echo ""
+    echo "Done! Theme directories removed."
+    echo "Run 'home-manager switch' or 'task switch' to apply fresh theme settings."
+else
+    echo "Aborted."
+fi

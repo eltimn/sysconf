@@ -43,12 +43,23 @@
         description = "User to run podman containers";
       };
 
+      sysconf = {
+        isSystemUser = true;
+        group = "sysconf";
+        home = "/var/lib/sysconf";
+        createHome = true;
+        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
+        shell = "/run/current-system/sw/bin/bash";
+      };
+
       # ntfy = {
       #   isSystemUser = true;
       #   group = "ntfy";
       #   description = "User to run ntfy.sh";
       # };
     };
+
+    groups.sysconf = {};
   };
 
   sops.age.sshKeyPaths = [
@@ -73,9 +84,22 @@
   #  enable = true;
   #  enableSSHSupport = true;
   #};
-  programs.zsh.enable = true;
+   programs.zsh.enable = true;
 
-  # List services that you want to enable:
+   # Allow sysconf user to run all commands without password for deployment
+   security.sudo.extraRules = [
+     {
+       users = [ "sysconf" ];
+       commands = [
+         {
+           command = "ALL";
+           options = [ "NOPASSWD" ];
+         }
+       ];
+     }
+   ];
+
+   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services = {

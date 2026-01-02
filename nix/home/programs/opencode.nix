@@ -6,10 +6,10 @@
   ...
 }:
 let
-  cfg = config.sysconf.home.programs.opencode;
+  cfg = config.sysconf.programs.opencode;
 in
 {
-  options.sysconf.home.programs.opencode = {
+  options.sysconf.programs.opencode = {
     enable = lib.mkEnableOption "opencode";
   };
 
@@ -66,18 +66,7 @@ in
           nixos = false; # don't enable by default
         };
 
-        mcp = {
-          nixos = {
-            type = "local";
-            command = [
-              "nix"
-              "run"
-              "github:utensils/mcp-nixos"
-              "--"
-            ];
-            enabled = true;
-          };
-        };
+        mcp = { };
 
         permission = {
           bash = {
