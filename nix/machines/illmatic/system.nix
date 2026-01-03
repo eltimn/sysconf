@@ -8,6 +8,7 @@
   imports = [
     ../../system/containers
     ../../system/services
+    ../../system/sysconf-user.nix
   ];
 
   # Bootloader
@@ -30,8 +31,11 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
+  sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
+
   # Define a user account.
   users = {
+    mutableUsers = false;
     users = {
       "${config.sysconf.settings.primaryUsername}" = {
         isNormalUser = true;
@@ -42,19 +46,10 @@
         ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
-      };
-
-      sysconf = {
-        isSystemUser = true;
-        group = "sysconf";
-        home = "/var/lib/sysconf";
-        createHome = true;
-        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-        shell = "/run/current-system/sw/bin/bash";
+        hashedPasswordFile =
+          config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
       };
     };
-
-    groups.sysconf = { };
   };
 
   # sops
@@ -77,19 +72,6 @@
   ];
 
   programs.zsh.enable = true;
-
-  # Allow sysconf user to run all commands without password for deployment
-  security.sudo.extraRules = [
-    {
-      users = [ "sysconf" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   # Enable services
   services = {

@@ -9,12 +9,19 @@
 }:
 
 {
+  imports = [
+    ../../system/sysconf-user.nix
+  ];
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Allow sysconf user to receive unsigned store paths for remote deployment
-  nix.settings.trusted-users = [ "root" "sysconf" ];
+  nix.settings.trusted-users = [
+    "root"
+    "sysconf"
+  ];
 
   sops.secrets."users/nelly/password".neededForUsers = true;
 
@@ -46,23 +53,12 @@
         description = "User to run podman containers";
       };
 
-      sysconf = {
-        isSystemUser = true;
-        group = "sysconf";
-        home = "/var/lib/sysconf";
-        createHome = true;
-        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-        shell = "/run/current-system/sw/bin/bash";
-      };
-
       # ntfy = {
       #   isSystemUser = true;
       #   group = "ntfy";
       #   description = "User to run ntfy.sh";
       # };
     };
-
-    groups.sysconf = {};
   };
 
   sops.age.sshKeyPaths = [
@@ -87,25 +83,11 @@
   #  enable = true;
   #  enableSSHSupport = true;
   #};
-   programs.zsh.enable = true;
+  programs.zsh.enable = true;
 
-   # Allow sysconf user to run all commands without password for deployment
-   security.sudo.extraRules = [
-     {
-       users = [ "sysconf" ];
-       commands = [
-         {
-           command = "ALL";
-           options = [ "NOPASSWD" ];
-         }
-       ];
-     }
-   ];
-
-   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
+  # NixOS services
   services = {
+    # Enable the OpenSSH daemon
     openssh = {
       enable = true;
       allowSFTP = true;
