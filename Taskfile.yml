@@ -44,7 +44,7 @@ tasks:
   deploy:
     desc: Deploy configuration to remote host
     cmds:
-      - sudo nixos-rebuild switch --flake .#{{.CLI_ARGS}} --target-host nelly@{{.CLI_ARGS}} --sudo
+      - nixos-rebuild switch --flake .#{{.CLI_ARGS}} --target-host sysconf@{{.CLI_ARGS}} --sudo --ask-sudo-password
 
   eval:
     desc: Show a configuration value.

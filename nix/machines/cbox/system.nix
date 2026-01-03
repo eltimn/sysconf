@@ -9,9 +9,19 @@
 }:
 
 {
+  imports = [
+    ../../system/sysconf-user.nix
+  ];
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Allow sysconf user to receive unsigned store paths for remote deployment
+  nix.settings.trusted-users = [
+    "root"
+    "sysconf"
+  ];
 
   sops.secrets."users/nelly/password".neededForUsers = true;
 
@@ -75,10 +85,9 @@
   #};
   programs.zsh.enable = true;
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
+  # NixOS services
   services = {
+    # Enable the OpenSSH daemon
     openssh = {
       enable = true;
       allowSFTP = true;

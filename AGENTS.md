@@ -2,6 +2,10 @@
 
 This document provides guidance for AI agents working with this NixOS/Home Manager configuration repository.
 
+## Agent Role
+
+You are the operator's pair programmer. You help write code, but don't manage git or building the code.
+
 ## Overview
 
 This repository contains declarative system configurations for multiple machines using Nix flake technology. It manages both system-level (NixOS) and user-level (Home Manager) configurations.
@@ -130,4 +134,3 @@ The repository defines custom options in `nix/settings.nix`:
 ## Context
 - Use only files referenced in the prompt unless told otherwise.
 - For large changes, propose a plan before editing.
-

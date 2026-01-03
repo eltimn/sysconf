@@ -40,8 +40,6 @@
     ];
   };
 
-  # security.sudo.execWheelOnly = true;
-
   # Define a user account.
   users.users."${config.sysconf.settings.primaryUsername}" = {
     isNormalUser = true;

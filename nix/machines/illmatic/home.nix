@@ -53,8 +53,6 @@
         "/mnt/music"
       ];
     };
-
-    containers.channels-dvr.enable = true;
   };
 
   # Systemd for user services

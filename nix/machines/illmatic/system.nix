@@ -6,7 +6,9 @@
 
 {
   imports = [
+    ../../system/containers
     ../../system/services
+    ../../system/sysconf-user.nix
   ];
 
   # Bootloader
@@ -20,15 +22,20 @@
     "zfs"
     "ext4"
   ];
+
+  # Allow sysconf user to receive unsigned store paths for remote deployment
+  nix.settings.trusted-users = [
+    "root"
+    "sysconf"
+  ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
+  sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
+
   # Define a user account.
   users = {
-    # groups = {
-    #   podman = { };
-    # };
-
+    mutableUsers = false;
     users = {
       "${config.sysconf.settings.primaryUsername}" = {
         isNormalUser = true;
@@ -36,18 +43,12 @@
         extraGroups = [
           "wheel"
           "networkmanager"
-          "podman"
         ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
-        linger = true; # so podman can run containers even when not logged in
+        hashedPasswordFile =
+          config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
       };
-
-      # podman = {
-      #   isSystemUser = true;
-      #   group = "podman";
-      #   description = "User to run podman containers";
-      # };
     };
   };
 
@@ -145,34 +146,31 @@
   #   };
   # };
 
-  # service options
-  sysconf.services.caddy = {
-    enable = true;
-    domain = "home.eltimn.com";
-  };
-  sysconf.services.coredns = {
-    enable = true;
-  };
-  sysconf.services.jellyfin = {
-    enable = true;
-    # port = 8096;
-  };
-  sysconf.services.ntfy = {
-    enable = true;
-    port = 8082;
-    baseUrl = "https://ntfy.home.eltimn.com";
-  };
+  # sysconf containers & services
+  sysconf = {
+    containers = {
+      channels-dvr.enable = true;
+    };
 
-  ## Needed for channels-dvr that runs as a user container
-  # It only seems to work with these ports opened and `network = "host"` set in the container.
-  networking.firewall.allowedTCPPorts = [
-    8089 # channels-dvr web interface
-    5353
-  ];
-
-  networking.firewall.allowedUDPPorts = [
-    5353 # channels-dvr Bonjour/mDNS
-  ];
+    services = {
+      caddy = {
+        enable = true;
+        domain = "home.eltimn.com";
+      };
+      coredns = {
+        enable = true;
+      };
+      jellyfin = {
+        enable = true;
+        # port = 8096;
+      };
+      ntfy = {
+        enable = true;
+        port = 8082;
+        baseUrl = "https://ntfy.home.eltimn.com";
+      };
+    };
+  };
 
   ## system
   system.stateVersion = "25.11"; # Don't touch unless installing a new system
