@@ -28,6 +28,7 @@ in
   sops.secrets."cloudflare_api_token" = { };
   sops.secrets."digitalocean_token" = { };
   sops.secrets."digitalocean_state_key" = { };
+  sops.secrets."digitalocean_spaces_key" = { };
 
   home = {
     # Home Manager needs a bit of information about you and the
