@@ -10,9 +10,21 @@ variable "cloudflare_zone_id" {
 }
 
 variable "digitalocean_token" {
-  description = "The DigitalOcean API token"
+  description = "The Digital Ocean API token"
   type        = string
   sensitive   = true
+}
+
+variable "do_custom_image_name" {
+  description = "Name of the Digital Ocean custom image"
+  type = string
+  default = "nixos-25.11-v3"
+}
+
+variable "region" {
+  description = "The region to use."
+  type = string
+  default = "nyc3"
 }
 
 # variable "home_ip" {

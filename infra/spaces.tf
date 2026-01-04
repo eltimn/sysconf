@@ -1,7 +1,7 @@
 # DO Spaces bucket for image storage
 resource "digitalocean_spaces_bucket" "sysconf" {
   name   = "sysconf-images"
-  region = "nyc3"
+  region = var.region
 
   versioning {
     enabled = true

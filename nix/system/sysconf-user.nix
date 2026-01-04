@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
 
   sops.secrets."users/sysconf/password".neededForUsers = true;
@@ -12,7 +12,7 @@
         createHome = true;
         extraGroups = [ "wheel" ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-        shell = "/run/current-system/sw/bin/bash";
+        shell = pkgs.bash;
         hashedPasswordFile = config.sops.secrets."users/sysconf/password".path;
       };
     };

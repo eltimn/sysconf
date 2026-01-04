@@ -111,7 +111,7 @@ The repository defines custom options in `nix/settings.nix`:
 2. Use `task clean` after running builds.
 
 ### Adding New Nix Files
-1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly.
+1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing file or `git commit` until the code is working and tested.
 
 ## Important Conventions
 

@@ -37,6 +37,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     zen-browser-flake = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -55,6 +60,7 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
+      nixos-generators,
       ...
     }@inputs:
     let
@@ -188,6 +194,11 @@
       # Packages
       packages.${pkgs.stdenv.hostPlatform.system} = {
         git-worktree-runner = pkgs.git-worktree-runner;
+        do-image = nixos-generators.nixosGenerate {
+          system = "x86_64-linux";
+          modules = [ ./nix/machines/do-image/configuration.nix ];
+          format = "do";
+        };
       };
 
       # Home Manager configurations. Non-nixos hosts.

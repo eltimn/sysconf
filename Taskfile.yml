@@ -123,3 +123,7 @@ tasks:
   iso-copy:
     desc: Copy the iso to a USB drive
     cmd: cp result/iso/*.iso /run/media/$USER/Ventoy
+
+  build-do-image:
+    desc: Build the Digital Ocean custom image
+    cmd: nix build .#do-image
