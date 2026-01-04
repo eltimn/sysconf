@@ -212,7 +212,9 @@
           age
           borgbackup
           caddy
+          doctl
           go-task
+          opentofu
           pipx
           sops
           ssh-to-age

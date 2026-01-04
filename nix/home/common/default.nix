@@ -6,6 +6,7 @@
       bitwarden-cli
       btop
       dnsutils
+      doctl
       dust # better `du`
       fastfetch
       fd

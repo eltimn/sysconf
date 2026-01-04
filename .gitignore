@@ -4,3 +4,7 @@
 result
 history.txt
 junk/
+.terraform/
+.terraform.lock.hcl
+*.tfstate*
+*.tfvars
