@@ -27,13 +27,12 @@ stdenv.mkDerivation rec {
     install -Dm755 bin/git-gtr $out/bin/git-gtr
     install -Dm755 bin/gtr $out/bin/gtr
 
-    # Install lib directory
-    mkdir -p $out/share/git-worktree-runner
-    cp -r lib $out/share/git-worktree-runner/
+    # Install lib directory to same level as bin
+    cp -r lib $out/
 
     # Install adapters directory if it exists
     if [ -d adapters ]; then
-      cp -r adapters $out/share/git-worktree-runner/
+      cp -r adapters $out/
     fi
 
     # Install completions manually
