@@ -17,5 +17,6 @@
       "task switch": "deny",
       "sudo": "deny"
     }
-  }
+  },
+  "instructions": ["AGENTS.md"]
 }
