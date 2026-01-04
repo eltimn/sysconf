@@ -39,6 +39,7 @@ in
         "sql"
         "templ"
         "toml"
+        "xml"
       ];
     };
 

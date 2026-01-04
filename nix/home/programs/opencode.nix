@@ -46,6 +46,9 @@ in
         # For REST API design and error handling: @docs/api-standards.md
         # For testing strategies and coverage requirements: @test/testing-guidelines.md
 
+        For Bash scripting follow these guidelines:
+        - Always use #!/usr/bin/env bash
+
         # ## General Guidelines
 
         # Read the following file immediately as it's relevant to all workflows: @rules/general-guidelines.md.
