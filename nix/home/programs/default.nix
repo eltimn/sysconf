@@ -2,7 +2,7 @@
   imports = [
     ./backup.nix
     ./chromium.nix
-    ./opencode.nix
+    ./opencode
     ./zed
   ];
 }
