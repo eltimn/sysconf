@@ -12,7 +12,7 @@
     ../../system/de/cosmic.nix
   ];
 
-  sysconf.settings.gitEditor = "fresh";
+  sysconf.settings.gitEditor = "micro";
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC

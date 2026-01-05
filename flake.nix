@@ -54,7 +54,6 @@
       };
     };
     isd-flake.url = "github:isd-project/isd"; # systemd tui
-    fresh-flake.url = "github:sinelaw/fresh"; # terminal text editor
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     cosmic-applets.url = "github:wingej0/ext-cosmic-applets-flake";
   };
@@ -180,7 +179,6 @@
         zen-browser = inputs.zen-browser-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
-        fresh-editor = inputs.fresh-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         cosmic-ext-applet-clipboard-manager =
           inputs.cosmic-applets.packages.${prev.stdenv.hostPlatform.system}.cosmic-ext-applet-clipboard-manager;
         git-worktree-runner = prev.callPackage ./nix/pkgs/git-worktree-runner.nix { };

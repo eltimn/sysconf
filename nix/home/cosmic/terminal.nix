@@ -14,6 +14,7 @@
         hold = false;
         syntax_theme_dark = "COSMIC Dark";
         syntax_theme_light = "COSMIC Light Dark Text";
+        cursor_shape = "bar"; # Options: block, bar, underline
       }
     ];
     # Custom color scheme for light mode with darker text
