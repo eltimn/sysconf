@@ -3,6 +3,7 @@
 {
   home = {
     file.".oh-my-zsh-custom/themes".source = ./files/themes;
+    file.".config/zsh/funcs".source = ./files/funcs;
   };
 
   programs = {
