@@ -127,3 +127,18 @@ tasks:
   build-do-image:
     desc: Build the Digital Ocean custom image
     cmd: nix build .#do-image
+
+  colmena-build:
+    desc: Build colmena package for deployment
+    cmd: nix build .#colmena
+
+  colmena-apply:
+    desc: Apply colmena configuration to remote hosts
+    deps: [colmena-build]
+    cmd: |
+      if [ -n "$(git status --porcelain)" ]; then
+        echo "Warning: Git tree has uncommitted changes, using --impure flag"
+        ./result/bin/colmena apply --impure
+      else
+        ./result/bin/colmena apply
+      fi

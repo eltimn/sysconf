@@ -42,6 +42,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    colmena = {
+      url = "github:zhaofengli/colmena/stable";
+    };
+
     zen-browser-flake = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -199,6 +203,7 @@
           modules = [ ./nix/machines/do-image/configuration.nix ];
           format = "do";
         };
+        colmena = inputs.colmena.packages.${pkgs.stdenv.hostPlatform.system}.colmena;
       };
 
       # Home Manager configurations. Non-nixos hosts.
@@ -216,6 +221,19 @@
         iso-gnome = isoConfig "installation-cd-graphical-gnome";
         iso-min = isoConfig "installation-cd-minimal";
       };
+
+      # Colmena configuration
+      colmenaHive = inputs.colmena.lib.makeHive (
+        (import ./hive.nix { inherit inputs pkgs-unstable; })
+        // {
+          meta = {
+            nixpkgs = pkgs;
+            specialArgs = {
+              inherit inputs pkgs-unstable;
+            };
+          };
+        }
+      );
 
       # tools for managing this repository and the host machines
       devShells.${pkgs.stdenv.hostPlatform.system}.default = pkgs.mkShell {
@@ -256,4 +274,5 @@
         };
       };
     };
+
 }

@@ -8,5 +8,5 @@ resource "digitalocean_custom_image" "nixos" {
   url     = "https://${local.imagesBucketName}.${var.region}.digitaloceanspaces.com/${var.do_custom_image_name}.qcow2.gz"
   regions = [ var.region ]
   tags = [ "nixos", "sysconf" ]
-  distribution = "Unknown" # NixOS
+  distribution = "Unknown OS" # NixOS
 }

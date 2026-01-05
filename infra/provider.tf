@@ -3,5 +3,5 @@ provider "cloudflare" {
 }
 
 provider "digitalocean" {
-  token = var.digitalocean_token
+  token = var.do_access_token
 }

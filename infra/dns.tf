@@ -7,6 +7,22 @@
 #   proxied = true
 # }
 
+resource "cloudflare_record" "nixos_test" {
+  zone_id = var.cloudflare_zone_id
+  name    = "nixos-test-01"
+  content = digitalocean_droplet.nixos-test.ipv4_address
+  type    = "A"
+  proxied = false  # Direct connection for SSH
+}
+
+resource "cloudflare_record" "nginx" {
+  zone_id = var.cloudflare_zone_id
+  name    = "nginx"
+  content = "nixos-test-01.eltimn.com"  # Points to proxied IP for web services
+  type    = "CNAME"
+  proxied = false
+}
+
 # CNAME Records
 resource "cloudflare_record" "root" {
   zone_id = var.cloudflare_zone_id

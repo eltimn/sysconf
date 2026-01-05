@@ -9,7 +9,7 @@ variable "cloudflare_zone_id" {
   type        = string
 }
 
-variable "digitalocean_token" {
+variable "do_access_token" {
   description = "The Digital Ocean API token"
   type        = string
   sensitive   = true
