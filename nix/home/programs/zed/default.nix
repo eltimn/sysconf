@@ -37,6 +37,7 @@ in
         "git-firefly"
         "html"
         "nix"
+        "opentofu"
         "sql"
         "templ"
         "toml"
