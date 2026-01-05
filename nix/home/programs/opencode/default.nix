@@ -24,6 +24,9 @@ in
   config = lib.mkIf cfg.enable {
     sops.secrets."ollama_api_key" = { };
 
+    # Symlink themes directory to ~/.config/opencode/themes/
+    home.file.".config/opencode/themes".source = ./themes;
+
     home.sessionVariables = {
       OPENCODE_DISABLE_AUTOUPDATE = "1";
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
@@ -36,6 +39,7 @@ in
 
       # Creates ~/.config/opencode/opencode.json
       settings = {
+        theme = "base16-ayu-light"; # TODO: system doesn't switch between light/dark themes, this will need to be manually done: https://opencode.ai/docs/themes/#system-theme
         tools = {
           lsp = true;
           nixos = false; # don't enable by default
