@@ -1,0 +1,2 @@
+# .worktreeinclude - files to copy to new worktrees
+.envrc

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Remove a host from SSH known_hosts
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <hostname-or-ip> [additional-hosts...]"
+    echo "Example: $0 nixos-test-01.eltimn.com 138.197.89.42"
+    exit 1
+fi
+
+for host in "$@"; do
+    echo "Removing $host from known_hosts..."
+    ssh-keygen -R "$host"
+done
+
+echo "Done!"

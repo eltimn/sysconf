@@ -41,6 +41,14 @@ in
         "toml"
         "xml"
       ];
+      userSettings = {
+        file_types = {
+          "Shell Script" = [
+            ".env.*"
+            ".envrc"
+          ];
+        };
+      };
     };
 
     # Generate snippets file

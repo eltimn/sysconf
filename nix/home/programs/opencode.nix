@@ -26,6 +26,7 @@ in
       enable = true;
       package = pkgs-unstable.opencode;
 
+      # Creates ~/.config/opencode/AGENTS.md
       rules = ''
         # Global Project Rules
 
@@ -63,6 +64,7 @@ in
         - If the user asks you to make a plan, be sure to use the plan agent, not the build agent.
       '';
 
+      # Creates ~/.config/opencode/openode.json
       settings = {
         tools = {
           lsp = true;
