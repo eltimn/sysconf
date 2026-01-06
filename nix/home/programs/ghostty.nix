@@ -8,12 +8,12 @@ let
 in
 {
   options.sysconf.programs.ghostty = {
-    enable = lib.mkEnableOption {
-      default = false;
-      type = lib.types.bool;
-      description = "ghostty";
-    };
+    enable = lib.mkEnableOption "ghostty";
   };
+
+  config = lib.mkIf cfg.enable {
+    programs.ghostty = {
+      enable = true;
 
   config = lib.mkIf cfg.enable {
     programs.ghostty = {
