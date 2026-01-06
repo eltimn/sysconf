@@ -1,6 +1,8 @@
+# DigitalOcean App Platform - DEPRECATED
+# Migrated to Cloudflare Pages (see pages.tf)
+
 locals {
   eltimn_web_alias = "king-prawn-app-3k2ql.ondigitalocean.app"
-  # eltimn_web_alias = "adoring-mestorf-ea0cd9.netlify.com"
 }
 
 resource "digitalocean_app" "eltimn" {

@@ -31,7 +31,7 @@ resource "cloudflare_dns_record" "nginx" {
 resource "cloudflare_dns_record" "root" {
   zone_id = var.cloudflare_zone_id
   name    = "@"
-  content = local.eltimn_web_alias
+  content = "${cloudflare_pages_project.eltimn.name}.pages.dev"
   type    = "CNAME"
   ttl     = 1
   proxied = true
@@ -70,7 +70,7 @@ resource "cloudflare_dns_record" "fm3_domainkey" {
 resource "cloudflare_dns_record" "www" {
   zone_id = var.cloudflare_zone_id
   name    = "www"
-  content = local.eltimn_web_alias
+  content = "${cloudflare_pages_project.eltimn.name}.pages.dev"
   type    = "CNAME"
   ttl     = 1
   proxied = true
