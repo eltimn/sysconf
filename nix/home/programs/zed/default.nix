@@ -30,12 +30,14 @@ in
       nixd
     ];
 
+    # https://home-manager-options.extranix.com/?query=programs.zed-editor&release=release-25.11
     programs.zed-editor = {
       enable = true;
       extensions = [
         "git-firefly"
         "html"
         "nix"
+        "opentofu"
         "sql"
         "templ"
         "toml"
@@ -47,6 +49,11 @@ in
             ".env.*"
             ".envrc"
           ];
+        };
+        theme_overrides = {
+          "One Light" = {
+            "editor.background" = "#eef5eb"; # Custom background color for One Light theme
+          };
         };
       };
     };

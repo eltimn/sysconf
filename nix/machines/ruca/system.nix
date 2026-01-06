@@ -12,7 +12,7 @@
     ../../system/de/cosmic.nix
   ];
 
-  sysconf.settings.gitEditor = "fresh";
+  sysconf.settings.gitEditor = "micro";
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
@@ -92,18 +92,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    age
     clinfo
-    gum
     isd
-    jq
-    parted
     pciutils
-    tree
-    # ventoy
-    vim
-    wget
-    whois
   ];
 
   programs.zsh.enable = true;

@@ -1,0 +1,48 @@
+* {
+    /* COSMIC Aether Light theme colors */
+    bg: #f5f7fa;              /* bg_color */
+    bg-container: #ffffff;    /* primary_container_bg */
+    fg: #2a2a2a;              /* text_tint */
+    fg-muted: #606873;        /* neutral_tint */
+    accent: #003a99;          /* accent */
+    border-color: #e2e2e2;    /* neutral_1 */
+
+    background-color: @bg-container;
+    text-color: @fg;
+    font: "Sans 12";
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 30%;
+    border: 2px;
+    border-color: @border-color;
+    border-radius: 10px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    color: @fg;
+    padding: 12px;
+    background-color: @bg;
+}
+
+listview {
+    padding: 8px;
+    lines: 10;
+}
+
+element {
+    padding: 8px;
+}
+
+element selected {
+    border: 1px;
+    border-color: @accent;
+    text-color: @accent;
+    border-radius: 4px;
+}

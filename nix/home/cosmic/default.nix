@@ -69,7 +69,6 @@ in
             ]
             [
               "com.system76.CosmicAppletStatusArea"
-              "io.github.wiiznokes.cosmic-ext-applet-clipboard-manager"
               "com.system76.CosmicAppletTiling"
               "com.system76.CosmicAppletAudio"
               "com.system76.CosmicAppletNetwork"
@@ -102,6 +101,18 @@ in
           ]
         );
         size = config.lib.cosmic.mkRON "enum" "M";
+      }
+    ];
+
+    # Custom keyboard shortcuts
+    wayland.desktopManager.cosmic.shortcuts = [
+      {
+        key = "Ctrl+Alt+H";
+        action = config.lib.cosmic.mkRON "enum" {
+          variant = "Spawn";
+          value = [ "rofi-cliphist" ];
+        };
+        description = config.lib.cosmic.mkRON "optional" "Clipboard manager";
       }
     ];
   };

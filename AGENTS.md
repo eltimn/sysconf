@@ -25,6 +25,7 @@ This repository contains declarative system configurations for multiple machines
 - **SOPS**: Secret management with age encryption
 - **Task**: Command runner for common operations
 - **Disko**: Declarative disk partitioning
+- **OpenTofu**: Infrastructure as Code (Terraform fork) for cloud resources
 
 ## Repository Structure
 
@@ -38,6 +39,14 @@ This repository contains declarative system configurations for multiple machines
 │   ├── system/            # Shared system services
 │   ├── home/              # Shared user configurations
 │   └── templates/         # Project templates
+├── infra/                 # OpenTofu/Terraform infrastructure code
+│   ├── provider.tf        # Provider configurations (Cloudflare, DigitalOcean)
+│   ├── cloudflare.tf      # Cloudflare zone settings and DNS
+│   ├── dns.tf             # DNS records
+│   ├── app.tf             # DigitalOcean App Platform resources
+│   ├── vps.tf             # DigitalOcean VPS/Droplet resources
+│   ├── spaces.tf          # DigitalOcean Spaces (S3-compatible storage)
+│   └── variables.tf       # Input variables
 ├── dotfiles/              # Additional dotfiles managed with stow
 ├── secrets/               # Encrypted secrets (SOPS)
 └── docs/                  # Documentation
@@ -112,6 +121,28 @@ The repository defines custom options in `nix/settings.nix`:
 
 ### Adding New Nix Files
 1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing file or `git commit` until the code is working and tested.
+
+### Working with Infrastructure (OpenTofu)
+1. **This project uses OpenTofu, not Terraform**. Always use `tofu` commands, not `terraform` commands.
+2. Infrastructure code is in the `infra/` directory
+3. Common commands:
+   ```bash
+   cd infra
+   tofu init      # Initialize providers
+   tofu plan      # Preview changes
+   tofu apply     # Apply changes
+   tofu state     # Manage state (e.g., state rm, state mv for migrations)
+   ```
+4. **Provider versions**: This project uses Cloudflare provider v5+ which has breaking changes from v4:
+   - `cloudflare_zone_settings_override` was removed, use individual `cloudflare_zone_setting` resources
+   - Each zone setting (ssl, tls_1_3, etc.) is now a separate resource with `setting_id` and `value` attributes
+5. **State management**: When resources are renamed or replaced, use state commands to avoid destroying and recreating:
+   ```bash
+   tofu state rm <old_resource>              # Remove old resource from state
+   tofu import <new_resource> <resource_id>  # Import existing resource with new name
+   # OR
+   tofu state mv <old_resource> <new_resource>  # Move state between resource names
+   ```
 
 ## Important Conventions
 

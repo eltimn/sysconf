@@ -53,6 +53,8 @@
         "/mnt/music"
       ];
     };
+
+    programs.micro.enable = true;
   };
 
   # Systemd for user services

@@ -43,13 +43,9 @@ in
       [
         claude-code
         crush
-        fresh-editor
         gemini-cli
-        git-worktree-runner
         goose-cli
         nodejs # npx is needed for MCP servers
-        yubioath-flutter
-        vhs
         vulkan-tools
       ]
       ++ [
@@ -69,7 +65,7 @@ in
     # List of environment variables.
     sessionVariables = {
       # EDITOR = "codium --new-window --wait";
-      EDITOR = "fresh --no-session";
+      EDITOR = "micro";
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
       # Global defaults for goose
@@ -97,11 +93,6 @@ in
       enableZshIntegration = true;
       shellWrapperName = "y";
     };
-
-    ghostty = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 
   # Enable sysconf modules
@@ -109,7 +100,10 @@ in
     cosmic.primaryMonitor = "HDMI-A-1";
 
     programs.chromium.enable = true;
+    programs.ghostty.enable = true;
+    programs.micro.enable = true;
     programs.opencode.enable = true;
+    programs.rofi.enable = true;
     programs.zed-editor.enable = true;
 
     containers.mongodb-rz.enable = true;

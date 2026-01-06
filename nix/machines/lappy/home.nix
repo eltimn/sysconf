@@ -68,26 +68,10 @@
     #   shellIntegration.enableZshIntegration = true;
     #   theme = "Github";
     # };
-
-    ghostty = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 
-  # services = {
-  #   dropbox = {
-  #     enable = true;
-  #     path = "${config.home.homeDirectory}/Dropbox";
-  #   };
-  # };
-
-  # systemd.user.services.dropbox = {
-  #   Unit = { Description = "Dropbox service"; };
-  #   Install = { WantedBy = [ "default.target" ]; };
-  #   Service = {
-  #     ExecStart = "${pkgs.dropbox}/bin/dropbox";
-  #     Restart = "on-failure";
-  #   };
-  # };
+  sysconf = {
+    programs.ghostty.enable = true;
+    programs.micro.enable = true;
+  };
 }

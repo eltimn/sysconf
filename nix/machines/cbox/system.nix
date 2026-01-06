@@ -67,14 +67,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    gum
-    jq
-    tree
-    vim
-    wget
-    turso-cli
-  ];
+  # environment.systemPackages = with pkgs; [
+  # ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

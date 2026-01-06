@@ -9,6 +9,11 @@ variable "cloudflare_zone_id" {
   type        = string
 }
 
+variable "cloudflare_account_id" {
+  description = "The Cloudflare Account ID"
+  type        = string
+}
+
 variable "do_access_token" {
   description = "The Digital Ocean API token"
   type        = string

@@ -101,10 +101,6 @@
 
   # Essential packages
   environment.systemPackages = with pkgs; [
-    vim
     git
-    htop
-    curl
-    wget
   ];
 }

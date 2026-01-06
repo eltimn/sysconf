@@ -4,8 +4,6 @@
     packages = with pkgs; [
       # ack-grep
       bitwarden-cli
-      btop
-      dnsutils
       doctl
       dust # better `du`
       fastfetch
@@ -14,8 +12,6 @@
       git
       gnumake
       gocryptfs
-      gum
-      htop
       libsecret
       mongodb-tools
       mongosh
@@ -23,9 +19,6 @@
       nushell
       podman-tui
       shellcheck
-      sshfs
-      stow
-      tldr
       # tmux
       # tmuxinator
       # trash-cli

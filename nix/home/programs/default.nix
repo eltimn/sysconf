@@ -1,8 +1,11 @@
 {
   imports = [
+    ./opencode
+    ./rofi
+    ./zed
     ./backup.nix
     ./chromium.nix
-    ./opencode.nix
-    ./zed
+    ./ghostty.nix
+    ./micro.nix
   ];
 }

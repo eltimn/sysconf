@@ -11,11 +11,11 @@ in
       green = mkRaw "0.9372549";
       blue = mkRaw "0.95686275";
     };
-    # Accent color (cyan/teal)
+    # Accent color (muted blue)
     accent = config.lib.cosmic.mkRON "optional" {
-      red = mkRaw "0.53333336";
-      green = mkRaw "0.75294113";
-      blue = mkRaw "0.8156863";
+      red = mkRaw "0.18";
+      green = mkRaw "0.35";
+      blue = mkRaw "0.55";
     };
     # Success color (green)
     success = config.lib.cosmic.mkRON "optional" {
@@ -37,12 +37,42 @@ in
     };
     # Corner radii
     corner_radii = {
-      radius_0 = config.lib.cosmic.mkRON "tuple" [ 0.0 0.0 0.0 0.0 ];
-      radius_xs = config.lib.cosmic.mkRON "tuple" [ 2.0 2.0 2.0 2.0 ];
-      radius_s = config.lib.cosmic.mkRON "tuple" [ 8.0 8.0 8.0 8.0 ];
-      radius_m = config.lib.cosmic.mkRON "tuple" [ 8.0 8.0 8.0 8.0 ];
-      radius_l = config.lib.cosmic.mkRON "tuple" [ 8.0 8.0 8.0 8.0 ];
-      radius_xl = config.lib.cosmic.mkRON "tuple" [ 8.0 8.0 8.0 8.0 ];
+      radius_0 = config.lib.cosmic.mkRON "tuple" [
+        0.0
+        0.0
+        0.0
+        0.0
+      ];
+      radius_xs = config.lib.cosmic.mkRON "tuple" [
+        2.0
+        2.0
+        2.0
+        2.0
+      ];
+      radius_s = config.lib.cosmic.mkRON "tuple" [
+        8.0
+        8.0
+        8.0
+        8.0
+      ];
+      radius_m = config.lib.cosmic.mkRON "tuple" [
+        8.0
+        8.0
+        8.0
+        8.0
+      ];
+      radius_l = config.lib.cosmic.mkRON "tuple" [
+        8.0
+        8.0
+        8.0
+        8.0
+      ];
+      radius_xl = config.lib.cosmic.mkRON "tuple" [
+        8.0
+        8.0
+        8.0
+        8.0
+      ];
     };
     # Spacing
     spacing = {
@@ -58,15 +88,14 @@ in
       space_xxxl = 128;
     };
     # Gaps and hints
-    gaps = config.lib.cosmic.mkRON "tuple" [ 0 8 ];
+    gaps = config.lib.cosmic.mkRON "tuple" [
+      0
+      8
+    ];
     active_hint = 3;
     is_frosted = false;
-    # Window hint (teal color)
-    window_hint = config.lib.cosmic.mkRON "optional" {
-      red = mkRaw "0.56078434";
-      green = mkRaw "0.7372549";
-      blue = mkRaw "0.73333335";
-    };
+    # Window hint defaults to accent color if not set
+    window_hint = config.lib.cosmic.mkRON "optional" null;
     # Secondary container (None)
     secondary_container_bg = config.lib.cosmic.mkRON "optional" null;
     # Palette
