@@ -1,5 +1,6 @@
 {
   imports = [
+    ./goose
     ./opencode
     ./rofi
     ./zed

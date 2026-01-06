@@ -40,7 +40,9 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "codium --new-window --wait";
+      EDITOR = "micro";
+      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
+      COSMIC_DATA_CONTROL_ENABLED = 1;
     };
 
     # some files

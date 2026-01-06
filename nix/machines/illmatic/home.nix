@@ -23,11 +23,11 @@
       "$HOME/bin"
     ];
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "micro";
+      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
     };
   };
 
-  # Packages that are installed as programs also allow for configuration.
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;

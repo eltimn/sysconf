@@ -19,18 +19,17 @@
     homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
     stateVersion = "23.11"; # don't change unless reinstalling from scratch
 
-    packages = with pkgs; [
-      gnumake
-      stow
+    sessionPath = [
+      "$HOME/bin/common"
+      "$HOME/bin"
     ];
 
-    sessionPath = [ "$HOME/bin/common" ];
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "micro";
+      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
     };
   };
 
-  # Packages that are installed as programs also allow for configuration.
   programs = {
     # Let Home Manager manage itself
     home-manager.enable = true;

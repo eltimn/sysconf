@@ -18,6 +18,7 @@ in
     ../../home/cosmic
     ../../home/programs
     ../../home/programs/git
+    ../../home/programs/goose
     ../../home/programs/vscode
     ../../home/programs/zsh
     ../../home/programs/direnv.nix
@@ -44,7 +45,6 @@ in
         claude-code
         crush
         gemini-cli
-        goose-cli
         nodejs # npx is needed for MCP servers
         vulkan-tools
       ]
@@ -66,13 +66,9 @@ in
     sessionVariables = {
       # EDITOR = "codium --new-window --wait";
       EDITOR = "micro";
+      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
-      # Global defaults for goose
-      GOOSE_PROVIDER = "ollama";
-      GOOSE_MODEL = "qwen3-next:80b-cloud";
-      GOOSE_MODE = "smart_approve";
-      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
     };
 
     # some files
@@ -101,6 +97,7 @@ in
 
     programs.chromium.enable = true;
     programs.ghostty.enable = true;
+    programs.goose.enable = true;
     programs.micro.enable = true;
     programs.opencode.enable = true;
     programs.rofi.enable = true;

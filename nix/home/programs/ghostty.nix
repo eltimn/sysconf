@@ -14,10 +14,6 @@ in
   config = lib.mkIf cfg.enable {
     programs.ghostty = {
       enable = true;
-
-  config = lib.mkIf cfg.enable {
-    programs.ghostty = {
-      enable = true;
       enableZshIntegration = true;
       systemd.enable = true;
 
