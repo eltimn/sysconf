@@ -39,7 +39,7 @@ in
       # Creates ~/.config/opencode/opencode.json
       settings = {
         autoupdate = false;
-        theme = "base16-ayu-light"; # TODO: system doesn't switch between light/dark themes, this will need to be manually done: https://opencode.ai/docs/themes/#system-theme
+        theme = "system"; # TODO: system doesn't switch between light/dark themes, this will need to be manually done: https://opencode.ai/docs/themes/#system-theme
         tools = {
           lsp = true;
           nixos = false; # don't enable by default

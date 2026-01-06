@@ -17,12 +17,6 @@ in
       green = mkRaw "0.35";
       blue = mkRaw "0.55";
     };
-    # Accent color (cyan/teal)
-    # accent = config.lib.cosmic.mkRON "optional" {
-    #   red = mkRaw "0.53333336";
-    #   green = mkRaw "0.75294113";
-    #   blue = mkRaw "0.8156863";
-    # };
     # Success color (green)
     success = config.lib.cosmic.mkRON "optional" {
       red = mkRaw "0.57254905";
@@ -100,19 +94,8 @@ in
     ];
     active_hint = 3;
     is_frosted = false;
+    # Window hint defaults to accent color if not set
     window_hint = config.lib.cosmic.mkRON "optional" null;
-    # Window hint (blue color)
-    # window_hint = config.lib.cosmic.mkRON "optional" {
-    #   red = mkRaw "0.0";
-    #   green = mkRaw "0.22745104";
-    #   blue = mkRaw "0.6";
-    # };
-    # Window hint (teal color)
-    # window_hint = config.lib.cosmic.mkRON "optional" {
-    #   red = mkRaw "0.56078434";
-    #   green = mkRaw "0.7372549";
-    #   blue = mkRaw "0.73333335";
-    # };
     # Secondary container (None)
     secondary_container_bg = config.lib.cosmic.mkRON "optional" null;
     # Palette
