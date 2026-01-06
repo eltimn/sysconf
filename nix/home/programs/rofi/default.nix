@@ -16,7 +16,7 @@ let
       THEME="light"
     fi
 
-    cliphist list | rofi -dmenu -theme ~/.config/rofi/$THEME.rasi -p "Clipboard" | cliphist decode | wl-copy
+    cliphist list | rofi -dmenu -theme $HOME/.config/rofi/$THEME.rasi -p "Clipboard" | cliphist decode | wl-copy
   '';
 in
 {

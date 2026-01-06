@@ -25,10 +25,6 @@ in
       cosmic-store
     ];
 
-    environment.systemPackages = with pkgs; [
-      cosmic-ext-applet-clipboard-manager
-    ];
-
     services.system76-scheduler.enable = true;
   };
 }

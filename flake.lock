@@ -22,24 +22,6 @@
         "type": "github"
       }
     },
-    "cosmic-applets": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1765040669,
-        "narHash": "sha256-TdQeMh1gauB8XF6Tmv6S9PcavABdYY/0ofH/NFPNyts=",
-        "owner": "wingej0",
-        "repo": "ext-cosmic-applets-flake",
-        "rev": "2fc84efe6660070c739e0ef3d590124d58b60e10",
-        "type": "github"
-      },
-      "original": {
-        "owner": "wingej0",
-        "repo": "ext-cosmic-applets-flake",
-        "type": "github"
-      }
-    },
     "cosmic-manager": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -181,7 +163,7 @@
     },
     "isd-flake": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "pyproject-build-systems": "pyproject-build-systems",
         "pyproject-nix": "pyproject-nix",
         "systems": "systems",
@@ -203,7 +185,7 @@
     },
     "nix-vscode-extensions": {
       "inputs": {
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1767580149,
@@ -289,22 +271,6 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1756787288,
-        "narHash": "sha256-rw/PHa1cqiePdBxhF66V7R+WAP8WekQ0mCDG4CFqT8Y=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "d0fc30899600b9b3466ddb260fd83deb486c32f1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
         "lastModified": 1759515020,
         "narHash": "sha256-M5OkxXQj+mWrXOYOfrnE5kJX45KcOWPZHvxuwpdHB5w=",
         "owner": "NixOS",
@@ -319,7 +285,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1766025857,
         "narHash": "sha256-Lav5jJazCW4mdg1iHcROpuXqmM94BWJvabLFWaJVJp0=",
@@ -335,7 +301,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1767480499,
         "narHash": "sha256-8IQQUorUGiSmFaPnLSo2+T+rjHtiNWc+OAzeHck7N48=",
@@ -404,7 +370,6 @@
     "root": {
       "inputs": {
         "colmena": "colmena",
-        "cosmic-applets": "cosmic-applets",
         "cosmic-manager": "cosmic-manager",
         "disko": "disko",
         "firefox-addons": "firefox-addons",
@@ -412,7 +377,7 @@
         "isd-flake": "isd-flake",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixos-generators": "nixos-generators",
-        "nixpkgs": "nixpkgs_5",
+        "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
         "zen-browser-flake": "zen-browser-flake"

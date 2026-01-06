@@ -69,7 +69,6 @@ in
             ]
             [
               "com.system76.CosmicAppletStatusArea"
-              "io.github.wiiznokes.cosmic-ext-applet-clipboard-manager"
               "com.system76.CosmicAppletTiling"
               "com.system76.CosmicAppletAudio"
               "com.system76.CosmicAppletNetwork"
