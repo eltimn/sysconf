@@ -22,7 +22,7 @@ in
       systemd.enable = true;
 
       settings = {
-        theme = "dark:cosmic-dark,light:custom-light";
+        theme = "dark:cosmic-dark,light:cosmic-light";
         window-theme = "ghostty";
         font-family = "DejaVu Sans Mono";
         font-size = 13;
@@ -70,30 +70,31 @@ in
           selection-foreground = "C4C4C4";
         };
 
-        custom-light = {
-          background = "faf4f2";
-          cursor-color = "706b6e";
-          foreground = "29242a";
+        # Colors from cosmic-term's built-in "COSMIC Light Dark Text" theme
+        cosmic-light = {
+          background = "F5F7FA";
+          cursor-color = "1B1B1B";
+          foreground = "1B1B1B";
           palette = [
-            "0=#faf4f2"
-            "1=#e14775"
-            "2=#269d69"
-            "3=#cc7a0a"
-            "4=#e16032"
-            "5=#7058be"
-            "6=#1c8ca8"
-            "7=#29242a"
-            "8=#a59fa0"
-            "9=#e14775"
-            "10=#269d69"
-            "11=#cc7a0a"
-            "12=#e16032"
-            "13=#7058be"
-            "14=#1c8ca8"
-            "15=#29242a"
+            "0=#5C5F77"
+            "1=#D20F39"
+            "2=#40A02B"
+            "3=#DF8E1D"
+            "4=#1E66F5"
+            "5=#EA76CB"
+            "6=#179299"
+            "7=#ACB0BE"
+            "8=#6C6F85"
+            "9=#D20F39"
+            "10=#40A02B"
+            "11=#DF8E1D"
+            "12=#1E66F5"
+            "13=#EA76CB"
+            "14=#179299"
+            "15=#BCC0CC"
           ];
-          selection-background = "bfb9ba";
-          selection-foreground = "29242a";
+          selection-background = "ACB0BE";
+          selection-foreground = "1B1B1B";
         };
       };
     };
