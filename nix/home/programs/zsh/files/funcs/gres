@@ -1,0 +1,7 @@
+# use gum to choose staged files to unstage
+local selection=$(git diff --name-only --staged | gum choose --no-limit --header="Choose files to reset:")
+if [ "${selection}" != "" ]; then
+  echo "${selection}" | while read line; do
+    git restore --staged "${line}"
+  done
+fi
