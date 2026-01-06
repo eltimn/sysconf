@@ -1,3 +1,13 @@
+slash_commands:
+  - command: "research"
+    recipe_path: "./recipes/rpi-research.yaml"
+  - command: "plane"
+    recipe_path: "./recipes/rpi-plane.yaml"
+  - command: "implement"
+    recipe_path: "./recipes/rpi-implement.yaml"
+  - command: "iterate"
+    recipe_path: "./recipes/rpi-iterate.yaml"
+
 extensions:
   computercontroller:
     enabled: true
