@@ -1,6 +1,7 @@
 {
   imports = [
     ./opencode
+    ./rofi
     ./zed
     ./backup.nix
     ./chromium.nix

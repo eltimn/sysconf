@@ -104,5 +104,17 @@ in
         size = config.lib.cosmic.mkRON "enum" "M";
       }
     ];
+
+    # Custom keyboard shortcuts
+    wayland.desktopManager.cosmic.shortcuts = [
+      {
+        key = "Ctrl+Alt+H";
+        action = config.lib.cosmic.mkRON "enum" {
+          variant = "Spawn";
+          value = [ "rofi-cliphist" ];
+        };
+        description = config.lib.cosmic.mkRON "optional" "Clipboard manager";
+      }
+    ];
   };
 }

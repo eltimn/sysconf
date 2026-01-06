@@ -1,0 +1,21 @@
+* {
+    bg: #ffffff;
+    fg: #2e3440;
+    accent: #5e81ac;
+    selected-bg: #e5e9f0;
+
+    background-color: @bg;
+    text-color: @fg;
+}
+
+window {
+    width: 30%;
+    border: 1px;
+    border-color: #d8dee9;
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: @selected-bg;
+    text-color: @accent;
+}

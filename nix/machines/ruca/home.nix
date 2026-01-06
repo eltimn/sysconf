@@ -108,6 +108,7 @@ in
     programs.ghostty.enable = true;
     programs.micro.enable = true;
     programs.opencode.enable = true;
+    programs.rofi.enable = true;
     programs.zed-editor.enable = true;
 
     containers.mongodb-rz.enable = true;
