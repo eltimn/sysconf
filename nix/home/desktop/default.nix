@@ -11,6 +11,7 @@
       ffmpeg
       filen-desktop
       firefox
+      git-worktree-runner
       google-chrome
       # libnss3-tools
       libnotify
@@ -25,14 +26,16 @@
       nixpkgs-lint-community
       notify-osd
       obsidian
-      # parcellite
       # sqlitebrowser
       # sqlitestudio
       # vivaldi
       # vivaldi-ffmpeg-codecs
+      vhs
       vlc
       # warp-terminal
       # wezterm # https://github.com/wezterm/wezterm/issues/6025
+      wl-color-picker
+      yubioath-flutter
       yubikey-manager
       zen-browser
     ];

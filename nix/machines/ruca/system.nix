@@ -92,18 +92,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    age
     clinfo
-    gum
     isd
-    jq
-    parted
     pciutils
-    tree
-    # ventoy
-    vim
-    wget
-    whois
   ];
 
   programs.zsh.enable = true;

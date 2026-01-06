@@ -44,14 +44,9 @@ in
         claude-code
         crush
         gemini-cli
-        git-worktree-runner
         goose-cli
-        micro
         nodejs # npx is needed for MCP servers
-        vhs
         vulkan-tools
-        wl-color-picker
-        yubioath-flutter
       ]
       ++ [
         # pkgs-unstable.lmstudio

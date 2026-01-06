@@ -60,15 +60,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    age
     borgbackup
-    gum
-    jq
-    parted
-    stow
-    tree
-    vim
-    wget
   ];
 
   programs.zsh.enable = true;
