@@ -48,9 +48,10 @@ in
         goose-cli
         micro
         nodejs # npx is needed for MCP servers
-        yubioath-flutter
         vhs
         vulkan-tools
+        wl-color-picker
+        yubioath-flutter
       ]
       ++ [
         # pkgs-unstable.lmstudio
@@ -97,11 +98,6 @@ in
       enableZshIntegration = true;
       shellWrapperName = "y";
     };
-
-    ghostty = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 
   # Enable sysconf modules
@@ -109,6 +105,7 @@ in
     cosmic.primaryMonitor = "HDMI-A-1";
 
     programs.chromium.enable = true;
+    programs.ghostty.enable = true;
     programs.micro.enable = true;
     programs.opencode.enable = true;
     programs.zed-editor.enable = true;

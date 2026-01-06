@@ -68,14 +68,10 @@
     #   shellIntegration.enableZshIntegration = true;
     #   theme = "Github";
     # };
-
-    ghostty = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 
   sysconf = {
+    programs.ghostty.enable = true;
     programs.micro.enable = true;
   };
 }

@@ -1,9 +1,10 @@
 {
   imports = [
-    ./backup.nix
-    ./chromium.nix
-    ./micro.nix
     ./opencode
     ./zed
+    ./backup.nix
+    ./chromium.nix
+    ./ghostty.nix
+    ./micro.nix
   ];
 }
