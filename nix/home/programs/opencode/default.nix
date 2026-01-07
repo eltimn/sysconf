@@ -12,9 +12,11 @@
 let
   cfg = config.sysconf.programs.opencode;
 
+  themeFileLoc = "$HOME/.config/opencode/theme.json";
+
   oc = pkgs.writeShellScriptBin "oc" ''
     COSMIC_THEME_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
-    THEME_FILE="$HOME/.config/opencode/theme.json"
+    THEME_FILE=${themeFileLoc}
 
     # Determine theme based on Cosmic theme setting
     if [[ -f "$COSMIC_THEME_FILE" ]] && [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
@@ -31,9 +33,6 @@ let
     # Update theme in theme config
     ${pkgs.jq}/bin/jq --arg theme "$THEME" '.theme = $theme' "$THEME_FILE" > "$THEME_FILE.tmp" && \
       mv "$THEME_FILE.tmp" "$THEME_FILE"
-
-    # Set OPENCODE_CONFIG to point to theme file (merged with main config)
-    export OPENCODE_CONFIG="$THEME_FILE"
 
     ${pkgs-unstable.opencode}/bin/opencode "$@"
   '';
@@ -65,6 +64,7 @@ in
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
       OPENCODE_OLLAMA_BASEURL = "http://${osConfig.services.ollama.host}:${toString osConfig.services.ollama.port}/v1/";
       OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
+      OPENCODE_CONFIG = themeFileLoc; # Set OPENCODE_CONFIG to point to theme file (merged with main config)
     };
 
     home.packages = [ oc ];
