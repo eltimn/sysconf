@@ -9,12 +9,12 @@
     ../../home/common
     ../../home/desktop
     ../../home/gnome.nix
+    ../../home/programs
     ../../home/programs/git
     ../../home/programs/vscode
     ../../home/programs/zsh
     ../../home/programs/direnv.nix
     ../../home/programs/tmux.nix
-    # ../../home/services/mount-secrets.nix
   ];
 
   # The User and Path it manages
@@ -40,7 +40,8 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "codium --new-window --wait";
+      EDITOR = "micro";
+      COSMIC_DATA_CONTROL_ENABLED = 1;
     };
 
     # some files
@@ -71,6 +72,7 @@
   };
 
   sysconf = {
+    programs.bat.enable = true;
     programs.ghostty.enable = true;
     programs.micro.enable = true;
   };

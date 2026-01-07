@@ -1,5 +1,4 @@
 {
-  pkgs,
   osConfig,
   ...
 }:
@@ -7,6 +6,7 @@
 
   imports = [
     ../../home/common
+    ../../home/programs
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/tmux.nix
@@ -19,24 +19,23 @@
     homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
     stateVersion = "23.11"; # don't change unless reinstalling from scratch
 
-    packages = with pkgs; [
-      gnumake
-      stow
+    sessionPath = [
+      "$HOME/bin/common"
+      "$HOME/bin"
     ];
 
-    sessionPath = [ "$HOME/bin/common" ];
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "micro";
     };
   };
 
-  # Packages that are installed as programs also allow for configuration.
   programs = {
     # Let Home Manager manage itself
     home-manager.enable = true;
   };
 
   sysconf = {
+    programs.bat.enable = true;
     programs.micro.enable = true;
   };
 }

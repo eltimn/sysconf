@@ -23,11 +23,10 @@
       "$HOME/bin"
     ];
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "micro";
     };
   };
 
-  # Packages that are installed as programs also allow for configuration.
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
@@ -35,6 +34,7 @@
 
   # sysconf programs & containers
   sysconf = {
+    programs.bat.enable = true;
     programs.backup = {
       enable = true;
       repo = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";

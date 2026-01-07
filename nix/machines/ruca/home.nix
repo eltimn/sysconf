@@ -44,7 +44,6 @@ in
         claude-code
         crush
         gemini-cli
-        goose-cli
         nodejs # npx is needed for MCP servers
         vulkan-tools
       ]
@@ -68,11 +67,6 @@ in
       EDITOR = "micro";
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
-      # Global defaults for goose
-      GOOSE_PROVIDER = "ollama";
-      GOOSE_MODEL = "qwen3-next:80b-cloud";
-      GOOSE_MODE = "smart_approve";
-      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
     };
 
     # some files
@@ -99,8 +93,10 @@ in
   sysconf = {
     cosmic.primaryMonitor = "HDMI-A-1";
 
+    programs.bat.enable = true;
     programs.chromium.enable = true;
     programs.ghostty.enable = true;
+    programs.goose.enable = true;
     programs.micro.enable = true;
     programs.opencode.enable = true;
     programs.rofi.enable = true;
