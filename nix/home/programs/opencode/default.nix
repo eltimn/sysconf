@@ -3,6 +3,7 @@
 {
   config,
   lib,
+  osConfig,
   pkgs-unstable,
   ...
 }:
@@ -11,11 +12,6 @@ let
   cfg = config.sysconf.programs.opencode;
 in
 {
-  imports = [
-    ./rules.nix
-    ./provider.nix
-  ];
-
   options.sysconf.programs.opencode = {
     enable = lib.mkEnableOption "opencode";
   };
@@ -24,53 +20,26 @@ in
     sops.secrets."ollama_api_key" = { };
 
     # Symlink config directories
-    home.file.".config/opencode/themes".source = ./themes;
-    home.file.".config/opencode/command".source = ./commands;
-    home.file.".config/opencode/agent".source = ./agents;
+    home.file.".config/opencode/themes".source = ./files/themes;
+    home.file.".config/opencode/command".source = ./files/command;
+    home.file.".config/opencode/agent".source = ./files/agent;
+    home.file.".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
+
+    # Copy opencode.json as a mutable file (not symlink) so theme can be edited externally
+    home.activation.copyOpencodeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD cp -f ${./files/opencode.json} "$HOME/.config/opencode/opencode.json"
+      $DRY_RUN_CMD chmod u+w "$HOME/.config/opencode/opencode.json"
+    '';
 
     home.sessionVariables = {
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
+      OPENCODE_OLLAMA_BASEURL = "http://${osConfig.services.ollama.host}:${toString osConfig.services.ollama.port}/v1/";
       OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
     };
 
     programs.opencode = {
       enable = true;
       package = pkgs-unstable.opencode;
-
-      # Creates ~/.config/opencode/opencode.json
-      settings = {
-        autoupdate = false;
-        theme = "cosmic-light"; # TODO: system doesn't switch between light/dark themes, this will need to be manually done: https://opencode.ai/docs/themes/#system-theme
-        tools = {
-          lsp = true;
-          nixos = false; # don't enable by default
-        };
-
-        mcp = { };
-
-        permission = {
-          bash = {
-            "git push" = "ask";
-            "task switch" = "ask";
-            "nixos-rebuild switch" = "ask";
-            "sudo" = "deny";
-          };
-        };
-        agent = {
-          build = {
-            permission = {
-              bash = {
-                "git push" = "allow";
-              };
-            };
-          };
-          plan = {
-            tools = {
-              nixos = true;
-            };
-          };
-        };
-      };
     };
   };
 }
