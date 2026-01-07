@@ -5,7 +5,7 @@ local files=$(
   git diff --name-only --diff-filter=D | while read f; do echo "(d) ${f}"; done
 )
 local selected=$(echo "${files}" | sort -t' ' -k2 -u | gum choose --no-limit --header="Choose files to add:")
-echo "selected: ${selected}"
+
 if [ "${selected}" != "" ]; then
   echo "${selected}" | while read line; do
     local f="${line#(*) }"
