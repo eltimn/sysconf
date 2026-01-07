@@ -14,7 +14,6 @@ in
   imports = [
     ./rules.nix
     ./provider.nix
-    ./agents.nix
   ];
 
   options.sysconf.programs.opencode = {
@@ -24,8 +23,10 @@ in
   config = lib.mkIf cfg.enable {
     sops.secrets."ollama_api_key" = { };
 
-    # Symlink themes directory to ~/.config/opencode/themes/
+    # Symlink config directories
     home.file.".config/opencode/themes".source = ./themes;
+    home.file.".config/opencode/command".source = ./commands;
+    home.file.".config/opencode/agent".source = ./agents;
 
     home.sessionVariables = {
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
@@ -39,7 +40,7 @@ in
       # Creates ~/.config/opencode/opencode.json
       settings = {
         autoupdate = false;
-        theme = "system"; # TODO: system doesn't switch between light/dark themes, this will need to be manually done: https://opencode.ai/docs/themes/#system-theme
+        theme = "cosmic-light"; # TODO: system doesn't switch between light/dark themes, this will need to be manually done: https://opencode.ai/docs/themes/#system-theme
         tools = {
           lsp = true;
           nixos = false; # don't enable by default

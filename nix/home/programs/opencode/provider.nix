@@ -36,6 +36,29 @@ in
       };
     };
 
+    ollama-cloud = {
+      npm = "@ai-sdk/openai-compatible";
+      name = "Ollama (cloud)";
+      options = {
+        baseURL = "https://ollama.com/v1/";
+        apiKey = "{env:OPENCODE_OLLAMA_CLOUD_APIKEY}";
+      };
+      models = {
+        devstral = {
+          name = "Devstral 2";
+          id = "devstral-2:123b-cloud";
+        };
+        qwen3coder = {
+          name = "Qwen3 Coder 480B";
+          id = "qwen3-coder:480b-cloud";
+        };
+        glm4-7 = {
+          name = "GLM 4.7";
+          id = "glm-4.7:cloud";
+        };
+      };
+    };
+
     # llama-swap = {
     #   npm = "@ai-sdk/openai-compatible";
     #   name = "llama-swap";
@@ -63,28 +86,5 @@ in
     #   #   };
     #   # };
     # };
-
-    ollama-cloud = {
-      npm = "@ai-sdk/openai-compatible";
-      name = "Ollama (cloud)";
-      options = {
-        baseURL = "https://ollama.com/v1/";
-        apiKey = "{env:OPENCODE_OLLAMA_CLOUD_APIKEY}";
-      };
-      models = {
-        devstral = {
-          name = "Devstral 2";
-          id = "devstral-2:123b-cloud";
-        };
-        qwen3coder = {
-          name = "Qwen3 Coder 480B";
-          id = "qwen3-coder:480b-cloud";
-        };
-        glm4-7 = {
-          name = "GLM 4.7";
-          id = "glm-4.7:cloud";
-        };
-      };
-    };
   };
 }
