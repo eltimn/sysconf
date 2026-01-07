@@ -1,6 +1,5 @@
 {
   "autoupdate": false,
-  "theme": "cosmic-light",
   "tools": {
     "lsp": true,
     "nixos": false

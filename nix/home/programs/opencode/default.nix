@@ -14,19 +14,26 @@ let
 
   oc = pkgs.writeShellScriptBin "oc" ''
     COSMIC_THEME_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
-    OPENCODE_CONFIG="$HOME/.config/opencode/opencode.json"
+    THEME_FILE="$HOME/.config/opencode/theme.json"
 
+    # Determine theme based on Cosmic theme setting
     if [[ -f "$COSMIC_THEME_FILE" ]] && [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
       THEME="palenight"
     else
       THEME="cosmic-light"
     fi
 
-    # Update theme in opencode config
-    if [[ -f "$OPENCODE_CONFIG" ]]; then
-      ${pkgs.jq}/bin/jq --arg theme "$THEME" '.theme = $theme' "$OPENCODE_CONFIG" > "$OPENCODE_CONFIG.tmp" && \
-        mv "$OPENCODE_CONFIG.tmp" "$OPENCODE_CONFIG"
+    # Ensure theme file exists
+    if [[ ! -f "$THEME_FILE" ]]; then
+      echo '{ "theme": "'"$THEME"'" }' > "$THEME_FILE"
     fi
+
+    # Update theme in theme config
+    ${pkgs.jq}/bin/jq --arg theme "$THEME" '.theme = $theme' "$THEME_FILE" > "$THEME_FILE.tmp" && \
+      mv "$THEME_FILE.tmp" "$THEME_FILE"
+
+    # Set OPENCODE_CONFIG to point to theme file (merged with main config)
+    export OPENCODE_CONFIG="$THEME_FILE"
 
     ${pkgs-unstable.opencode}/bin/opencode "$@"
   '';
@@ -45,10 +52,13 @@ in
     home.file.".config/opencode/agent".source = ./files/agent;
     home.file.".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
 
-    # Copy opencode.json as a mutable file (not symlink) so theme can be edited externally
-    home.activation.copyOpencodeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD cp -f ${./files/opencode.json} "$HOME/.config/opencode/opencode.json"
-      $DRY_RUN_CMD chmod u+w "$HOME/.config/opencode/opencode.json"
+    # Symlink main config (immutable)
+    home.file.".config/opencode/opencode.json".source = ./files/opencode.json;
+
+    # Copy theme.json as a mutable file (not symlink) so it can be edited externally
+    home.activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD cp -f ${./files/theme.json} "$HOME/.config/opencode/theme.json"
+      $DRY_RUN_CMD chmod u+w "$HOME/.config/opencode/theme.json"
     '';
 
     home.sessionVariables = {
