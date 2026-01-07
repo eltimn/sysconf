@@ -13,7 +13,7 @@
         "bash": {
           "git status": "allow",
           "git diff": "allow",
-          "git *": "ask",
+          "git*": "ask",
           "ls": "allow",
           "pwd": "allow",
           "task switch": "deny",

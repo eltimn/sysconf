@@ -9,12 +9,12 @@
     ../../home/common
     ../../home/desktop
     ../../home/gnome.nix
+    ../../home/programs
     ../../home/programs/git
     ../../home/programs/vscode
     ../../home/programs/zsh
     ../../home/programs/direnv.nix
     ../../home/programs/tmux.nix
-    # ../../home/services/mount-secrets.nix
   ];
 
   # The User and Path it manages
@@ -41,7 +41,6 @@
     # List of environment variables.
     sessionVariables = {
       EDITOR = "micro";
-      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
       COSMIC_DATA_CONTROL_ENABLED = 1;
     };
 
@@ -73,6 +72,7 @@
   };
 
   sysconf = {
+    programs.bat.enable = true;
     programs.ghostty.enable = true;
     programs.micro.enable = true;
   };

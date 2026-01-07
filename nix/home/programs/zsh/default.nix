@@ -81,14 +81,6 @@
     #   '';
     # };
 
-    bat = {
-      enable = true;
-      config = {
-        pager = "less -FR";
-        theme = "ansi";
-      };
-    };
-
     # eza = {
     #   enable = true;
     #   git = true;

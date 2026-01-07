@@ -1,5 +1,4 @@
 {
-  pkgs,
   osConfig,
   ...
 }:
@@ -7,6 +6,7 @@
 
   imports = [
     ../../home/common
+    ../../home/programs
     ../../home/programs/direnv.nix
     ../../home/programs/git
     ../../home/programs/tmux.nix
@@ -26,7 +26,6 @@
 
     sessionVariables = {
       EDITOR = "micro";
-      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
     };
   };
 
@@ -36,6 +35,7 @@
   };
 
   sysconf = {
+    programs.bat.enable = true;
     programs.micro.enable = true;
   };
 }

@@ -18,7 +18,6 @@ in
     ../../home/cosmic
     ../../home/programs
     ../../home/programs/git
-    ../../home/programs/goose
     ../../home/programs/vscode
     ../../home/programs/zsh
     ../../home/programs/direnv.nix
@@ -66,7 +65,6 @@ in
     sessionVariables = {
       # EDITOR = "codium --new-window --wait";
       EDITOR = "micro";
-      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
     };
@@ -95,6 +93,7 @@ in
   sysconf = {
     cosmic.primaryMonitor = "HDMI-A-1";
 
+    programs.bat.enable = true;
     programs.chromium.enable = true;
     programs.ghostty.enable = true;
     programs.goose.enable = true;

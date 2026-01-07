@@ -24,7 +24,6 @@
     ];
     sessionVariables = {
       EDITOR = "micro";
-      LESSOPEN = "|bat --paging=never --color=always %s"; # use bat for syntax highlighting with less
     };
   };
 
@@ -35,6 +34,7 @@
 
   # sysconf programs & containers
   sysconf = {
+    programs.bat.enable = true;
     programs.backup = {
       enable = true;
       repo = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
