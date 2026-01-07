@@ -104,7 +104,7 @@ Once aligned on approach:
 
 ### Step 4: Detailed Plan Writing
 
-After structure approval, write the plan to `thoughts/plans/YYYY-MM-DD-HHmm-description.md`
+After structure approval, write the plan to `.ai/plans/YYYY-MM-DD-HHmm-description.md`
 
 Use this template structure:
 

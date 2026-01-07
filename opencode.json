@@ -7,15 +7,19 @@
       "type": "local"
     }
   },
-  "permission": {
-    "bash": {
-      "git status": "allow",
-      "git diff": "allow",
-      "git": "ask",
-      "ls": "allow",
-      "pwd": "allow",
-      "task switch": "deny",
-      "sudo": "deny"
+  "agent": {
+    "build": {
+      "permission": {
+        "bash": {
+          "git status": "allow",
+          "git diff": "allow",
+          "git *": "ask",
+          "ls": "allow",
+          "pwd": "allow",
+          "task switch": "deny",
+          "sudo": "deny"
+        }
+      }
     }
   },
   "instructions": ["AGENTS.md"]

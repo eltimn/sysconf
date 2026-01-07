@@ -1,6 +1,6 @@
 ---
 description: Research and document codebase for a specific topic
-agent: plan
+agent: research
 subtask: false
 ---
 
@@ -54,7 +54,7 @@ basename $(git rev-parse --show-toplevel)
 ```
 
 ### STEP 6: Write Research Document
-Create `thoughts/research/YYYY-MM-DD-HHmm-topic.md` (e.g., `2025-01-15-1430-auth-flow.md`) with this structure:
+Create `.ai/research/YYYY-MM-DD-HHmm-topic.md` (e.g., `2025-01-15-1430-auth-flow.md`) with this structure:
 
 ```markdown
 ---
@@ -98,7 +98,7 @@ Ask if they have follow-up questions.
 - Use subagents for research, not your own tools directly
 - Document what IS, not what SHOULD BE
 - Include specific file:line references
-- Write the research doc to thoughts/research/
+- Write the research doc to .ai/research/
 
 ---
 
