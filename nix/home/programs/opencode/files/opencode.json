@@ -1,32 +1,9 @@
 {
   "autoupdate": false,
   "tools": {
-    "lsp": true,
-    "nixos": false
+    "lsp": true
   },
   "mcp": {},
-  "permission": {
-    "bash": {
-      "git push": "ask",
-      "task switch": "ask",
-      "nixos-rebuild switch": "ask",
-      "sudo": "deny"
-    }
-  },
-  "agent": {
-    "build": {
-      "permission": {
-        "bash": {
-          "git push": "allow"
-        }
-      }
-    },
-    "plan": {
-      "tools": {
-        "nixos": true
-      }
-    }
-  },
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
