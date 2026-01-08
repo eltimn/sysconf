@@ -129,7 +129,7 @@
             ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
-            ./nix/system/default.nix # system modules
+            ./nix/modules/system/default.nix # system modules
             inputs.home-manager.nixosModules.home-manager
             {
               # https://nix-community.github.io/home-manager/nixos-options.xhtml
