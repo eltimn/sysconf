@@ -6,8 +6,8 @@
 
 {
   imports = [
-    ../../system
-    ../../system/de/gnome.nix
+    ../../modules/system
+    ../../modules/system/de/gnome.nix
   ];
 
   # Bootloader

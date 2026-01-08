@@ -6,15 +6,15 @@
 {
 
   imports = [
-    ../../home/common
-    ../../home/desktop
-    ../../home/gnome.nix
-    ../../home/programs
-    ../../home/programs/git
-    ../../home/programs/vscode
-    ../../home/programs/zsh
-    ../../home/programs/direnv.nix
-    ../../home/programs/tmux.nix
+    ../../modules/home/common
+    ../../modules/home/desktop
+    ../../modules/home/gnome.nix
+    ../../modules/home/programs
+    ../../modules/home/programs/git
+    ../../modules/home/programs/vscode
+    ../../modules/home/programs/zsh
+    ../../modules/home/programs/direnv.nix
+    ../../modules/home/programs/tmux.nix
   ];
 
   # The User and Path it manages
