@@ -10,7 +10,7 @@
 
 {
   imports = [
-    ../../modules/system/sysconf-user.nix
+    ../../modules/system/users/sysconf.nix
   ];
 
   # Bootloader

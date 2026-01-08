@@ -141,3 +141,7 @@ tasks:
   colmena-do-build:
     desc: Build DO hive without deploying
     cmd: nix run .#colmena -- build --impure --on @do
+
+  colmena-build:
+    desc: Build all hives without deploying
+    cmd: nix run .#colmena -- build --impure

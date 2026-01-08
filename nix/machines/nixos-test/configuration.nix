@@ -8,7 +8,7 @@
 {
   imports = [
     ../../modules/system
-    ../../modules/system/sysconf-user.nix
+    ../../modules/system/users/sysconf.nix
     ../../modules/system/containers/nginx.nix
   ];
 

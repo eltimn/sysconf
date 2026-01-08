@@ -8,7 +8,7 @@
   imports = [
     ../../modules/system/containers
     ../../modules/system/services
-    ../../modules/system/sysconf-user.nix
+    ../../modules/system/users/sysconf.nix
   ];
 
   # Bootloader
