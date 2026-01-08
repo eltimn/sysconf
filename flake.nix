@@ -118,7 +118,6 @@
               ;
           };
           modules = [
-            ./nix/settings.nix # sysconf settings
             {
               config.sysconf.settings = {
                 hostName = vars.host;
@@ -129,7 +128,7 @@
             ./nix/machines/${vars.host}/disks.nix
             ./nix/machines/${vars.host}/hardware-configuration.nix
             ./nix/machines/${vars.host}/system.nix
-            ./nix/modules/system/default.nix # system modules
+            ./nix/modules/system # system modules
             inputs.home-manager.nixosModules.home-manager
             {
               # https://nix-community.github.io/home-manager/nixos-options.xhtml
@@ -161,7 +160,7 @@
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
           modules = [
-            ./nix/settings.nix # sysconf settings
+            ./nix/modules/system # sysconf settings
             {
               config.sysconf.settings.hostName = "iso";
               config.sysconf.settings.primaryUsername = "nixos";

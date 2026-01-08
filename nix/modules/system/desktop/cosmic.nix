@@ -6,10 +6,10 @@
 }:
 
 let
-  cfg = config.sysconf.system.cosmic;
+  cfg = config.sysconf.desktop.cosmic;
 in
 {
-  options.sysconf.system.cosmic = {
+  options.sysconf.desktop.cosmic = {
     enable = lib.mkEnableOption "cosmic";
   };
 

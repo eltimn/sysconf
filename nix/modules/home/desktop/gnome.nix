@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sysconf.gnome;
+  cfg = config.sysconf.desktop.gnome;
 in
 {
-  options.sysconf.gnome = {
+  options.sysconf.desktop.gnome = {
     enable = lib.mkEnableOption "gnome";
   };
 

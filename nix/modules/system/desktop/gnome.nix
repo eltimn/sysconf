@@ -6,10 +6,11 @@
 }:
 
 let
-  cfg = config.sysconf.system.gnome;
+  cfg = config.sysconf.desktop.gnome;
 in
 {
-  options.sysconf.system.gnome = {
+  options.sysconf.desktop.gnome = {
+    enable = lib.mkEnableOption "cosmic";
     videoDrivers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -17,7 +18,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     # X Server configuration
     services.xserver = {
       enable = true;

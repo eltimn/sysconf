@@ -7,7 +7,6 @@
 {
   imports = [
     ../../modules/system
-    ../../modules/system/de/gnome.nix
   ];
 
   # Bootloader
@@ -33,6 +32,11 @@
   sops.age.sshKeyPaths = [
     "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
   ];
+
+  sysconf = {
+    settings.desktopEnvironment = "gnome";
+    settings.gitEditor = "micro";
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -68,9 +72,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.zsh.enable = true;
-
-  # List services that you want to enable:
 
   # Needed for yubikey
   services.pcscd.enable = true;

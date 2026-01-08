@@ -48,6 +48,12 @@
       description = "The git editor command.";
     };
 
+    hostRole = lib.mkOption {
+      type = lib.types.str;
+      default = "server"; # desktop|server
+      description = "Host role - determines which programs/services are enabled.";
+    };
+
     desktopEnvironment = lib.mkOption {
       type = lib.types.str;
       default = "none"; # cosmic|gnome|none

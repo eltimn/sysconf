@@ -69,8 +69,6 @@ in
     curl
   ];
 
-  # programs.zsh.enable = true;
-
   # Enable ZFS support
   # boot.supportedFilesystems = [ "zfs" ];
   # boot.zfs.forceImportRoot = false;

@@ -1,7 +1,7 @@
 # COSMIC Desktop Configuration
 { config, lib, ... }:
 let
-  cfg = config.sysconf.cosmic;
+  cfg = config.sysconf.desktop.cosmic;
   mkRaw = config.lib.cosmic.mkRON "raw";
 
   # Build output config based on primaryMonitor setting
@@ -21,7 +21,7 @@ in
     ./terminal.nix
   ];
 
-  options.sysconf.cosmic = {
+  options.sysconf.desktop.cosmic = {
     enable = lib.mkEnableOption "cosmic";
     # Use `cosmic-randr list` to see what's available.
     primaryMonitor = lib.mkOption {

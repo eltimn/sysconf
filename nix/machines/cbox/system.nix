@@ -17,12 +17,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Allow sysconf user to receive unsigned store paths for remote deployment
-  nix.settings.trusted-users = [
-    "root"
-    "sysconf"
-  ];
-
   # Define a user account.
   users = {
     groups = {
@@ -70,7 +64,6 @@
   #  enable = true;
   #  enableSSHSupport = true;
   #};
-  programs.zsh.enable = true;
 
   # NixOS services
   services = {

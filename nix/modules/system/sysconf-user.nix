@@ -1,3 +1,4 @@
+# This user is used for doing deployments via Colmena
 { config, pkgs, ... }:
 {
   users = {
@@ -28,5 +29,11 @@
         }
       ];
     }
+  ];
+
+  # Allow sysconf user to receive unsigned store paths for remote deployment
+  nix.settings.trusted-users = [
+    "root"
+    "sysconf"
   ];
 }

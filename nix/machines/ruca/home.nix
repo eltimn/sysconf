@@ -82,7 +82,7 @@ in
 
   # Enable sysconf modules
   sysconf = {
-    cosmic.primaryMonitor = "HDMI-A-1";
+    desktop.cosmic.primaryMonitor = "HDMI-A-1";
 
     containers.mongodb-rz.enable = true;
     containers.postgresql-rz.enable = true;

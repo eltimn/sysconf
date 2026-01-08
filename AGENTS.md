@@ -34,21 +34,22 @@ This repository contains declarative system configurations for multiple machines
 ├── flake.nix              # Entry point defining all configurations
 ├── Taskfile.yml           # Task commands for common operations
 ├── nix/
-│   ├── settings.nix       # Custom configuration options
 │   ├── machines/          # Per-host configurations
 │   ├── modules/           # Shared modules (replaces home/ and system/)
 │   │   ├── home/          # Home Manager modules
 │   │   │   ├── containers/    # Development containers
 │   │   │   ├── desktop/       # Desktop environment configs
-│   │   │   │   ├── cosmic/    # COSMIC DE configuration
+│   │   │   │   ├── cosmic/    # COSMIC DE theme and settings
 │   │   │   │   └── gnome.nix  # GNOME DE configuration
 │   │   │   ├── programs/      # User programs (all have enable options)
 │   │   │   ├── services/      # User services
 │   │   │   └── default.nix    # Home module aggregator
 │   │   └── system/        # NixOS system modules
 │   │       ├── containers/    # System containers
-│   │       ├── de/            # Desktop environment system config
+│   │       ├── desktop/       # Desktop environment system config
 │   │       ├── services/      # System services
+│   │       ├── settings.nix   # System settings and options
+│   │       ├── sops.nix       # SOPS configuration
 │   │       └── default.nix    # System module aggregator
 │   └── templates/         # Project templates
 ├── infra/                 # OpenTofu/Terraform infrastructure code
@@ -87,10 +88,29 @@ All Home Manager modules follow a consistent pattern with enable options:
 
 ### System Modules (`nix/modules/system/`)
 
-System-level configuration modules:
-- **containers/**: System containers and container runtime
-- **de/**: Desktop environment system packages (cosmic, gnome)
-- **services/**: System services (caddy, coredns, ntfy, jellyfin, etc.)
+System-level configuration modules with a consistent structure:
+
+**Module Files:**
+- **settings.nix**: Central system settings and options (consolidated from nix/settings.nix)
+  - Defines all `sysconf.settings.*` options
+  - Common system configuration (timezone, networking, nix settings, locale)
+- **default.nix**: Module aggregator
+  - Imports all system modules including settings
+  - Base system packages
+  - Conditional desktop environment loading based on `desktopEnvironment` setting
+
+**Module Categories:**
+- **containers/**: System containers and container runtime (rootless, nginx, channels-dvr)
+- **desktop/**: Desktop environment system packages
+  - `cosmic.nix`: COSMIC DE system packages and configuration
+  - `gnome.nix`: GNOME DE system packages and configuration
+  - Both have enable options: `sysconf.desktop.cosmic.enable` and `sysconf.desktop.gnome.enable`
+- **services/**: System services (caddy, coredns, ntfy, jellyfin, blocky, vaultwarden)
+
+**Conditional Loading:**
+- Desktop environments conditionally enabled in `system/default.nix` based on `desktopEnvironment` setting
+- Settings accessible throughout the system via `config.sysconf.settings.*`
+- Home Manager modules access system settings via `osConfig.sysconf.settings.*`
 
 ## Common Operations
 
@@ -125,10 +145,12 @@ Each host has specific configuration files in `nix/machines/{host}/`:
 - `disks.nix`: Disk partitioning (Disko)
 
 ### Custom Options
-The repository defines custom options in `nix/settings.nix`:
+The repository defines custom options in `nix/modules/system/settings.nix`:
 - `sysconf.settings.timezone`: System timezone
 - `sysconf.settings.hostName`: Hostname
 - `sysconf.settings.primaryUsername`: Admin user
+- `sysconf.settings.primaryUserSshKeys`: List of SSH public keys for primary user
+- `sysconf.settings.deployKeys`: SSH public keys for deployment automation (CI/CD)
 - `sysconf.settings.gitEditor`: Git editor command
 - `sysconf.settings.hostRole`: Host role - "desktop" or "server" (determines which programs/services are enabled)
 - `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
@@ -189,8 +211,15 @@ Modules are enabled in `nix/modules/home/default.nix` based on `hostRole`:
    - Desktop section if desktop-only
 
 ### Modifying Services
-1. Services are defined in `nix/modules/system/services/` or `nix/modules/home/services/`
-2. Follow existing patterns for service definitions
+1. System services are defined in `nix/modules/system/services/`
+2. Home services are defined in `nix/modules/home/services/`
+3. Follow existing patterns for service definitions
+
+### Modifying System Settings
+1. All system settings are centralized in `nix/modules/system/settings.nix`
+2. Settings are automatically loaded via `nix/modules/system/default.nix`
+3. Access settings in system modules via `config.sysconf.settings.*`
+4. Access settings in home modules via `osConfig.sysconf.settings.*`
 
 ### Working with Secrets
 1. Encrypted files end with `-enc` suffix

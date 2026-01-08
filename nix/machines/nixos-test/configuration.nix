@@ -7,10 +7,8 @@
 
 {
   imports = [
-    # Include common configuration
-    ../../modules/system/default.nix
+    ../../modules/system
     ../../modules/system/sysconf-user.nix
-    ../../modules/system/containers/rootless.nix
     ../../modules/system/containers/nginx.nix
   ];
 
@@ -44,17 +42,10 @@
 
   users.mutableUsers = false;
 
-  # Enable zsh
-  programs.zsh.enable = true;
-
   # Enable flakes
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
-  ];
-  nix.settings.trusted-users = [
-    "root"
-    "sysconf"
   ];
 
   # SSH configuration
@@ -72,9 +63,4 @@
 
   # Enable Nginx container
   sysconf.containers.nginx.enable = true;
-
-  # Essential packages
-  environment.systemPackages = with pkgs; [
-    git
-  ];
 }

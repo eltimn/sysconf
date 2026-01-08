@@ -6,7 +6,7 @@
   ...
 }:
 let
-  cfg = config.sysconf.settings;
+  settings = osConfig.sysconf.settings;
 
   basePkgs = with pkgs; [
     # ack-grep
@@ -79,18 +79,10 @@ in
     ./services
   ];
 
-  options.sysconf.settings = {
-    hostRole = lib.mkOption {
-      type = lib.types.str;
-      default = "server"; # desktop|server
-      description = "Is this being used on a desktop or server.";
-    };
-  };
-
   config = lib.mkMerge [
     {
       home = {
-        packages = basePkgs ++ lib.optionals (cfg.hostRole == "desktop") desktopPkgs;
+        packages = basePkgs ++ lib.optionals (settings.hostRole == "desktop") desktopPkgs;
       };
 
       sops = {
@@ -109,7 +101,7 @@ in
       sysconf.programs.zsh.enable = true;
     }
 
-    (lib.mkIf (cfg.hostRole == "desktop") {
+    (lib.mkIf (settings.hostRole == "desktop") {
       # Desktop-specific modules
       sysconf.programs.chromium.enable = true;
       sysconf.programs.firefox.enable = true;
@@ -121,11 +113,11 @@ in
       sysconf.programs.zed-editor.enable = true;
     })
 
-    (lib.mkIf (osConfig.sysconf.settings.desktopEnvironment == "gnome") {
-      sysconf.gnome.enable = true;
+    (lib.mkIf (settings.desktopEnvironment == "gnome") {
+      sysconf.desktop.gnome.enable = true;
     })
-    (lib.mkIf (osConfig.sysconf.settings.desktopEnvironment == "cosmic") {
-      sysconf.cosmic.enable = true;
+    (lib.mkIf (settings.desktopEnvironment == "cosmic") {
+      sysconf.desktop.cosmic.enable = true;
     })
   ];
 }

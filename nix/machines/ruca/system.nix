@@ -8,22 +8,20 @@
 {
   imports = [
     ../../modules/system
-    # ../../modules/system/de/gnome.nix
-    ../../modules/system/de/cosmic.nix
   ];
 
-  sysconf.settings.gitEditor = "micro";
+  sysconf = {
+    settings.desktopEnvironment = "cosmic";
+    settings.gitEditor = "micro";
+    # GNOME specific configuration
+    # desktop.gnome = {
+    #   videoDrivers = [ "amdgpu" ];
+    # };
+  };
 
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
-
-  # GNOME specific configuration
-  # sysconf.system.gnome = {
-  #   videoDrivers = [ "amdgpu" ];
-  # };
-
-  sysconf.system.cosmic.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -97,7 +95,6 @@
     pciutils
   ];
 
-  programs.zsh.enable = true;
   programs.gnupg.agent.enable = true;
 
   # Enable the OpenSSH daemon.

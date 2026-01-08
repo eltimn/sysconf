@@ -18,7 +18,7 @@ let
   };
 in
 {
-  # Local hosts
+  ## Local hosts ##
   # cbox = {
   #   deployment = {
   #     targetHost = "cbox";
@@ -29,12 +29,11 @@ in
   #   };
 
   #   imports = [
-  #     ../settings.nix
   #     inputs.disko.nixosModules.disko
   #     ../machines/cbox/disks.nix
   #     ../machines/cbox/hardware-configuration.nix
   #     ../machines/cbox/system.nix
-  #     ../system/default.nix
+  #     ../modules/system
   #     inputs.home-manager.nixosModules.home-manager
   #   ];
 
@@ -45,7 +44,10 @@ in
   #     useGlobalPkgs = true;
   #     useUserPackages = true;
   #     users.nelly = {
-  #       imports = [ ../machines/cbox/home.nix ];
+  #       imports = [
+  #         ../machines/cbox/home.nix
+  #         inputs.cosmic-manager.homeManagerModules.cosmic-manager
+  #       ];
   #     };
   #     extraSpecialArgs = { inherit pkgs-unstable; };
   #     sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
@@ -75,12 +77,11 @@ in
     };
 
     imports = [
-      ../settings.nix
       inputs.disko.nixosModules.disko
       ../machines/illmatic/disks.nix
       ../machines/illmatic/hardware-configuration.nix
       ../machines/illmatic/system.nix
-      ../system/default.nix
+      ../modules/system
       inputs.home-manager.nixosModules.home-manager
     ];
 
@@ -91,14 +92,17 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       users.nelly = {
-        imports = [ ../machines/illmatic/home.nix ];
+        imports = [
+          ../machines/illmatic/home.nix
+          inputs.cosmic-manager.homeManagerModules.cosmic-manager
+        ];
       };
       extraSpecialArgs = { inherit pkgs-unstable; };
       sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
     };
   };
 
-  # DO hosts
+  ## Digital Ocean (DO) hosts ##
   nixos-test-01 = {
     deployment = {
       targetHost = "nixos-test-01.eltimn.com";
@@ -112,8 +116,8 @@ in
     };
 
     imports = [
-      ../settings.nix
       ../machines/nixos-test/configuration.nix
+      ../modules/system
       inputs.home-manager.nixosModules.home-manager
     ];
 

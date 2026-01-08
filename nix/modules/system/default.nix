@@ -1,29 +1,53 @@
 # This is included on every host
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  settings = config.sysconf.settings;
+in
 {
   imports = [
     ./containers
+    ./desktop
     ./services
+    ./settings.nix
     ./sops.nix
   ];
 
-  environment.systemPackages = with pkgs; [
-    age
-    bat
-    btop
-    dnsutils
-    ghostty.terminfo
-    gum
-    htop
-    jq
-    parted
-    s3cmd
-    sshfs
-    stow
-    tldr
-    tree
-    vim
-    wget
-    whois
+  config = lib.mkMerge [
+    {
+      environment.systemPackages = with pkgs; [
+        age
+        bat
+        btop
+        dnsutils
+        ghostty.terminfo
+        git
+        gum
+        htop
+        jq
+        parted
+        s3cmd
+        sshfs
+        stow
+        tldr
+        tree
+        vim
+        wget
+        whois
+      ];
+
+      programs.zsh.enable = true;
+    }
+
+    (lib.mkIf (settings.desktopEnvironment == "gnome") {
+      sysconf.desktop.gnome.enable = true;
+    })
+    (lib.mkIf (settings.desktopEnvironment == "cosmic") {
+      sysconf.desktop.cosmic.enable = true;
+    })
   ];
 }
