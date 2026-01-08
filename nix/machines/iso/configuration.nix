@@ -38,8 +38,8 @@ in
 
   users.users = {
     nixos = {
-      openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-      # shell = pkgs.zsh;
+      openssh.authorizedKeys.keys = config.sysconf.system.users.nelly.sshKeys;
+      shell = pkgs.bash;
     };
   };
 }

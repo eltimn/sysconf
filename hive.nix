@@ -38,7 +38,6 @@ in
     ];
 
     sysconf.settings.hostName = "cbox";
-    sysconf.settings.primaryUsername = "nelly";
 
     home-manager = {
       useGlobalPkgs = true;
@@ -85,7 +84,6 @@ in
     ];
 
     sysconf.settings.hostName = "illmatic";
-    sysconf.settings.primaryUsername = "nelly";
 
     home-manager = {
       useGlobalPkgs = true;
@@ -120,7 +118,6 @@ in
     ];
 
     sysconf.settings.hostName = "nixos-test-01";
-    sysconf.settings.primaryUsername = "nelly";
 
     home-manager = {
       useGlobalPkgs = true;

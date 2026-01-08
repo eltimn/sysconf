@@ -23,10 +23,8 @@ in
   sops.secrets."do_spaces_key" = { };
 
   home = {
-    # Home Manager needs a bit of information about you and the
-    # paths it should manage.
-    username = "${osConfig.sysconf.settings.primaryUsername}";
-    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
+    username = "nelly";
+    homeDirectory = "/home/nelly";
     stateVersion = "24.11";
 
     # Packages that should be installed to the user profile.

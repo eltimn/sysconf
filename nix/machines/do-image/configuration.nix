@@ -5,7 +5,7 @@
   ...
 }:
 let
-  primaryUserSshKeys = [
+  nellySshKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij nelly@lappy"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
   ];
@@ -36,7 +36,7 @@ in
     home = "/var/lib/sysconf";
     createHome = true;
     shell = pkgs.bash;
-    openssh.authorizedKeys.keys = primaryUserSshKeys;
+    openssh.authorizedKeys.keys = nellySshKeys;
   };
 
   # Primary user account
@@ -44,7 +44,7 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     shell = pkgs.bash;
-    openssh.authorizedKeys.keys = primaryUserSshKeys;
+    openssh.authorizedKeys.keys = nellySshKeys;
   };
 
   # Allow passwordless sudo for wheel (NixOps req)

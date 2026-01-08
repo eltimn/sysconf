@@ -4,7 +4,9 @@
   pkgs,
   ...
 }:
-
+let
+  cfg = config.sysconf.settings;
+in
 {
   options.sysconf.settings = {
     timezone = lib.mkOption {
@@ -16,22 +18,6 @@
     hostName = lib.mkOption {
       type = lib.types.str;
       description = "The hostname of the host";
-    };
-
-    primaryUsername = lib.mkOption {
-      type = lib.types.str;
-      default = "nelly";
-      description = "The primary administrative username of the host";
-    };
-
-    primaryUserSshKeys = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      description = "A list of SSH public keys to install for the primary user.";
-      default = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILKlXvCa8D1VqasrHkgsnajPhaUA5N2pJ0b9OASPqYij nelly@lappy"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXS57Mn5Hsbkyv/byapcmgEVkRKqEnudWaCSDmpkRdb nelly@ruca"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPuurkk9SbjlyP27n5qSA17WCHkqL+3skETa/jIZsGH6 nelly@illmatic"
-      ];
     };
 
     deployKeys = lib.mkOption {
@@ -64,11 +50,11 @@
   # common config settings
   config = {
     # timezone
-    time.timeZone = config.sysconf.settings.timezone;
+    time.timeZone = cfg.timezone;
 
     # networking
     networking.networkmanager.enable = true;
-    networking.hostName = "${config.sysconf.settings.hostName}";
+    networking.hostName = "${cfg.hostName}";
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";

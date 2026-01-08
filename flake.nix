@@ -121,7 +121,6 @@
             {
               config.sysconf.settings = {
                 hostName = vars.host;
-                primaryUsername = vars.user;
               };
             }
             inputs.disko.nixosModules.disko
@@ -163,7 +162,6 @@
             ./nix/modules/system # sysconf settings
             {
               config.sysconf.settings.hostName = "iso";
-              config.sysconf.settings.primaryUsername = "nixos";
             }
             "${nixpkgs}/nixos/modules/installer/cd-dvd/${installerName}.nix"
             "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"

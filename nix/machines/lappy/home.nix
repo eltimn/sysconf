@@ -1,6 +1,5 @@
 {
   pkgs,
-  osConfig,
   ...
 }:
 {
@@ -11,8 +10,8 @@
 
   # The User and Path it manages
   home = {
-    username = "${osConfig.sysconf.settings.primaryUsername}";
-    homeDirectory = "/home/${osConfig.sysconf.settings.primaryUsername}";
+    username = "nelly";
+    homeDirectory = "/home/nelly";
     stateVersion = "23.11";
 
     # Packages that should be installed to the user profile.
