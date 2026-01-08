@@ -4,13 +4,7 @@
 {
 
   imports = [
-    ../../modules/home/common
-    ../../modules/home/containers
-    ../../modules/home/programs
-    ../../modules/home/programs/direnv.nix
-    ../../modules/home/programs/git
-    ../../modules/home/programs/tmux.nix
-    ../../modules/home/programs/zsh
+    ../../modules/home
   ];
 
   home = {
@@ -34,7 +28,6 @@
 
   # sysconf programs & containers
   sysconf = {
-    programs.bat.enable = true;
     programs.backup = {
       enable = true;
       repo = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
@@ -53,8 +46,6 @@
         "/mnt/music"
       ];
     };
-
-    programs.micro.enable = true;
   };
 
   # Systemd for user services

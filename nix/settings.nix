@@ -47,6 +47,12 @@
       default = "nvim"; # gnome-text-editor -ns
       description = "The git editor command.";
     };
+
+    desktopEnvironment = lib.mkOption {
+      type = lib.types.str;
+      default = "none"; # cosmic|gnome|none
+      description = "Desktop Environment used.";
+    };
   };
 
   # common config settings

@@ -2,10 +2,35 @@
   config,
   lib,
   pkgs,
+  osConfig,
   ...
 }:
 let
   cfg = config.sysconf.settings;
+
+  basePkgs = with pkgs; [
+    # ack-grep
+    bitwarden-cli
+    doctl
+    dust # better `du`
+    fastfetch
+    fd
+    gh
+    git
+    gnumake
+    gocryptfs
+    libsecret
+    mongodb-tools
+    mongosh
+    neovim
+    nushell
+    podman-tui
+    shellcheck
+    # tmux
+    # tmuxinator
+    # trash-cli
+    xclip
+  ];
 
   desktopPkgs = with pkgs; [
     bitwarden-desktop
@@ -47,13 +72,14 @@ let
   ];
 in
 {
-  options.sysconf.settings = {
-    desktopEnvironment = lib.mkOption {
-      type = lib.types.str;
-      default = "none"; # cosmic|gnome|none
-      description = "Desktop Environment used.";
-    };
+  imports = [
+    ./containers
+    ./desktop
+    ./programs
+    ./services
+  ];
 
+  options.sysconf.settings = {
     hostRole = lib.mkOption {
       type = lib.types.str;
       default = "server"; # desktop|server
@@ -61,45 +87,45 @@ in
     };
   };
 
-  config = {
-    home = {
-      packages =
-        with pkgs;
-        [
-          # ack-grep
-          bitwarden-cli
-          doctl
-          dust # better `du`
-          fastfetch
-          fd
-          gh
-          git
-          gnumake
-          gocryptfs
-          libsecret
-          mongodb-tools
-          mongosh
-          neovim
-          nushell
-          podman-tui
-          shellcheck
-          # tmux
-          # tmuxinator
-          # trash-cli
-          xclip
-        ]
-        ++ lib.optionals (cfg.hostRole == "desktop") desktopPkgs;
-    };
+  config = lib.mkMerge [
+    {
+      home = {
+        packages = basePkgs ++ lib.optionals (cfg.hostRole == "desktop") desktopPkgs;
+      };
 
-    sops = {
-      age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
-      defaultSopsFile = ../../../../secrets/secrets-enc.yaml;
-      defaultSopsFormat = "yaml";
-    };
+      sops = {
+        age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+        defaultSopsFile = ../../../secrets/secrets-enc.yaml;
+        defaultSopsFormat = "yaml";
+      };
 
-    imports = [
-      ./programs
-      ./services
-    ];
-  };
+      # enable some modules
+      # sysconf.programs.backup.enable = true;
+      sysconf.programs.bat.enable = true;
+      sysconf.programs.direnv.enable = true;
+      sysconf.programs.git.enable = true;
+      sysconf.programs.micro.enable = true;
+      sysconf.programs.tmux.enable = true;
+      sysconf.programs.zsh.enable = true;
+    }
+
+    (lib.mkIf (cfg.hostRole == "desktop") {
+      # Desktop-specific modules
+      sysconf.programs.chromium.enable = true;
+      sysconf.programs.firefox.enable = true;
+      sysconf.programs.ghostty.enable = true;
+      sysconf.programs.goose.enable = true;
+      sysconf.programs.opencode.enable = true;
+      sysconf.programs.rofi.enable = true;
+      sysconf.programs.vscode.enable = true;
+      sysconf.programs.zed-editor.enable = true;
+    })
+
+    (lib.mkIf (osConfig.sysconf.settings.desktopEnvironment == "gnome") {
+      sysconf.gnome.enable = true;
+    })
+    (lib.mkIf (osConfig.sysconf.settings.desktopEnvironment == "cosmic") {
+      sysconf.cosmic.enable = true;
+    })
+  ];
 }

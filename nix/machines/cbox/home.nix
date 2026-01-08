@@ -5,12 +5,7 @@
 {
 
   imports = [
-    ../../modules/home/common
-    ../../modules/home/programs
-    ../../modules/home/programs/direnv.nix
-    ../../modules/home/programs/git
-    ../../modules/home/programs/tmux.nix
-    ../../modules/home/programs/zsh
+    ../../modules/home
   ];
 
   # The User and Path it manages

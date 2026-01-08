@@ -21,8 +21,9 @@ in
     ./terminal.nix
   ];
 
-  # Use `cosmic-randr list` to see what's available.
   options.sysconf.cosmic = {
+    enable = lib.mkEnableOption "cosmic";
+    # Use `cosmic-randr list` to see what's available.
     primaryMonitor = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;

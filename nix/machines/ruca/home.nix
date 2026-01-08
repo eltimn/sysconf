@@ -12,19 +12,10 @@ in
 {
 
   imports = [
-    ../../modules/home/common
-    ../../modules/home/containers
-    ../../modules/home/desktop
-    ../../modules/home/cosmic
-    ../../modules/home/programs
-    ../../modules/home/programs/git
-    ../../modules/home/programs/vscode
-    ../../modules/home/programs/zsh
-    ../../modules/home/programs/direnv.nix
-    ../../modules/home/programs/firefox.nix
-    ../../modules/home/programs/tmux.nix
+    ../../modules/home
   ];
 
+  # these are mainly for opentofu
   sops.secrets."cloudflare_api_token" = { };
   sops.secrets."do_access_token" = { };
   sops.secrets."do_images_key" = { };
@@ -92,15 +83,6 @@ in
   # Enable sysconf modules
   sysconf = {
     cosmic.primaryMonitor = "HDMI-A-1";
-
-    programs.bat.enable = true;
-    programs.chromium.enable = true;
-    programs.ghostty.enable = true;
-    programs.goose.enable = true;
-    programs.micro.enable = true;
-    programs.opencode.enable = true;
-    programs.rofi.enable = true;
-    programs.zed-editor.enable = true;
 
     containers.mongodb-rz.enable = true;
     containers.postgresql-rz.enable = true;

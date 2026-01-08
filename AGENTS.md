@@ -36,8 +36,20 @@ This repository contains declarative system configurations for multiple machines
 ├── nix/
 │   ├── settings.nix       # Custom configuration options
 │   ├── machines/          # Per-host configurations
-│   ├── system/            # Shared system services
-│   ├── home/              # Shared user configurations
+│   ├── modules/           # Shared modules (replaces home/ and system/)
+│   │   ├── home/          # Home Manager modules
+│   │   │   ├── containers/    # Development containers
+│   │   │   ├── desktop/       # Desktop environment configs
+│   │   │   │   ├── cosmic/    # COSMIC DE configuration
+│   │   │   │   └── gnome.nix  # GNOME DE configuration
+│   │   │   ├── programs/      # User programs (all have enable options)
+│   │   │   ├── services/      # User services
+│   │   │   └── default.nix    # Home module aggregator
+│   │   └── system/        # NixOS system modules
+│   │       ├── containers/    # System containers
+│   │       ├── de/            # Desktop environment system config
+│   │       ├── services/      # System services
+│   │       └── default.nix    # System module aggregator
 │   └── templates/         # Project templates
 ├── infra/                 # OpenTofu/Terraform infrastructure code
 │   ├── provider.tf        # Provider configurations (Cloudflare, DigitalOcean)
@@ -51,6 +63,34 @@ This repository contains declarative system configurations for multiple machines
 ├── secrets/               # Encrypted secrets (SOPS)
 └── docs/                  # Documentation
 ```
+
+## Module Organization
+
+### Home Manager Modules (`nix/modules/home/`)
+
+All Home Manager modules follow a consistent pattern with enable options:
+
+**Module Categories:**
+- **containers/**: Development containers (MongoDB, PostgreSQL)
+- **desktop/**: Desktop environment configurations
+  - `cosmic/`: COSMIC DE theme and settings
+  - `gnome.nix`: GNOME DE configuration
+- **programs/**: User applications (all have `sysconf.programs.<name>.enable` options)
+  - Individual programs: bat, chromium, direnv, firefox, ghostty, git, goose, micro, opencode, rofi, tmux, vscode, zed-editor, zsh
+  - Each module can be enabled/disabled independently
+- **services/**: User-level systemd services
+
+**Conditional Loading:**
+- Modules are always imported but conditionally enabled based on settings
+- Desktop-specific programs only enabled when `hostRole == "desktop"`
+- Desktop environment configs loaded based on `desktopEnvironment` setting
+
+### System Modules (`nix/modules/system/`)
+
+System-level configuration modules:
+- **containers/**: System containers and container runtime
+- **de/**: Desktop environment system packages (cosmic, gnome)
+- **services/**: System services (caddy, coredns, ntfy, jellyfin, etc.)
 
 ## Common Operations
 
@@ -90,24 +130,66 @@ The repository defines custom options in `nix/settings.nix`:
 - `sysconf.settings.hostName`: Hostname
 - `sysconf.settings.primaryUsername`: Admin user
 - `sysconf.settings.gitEditor`: Git editor command
+- `sysconf.settings.hostRole`: Host role - "desktop" or "server" (determines which programs/services are enabled)
+- `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
+
+### Module Enable Pattern
+All program modules follow this pattern:
+
+```nix
+{
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.sysconf.programs.<name>;
+in
+{
+  options.sysconf.programs.<name> = {
+    enable = lib.mkEnableOption "<name>";
+  };
+
+  config = lib.mkIf cfg.enable {
+    # Module configuration here
+  };
+}
+```
+
+Modules are enabled in `nix/modules/home/default.nix` based on `hostRole`:
+- Base programs (enabled for all hosts): bat, direnv, git, micro, tmux, zsh
+- Desktop programs (enabled only when `hostRole == "desktop"`): chromium, firefox, ghostty, goose, opencode, rofi, vscode, zed-editor
 
 ## Best Practices for Agents
 
 1. **Understand Context**: Always check which host configuration you're modifying by examining the file path
 2. **Follow Patterns**: Use existing configuration patterns rather than creating new ones
-3. **Respect Separation**: Keep system-level configs in `system.nix` and user-level in `home.nix`
+3. **Respect Separation**: Keep system-level configs in `modules/system/` and user-level in `modules/home/`
 4. **Secret Handling**: Never commit unencrypted secrets; use SOPS for sensitive data
-5. **Dependency Management**: Add new packages through appropriate module files, not directly in configurations
-6. **Testing**: Suggest building configurations with `task build` before deployment
+5. **Module Organization**: New programs go in `nix/modules/home/programs/` with an enable option
+6. **Testing**: Suggest building configurations with `task build -- #<host>` before deployment
 
 ## Common Tasks
 
 ### Adding a New Package
 1. Determine if it's a system or user package
-2. Add to appropriate file in `nix/home/`, or `nix/system`.
+2. For user packages:
+   - Create module in `nix/modules/home/programs/<name>.nix` with enable option
+   - Add enable statement in `nix/modules/home/default.nix`
+   - Consider whether it should be desktop-only or available for all hosts
+3. For system packages:
+   - Add to appropriate file in `nix/modules/system/`
+
+### Adding a New Program Module
+1. Create file in `nix/modules/home/programs/<name>.nix`
+2. Follow the module enable pattern (see "Module Enable Pattern" above)
+3. Add import in `nix/modules/home/programs/default.nix` if not auto-imported
+4. Enable in `nix/modules/home/default.nix`:
+   - Base section for all hosts
+   - Desktop section if desktop-only
 
 ### Modifying Services
-1. Services are defined in `nix/system/services/` or `nix/home/services/`
+1. Services are defined in `nix/modules/system/services/` or `nix/modules/home/services/`
 2. Follow existing patterns for service definitions
 
 ### Working with Secrets
@@ -115,12 +197,12 @@ The repository defines custom options in `nix/settings.nix`:
 2. Use `sops` command to edit, never edit encrypted content directly
 3. Keys are defined in `.sops.yaml`
 
-### Testing host Configurations
-1. Use `task build -- #<host>` to check the build for a specific host.
-2. Use `task clean` after running builds.
+### Testing Host Configurations
+1. Use `task build -- #<host>` to check the build for a specific host
+2. Use `task clean` after running builds
 
 ### Adding New Nix Files
-1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing file or `git commit` until the code is working and tested.
+1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing files or `git commit` until the code is working and tested.
 
 ### Working with Infrastructure (OpenTofu)
 1. **This project uses OpenTofu, not Terraform**. Always use `tofu` commands, not `terraform` commands.
@@ -150,7 +232,11 @@ The repository defines custom options in `nix/settings.nix`:
 - Reference system settings in Home Manager via `osConfig.sysconf.settings.*`
 - Import shared modules rather than duplicating configuration
 - Maintain consistent formatting with existing code
-- The namespace used for custom options is "sysconf". With sub-components like "sysconf.services" and "sysconf.home.services".
+- The namespace used for custom options is "sysconf" with sub-namespaces:
+  - `sysconf.settings.*` - Global settings
+  - `sysconf.programs.*` - Home Manager programs
+  - `sysconf.services.*` - System services
+  - `sysconf.cosmic.*` / `sysconf.gnome.*` - Desktop environments
 
 ## Goals
 - Keep changes minimal and focused.
