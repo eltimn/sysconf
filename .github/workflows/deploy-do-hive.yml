@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'nix/machines/nixos-test/**'
-      - 'nix/hive/do.nix'
+      - 'nix/hive/combined.nix'
       - 'flake.nix'
       - 'flake.lock'
       - 'secrets/**'
