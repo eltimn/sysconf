@@ -46,7 +46,6 @@ in
       users.nelly = {
         imports = [
           ./nix/machines/cbox/home.nix
-          inputs.cosmic-manager.homeManagerModules.cosmic-manager
         ];
       };
       extraSpecialArgs = { inherit pkgs-unstable; };
@@ -94,7 +93,6 @@ in
       users.nelly = {
         imports = [
           ./nix/machines/illmatic/home.nix
-          inputs.cosmic-manager.homeManagerModules.cosmic-manager
         ];
       };
       extraSpecialArgs = { inherit pkgs-unstable; };

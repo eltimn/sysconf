@@ -74,7 +74,6 @@ in
 {
   imports = [
     ./containers
-    ./desktop
     ./programs
     ./services
   ];
@@ -111,13 +110,6 @@ in
       sysconf.programs.rofi.enable = true;
       sysconf.programs.vscode.enable = true;
       sysconf.programs.zed-editor.enable = true;
-    })
-
-    (lib.mkIf (settings.desktopEnvironment == "gnome") {
-      sysconf.desktop.gnome.enable = true;
-    })
-    (lib.mkIf (settings.desktopEnvironment == "cosmic") {
-      sysconf.desktop.cosmic.enable = true;
     })
   ];
 }

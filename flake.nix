@@ -138,7 +138,6 @@
                 users.${vars.user} = {
                   imports = [
                     ./nix/machines/${vars.host}/home.nix
-                    inputs.cosmic-manager.homeManagerModules.cosmic-manager
                   ];
                 };
 
@@ -148,6 +147,7 @@
                 };
 
                 sharedModules = [
+                  inputs.cosmic-manager.homeManagerModules.cosmic-manager
                   inputs.sops-nix.homeManagerModules.sops
                 ];
               };
@@ -209,8 +209,8 @@
 
       # NixOS hosts
       nixosConfigurations = {
-        cbox = nixosConfig "cbox";
-        illmatic = nixosConfig "illmatic";
+        # cbox = nixosConfig "cbox";
+        # illmatic = nixosConfig "illmatic";
         lappy = nixosConfig "lappy";
         ruca = nixosConfig "ruca";
 

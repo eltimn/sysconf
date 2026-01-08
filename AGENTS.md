@@ -32,6 +32,7 @@ This repository contains declarative system configurations for multiple machines
 ```
 .
 ├── flake.nix              # Entry point defining all configurations
+├── hive.nix               # Colmena hive configuration for deployment
 ├── Taskfile.yml           # Task commands for common operations
 ├── nix/
 │   ├── machines/          # Per-host configurations
@@ -48,6 +49,10 @@ This repository contains declarative system configurations for multiple machines
 │   │       ├── containers/    # System containers
 │   │       ├── desktop/       # Desktop environment system config
 │   │       ├── services/      # System services
+│   │       ├── users/          # User management modules
+│   │       │   ├── nelly.nix   # Primary user configuration
+│   │       │   ├── sysconf.nix # Deployment user configuration
+│   │       │   └── default.nix # User modules aggregator
 │   │       ├── settings.nix   # System settings and options
 │   │       ├── sops.nix       # SOPS configuration
 │   │       └── default.nix    # System module aggregator
@@ -106,6 +111,9 @@ System-level configuration modules with a consistent structure:
   - `gnome.nix`: GNOME DE system packages and configuration
   - Both have enable options: `sysconf.desktop.cosmic.enable` and `sysconf.desktop.gnome.enable`
 - **services/**: System services (caddy, coredns, ntfy, jellyfin, blocky, vaultwarden)
+- **users/**: User management modules with enable options
+  - `nelly.nix`: Primary user configuration (`sysconf.system.users.nelly.enable`)
+  - `sysconf.nix`: Deployment user configuration for Colmena (`sysconf.system.users.sysconf.enable`)
 
 **Conditional Loading:**
 - Desktop environments conditionally enabled in `system/default.nix` based on `desktopEnvironment` setting
@@ -145,7 +153,9 @@ Each host has specific configuration files in `nix/machines/{host}/`:
 - `disks.nix`: Disk partitioning (Disko)
 
 ### Custom Options
-The repository defines custom options in `nix/modules/system/settings.nix`:
+The repository defines custom options in `nix/modules/system/settings.nix` and `nix/modules/system/users/`:
+
+**System Settings (`nix/modules/system/settings.nix`):**
 - `sysconf.settings.timezone`: System timezone
 - `sysconf.settings.hostName`: Hostname
 - `sysconf.settings.primaryUsername`: Admin user
@@ -154,6 +164,12 @@ The repository defines custom options in `nix/modules/system/settings.nix`:
 - `sysconf.settings.gitEditor`: Git editor command
 - `sysconf.settings.hostRole`: Host role - "desktop" or "server" (determines which programs/services are enabled)
 - `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
+
+**User Management Options (`nix/modules/system/users/`):**
+- `sysconf.system.users.nelly.enable`: Enable primary user configuration
+- `sysconf.system.users.nelly.hashedPasswordFile`: Location of hashed password file for nelly user
+- `sysconf.system.users.nelly.sshKeys`: SSH public keys for nelly user (defaults to known keys)
+- `sysconf.system.users.sysconf.enable`: Enable deployment user configuration (for Colmena)
 
 ### Module Enable Pattern
 All program modules follow this pattern:
@@ -181,6 +197,44 @@ in
 Modules are enabled in `nix/modules/home/default.nix` based on `hostRole`:
 - Base programs (enabled for all hosts): bat, direnv, git, micro, tmux, zsh
 - Desktop programs (enabled only when `hostRole == "desktop"`): chromium, firefox, ghostty, goose, opencode, rofi, vscode, zed-editor
+
+### User Management Module Pattern
+User management modules follow the same enable pattern:
+
+```nix
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.sysconf.system.users.<username>;
+in
+{
+  options.sysconf.system.users.<username> = {
+    enable = lib.mkEnableOption "<username>";
+    # Additional user-specific options
+  };
+
+  config = lib.mkIf cfg.enable {
+    # User configuration here
+  };
+}
+```
+
+Users are enabled in individual host `system.nix` files:
+```nix
+sysconf = {
+  system.users = {
+    nelly = {
+      enable = true;
+      hashedPasswordFile = "/run/keys/nelly-password";
+    };
+    sysconf.enable = true;
+  };
+};
+```
 
 ## Best Practices for Agents
 
@@ -220,6 +274,13 @@ Modules are enabled in `nix/modules/home/default.nix` based on `hostRole`:
 2. Settings are automatically loaded via `nix/modules/system/default.nix`
 3. Access settings in system modules via `config.sysconf.settings.*`
 4. Access settings in home modules via `osConfig.sysconf.settings.*`
+
+### Managing Users
+1. User configurations are modularized in `nix/modules/system/users/`
+2. Each user module has an enable option following the established pattern
+3. User modules are imported via `nix/modules/system/users/default.nix`
+4. Enable users in individual host `system.nix` files via `sysconf.system.users.<username>.enable`
+5. The sysconf user is used for Colmena deployments and has passwordless sudo access
 
 ### Working with Secrets
 1. Encrypted files end with `-enc` suffix

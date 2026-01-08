@@ -2,6 +2,7 @@
 {
   imports = [
     ../../modules/system
+    ../../modules/home/desktop
   ];
 
   # Bootloader

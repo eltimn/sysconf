@@ -13,6 +13,7 @@ in
 
   imports = [
     ../../modules/home
+    ../../modules/home/desktop
   ];
 
   # these are mainly for opentofu
