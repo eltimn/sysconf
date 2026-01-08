@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   pkgs-unstable,
   ...
@@ -10,6 +9,19 @@
     ../../modules/system
   ];
 
+  # linux kernel
+  # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
+  # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
+
+  # Bootloader
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # sops.secrets."users/nelly/password".neededForUsers = true;
+  # sops.age.sshKeyPaths = [
+  #   "${config.users.users.nelly.home}/.ssh/id_ed25519"
+  # ];
+
   sysconf = {
     settings.hostRole = "desktop";
     settings.desktopEnvironment = "cosmic";
@@ -18,15 +30,12 @@
     # desktop.gnome = {
     #   videoDrivers = [ "amdgpu" ];
     # };
+
+    system.users.nelly = {
+      enable = true;
+      # hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
+    };
   };
-
-  # linux kernel
-  # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
-  # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # graphics
   hardware.graphics = {
@@ -38,22 +47,6 @@
       pkgs.vulkan-headers
     ];
   };
-
-  # Define a user account.
-  users.users."${config.sysconf.settings.primaryUsername}" = {
-    isNormalUser = true;
-    description = "Tim Nelson";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-    shell = pkgs.zsh;
-  };
-
-  sops.age.sshKeyPaths = [
-    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
-  ];
 
   # Enable CUPS to print documents.
   services.printing = {
@@ -101,7 +94,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    allowSFTP = true;
+    # allowSFTP = true;
     openFirewall = true;
     settings = {
       PermitRootLogin = "no";

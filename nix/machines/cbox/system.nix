@@ -1,21 +1,23 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
+{ ... }:
 {
-  config,
-  pkgs,
-  ...
-}:
 
-{
   imports = [
-    ../../modules/system/users/sysconf.nix
+    ../../modules/system
   ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  sysconf = {
+    system.users = {
+      nelly = {
+        enable = true;
+        hashedPasswordFile = "/run/keys/nelly-password";
+      };
+      sysconf.enable = true;
+    };
+  };
 
   # Define a user account.
   users = {
@@ -25,19 +27,6 @@
     };
 
     users = {
-      "${config.sysconf.settings.primaryUsername}" = {
-        isNormalUser = true;
-        description = "Tim Nelson";
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "docker"
-        ];
-        hashedPasswordFile = "/run/keys/nelly-password";
-        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-        shell = pkgs.zsh;
-      };
-
       podman = {
         isSystemUser = true;
         group = "podman";

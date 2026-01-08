@@ -1,14 +1,11 @@
 {
-  config,
   lib,
-  pkgs,
   ...
 }:
 
 {
   imports = [
     ../../modules/system
-    ../../modules/system/users/sysconf.nix
     ../../modules/system/containers/nginx.nix
   ];
 
@@ -27,30 +24,22 @@
     fsType = "ext4";
   };
 
-  # User configuration
-  users.users.nelly = {
-    isNormalUser = true;
-    description = "Tim N";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-    shell = pkgs.zsh;
-    hashedPasswordFile = "/run/keys/nelly-password";
+  sysconf = {
+    system.users = {
+      nelly = {
+        enable = true;
+        hashedPasswordFile = "/run/keys/nelly-password";
+      };
+      sysconf.enable = true;
+    };
   };
 
   users.mutableUsers = false;
 
-  # Enable flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   # SSH configuration
   services.openssh = {
     enable = true;
+    openFirewall = true;
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
@@ -59,7 +48,6 @@
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 ];
 
   # Enable Nginx container
   sysconf.containers.nginx.enable = true;

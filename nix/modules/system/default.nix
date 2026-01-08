@@ -13,6 +13,7 @@ in
     ./containers
     ./desktop
     ./services
+    ./users
     ./settings.nix
     ./sops.nix
   ];
