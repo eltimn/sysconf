@@ -19,40 +19,40 @@ let
 in
 {
   ## Local hosts ##
-  # cbox = {
-  #   deployment = {
-  #     targetHost = "cbox";
-  #     targetUser = "sysconf";
-  #     targetPort = 22;
-  #     keys = mkPasswordKeys;
-  #     tags = [ "local" ];
-  #   };
+  cbox = {
+    deployment = {
+      targetHost = "cbox";
+      targetUser = "sysconf";
+      targetPort = 22;
+      keys = mkPasswordKeys;
+      tags = [ "local" ];
+    };
 
-  #   imports = [
-  #     inputs.disko.nixosModules.disko
-  #     ../machines/cbox/disks.nix
-  #     ../machines/cbox/hardware-configuration.nix
-  #     ../machines/cbox/system.nix
-  #     ../modules/system
-  #     inputs.home-manager.nixosModules.home-manager
-  #   ];
+    imports = [
+      inputs.disko.nixosModules.disko
+      ./nix/machines/cbox/disks.nix
+      ./nix/machines/cbox/hardware-configuration.nix
+      ./nix/machines/cbox/system.nix
+      ./nix/modules/system
+      inputs.home-manager.nixosModules.home-manager
+    ];
 
-  #   sysconf.settings.hostName = "cbox";
-  #   sysconf.settings.primaryUsername = "nelly";
+    sysconf.settings.hostName = "cbox";
+    sysconf.settings.primaryUsername = "nelly";
 
-  #   home-manager = {
-  #     useGlobalPkgs = true;
-  #     useUserPackages = true;
-  #     users.nelly = {
-  #       imports = [
-  #         ../machines/cbox/home.nix
-  #         inputs.cosmic-manager.homeManagerModules.cosmic-manager
-  #       ];
-  #     };
-  #     extraSpecialArgs = { inherit pkgs-unstable; };
-  #     sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
-  #   };
-  # };
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      users.nelly = {
+        imports = [
+          ./nix/machines/cbox/home.nix
+          inputs.cosmic-manager.homeManagerModules.cosmic-manager
+        ];
+      };
+      extraSpecialArgs = { inherit pkgs-unstable; };
+      sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
+    };
+  };
 
   illmatic = {
     deployment = {
@@ -78,10 +78,10 @@ in
 
     imports = [
       inputs.disko.nixosModules.disko
-      ../machines/illmatic/disks.nix
-      ../machines/illmatic/hardware-configuration.nix
-      ../machines/illmatic/system.nix
-      ../modules/system
+      ./nix/machines/illmatic/disks.nix
+      ./nix/machines/illmatic/hardware-configuration.nix
+      ./nix/machines/illmatic/system.nix
+      ./nix/modules/system
       inputs.home-manager.nixosModules.home-manager
     ];
 
@@ -93,7 +93,7 @@ in
       useUserPackages = true;
       users.nelly = {
         imports = [
-          ../machines/illmatic/home.nix
+          ./nix/machines/illmatic/home.nix
           inputs.cosmic-manager.homeManagerModules.cosmic-manager
         ];
       };
@@ -116,8 +116,8 @@ in
     };
 
     imports = [
-      ../machines/nixos-test/configuration.nix
-      ../modules/system
+      ./nix/machines/nixos-test/configuration.nix
+      ./nix/modules/system
       inputs.home-manager.nixosModules.home-manager
     ];
 
@@ -128,7 +128,7 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       users.nelly = {
-        imports = [ ../machines/nixos-test/home-nelly.nix ];
+        imports = [ ./nix/machines/nixos-test/home-nelly.nix ];
       };
       extraSpecialArgs = { inherit pkgs-unstable; };
       sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];

@@ -220,7 +220,7 @@
 
       # Colmena configuration - combined hive with tags
       colmenaHive = inputs.colmena.lib.makeHive (
-        (import ./nix/hive/combined.nix { inherit inputs pkgs-unstable; })
+        (import ./hive.nix { inherit inputs pkgs-unstable; })
         // {
           meta = {
             nixpkgs = pkgs;
