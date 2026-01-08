@@ -64,7 +64,7 @@ in
     # List of environment variables.
     sessionVariables = {
       # EDITOR = "codium --new-window --wait";
-      EDITOR = "micro";
+      EDITOR = "nvim";
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
     };
