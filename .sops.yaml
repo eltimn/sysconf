@@ -1,5 +1,7 @@
 # pub keys
 keys:
+  ci:
+    - &ci-age age1t0lslae8l7ckvmxjdvuyw29wzfnfykt82gq9vsazhn32hwsk6g5qkgksr2
   users:
     - &nelly-ruca-age age1t9wdp4gya7hqkh3ge08nqsh0jhsfvu52d0qhqvdvrgsxe7c0eeeqnc5ta5
     - &nelly-illmatic age1xx3g7hl89lzlev4rhxdc8nqw0uh7g9tn2v4z82v45ckpcanfvf3s04jpjm
@@ -9,14 +11,14 @@ keys:
     - &lappy age1xfhncyzagtkash7uhw2sl9p907hr30fccrs0ugx6kpum9ry8td5q2gemny
     - &ruca age1znnu0vzuz75xgzw5kr74zrvqy9yeqcatcwkzmxvmcy9hvhas396q4mtcn9
 
-
 creation_rules:
   - path_regex: secrets/[^/]+\-enc.(yaml|json|env|ini)$
     key_groups:
       - age:
-        - *nelly-ruca-age
-        - *nelly-illmatic
-        - *nelly-lappy
-        - *illmatic
-        - *lappy
-        - *ruca
+          - *ci-age
+          - *nelly-ruca-age
+          - *nelly-illmatic
+          - *nelly-lappy
+          - *illmatic
+          - *lappy
+          - *ruca

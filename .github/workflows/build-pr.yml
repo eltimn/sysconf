@@ -1,0 +1,27 @@
+name: Build All Hosts
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: [ruca, lappy, cbox, illmatic, nixos-test-01]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v9
+
+      - name: Build ${{ matrix.host }}
+        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+      - name: Build summary
+        run: |
+          echo "✅ Successfully built ${{ matrix.host }}" >> $GITHUB_STEP_SUMMARY

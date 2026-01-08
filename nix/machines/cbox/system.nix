@@ -23,8 +23,6 @@
     "sysconf"
   ];
 
-  sops.secrets."users/nelly/password".neededForUsers = true;
-
   # Define a user account.
   users = {
     groups = {
@@ -41,8 +39,7 @@
           "networkmanager"
           "docker"
         ];
-        hashedPasswordFile =
-          config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
+        hashedPasswordFile = "/run/keys/nelly-password";
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
       };
@@ -60,10 +57,6 @@
       # };
     };
   };
-
-  sops.age.sshKeyPaths = [
-    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
-  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

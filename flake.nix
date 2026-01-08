@@ -120,8 +120,10 @@
           modules = [
             ./nix/settings.nix # sysconf settings
             {
-              config.sysconf.settings.hostName = vars.host;
-              config.sysconf.settings.primaryUsername = vars.user;
+              config.sysconf.settings = {
+                hostName = vars.host;
+                primaryUsername = vars.user;
+              };
             }
             inputs.disko.nixosModules.disko
             ./nix/machines/${vars.host}/disks.nix
@@ -157,7 +159,7 @@
       isoConfig =
         installerName:
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system pkgs;
           modules = [
             ./nix/settings.nix # sysconf settings
             {
@@ -217,9 +219,9 @@
         iso-min = isoConfig "installation-cd-minimal";
       };
 
-      # Colmena configuration
+      # Colmena configuration - combined hive with tags
       colmenaHive = inputs.colmena.lib.makeHive (
-        (import ./hive.nix { inherit inputs pkgs-unstable; })
+        (import ./nix/hive/combined.nix { inherit inputs pkgs-unstable; })
         // {
           meta = {
             nixpkgs = pkgs;

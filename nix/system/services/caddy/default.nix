@@ -18,21 +18,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    sops.secrets."caddy_env" = {
-      owner = "caddy";
-      reloadUnits = [ "caddy.service" ];
-      sopsFile = "${config.sysconf.system.sops.secretsPath}/caddy-enc.env";
-      format = "dotenv";
-      key = ""; # get the whole file
-    };
-
     services.caddy = {
       enable = true;
       package = pkgs.caddy.withPlugins {
         plugins = [ "github.com/caddy-dns/cloudflare@v0.2.2" ];
         hash = "sha256-dnhEjopeA0UiI+XVYHYpsjcEI6Y1Hacbi28hVKYQURg=";
       };
-      environmentFile = config.sops.secrets.caddy_env.path;
+      environmentFile = "/run/keys/caddy-env";
 
       # config settings
       # https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates

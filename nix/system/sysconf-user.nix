@@ -1,8 +1,5 @@
 { config, pkgs, ... }:
 {
-
-  sops.secrets."users/sysconf/password".neededForUsers = true;
-
   users = {
     users = {
       sysconf = {
@@ -11,12 +8,26 @@
         home = "/var/lib/sysconf";
         createHome = true;
         extraGroups = [ "wheel" ];
-        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
+        openssh.authorizedKeys.keys =
+          config.sysconf.settings.primaryUserSshKeys ++ config.sysconf.settings.deployKeys;
         shell = pkgs.bash;
-        hashedPasswordFile = config.sops.secrets."users/sysconf/password".path;
+        # No password needed - Colmena uses SSH keys for authentication
       };
     };
 
     groups.sysconf = { };
   };
+
+  # Passwordless sudo for sysconf user (required by Colmena)
+  security.sudo.extraRules = [
+    {
+      users = [ "sysconf" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 }

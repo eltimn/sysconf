@@ -31,8 +31,6 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
-  sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
-
   # Define a user account.
   users = {
     mutableUsers = false;
@@ -46,16 +44,10 @@
         ];
         openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
         shell = pkgs.zsh;
-        hashedPasswordFile =
-          config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
+        hashedPasswordFile = "/run/keys/nelly-password";
       };
     };
   };
-
-  # sops
-  sops.age.sshKeyPaths = [
-    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
-  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

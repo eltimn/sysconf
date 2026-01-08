@@ -34,6 +34,14 @@
       ];
     };
 
+    deployKeys = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBx/kbRzJWh4XIXitaJ0j8kDukQ1zWTg17XzZzdy7dCu github-actions-deploy"
+      ];
+      description = "SSH public keys for deployment automation (CI/CD)";
+    };
+
     gitEditor = lib.mkOption {
       type = lib.types.str;
       default = "nvim"; # gnome-text-editor -ns

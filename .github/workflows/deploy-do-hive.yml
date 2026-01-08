@@ -1,0 +1,41 @@
+name: Deploy DO Hive
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'nix/machines/nixos-test/**'
+      - 'nix/hive/do.nix'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'secrets/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v9
+
+      - name: Setup SOPS age key
+        run: |
+          mkdir -p ~/.config/sops/age
+          echo "${{ secrets.SOPS_AGE_KEY }}" > ~/.config/sops/age/keys.txt
+          chmod 600 ~/.config/sops/age/keys.txt
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          
+          # Add host to known_hosts
+          ssh-keyscan -H nixos-test-01.eltimn.com >> ~/.ssh/known_hosts
+
+      - name: Deploy to DO hive
+        run: nix run .#colmena -- apply --impure --on @do
