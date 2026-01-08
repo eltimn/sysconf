@@ -46,12 +46,9 @@ in
     sops.secrets."ollama_api_key" = { };
 
     # Symlink config directories
+    home.file.".config/opencode/plugin/env-protect.js".source = ./files/plugin/env-protect.js;
     home.file.".config/opencode/themes".source = ./files/themes;
-    home.file.".config/opencode/command".source = ./files/command;
-    home.file.".config/opencode/agent".source = ./files/agent;
     home.file.".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
-
-    # Symlink main config (immutable)
     home.file.".config/opencode/opencode.json".source = ./files/opencode.json;
 
     # Copy theme.json as a mutable file (not symlink) so it can be edited externally
@@ -59,6 +56,15 @@ in
       $DRY_RUN_CMD cp -f ${./files/theme.json} "$HOME/.config/opencode/theme.json"
       $DRY_RUN_CMD chmod u+w "$HOME/.config/opencode/theme.json"
     '';
+
+    # Goose RPI
+    # home.file.".config/opencode/agent".source = ./goose-rpi/agent;
+    # home.file.".config/opencode/command".source = ./goose-rpi/command;
+
+    # Superpowers
+    home.file.".config/opencode/plugin/superpowers.js".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/code/ai/superpowers/.opencode/plugin/superpowers.js";
+    home.file.".config/opencode/command".source = ./superpowers/command; # OpenCode plugins don't support adding commands.
 
     home.sessionVariables = {
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
