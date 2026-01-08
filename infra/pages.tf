@@ -6,6 +6,7 @@ resource "cloudflare_pages_project" "eltimn" {
   name              = "eltimn-com"
   production_branch = "main"
 
+  # TODO: Is this and deployment_configs necessary since we deploy from github?
   build_config = {
     build_command   = "hugo"
     destination_dir = "public"

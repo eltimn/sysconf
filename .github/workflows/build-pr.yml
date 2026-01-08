@@ -1,0 +1,53 @@
+name: Build All Hosts
+
+# Disabled: Runs out of disk space on GitHub runners
+# TODO: Re-enable when self-hosting Forgejo with larger runners
+on:
+  workflow_dispatch:  # Manual trigger only
+  # pull_request:
+  #   branches: [main]
+
+jobs:
+  # Build standalone NixOS configurations (ruca, lappy, ISOs)
+  build-nixos:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: [ruca, lappy]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v9
+
+      - name: Build ${{ matrix.host }}
+        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+      - name: Build summary
+        run: |
+          echo "✅ Successfully built ${{ matrix.host }}" >> $GITHUB_STEP_SUMMARY
+
+  # Build Colmena-managed hosts (cbox, illmatic, nixos-test-01)
+  build-colmena:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tag: [local, do]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v9
+
+      - name: Build ${{ matrix.tag }} hosts
+        run: nix run .#colmena -- build --impure --on @${{ matrix.tag }}
+
+      - name: Build summary
+        run: |
+          echo "✅ Successfully built @${{ matrix.tag }} hosts" >> $GITHUB_STEP_SUMMARY

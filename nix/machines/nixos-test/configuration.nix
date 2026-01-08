@@ -9,6 +9,7 @@
   imports = [
     # Include common configuration
     # ../../system/default.nix
+    ../../system/sysconf-user.nix
     ../../system/containers/rootless.nix
     ../../system/containers/nginx.nix
   ];
@@ -29,20 +30,6 @@
   };
 
   # User configuration
-  users.users.sysconf = {
-    isSystemUser = true;
-    description = "System Configuration Manager";
-    group = "sysconf";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    shell = pkgs.bash;
-    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-  };
-
-  users.groups.sysconf = { };
-
   users.users.nelly = {
     isNormalUser = true;
     description = "Tim N";
@@ -59,19 +46,6 @@
 
   # Enable zsh
   programs.zsh.enable = true;
-
-  # Passwordless sudo for sysconf (req'd by Colmena)
-  security.sudo.extraRules = [
-    {
-      users = [ "sysconf" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   # Enable flakes
   nix.settings.experimental-features = [
