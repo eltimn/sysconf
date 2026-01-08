@@ -12,17 +12,17 @@ in
 {
 
   imports = [
-    ../../home/common
-    ../../home/containers
-    ../../home/desktop
-    ../../home/cosmic
-    ../../home/programs
-    ../../home/programs/git
-    ../../home/programs/vscode
-    ../../home/programs/zsh
-    ../../home/programs/direnv.nix
-    ../../home/programs/firefox.nix
-    ../../home/programs/tmux.nix
+    ../../modules/home/common
+    ../../modules/home/containers
+    ../../modules/home/desktop
+    ../../modules/home/cosmic
+    ../../modules/home/programs
+    ../../modules/home/programs/git
+    ../../modules/home/programs/vscode
+    ../../modules/home/programs/zsh
+    ../../modules/home/programs/direnv.nix
+    ../../modules/home/programs/firefox.nix
+    ../../modules/home/programs/tmux.nix
   ];
 
   sops.secrets."cloudflare_api_token" = { };

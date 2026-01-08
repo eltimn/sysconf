@@ -7,9 +7,9 @@
 
 {
   imports = [
-    ../../system
-    # ../../system/de/gnome.nix
-    ../../system/de/cosmic.nix
+    ../../modules/system
+    # ../../modules/system/de/gnome.nix
+    ../../modules/system/de/cosmic.nix
   ];
 
   sysconf.settings.gitEditor = "micro";
