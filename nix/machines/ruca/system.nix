@@ -11,6 +11,7 @@
   ];
 
   sysconf = {
+    settings.hostRole = "desktop";
     settings.desktopEnvironment = "cosmic";
     settings.gitEditor = "micro";
     # GNOME specific configuration

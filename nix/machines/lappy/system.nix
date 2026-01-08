@@ -34,6 +34,7 @@
   ];
 
   sysconf = {
+    settings.hostRole = "desktop";
     settings.desktopEnvironment = "gnome";
     settings.gitEditor = "micro";
   };
