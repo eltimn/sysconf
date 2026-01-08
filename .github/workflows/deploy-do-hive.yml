@@ -1,15 +1,17 @@
 name: Deploy DO Hive
 
+# Disabled: Runs out of disk space on GitHub runners
+# TODO: Re-enable when self-hosting Forgejo with larger runners
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'nix/machines/nixos-test/**'
-      - 'nix/hive/combined.nix'
-      - 'flake.nix'
-      - 'flake.lock'
-      - 'secrets/**'
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger only
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'nix/machines/nixos-test/**'
+  #     - 'nix/hive/combined.nix'
+  #     - 'flake.nix'
+  #     - 'flake.lock'
+  #     - 'secrets/**'
 
 jobs:
   deploy:

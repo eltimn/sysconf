@@ -1,8 +1,11 @@
 name: Build All Hosts
 
+# Disabled: Runs out of disk space on GitHub runners
+# TODO: Re-enable when self-hosting Forgejo with larger runners
 on:
-  pull_request:
-    branches: [main]
+  workflow_dispatch:  # Manual trigger only
+  # pull_request:
+  #   branches: [main]
 
 jobs:
   # Build standalone NixOS configurations (ruca, lappy, ISOs)
