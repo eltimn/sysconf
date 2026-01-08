@@ -6,9 +6,9 @@
 
 {
   imports = [
-    ../../system/containers
-    ../../system/services
-    ../../system/sysconf-user.nix
+    ../../modules/system/containers
+    ../../modules/system/services
+    ../../modules/system/sysconf-user.nix
   ];
 
   # Bootloader
