@@ -28,12 +28,6 @@ in
       description = "SSH public keys for deployment automation (CI/CD)";
     };
 
-    gitEditor = lib.mkOption {
-      type = lib.types.str;
-      default = "nvim"; # gnome-text-editor -ns
-      description = "The git editor command.";
-    };
-
     hostRole = lib.mkOption {
       type = lib.types.str;
       default = "server"; # desktop|server

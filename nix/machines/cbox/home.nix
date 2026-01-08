@@ -1,4 +1,4 @@
-{ ... }:
+{ osConfig, ... }:
 {
   imports = [
     ../../modules/home
@@ -16,7 +16,7 @@
     ];
 
     sessionVariables = {
-      EDITOR = "micro";
+      EDITOR = osConfig.sysconf.users.nelly.envEditor;
     };
   };
 

@@ -159,7 +159,6 @@ The repository defines custom options in `nix/modules/system/settings.nix` and `
 - `sysconf.settings.timezone`: System timezone
 - `sysconf.settings.hostName`: Hostname
 - `sysconf.settings.deployKeys`: SSH public keys for deployment automation (CI/CD)
-- `sysconf.settings.gitEditor`: Git editor command
 - `sysconf.settings.hostRole`: Host role - "desktop" or "server" (determines which programs/services are enabled)
 - `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
 

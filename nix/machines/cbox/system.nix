@@ -10,7 +10,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   sysconf = {
-    system.users = {
+    users = {
       nelly = {
         enable = true;
         hashedPasswordFile = "/run/keys/nelly-password";

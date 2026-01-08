@@ -6,10 +6,10 @@
   ...
 }:
 let
-  cfg = config.sysconf.system.users.sysconf;
+  cfg = config.sysconf.users.sysconf;
 in
 {
-  options.sysconf.system.users.sysconf = {
+  options.sysconf.users.sysconf = {
     enable = lib.mkEnableOption "sysconf";
   };
 
@@ -23,7 +23,7 @@ in
         createHome = true;
         extraGroups = [ "wheel" ];
         openssh.authorizedKeys.keys =
-          config.sysconf.system.users.nelly.sshKeys ++ config.sysconf.settings.deployKeys;
+          config.sysconf.users.nelly.sshKeys ++ config.sysconf.settings.deployKeys;
         shell = pkgs.bash;
       };
 

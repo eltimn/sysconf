@@ -17,9 +17,8 @@
   sysconf = {
     settings.hostRole = "desktop";
     settings.desktopEnvironment = "gnome";
-    settings.gitEditor = "micro";
 
-    system.users.nelly = {
+    users.nelly = {
       enable = true;
       hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
     };

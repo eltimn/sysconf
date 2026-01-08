@@ -49,7 +49,7 @@
 
   # sysconf config
   sysconf = {
-    system.users = {
+    users = {
       nelly = {
         enable = true;
         hashedPasswordFile = "/run/keys/nelly-password";

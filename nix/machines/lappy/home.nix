@@ -1,4 +1,5 @@
 {
+  osConfig,
   pkgs,
   ...
 }:
@@ -31,7 +32,7 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "micro";
+      EDITOR = osConfig.sysconf.users.nelly.envEditor;
       COSMIC_DATA_CONTROL_ENABLED = 1;
     };
 

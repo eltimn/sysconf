@@ -1,5 +1,5 @@
 {
-  config,
+  osConfig,
   pkgs,
   ...
 }:
@@ -38,7 +38,7 @@ in
 
   users.users = {
     nixos = {
-      openssh.authorizedKeys.keys = config.sysconf.system.users.nelly.sshKeys;
+      openssh.authorizedKeys.keys = osConfig.sysconf.users.nelly.sshKeys;
       shell = pkgs.bash;
     };
   };

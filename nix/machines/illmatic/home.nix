@@ -1,4 +1,5 @@
 {
+  osConfig,
   ...
 }:
 {
@@ -17,7 +18,7 @@
       "$HOME/bin"
     ];
     sessionVariables = {
-      EDITOR = "micro";
+      EDITOR = osConfig.sysconf.users.nelly.envEditor;
     };
   };
 

@@ -54,7 +54,7 @@ in
         };
 
         core = {
-          editor = osConfig.sysconf.settings.gitEditor;
+          editor = osConfig.sysconf.users.nelly.gitEditor;
         };
 
         diff = {

@@ -25,16 +25,16 @@
   sysconf = {
     settings.hostRole = "desktop";
     settings.desktopEnvironment = "cosmic";
-    settings.gitEditor = "micro";
-    # GNOME specific configuration
-    # desktop.gnome = {
-    #   videoDrivers = [ "amdgpu" ];
-    # };
 
-    system.users.nelly = {
+    users.nelly = {
       enable = true;
       # hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
     };
+
+    # GNOME specific configuration
+    # system.desktop.gnome = {
+    #   videoDrivers = [ "amdgpu" ];
+    # };
   };
 
   # graphics

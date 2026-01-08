@@ -53,8 +53,7 @@ in
 
     # List of environment variables.
     sessionVariables = {
-      # EDITOR = "codium --new-window --wait";
-      EDITOR = "nvim";
+      EDITOR = osConfig.sysconf.users.nelly.envEditor;
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
     };
