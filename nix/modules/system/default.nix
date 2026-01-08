@@ -1,3 +1,4 @@
+# This is included on every host
 { pkgs, ... }:
 {
   imports = [

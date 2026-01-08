@@ -4,6 +4,5 @@
     ./coredns
     ./jellyfin.nix
     ./ntfy
-    #./traefik
   ];
 }

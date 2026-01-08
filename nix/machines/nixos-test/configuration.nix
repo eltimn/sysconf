@@ -8,7 +8,7 @@
 {
   imports = [
     # Include common configuration
-    # ../../modules/system/default.nix
+    ../../modules/system/default.nix
     ../../modules/system/sysconf-user.nix
     ../../modules/system/containers/rootless.nix
     ../../modules/system/containers/nginx.nix

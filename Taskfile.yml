@@ -97,7 +97,6 @@ tasks:
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles common
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles desktop
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zen
-      # - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
   clean-dotfiles:
     desc: Unstow the dotfiles.
@@ -106,7 +105,6 @@ tasks:
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles common
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles desktop
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zen
-      # - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zellij
 
   history:
     desc: List all previous generations available.

@@ -11,7 +11,6 @@
         openssh.authorizedKeys.keys =
           config.sysconf.settings.primaryUserSshKeys ++ config.sysconf.settings.deployKeys;
         shell = pkgs.bash;
-        # No password needed - Colmena uses SSH keys for authentication
       };
     };
 
