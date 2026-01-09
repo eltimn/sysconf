@@ -112,7 +112,7 @@ System-level configuration modules with a consistent structure:
   - Both have enable options: `sysconf.desktop.cosmic.enable` and `sysconf.desktop.gnome.enable`
 - **services/**: System services (caddy, coredns, ntfy, jellyfin, blocky, vaultwarden)
 - **users/**: User management modules with enable options
-  - `nelly.nix`: Primary user configuration (`sysconf.system.users.nelly.enable`)
+  - `nelly.nix`: Primary user configuration (`sysconf.users.nelly.enable`)
   - `sysconf.nix`: Deployment user configuration for Colmena (`sysconf.system.users.sysconf.enable`)
 
 **Conditional Loading:**
@@ -146,7 +146,6 @@ task gc-hm        # User packages only
 
 ### Host Configuration Files
 Each host has specific configuration files in `nix/machines/{host}/`:
-- `settings.toml`: Host variables
 - `system.nix`: NixOS system configuration
 - `home.nix`: Home Manager user configuration
 - `hardware-configuration.nix`: Hardware-specific settings
@@ -163,9 +162,9 @@ The repository defines custom options in `nix/modules/system/settings.nix` and `
 - `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
 
 **User Management Options (`nix/modules/system/users/`):**
-- `sysconf.system.users.nelly.enable`: Enable primary user configuration
-- `sysconf.system.users.nelly.hashedPasswordFile`: Location of hashed password file for nelly user
-- `sysconf.system.users.nelly.sshKeys`: SSH public keys for nelly user (defaults to known keys)
+- `sysconf.users.nelly.enable`: Enable primary user configuration
+- `sysconf.users.nelly.hashedPasswordFile`: Location of hashed password file for nelly user
+- `sysconf.users.nelly.sshKeys`: SSH public keys for nelly user (defaults to known keys)
 - `sysconf.system.users.sysconf.enable`: Enable deployment user configuration (for Colmena)
 
 ### Module Enable Pattern
@@ -206,10 +205,10 @@ User management modules follow the same enable pattern:
   ...
 }:
 let
-  cfg = config.sysconf.system.users.<username>;
+  cfg = config.sysconf.users.<username>;
 in
 {
-  options.sysconf.system.users.<username> = {
+  options.sysconf.users.<username> = {
     enable = lib.mkEnableOption "<username>";
     # Additional user-specific options
   };
@@ -223,7 +222,7 @@ in
 Users are enabled in individual host `system.nix` files:
 ```nix
 sysconf = {
-  system.users = {
+  users = {
     nelly = {
       enable = true;
       hashedPasswordFile = "/run/keys/nelly-password";
@@ -276,7 +275,7 @@ sysconf = {
 1. User configurations are modularized in `nix/modules/system/users/`
 2. Each user module has an enable option following the established pattern
 3. User modules are imported via `nix/modules/system/users/default.nix`
-4. Enable users in individual host `system.nix` files via `sysconf.system.users.<username>.enable`
+4. Enable users in individual host `system.nix` files via `sysconf.users.<username>.enable`
 5. The sysconf user is used for Colmena deployments and has passwordless sudo access
 
 ### Working with Secrets

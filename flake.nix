@@ -83,9 +83,6 @@
         overlays = [ self.overlays.default ];
       };
 
-      # a function to load host specific settings
-      loadVars = host: nixpkgs.lib.importTOML ./nix/machines/${host}/settings.toml;
-
       # a function to create a home manager configuration
       # hmConfig =
       #   host:
@@ -98,17 +95,12 @@
       #     # Optionally use extraSpecialArgs
       #     # to pass through arguments to home.nix
       #     extraSpecialArgs = {
-      #       # load the settings
-      #       vars = loadVars host;
       #     };
       #   };
 
       # a function to create a nixos configuration
       nixosConfig =
-        host:
-        let
-          vars = loadVars host;
-        in
+        hostName:
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
           specialArgs = {
@@ -119,14 +111,12 @@
           };
           modules = [
             {
-              config.sysconf.settings = {
-                hostName = vars.host;
-              };
+              config.sysconf.settings.hostName = hostName;
             }
             inputs.disko.nixosModules.disko
-            ./nix/machines/${vars.host}/disks.nix
-            ./nix/machines/${vars.host}/hardware-configuration.nix
-            ./nix/machines/${vars.host}/system.nix
+            ./nix/machines/${hostName}/disks.nix
+            ./nix/machines/${hostName}/hardware-configuration.nix
+            ./nix/machines/${hostName}/system.nix
             ./nix/modules/system # system modules
             inputs.home-manager.nixosModules.home-manager
             {
@@ -134,9 +124,9 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.${vars.user} = {
+                users.nelly = {
                   imports = [
-                    ./nix/machines/${vars.host}/home.nix
+                    ./nix/machines/${hostName}/home.nix
                   ];
                 };
 
@@ -268,5 +258,4 @@
         };
       };
     };
-
 }
