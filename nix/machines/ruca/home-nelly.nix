@@ -21,6 +21,10 @@ in
   sops.secrets."do_images_key" = { };
   sops.secrets."do_spaces_key" = { };
 
+  # git secrets
+  sops.secrets."git/github" = { };
+  sops.secrets."git/user" = { };
+
   home = {
     username = "nelly";
     homeDirectory = "/home/nelly";
@@ -83,6 +87,11 @@ in
 
     containers.mongodb-rz.enable = true;
     containers.postgresql-rz.enable = true;
+
+    programs.git = {
+      githubIncludePath = config.sops.secrets."git/github".path;
+      userIncludePath = config.sops.secrets."git/user".path;
+    };
   };
 
   # Systemd user services

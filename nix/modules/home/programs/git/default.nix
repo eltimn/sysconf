@@ -10,14 +10,21 @@ in
 {
   options.sysconf.programs.git = {
     enable = lib.mkEnableOption "git";
+
+    githubIncludePath = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Path to github git config include file";
+    };
+
+    userIncludePath = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Path to user git config include file";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      "git/github" = { };
-      "git/user" = { };
-    };
-
     home = {
       file.".config/git/extra.inc".source = ./files/extra.inc;
     };
@@ -103,8 +110,12 @@ in
       ];
       includes = [
         { path = "extra.inc"; }
-        { path = config.sops.secrets."git/github".path; }
-        { path = config.sops.secrets."git/user".path; }
+      ]
+      ++ lib.optionals (cfg.githubIncludePath != null) [
+        { path = cfg.githubIncludePath; }
+      ]
+      ++ lib.optionals (cfg.userIncludePath != null) [
+        { path = cfg.userIncludePath; }
       ];
     };
   };

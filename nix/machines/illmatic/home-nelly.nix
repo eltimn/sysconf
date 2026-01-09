@@ -42,6 +42,11 @@
         "/mnt/music"
       ];
     };
+
+    programs.git = {
+      githubIncludePath = "/run/keys/nelly-git-github";
+      userIncludePath = "/run/keys/nelly-git-user";
+    };
   };
 
   # Systemd for user services

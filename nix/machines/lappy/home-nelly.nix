@@ -1,4 +1,5 @@
 {
+  config,
   osConfig,
   pkgs,
   ...
@@ -8,6 +9,10 @@
   imports = [
     ../../modules/home/desktop
   ];
+
+  # git secrets
+  sops.secrets."git/github" = { };
+  sops.secrets."git/user" = { };
 
   # The User and Path it manages
   home = {
@@ -48,5 +53,13 @@
   programs = {
     # Let Home Manager manage itself
     home-manager.enable = true;
+  };
+
+  # Enable sysconf modules
+  sysconf = {
+    programs.git = {
+      githubIncludePath = config.sops.secrets."git/github".path;
+      userIncludePath = config.sops.secrets."git/user".path;
+    };
   };
 }

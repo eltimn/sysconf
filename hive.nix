@@ -20,6 +20,34 @@ let
       group = "root";
       permissions = "0400";
     };
+
+    "nelly-git-github" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"git\"][\"github\"]"
+        "--decrypt"
+        "secrets/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "nelly";
+      group = "nelly";
+      permissions = "0400";
+    };
+
+    "nelly-git-user" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"git\"][\"user\"]"
+        "--decrypt"
+        "secrets/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "nelly";
+      group = "nelly";
+      permissions = "0400";
+    };
   };
 
   # a function to create a colmena configuration

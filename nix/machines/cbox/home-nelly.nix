@@ -24,5 +24,10 @@
   sysconf = {
     programs.bat.enable = true;
     programs.micro.enable = true;
+
+    programs.git = {
+      githubIncludePath = "/run/keys/nelly-git-github";
+      userIncludePath = "/run/keys/nelly-git-user";
+    };
   };
 }
