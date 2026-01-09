@@ -40,7 +40,9 @@
         "/mnt/backup/ruca/nelly/workspaces"
         "/mnt/backup/ruca/nelly/zen"
         "/mnt/music"
+        "/var/lib/forgejo"
       ];
+      passwordPath = "/run/keys/borg-passphrase-illmatic";
     };
 
     programs.git = {

@@ -25,6 +25,12 @@ in
       default = "";
       description = "The host this is running on.";
     };
+    passwordPath = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the password file.";
+      default = null;
+    };
+
   };
 
   config = lib.mkIf cfg.enable {
@@ -49,17 +55,13 @@ in
               ];
             };
           };
-          storage =
-            let
-              passPath = config.sops.secrets."borg_passphrase_${cfg.host}".path;
-            in
-            {
-              encryptionPasscommand = "${pkgs.coreutils-full}/bin/cat ${passPath}";
-              extraConfig = {
-                compression = "auto,zstd";
-                archive_name_format = "{hostname}-{now:%Y-%m-%d-%H%M%S}";
-              };
+          storage = {
+            encryptionPasscommand = "${pkgs.coreutils-full}/bin/cat ${cfg.passwordPath}";
+            extraConfig = {
+              compression = "auto,zstd";
+              archive_name_format = "{hostname}-{now:%Y-%m-%d-%H%M%S}";
             };
+          };
           retention = {
             keepDaily = 7;
             keepWeekly = 4;
@@ -73,8 +75,5 @@ in
       enable = true;
       frequency = "daily";
     };
-
-    # SOPS secret for borg environment variables
-    sops.secrets."borg_passphrase_${cfg.host}" = { };
   };
 }

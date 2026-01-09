@@ -31,6 +31,8 @@
       enable = true;
       port = 2283; # default is 2283
     };
+
+    zfs.autoScrub.enable = true;
   };
 
   # sysconf config

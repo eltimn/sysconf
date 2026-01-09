@@ -7,8 +7,9 @@
 let
   cfg = config.sysconf.programs.zed-editor;
 
-  # Read the nix-module template
+  # Read the nix-module templates
   nixModuleTemplate = builtins.readFile ./snippets/nix-module.nix-tmpl;
+  nixOptTemplate = builtins.readFile ./snippets/nix-opt.nix-tmpl;
 
   # Create the snippets JSON structure
   snippetsJson = {
@@ -16,6 +17,11 @@ let
       prefix = "nm";
       body = lib.splitString "\n" nixModuleTemplate;
       description = "New Nix module with enable option.";
+    };
+    "Nix option" = {
+      prefix = "opt";
+      body = lib.splitString "\n" nixOptTemplate;
+      description = "New nix option.";
     };
   };
 in
