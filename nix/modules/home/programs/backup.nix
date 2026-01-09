@@ -30,7 +30,6 @@ in
       description = "Path to the password file.";
       default = null;
     };
-
   };
 
   config = lib.mkIf cfg.enable {
@@ -74,6 +73,22 @@ in
     services.borgmatic = {
       enable = true;
       frequency = "daily";
+    };
+
+    systemd.user.services.borgmatic = {
+      Service = {
+        ExecStartPre = lib.mkForce [ ]; # Remove the 3 minute sleep
+        ExecStart = lib.mkForce [
+          "" # Clear the existing ExecStart
+          ''
+            ${pkgs.borgmatic}/bin/borgmatic \
+              --stats \
+              --verbosity 0 \
+              --list \
+              --syslog-verbosity 1
+          ''
+        ];
+      };
     };
   };
 }

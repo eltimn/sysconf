@@ -47,6 +47,8 @@ in
         extraGroups = [
           "wheel"
           "networkmanager"
+          "keys"
+          "forgejo"
         ];
         hashedPasswordFile = cfg.hashedPasswordFile;
         openssh.authorizedKeys.keys = cfg.sshKeys;
