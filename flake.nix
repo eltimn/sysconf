@@ -90,7 +90,10 @@
       #     inherit pkgs;
 
       #     # Specify your home configuration modules here
-      #     modules = [ ./nix/machines/${host}/home.nix ];
+      #     modules = [
+      #       ./nix/machines/${host}/home-nelly.nix
+      #       ./nix/modules/home # home manager modules
+      #     ];
 
       #     # Optionally use extraSpecialArgs
       #     # to pass through arguments to home.nix
@@ -124,7 +127,8 @@
                 useUserPackages = true;
                 users.nelly = {
                   imports = [
-                    ./nix/machines/${hostName}/home.nix
+                    ./nix/machines/${hostName}/home-nelly.nix
+                    ./nix/modules/home # home manager modules
                   ];
                 };
 
@@ -206,7 +210,10 @@
 
       # Colmena configuration - combined hive with tags
       colmenaHive = inputs.colmena.lib.makeHive (
-        (import ./hive.nix { inherit inputs pkgs-unstable; })
+        (import ./hive.nix {
+          inherit inputs pkgs-unstable;
+          lib = nixpkgs.lib;
+        })
         // {
           meta = {
             nixpkgs = pkgs;

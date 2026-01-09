@@ -1,9 +1,5 @@
 { osConfig, ... }:
 {
-  imports = [
-    ../../modules/home
-  ];
-
   # The User and Path it manages
   home = {
     username = "nelly";

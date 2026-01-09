@@ -3,11 +3,6 @@
   ...
 }:
 {
-
-  imports = [
-    ../../modules/home
-  ];
-
   home = {
     username = "nelly";
     homeDirectory = "/home/nelly";

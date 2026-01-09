@@ -6,7 +6,7 @@
 {
 
   imports = [
-    ../../modules/home
+    ../../modules/home/desktop
   ];
 
   # The User and Path it manages

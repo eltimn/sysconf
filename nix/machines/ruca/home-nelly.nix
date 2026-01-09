@@ -12,7 +12,6 @@ in
 {
 
   imports = [
-    ../../modules/home
     ../../modules/home/desktop
   ];
 
