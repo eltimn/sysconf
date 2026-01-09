@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.sysconf.services.coredns;
+  zoneFile = ./home-eltimn-com.zone;
 in
 {
   options.sysconf.services.coredns = {
@@ -16,10 +17,15 @@ in
     services.coredns = {
       enable = true;
       package = pkgs.coredns;
-      config = (builtins.readFile ./Corefile);
+      config = builtins.readFile ./Corefile;
     };
 
-    environment.etc."coredns/home-eltimn-com.zone".source = ./home-eltimn-com.zone;
+    environment.etc."coredns/home-eltimn-com.zone".source = zoneFile;
+
+    # Reload CoreDNS when zone file changes
+    systemd.services.coredns = {
+      reloadTriggers = [ zoneFile ];
+    };
 
     # Open ports in the firewall.
     networking.firewall.allowedTCPPorts = [ 53 ];
