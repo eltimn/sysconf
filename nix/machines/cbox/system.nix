@@ -54,33 +54,6 @@
   #  enableSSHSupport = true;
   #};
 
-  # NixOS services
-  services = {
-    # Enable the OpenSSH daemon
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-      };
-    };
-
-    # ntfy-sh = {
-    #   enable = true;
-    #   user = "ntfy";
-    #   group = "ntfy";
-    #   settings = {
-    #     listen-http = ":8080";
-    #     base-url = "https://ntfy.home.eltimn.com";
-    #     behind-proxy = true;
-    #     #auth-file = "/var/lib/ntfy/user.db";
-    #     #auth-default-access = "deny-all";
-    #   };
-    # };
-  };
-
   # services.vaultwarden = {
   #   enable = true;
   #   dbBackend = "sqlite";

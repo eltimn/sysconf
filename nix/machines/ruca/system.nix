@@ -91,17 +91,6 @@
 
   programs.gnupg.agent.enable = true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    # allowSFTP = true;
-    openFirewall = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
   # Needed for yubikey
   services.pcscd.enable = true;
 

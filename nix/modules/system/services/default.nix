@@ -2,7 +2,8 @@
   imports = [
     ./caddy
     ./coredns
-    ./jellyfin.nix
     ./ntfy
+    ./jellyfin.nix
+    ./sshd.nix
   ];
 }

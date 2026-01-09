@@ -31,16 +31,6 @@
 
   # Enable services
   services = {
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-      };
-    };
-
     immich = {
       enable = true;
       port = 2283; # default is 2283
