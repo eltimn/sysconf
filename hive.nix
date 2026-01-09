@@ -31,7 +31,7 @@ let
       ];
       destDir = "/run/keys";
       user = "nelly";
-      group = "nelly";
+      group = "users";
       permissions = "0400";
     };
 
@@ -45,7 +45,7 @@ let
       ];
       destDir = "/run/keys";
       user = "nelly";
-      group = "nelly";
+      group = "users";
       permissions = "0400";
     };
   };
@@ -106,7 +106,7 @@ let
 in
 {
   ## Local hosts ##
-  cbox = colmenaConfig "cbox" [ "local" ] mkPasswordKeys;
+  # cbox = colmenaConfig "cbox" [ "local" ] mkPasswordKeys;
   illmatic = colmenaConfig "illmatic" [ "local" ] illmaticKeys;
 
   ## Digital Ocean (DO) hosts ##
