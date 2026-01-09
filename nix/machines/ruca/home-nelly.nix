@@ -56,7 +56,8 @@ in
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = osConfig.sysconf.users.nelly.envEditor;
+      EDITOR = "zeditor --wait"; # osConfig.sysconf.users.nelly.envEditor;
+      VISUAL = "zeditor --wait";
       COSMIC_DATA_CONTROL_ENABLED = 1;
       OLLAMA_HOST = ollamaUrl;
     };

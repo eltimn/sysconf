@@ -23,7 +23,7 @@ in
       settings = {
         session.COOKIE_SECURE = true;
         server = {
-          HTTP_PORT = toString cfg.port;
+          HTTP_PORT = cfg.port;
           HTTP_ADDR = "127.0.0.1";
           DOMAIN = "git.home.eltimn.com";
           # You need to specify this to remove the port from URLs in the web UI.
@@ -31,7 +31,14 @@ in
           SSH_PORT = lib.head config.services.openssh.ports; # for using ssh with git
         };
 
-        # service.DISABLE_REGISTRATION = true;
+        database = {
+          type = "sqlite3";
+          SQLITE_JOURNAL_MODE = "WAL";
+        };
+
+        service.DISABLE_REGISTRATION = true;
+
+        security.LOGIN_REMEMBER_DAYS = 365;
       };
     };
 

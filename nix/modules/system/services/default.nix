@@ -3,7 +3,7 @@
     ./caddy
     ./coredns
     ./ntfy
-    ./foregjo.nix
+    ./forgejo.nix
     ./jellyfin.nix
     ./sshd.nix
   ];

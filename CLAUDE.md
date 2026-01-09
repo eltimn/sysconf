@@ -28,11 +28,14 @@ This repository contains declarative NixOS and Home Manager configurations for m
 
 ```bash
 # Build configuration for a specific host
-task build -- #ruca
-task build -- #lappy
+task build -- '#ruca'
+task build -- '#lappy'
 
 # Build without deploying (dry run)
 nix build .#nixosConfigurations.ruca.config.system.build.toplevel
+
+# Build colmena hosts
+task colmena-local-build  # Build local hive (cbox, illmatic)
 
 # Validate flake structure
 nix flake check
@@ -66,7 +69,6 @@ nix flake check
 
 ```bash
 # Colmena deployment to multiple hosts
-task colmena-local-build  # Build local hive (cbox, illmatic)
 task colmena-local        # Deploy to local hive
 nix run .#colmena -- apply --impure --on @local
 ```

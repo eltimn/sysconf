@@ -15,6 +15,18 @@ in
       default = "home.eltimn.com";
       description = "The domain used for caddy.";
     };
+    virtualHosts = lib.mkOption {
+      type = lib.types.attrsOf lib.types.str;
+      default = { };
+      description = "Virtual host configurations. Each attribute is a subdomain, and the value is the Caddyfile config string.";
+      example = lib.literalExpression ''
+        {
+          forgejo = '''
+            reverse_proxy localhost:3000
+          ''';
+        }
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -32,56 +44,68 @@ in
       email = "{env.CF_EMAIL}";
 
       virtualHosts."*.${cfg.domain}" = {
-        extraConfig = ''
-          tls {
-            dns cloudflare {env.CF_API_TOKEN}
-          }
+        extraConfig =
+          let
+            # Generate virtual host handlers from the virtualHosts option
+            generateVirtualHost =
+              subdomain: config:
+              ''
+                @${subdomain} host ${subdomain}.${cfg.domain}
+                handle @${subdomain} {
+                  ${config}
+                }
 
-          @unifi host unifi.${cfg.domain}
-          handle @unifi {
-            reverse_proxy https://router.${cfg.domain} {
-              transport http {
-                tls_insecure_skip_verify # unifi uses self-signed certs
+              '';
+            dynamicVirtualHosts = lib.concatStringsSep "" (
+              lib.mapAttrsToList generateVirtualHost cfg.virtualHosts
+            );
+          in
+          ''
+            tls {
+              dns cloudflare {env.CF_API_TOKEN}
+            }
+
+            @unifi host unifi.${cfg.domain}
+            handle @unifi {
+              reverse_proxy https://router.${cfg.domain} {
+                transport http {
+                  tls_insecure_skip_verify # unifi uses self-signed certs
+                }
               }
             }
-          }
 
-          @jellyfin host jellyfin.${cfg.domain}
-          handle @jellyfin {
-            reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
-          }
-
-          @dvr host dvr.${cfg.domain}
-          handle @dvr {
-            reverse_proxy localhost:${toString config.sysconf.services.channels-dvr.port}
-          }
-
-          @ntfy host ntfy.${cfg.domain}
-          handle @ntfy {
-            reverse_proxy localhost:${toString config.sysconf.services.ntfy.port}
-            @httpget {
-              protocol http
-              method GET
-              path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
+            @jellyfin host jellyfin.${cfg.domain}
+            handle @jellyfin {
+              reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
             }
-            redir @httpget https://{host}{uri}
-          }
 
-          @pics host pics.${cfg.domain}
-          handle @pics {
-            reverse_proxy localhost:${toString config.services.immich.port}
-          }
+            @dvr host dvr.${cfg.domain}
+            handle @dvr {
+              reverse_proxy localhost:${toString config.sysconf.containers.channels-dvr.port}
+            }
 
-          @forgejo host git.${cfg.domain}
-          handle @forgejo {
-            reverse_proxy localhost:${toString config.sysconf.services.forgejo.port}
-          }
+            @ntfy host ntfy.${cfg.domain}
+            handle @ntfy {
+              reverse_proxy localhost:${toString config.sysconf.services.ntfy.port}
+              @httpget {
+                protocol http
+                method GET
+                path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
+              }
+              redir @httpget https://{host}{uri}
+            }
 
-          # Fallback for otherwise unhandled domains
-          handle {
-            abort
-          }
-        '';
+            @pics host pics.${cfg.domain}
+            handle @pics {
+              reverse_proxy localhost:${toString config.services.immich.port}
+            }
+
+            ${dynamicVirtualHosts}
+            # Fallback for otherwise unhandled domains
+            handle {
+              abort
+            }
+          '';
       };
     };
 
