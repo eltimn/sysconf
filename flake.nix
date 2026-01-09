@@ -114,9 +114,7 @@
               config.sysconf.settings.hostName = hostName;
             }
             inputs.disko.nixosModules.disko
-            ./nix/machines/${hostName}/disks.nix
-            ./nix/machines/${hostName}/hardware-configuration.nix
-            ./nix/machines/${hostName}/system.nix
+            ./nix/machines/${hostName}/configuration.nix
             ./nix/modules/system # system modules
             inputs.home-manager.nixosModules.home-manager
             {

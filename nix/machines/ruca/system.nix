@@ -5,10 +5,6 @@
 }:
 
 {
-  imports = [
-    ../../modules/system
-  ];
-
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.

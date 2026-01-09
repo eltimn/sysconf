@@ -5,7 +5,6 @@
 
 {
   imports = [
-    ../../modules/system
     ../../modules/system/containers/nginx.nix
   ];
 

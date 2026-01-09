@@ -1,7 +1,6 @@
 { config, ... }:
 {
   imports = [
-    ../../modules/system
     ../../modules/home/desktop
   ];
 

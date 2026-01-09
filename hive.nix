@@ -1,4 +1,8 @@
-{ inputs, pkgs-unstable, ... }:
+{
+  inputs,
+  pkgs-unstable,
+  ...
+}:
 let
   # Shared secret definitions for user passwords
   mkPasswordKeys = {
@@ -16,41 +20,42 @@ let
       permissions = "0400";
     };
   };
-in
-{
-  ## Local hosts ##
-  cbox = {
+
+  # a function to create a colmena configuration
+  colmenaConfig = hostName: deploymentKeys: tags: {
     deployment = {
-      targetHost = "cbox";
+      targetHost = hostName;
       targetUser = "sysconf";
       targetPort = 22;
-      keys = mkPasswordKeys;
-      tags = [ "local" ];
+      keys = deploymentKeys;
+      tags = tags;
     };
+
+    sysconf.settings.hostName = hostName;
 
     imports = [
       inputs.disko.nixosModules.disko
-      ./nix/machines/cbox/disks.nix
-      ./nix/machines/cbox/hardware-configuration.nix
-      ./nix/machines/cbox/system.nix
+      ./nix/machines/${hostName}/configuration.nix
       ./nix/modules/system
       inputs.home-manager.nixosModules.home-manager
     ];
-
-    sysconf.settings.hostName = "cbox";
 
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
       users.nelly = {
         imports = [
-          ./nix/machines/cbox/home.nix
+          ./nix/machines/${hostName}/home.nix
         ];
       };
       extraSpecialArgs = { inherit pkgs-unstable; };
-      sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
+      # sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
     };
   };
+in
+{
+  ## Local hosts ##
+  cbox = colmenaConfig "cbox" mkPasswordKeys [ "local" ];
 
   illmatic = {
     deployment = {
@@ -76,9 +81,7 @@ in
 
     imports = [
       inputs.disko.nixosModules.disko
-      ./nix/machines/illmatic/disks.nix
-      ./nix/machines/illmatic/hardware-configuration.nix
-      ./nix/machines/illmatic/system.nix
+      ./nix/machines/illmatic/configuration.nix
       ./nix/modules/system
       inputs.home-manager.nixosModules.home-manager
     ];
