@@ -10,61 +10,60 @@ You are the operator's pair programmer. You help write code, but don't manage gi
 
 This repository contains declarative system configurations for multiple machines using Nix flake technology. It manages both system-level (NixOS) and user-level (Home Manager) configurations.
 
-## Key Components
+## Build, Lint, and Test Commands
 
-### Managed Hosts
-- `cbox`: Home server
-- `illmatic`: Home server/NAS
-- `lappy`: Laptop
-- `ruca`: Main desktop
-
-### Core Technologies
-- **Nix Flakes**: Declarative package management and system configuration
-- **NixOS**: Linux distribution with declarative system configuration
-- **Home Manager**: User environment management
-- **SOPS**: Secret management with age encryption
-- **Task**: Command runner for common operations
-- **Disko**: Declarative disk partitioning
-- **OpenTofu**: Infrastructure as Code (Terraform fork) for cloud resources
-
-## Repository Structure
-
-```
-.
-├── flake.nix              # Entry point defining all configurations
-├── Taskfile.yml           # Task commands for common operations
-├── nix/
-│   ├── settings.nix       # Custom configuration options
-│   ├── machines/          # Per-host configurations
-│   ├── system/            # Shared system services
-│   ├── home/              # Shared user configurations
-│   └── templates/         # Project templates
-├── infra/                 # OpenTofu/Terraform infrastructure code
-│   ├── provider.tf        # Provider configurations (Cloudflare, DigitalOcean)
-│   ├── cloudflare.tf      # Cloudflare zone settings and DNS
-│   ├── dns.tf             # DNS records
-│   ├── app.tf             # DigitalOcean App Platform resources
-│   ├── vps.tf             # DigitalOcean VPS/Droplet resources
-│   ├── spaces.tf          # DigitalOcean Spaces (S3-compatible storage)
-│   └── variables.tf       # Input variables
-├── dotfiles/              # Additional dotfiles managed with stow
-├── secrets/               # Encrypted secrets (SOPS)
-└── docs/                  # Documentation
-```
-
-## Common Operations
-
-### Building and Deployment
+### Building Configurations
 ```bash
-task build -- #{host} # Build configuration for host
-task switch           # Apply configurations to current host
-task boot             # Set as boot default
-task update           # Update flake inputs
+# Build configuration for a specific host
+task build -- #ruca
+task build -- #lappy
+
+# Build without deploying (dry run)
+nix build .#nixosConfigurations.ruca.config.system.build.toplevel
+
+# Validate flake structure
+nix flake check
+
+# Show flake outputs
+nix flake show
+
+# Clean build artifacts
+task clean
+```
+
+### Applying Configurations
+```bash
+task switch           # Build and apply to current host
+task boot             # Set as boot default (applies on next boot)
+task update           # Update flake.lock (all inputs)
+```
+
+### Linting and Formatting
+```bash
+# Format Nix files (RFC 166 style)
+nixfmt-rfc-style nix/modules/home/programs/example.nix
+nixfmt-rfc-style nix/**/*.nix  # Format all Nix files
+
+# Lint Nix files
+nixpkgs-lint-community nix/modules/
+
+# Check for issues
+nix flake check  # Comprehensive validation
+```
+
+### Infrastructure (OpenTofu)
+```bash
+cd infra
+tofu init      # Initialize providers (first time)
+tofu fmt       # Format .tf files
+tofu validate  # Validate configuration
+tofu plan      # Preview changes
+tofu apply     # Apply changes
 ```
 
 ### Secret Management
 ```bash
-sops secrets/file-enc.yaml    # Edit encrypted files
+sops secrets/secrets-enc.yaml    # Edit encrypted secrets
 ```
 
 ### Garbage Collection
@@ -74,75 +73,101 @@ task gc-os        # System packages only
 task gc-hm        # User packages only
 ```
 
-## Configuration Patterns
+### Deployment
+```bash
+# Colmena deployment to multiple hosts
+task colmena-local-build  # Build local hive
+task colmena-local        # Deploy to local hive (cbox, illmatic)
+nix run .#colmena -- apply --impure --on @local
+```
 
-### Host Configuration Files
-Each host has specific configuration files in `nix/machines/{host}/`:
-- `settings.toml`: Host variables
-- `system.nix`: NixOS system configuration
-- `home.nix`: Home Manager user configuration
-- `hardware-configuration.nix`: Hardware-specific settings
-- `disks.nix`: Disk partitioning (Disko)
+## Code Style Guidelines
 
-### Custom Options
-The repository defines custom options in `nix/settings.nix`:
-- `sysconf.settings.timezone`: System timezone
-- `sysconf.settings.hostName`: Hostname
-- `sysconf.settings.primaryUsername`: Admin user
-- `sysconf.settings.gitEditor`: Git editor command
+### Nix Module Structure
 
-## Best Practices for Agents
+**Standard module imports (order matters):**
+```nix
+{
+  config,      # Module config
+  lib,         # Nixpkgs lib functions
+  pkgs,        # Packages (system modules) or omit (if not needed)
+  osConfig,    # System config (Home Manager modules only)
+  ...
+}:
+```
 
-1. **Understand Context**: Always check which host configuration you're modifying by examining the file path
-2. **Follow Patterns**: Use existing configuration patterns rather than creating new ones
-3. **Respect Separation**: Keep system-level configs in `system.nix` and user-level in `home.nix`
-4. **Secret Handling**: Never commit unencrypted secrets; use SOPS for sensitive data
-5. **Dependency Management**: Add new packages through appropriate module files, not directly in configurations
-6. **Testing**: Suggest building configurations with `task build` before deployment
+**Module pattern:**
+```nix
+let
+  cfg = config.sysconf.programs.<name>;  # Use 'cfg' for module config
+  settings = osConfig.sysconf.settings;  # Use 'settings' for system settings (HM)
+  settings = config.sysconf.settings;    # Use 'settings' for system settings (System)
+in
+{
+  options.sysconf.programs.<name> = {
+    enable = lib.mkEnableOption "<name>";
+  };
 
-## Common Tasks
+  config = lib.mkIf cfg.enable {
+    # Configuration here
+  };
+}
+```
 
-### Adding a New Package
-1. Determine if it's a system or user package
-2. Add to appropriate file in `nix/home/`, or `nix/system`.
+### Formatting and Whitespace
+- **Indentation**: 2 spaces (no tabs)
+- **Line endings**: LF (Unix-style)
+- **Final newline**: Required
+- **Trailing whitespace**: Remove
+- **Max line length**: No hard limit, but keep readable (~100 chars preferred)
+- Use `nixfmt-rfc-style` for consistent formatting
 
-### Modifying Services
-1. Services are defined in `nix/system/services/` or `nix/home/services/`
-2. Follow existing patterns for service definitions
+### Naming Conventions
+- **Variables**: camelCase (`cfg`, `basePkgs`, `desktopPkgs`)
+- **Options**: camelCase with dots (`sysconf.programs.git.enable`)
+- **Files**: kebab-case (`sshd.nix`, `git-worktree-runner.nix`)
+- **Directories**: lowercase (`programs`, `services`, `desktop`)
+- **Let bindings**: Descriptive names (`cfg`, `settings`, not `c` or `s`)
 
-### Working with Secrets
-1. Encrypted files end with `-enc` suffix
-2. Use `sops` command to edit, never edit encrypted content directly
-3. Keys are defined in `.sops.yaml`
+### Imports and Dependencies
+- **Package sources**: Use `pkgs` for stable, `pkgs-unstable` for unstable channel
+- **Import order**: No strict order, but group logically (directories first)
+- **Avoid duplicates**: Use `imports = [ ./dir ]` to import all in directory
 
-### Testing host Configurations
-1. Use `task build -- #<host>` to check the build for a specific host.
-2. Use `task clean` after running builds.
+### Comments
+- **Inline comments**: Use `#` for brief explanations
+- **Section headers**: Use comments to separate logical sections
+- **Documentation**: Option descriptions go in `description` field, not comments
+- **TODOs**: Acceptable but should be addressed
 
-### Adding New Nix Files
-1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing file or `git commit` until the code is working and tested.
+### Type Safety
+- Always specify types for options: `lib.types.str`, `lib.types.bool`, `lib.types.listOf`
+- Use `lib.mkOption` for options with defaults or complex types
+- Use `lib.mkEnableOption` for simple boolean enable flags
+- Provide `default` values when appropriate
+- Always include `description` for options
 
-### Working with Infrastructure (OpenTofu)
-1. **This project uses OpenTofu, not Terraform**. Always use `tofu` commands, not `terraform` commands.
-2. Infrastructure code is in the `infra/` directory
-3. Common commands:
-   ```bash
-   cd infra
-   tofu init      # Initialize providers
-   tofu plan      # Preview changes
-   tofu apply     # Apply changes
-   tofu state     # Manage state (e.g., state rm, state mv for migrations)
-   ```
-4. **Provider versions**: This project uses Cloudflare provider v5+ which has breaking changes from v4:
-   - `cloudflare_zone_settings_override` was removed, use individual `cloudflare_zone_setting` resources
-   - Each zone setting (ssl, tls_1_3, etc.) is now a separate resource with `setting_id` and `value` attributes
-5. **State management**: When resources are renamed or replaced, use state commands to avoid destroying and recreating:
-   ```bash
-   tofu state rm <old_resource>              # Remove old resource from state
-   tofu import <new_resource> <resource_id>  # Import existing resource with new name
-   # OR
-   tofu state mv <old_resource> <new_resource>  # Move state between resource names
-   ```
+### Conditional Configuration
+- Use `lib.mkIf` for conditional config blocks
+- Use `lib.mkMerge` to combine multiple conditional blocks
+- Use `lib.optionals` for conditional lists
+- Example:
+```nix
+config = lib.mkMerge [
+  {
+    # Always applied
+  }
+  (lib.mkIf (settings.hostRole == "desktop") {
+    # Desktop-only config
+  })
+];
+```
+
+### Error Handling
+- Use `lib.mkDefault` for overridable defaults
+- Use `assertions` for validation (system modules)
+- Provide clear `description` fields for user-facing options
+- Use `default` values to avoid undefined errors
 
 ## Important Conventions
 
@@ -150,7 +175,15 @@ The repository defines custom options in `nix/settings.nix`:
 - Reference system settings in Home Manager via `osConfig.sysconf.settings.*`
 - Import shared modules rather than duplicating configuration
 - Maintain consistent formatting with existing code
-- The namespace used for custom options is "sysconf". With sub-components like "sysconf.services" and "sysconf.home.services".
+- The namespace used for custom options is "sysconf" with sub-namespaces:
+  - `sysconf.settings.*` - Global settings
+  - `sysconf.programs.*` - Home Manager programs
+  - `sysconf.services.*` - System services
+  - `sysconf.cosmic.*` / `sysconf.gnome.*` - Desktop environments
+
+## Adding New Nix Files
+
+When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing files or `git commit` until the code is working and tested.
 
 ## Goals
 - Keep changes minimal and focused.
@@ -165,3 +198,7 @@ The repository defines custom options in `nix/settings.nix`:
 ## Context
 - Use only files referenced in the prompt unless told otherwise.
 - For large changes, propose a plan before editing.
+
+---
+
+For detailed information about module organization, configuration patterns, and common tasks, see [REFERENCE.md](REFERENCE.md).

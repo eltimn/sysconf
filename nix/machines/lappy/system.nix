@@ -1,38 +1,24 @@
+{ config, ... }:
 {
-  config,
-  pkgs,
-  ...
-}:
-
-{
-  imports = [
-    ../../system
-    ../../system/de/gnome.nix
-  ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".neededForUsers = true;
-
-  # Define a user account.
-  users.users."${config.sysconf.settings.primaryUsername}" = {
-    isNormalUser = true;
-    description = "Tim Nelson";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    hashedPasswordFile =
-      config.sops.secrets."users/${config.sysconf.settings.primaryUsername}/password".path;
-    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-    shell = pkgs.zsh;
-  };
-
+  sops.secrets."users/nelly/password".neededForUsers = true;
   sops.age.sshKeyPaths = [
-    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
+    "${config.users.users.nelly.home}/.ssh/id_ed25519"
   ];
+
+  sysconf = {
+    settings.hostRole = "desktop";
+    settings.desktopEnvironment = "gnome";
+
+    users.nelly = {
+      enable = true;
+      hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
+    };
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -68,18 +54,9 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.zsh.enable = true;
-
-  # List services that you want to enable:
 
   # Needed for yubikey
   services.pcscd.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

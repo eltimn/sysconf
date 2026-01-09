@@ -83,9 +83,6 @@
         overlays = [ self.overlays.default ];
       };
 
-      # a function to load host specific settings
-      loadVars = host: nixpkgs.lib.importTOML ./nix/machines/${host}/settings.toml;
-
       # a function to create a home manager configuration
       # hmConfig =
       #   host:
@@ -93,22 +90,20 @@
       #     inherit pkgs;
 
       #     # Specify your home configuration modules here
-      #     modules = [ ./nix/machines/${host}/home.nix ];
+      #     modules = [
+      #       ./nix/machines/${host}/home-nelly.nix
+      #       ./nix/modules/home # home manager modules
+      #     ];
 
       #     # Optionally use extraSpecialArgs
       #     # to pass through arguments to home.nix
       #     extraSpecialArgs = {
-      #       # load the settings
-      #       vars = loadVars host;
       #     };
       #   };
 
       # a function to create a nixos configuration
       nixosConfig =
-        host:
-        let
-          vars = loadVars host;
-        in
+        hostName:
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
           specialArgs = {
@@ -118,28 +113,22 @@
               ;
           };
           modules = [
-            ./nix/settings.nix # sysconf settings
             {
-              config.sysconf.settings = {
-                hostName = vars.host;
-                primaryUsername = vars.user;
-              };
+              config.sysconf.settings.hostName = hostName;
             }
             inputs.disko.nixosModules.disko
-            ./nix/machines/${vars.host}/disks.nix
-            ./nix/machines/${vars.host}/hardware-configuration.nix
-            ./nix/machines/${vars.host}/system.nix
-            ./nix/system/default.nix # system modules
+            ./nix/machines/${hostName}/configuration.nix
+            ./nix/modules/system # system modules
             inputs.home-manager.nixosModules.home-manager
             {
               # https://nix-community.github.io/home-manager/nixos-options.xhtml
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.${vars.user} = {
+                users.nelly = {
                   imports = [
-                    ./nix/machines/${vars.host}/home.nix
-                    inputs.cosmic-manager.homeManagerModules.cosmic-manager
+                    ./nix/machines/${hostName}/home-nelly.nix
+                    ./nix/modules/home # home manager modules
                   ];
                 };
 
@@ -149,6 +138,7 @@
                 };
 
                 sharedModules = [
+                  inputs.cosmic-manager.homeManagerModules.cosmic-manager
                   inputs.sops-nix.homeManagerModules.sops
                 ];
               };
@@ -161,10 +151,9 @@
         nixpkgs.lib.nixosSystem {
           inherit system pkgs;
           modules = [
-            ./nix/settings.nix # sysconf settings
+            ./nix/modules/system # sysconf settings
             {
               config.sysconf.settings.hostName = "iso";
-              config.sysconf.settings.primaryUsername = "nixos";
             }
             "${nixpkgs}/nixos/modules/installer/cd-dvd/${installerName}.nix"
             "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
@@ -210,8 +199,8 @@
 
       # NixOS hosts
       nixosConfigurations = {
-        cbox = nixosConfig "cbox";
-        illmatic = nixosConfig "illmatic";
+        # cbox = nixosConfig "cbox";
+        # illmatic = nixosConfig "illmatic";
         lappy = nixosConfig "lappy";
         ruca = nixosConfig "ruca";
 
@@ -221,7 +210,10 @@
 
       # Colmena configuration - combined hive with tags
       colmenaHive = inputs.colmena.lib.makeHive (
-        (import ./nix/hive/combined.nix { inherit inputs pkgs-unstable; })
+        (import ./hive.nix {
+          inherit inputs pkgs-unstable;
+          lib = nixpkgs.lib;
+        })
         // {
           meta = {
             nixpkgs = pkgs;
@@ -271,5 +263,4 @@
         };
       };
     };
-
 }

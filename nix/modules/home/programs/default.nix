@@ -1,0 +1,19 @@
+{
+  imports = [
+    ./git
+    ./goose
+    ./opencode
+    ./rofi
+    ./vscode
+    ./zed
+    ./zsh
+    ./backup.nix
+    ./bat.nix
+    ./chromium.nix
+    ./direnv.nix
+    ./firefox.nix
+    ./ghostty.nix
+    ./micro.nix
+    ./tmux.nix
+  ];
+}

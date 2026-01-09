@@ -1,33 +1,37 @@
 {
-  config,
   pkgs,
   pkgs-unstable,
   ...
 }:
 
 {
-  imports = [
-    ../../system
-    # ../../system/de/gnome.nix
-    ../../system/de/cosmic.nix
-  ];
-
-  sysconf.settings.gitEditor = "micro";
-
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
 
-  # GNOME specific configuration
-  # sysconf.system.gnome = {
-  #   videoDrivers = [ "amdgpu" ];
-  # };
-
-  sysconf.system.cosmic.enable = true;
-
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # sops.secrets."users/nelly/password".neededForUsers = true;
+  # sops.age.sshKeyPaths = [
+  #   "${config.users.users.nelly.home}/.ssh/id_ed25519"
+  # ];
+
+  sysconf = {
+    settings.hostRole = "desktop";
+    settings.desktopEnvironment = "cosmic";
+
+    users.nelly = {
+      enable = true;
+      # hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
+    };
+
+    # GNOME specific configuration
+    # system.desktop.gnome = {
+    #   videoDrivers = [ "amdgpu" ];
+    # };
+  };
 
   # graphics
   hardware.graphics = {
@@ -39,22 +43,6 @@
       pkgs.vulkan-headers
     ];
   };
-
-  # Define a user account.
-  users.users."${config.sysconf.settings.primaryUsername}" = {
-    isNormalUser = true;
-    description = "Tim Nelson";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-    shell = pkgs.zsh;
-  };
-
-  sops.age.sshKeyPaths = [
-    "${config.users.users.${config.sysconf.settings.primaryUsername}.home}/.ssh/id_ed25519"
-  ];
 
   # Enable CUPS to print documents.
   services.printing = {
@@ -97,19 +85,7 @@
     pciutils
   ];
 
-  programs.zsh.enable = true;
   programs.gnupg.agent.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    allowSFTP = true;
-    openFirewall = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
 
   # Needed for yubikey
   services.pcscd.enable = true;

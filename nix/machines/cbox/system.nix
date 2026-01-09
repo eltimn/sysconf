@@ -1,27 +1,18 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
+{ ... }:
 {
-  config,
-  pkgs,
-  ...
-}:
-
-{
-  imports = [
-    ../../system/sysconf-user.nix
-  ];
-
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Allow sysconf user to receive unsigned store paths for remote deployment
-  nix.settings.trusted-users = [
-    "root"
-    "sysconf"
-  ];
+  sysconf = {
+    users = {
+      nelly = {
+        enable = true;
+        hashedPasswordFile = "/run/keys/nelly-password";
+      };
+      sysconf.enable = true;
+    };
+  };
 
   # Define a user account.
   users = {
@@ -31,19 +22,6 @@
     };
 
     users = {
-      "${config.sysconf.settings.primaryUsername}" = {
-        isNormalUser = true;
-        description = "Tim Nelson";
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "docker"
-        ];
-        hashedPasswordFile = "/run/keys/nelly-password";
-        openssh.authorizedKeys.keys = config.sysconf.settings.primaryUserSshKeys;
-        shell = pkgs.zsh;
-      };
-
       podman = {
         isSystemUser = true;
         group = "podman";
@@ -70,34 +48,6 @@
   #  enable = true;
   #  enableSSHSupport = true;
   #};
-  programs.zsh.enable = true;
-
-  # NixOS services
-  services = {
-    # Enable the OpenSSH daemon
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-      };
-    };
-
-    # ntfy-sh = {
-    #   enable = true;
-    #   user = "ntfy";
-    #   group = "ntfy";
-    #   settings = {
-    #     listen-http = ":8080";
-    #     base-url = "https://ntfy.home.eltimn.com";
-    #     behind-proxy = true;
-    #     #auth-file = "/var/lib/ntfy/user.db";
-    #     #auth-default-access = "deny-all";
-    #   };
-    # };
-  };
 
   # services.vaultwarden = {
   #   enable = true;
@@ -192,10 +142,8 @@
     };
   };
 
-  # The firewall is enabled when not set.
   # Open ports in the firewall.
   networking.firewall = {
-    enable = true;
     allowedTCPPorts = [ 8080 ];
   };
 
