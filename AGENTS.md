@@ -10,129 +10,60 @@ You are the operator's pair programmer. You help write code, but don't manage gi
 
 This repository contains declarative system configurations for multiple machines using Nix flake technology. It manages both system-level (NixOS) and user-level (Home Manager) configurations.
 
-## Key Components
+## Build, Lint, and Test Commands
 
-### Managed Hosts
-- `cbox`: Home server
-- `illmatic`: Home server/NAS
-- `lappy`: Laptop
-- `ruca`: Main desktop
-
-### Core Technologies
-- **Nix Flakes**: Declarative package management and system configuration
-- **NixOS**: Linux distribution with declarative system configuration
-- **Home Manager**: User environment management
-- **SOPS**: Secret management with age encryption
-- **Task**: Command runner for common operations
-- **Disko**: Declarative disk partitioning
-- **OpenTofu**: Infrastructure as Code (Terraform fork) for cloud resources
-
-## Repository Structure
-
-```
-.
-├── flake.nix              # Entry point defining all configurations
-├── hive.nix               # Colmena hive configuration for deployment
-├── Taskfile.yml           # Task commands for common operations
-├── nix/
-│   ├── machines/          # Per-host configurations
-│   ├── modules/           # Shared modules (replaces home/ and system/)
-│   │   ├── home/          # Home Manager modules
-│   │   │   ├── containers/    # Development containers
-│   │   │   ├── desktop/       # Desktop environment configs
-│   │   │   │   ├── cosmic/    # COSMIC DE theme and settings
-│   │   │   │   └── gnome.nix  # GNOME DE configuration
-│   │   │   ├── programs/      # User programs (all have enable options)
-│   │   │   ├── services/      # User services
-│   │   │   └── default.nix    # Home module aggregator
-│   │   └── system/        # NixOS system modules
-│   │       ├── containers/    # System containers
-│   │       ├── desktop/       # Desktop environment system config
-│   │       ├── services/      # System services
-│   │       ├── users/          # User management modules
-│   │       │   ├── nelly.nix   # Primary user configuration
-│   │       │   ├── sysconf.nix # Deployment user configuration
-│   │       │   └── default.nix # User modules aggregator
-│   │       ├── settings.nix   # System settings and options
-│   │       ├── sops.nix       # SOPS configuration
-│   │       └── default.nix    # System module aggregator
-│   └── templates/         # Project templates
-├── infra/                 # OpenTofu/Terraform infrastructure code
-│   ├── provider.tf        # Provider configurations (Cloudflare, DigitalOcean)
-│   ├── cloudflare.tf      # Cloudflare zone settings and DNS
-│   ├── dns.tf             # DNS records
-│   ├── app.tf             # DigitalOcean App Platform resources
-│   ├── vps.tf             # DigitalOcean VPS/Droplet resources
-│   ├── spaces.tf          # DigitalOcean Spaces (S3-compatible storage)
-│   └── variables.tf       # Input variables
-├── dotfiles/              # Additional dotfiles managed with stow
-├── secrets/               # Encrypted secrets (SOPS)
-└── docs/                  # Documentation
-```
-
-## Module Organization
-
-### Home Manager Modules (`nix/modules/home/`)
-
-All Home Manager modules follow a consistent pattern with enable options:
-
-**Module Categories:**
-- **containers/**: Development containers (MongoDB, PostgreSQL)
-- **desktop/**: Desktop environment configurations
-  - `cosmic/`: COSMIC DE theme and settings
-  - `gnome.nix`: GNOME DE configuration
-- **programs/**: User applications (all have `sysconf.programs.<name>.enable` options)
-  - Individual programs: bat, chromium, direnv, firefox, ghostty, git, goose, micro, opencode, rofi, tmux, vscode, zed-editor, zsh
-  - Each module can be enabled/disabled independently
-- **services/**: User-level systemd services
-
-**Conditional Loading:**
-- Modules are always imported but conditionally enabled based on settings
-- Desktop-specific programs only enabled when `hostRole == "desktop"`
-- Desktop environment configs loaded based on `desktopEnvironment` setting
-
-### System Modules (`nix/modules/system/`)
-
-System-level configuration modules with a consistent structure:
-
-**Module Files:**
-- **settings.nix**: Central system settings and options (consolidated from nix/settings.nix)
-  - Defines all `sysconf.settings.*` options
-  - Common system configuration (timezone, networking, nix settings, locale)
-- **default.nix**: Module aggregator
-  - Imports all system modules including settings
-  - Base system packages
-  - Conditional desktop environment loading based on `desktopEnvironment` setting
-
-**Module Categories:**
-- **containers/**: System containers and container runtime (rootless, nginx, channels-dvr)
-- **desktop/**: Desktop environment system packages
-  - `cosmic.nix`: COSMIC DE system packages and configuration
-  - `gnome.nix`: GNOME DE system packages and configuration
-  - Both have enable options: `sysconf.desktop.cosmic.enable` and `sysconf.desktop.gnome.enable`
-- **services/**: System services (caddy, coredns, ntfy, jellyfin, blocky, vaultwarden)
-- **users/**: User management modules with enable options
-  - `nelly.nix`: Primary user configuration (`sysconf.users.nelly.enable`)
-  - `sysconf.nix`: Deployment user configuration for Colmena (`sysconf.system.users.sysconf.enable`)
-
-**Conditional Loading:**
-- Desktop environments conditionally enabled in `system/default.nix` based on `desktopEnvironment` setting
-- Settings accessible throughout the system via `config.sysconf.settings.*`
-- Home Manager modules access system settings via `osConfig.sysconf.settings.*`
-
-## Common Operations
-
-### Building and Deployment
+### Building Configurations
 ```bash
-task build -- #{host} # Build configuration for host
-task switch           # Apply configurations to current host
-task boot             # Set as boot default
-task update           # Update flake inputs
+# Build configuration for a specific host
+task build -- #ruca
+task build -- #lappy
+
+# Build without deploying (dry run)
+nix build .#nixosConfigurations.ruca.config.system.build.toplevel
+
+# Validate flake structure
+nix flake check
+
+# Show flake outputs
+nix flake show
+
+# Clean build artifacts
+task clean
+```
+
+### Applying Configurations
+```bash
+task switch           # Build and apply to current host
+task boot             # Set as boot default (applies on next boot)
+task update           # Update flake.lock (all inputs)
+```
+
+### Linting and Formatting
+```bash
+# Format Nix files (RFC 166 style)
+nixfmt-rfc-style nix/modules/home/programs/example.nix
+nixfmt-rfc-style nix/**/*.nix  # Format all Nix files
+
+# Lint Nix files
+nixpkgs-lint-community nix/modules/
+
+# Check for issues
+nix flake check  # Comprehensive validation
+```
+
+### Infrastructure (OpenTofu)
+```bash
+cd infra
+tofu init      # Initialize providers (first time)
+tofu fmt       # Format .tf files
+tofu validate  # Validate configuration
+tofu plan      # Preview changes
+tofu apply     # Apply changes
 ```
 
 ### Secret Management
 ```bash
-sops secrets/file-enc.yaml    # Edit encrypted files
+sops secrets/secrets-enc.yaml    # Edit encrypted secrets
 ```
 
 ### Garbage Collection
@@ -142,42 +73,35 @@ task gc-os        # System packages only
 task gc-hm        # User packages only
 ```
 
-## Configuration Patterns
+### Deployment
+```bash
+# Colmena deployment to multiple hosts
+task colmena-local-build  # Build local hive
+task colmena-local        # Deploy to local hive (cbox, illmatic)
+nix run .#colmena -- apply --impure --on @local
+```
 
-### Host Configuration Files
-Each host has specific configuration files in `nix/machines/{host}/`:
-- `system.nix`: NixOS system configuration
-- `home.nix`: Home Manager user configuration
-- `hardware-configuration.nix`: Hardware-specific settings
-- `disks.nix`: Disk partitioning (Disko)
+## Code Style Guidelines
 
-### Custom Options
-The repository defines custom options in `nix/modules/system/settings.nix` and `nix/modules/system/users/`:
+### Nix Module Structure
 
-**System Settings (`nix/modules/system/settings.nix`):**
-- `sysconf.settings.timezone`: System timezone
-- `sysconf.settings.hostName`: Hostname
-- `sysconf.settings.deployKeys`: SSH public keys for deployment automation (CI/CD)
-- `sysconf.settings.hostRole`: Host role - "desktop" or "server" (determines which programs/services are enabled)
-- `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
-
-**User Management Options (`nix/modules/system/users/`):**
-- `sysconf.users.nelly.enable`: Enable primary user configuration
-- `sysconf.users.nelly.hashedPasswordFile`: Location of hashed password file for nelly user
-- `sysconf.users.nelly.sshKeys`: SSH public keys for nelly user (defaults to known keys)
-- `sysconf.system.users.sysconf.enable`: Enable deployment user configuration (for Colmena)
-
-### Module Enable Pattern
-All program modules follow this pattern:
-
+**Standard module imports (order matters):**
 ```nix
 {
-  config,
-  lib,
+  config,      # Module config
+  lib,         # Nixpkgs lib functions
+  pkgs,        # Packages (system modules) or omit (if not needed)
+  osConfig,    # System config (Home Manager modules only)
   ...
 }:
+```
+
+**Module pattern:**
+```nix
 let
-  cfg = config.sysconf.programs.<name>;
+  cfg = config.sysconf.programs.<name>;  # Use 'cfg' for module config
+  settings = osConfig.sysconf.settings;  # Use 'settings' for system settings (HM)
+  settings = config.sysconf.settings;    # Use 'settings' for system settings (System)
 in
 {
   options.sysconf.programs.<name> = {
@@ -185,132 +109,65 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Module configuration here
+    # Configuration here
   };
 }
 ```
 
-Modules are enabled in `nix/modules/home/default.nix` based on `hostRole`:
-- Base programs (enabled for all hosts): bat, direnv, git, micro, tmux, zsh
-- Desktop programs (enabled only when `hostRole == "desktop"`): chromium, firefox, ghostty, goose, opencode, rofi, vscode, zed-editor
+### Formatting and Whitespace
+- **Indentation**: 2 spaces (no tabs)
+- **Line endings**: LF (Unix-style)
+- **Final newline**: Required
+- **Trailing whitespace**: Remove
+- **Max line length**: No hard limit, but keep readable (~100 chars preferred)
+- Use `nixfmt-rfc-style` for consistent formatting
 
-### User Management Module Pattern
-User management modules follow the same enable pattern:
+### Naming Conventions
+- **Variables**: camelCase (`cfg`, `basePkgs`, `desktopPkgs`)
+- **Options**: camelCase with dots (`sysconf.programs.git.enable`)
+- **Files**: kebab-case (`sshd.nix`, `git-worktree-runner.nix`)
+- **Directories**: lowercase (`programs`, `services`, `desktop`)
+- **Let bindings**: Descriptive names (`cfg`, `settings`, not `c` or `s`)
 
+### Imports and Dependencies
+- **Package sources**: Use `pkgs` for stable, `pkgs-unstable` for unstable channel
+- **Import order**: No strict order, but group logically (directories first)
+- **Avoid duplicates**: Use `imports = [ ./dir ]` to import all in directory
+
+### Comments
+- **Inline comments**: Use `#` for brief explanations
+- **Section headers**: Use comments to separate logical sections
+- **Documentation**: Option descriptions go in `description` field, not comments
+- **TODOs**: Acceptable but should be addressed
+
+### Type Safety
+- Always specify types for options: `lib.types.str`, `lib.types.bool`, `lib.types.listOf`
+- Use `lib.mkOption` for options with defaults or complex types
+- Use `lib.mkEnableOption` for simple boolean enable flags
+- Provide `default` values when appropriate
+- Always include `description` for options
+
+### Conditional Configuration
+- Use `lib.mkIf` for conditional config blocks
+- Use `lib.mkMerge` to combine multiple conditional blocks
+- Use `lib.optionals` for conditional lists
+- Example:
 ```nix
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-let
-  cfg = config.sysconf.users.<username>;
-in
-{
-  options.sysconf.users.<username> = {
-    enable = lib.mkEnableOption "<username>";
-    # Additional user-specific options
-  };
-
-  config = lib.mkIf cfg.enable {
-    # User configuration here
-  };
-}
+config = lib.mkMerge [
+  {
+    # Always applied
+  }
+  (lib.mkIf (settings.hostRole == "desktop") {
+    # Desktop-only config
+  })
+];
 ```
 
-Users are enabled in individual host `system.nix` files:
-```nix
-sysconf = {
-  users = {
-    nelly = {
-      enable = true;
-      hashedPasswordFile = "/run/keys/nelly-password";
-    };
-    sysconf.enable = true;
-  };
-};
-```
-
-## Best Practices for Agents
-
-1. **Understand Context**: Always check which host configuration you're modifying by examining the file path
-2. **Follow Patterns**: Use existing configuration patterns rather than creating new ones
-3. **Respect Separation**: Keep system-level configs in `modules/system/` and user-level in `modules/home/`
-4. **Secret Handling**: Never commit unencrypted secrets; use SOPS for sensitive data
-5. **Module Organization**: New programs go in `nix/modules/home/programs/` with an enable option
-6. **Testing**: Suggest building configurations with `task build -- #<host>` before deployment
-
-## Common Tasks
-
-### Adding a New Package
-1. Determine if it's a system or user package
-2. For user packages:
-   - Create module in `nix/modules/home/programs/<name>.nix` with enable option
-   - Add enable statement in `nix/modules/home/default.nix`
-   - Consider whether it should be desktop-only or available for all hosts
-3. For system packages:
-   - Add to appropriate file in `nix/modules/system/`
-
-### Adding a New Program Module
-1. Create file in `nix/modules/home/programs/<name>.nix`
-2. Follow the module enable pattern (see "Module Enable Pattern" above)
-3. Add import in `nix/modules/home/programs/default.nix` if not auto-imported
-4. Enable in `nix/modules/home/default.nix`:
-   - Base section for all hosts
-   - Desktop section if desktop-only
-
-### Modifying Services
-1. System services are defined in `nix/modules/system/services/`
-2. Home services are defined in `nix/modules/home/services/`
-3. Follow existing patterns for service definitions
-
-### Modifying System Settings
-1. All system settings are centralized in `nix/modules/system/settings.nix`
-2. Settings are automatically loaded via `nix/modules/system/default.nix`
-3. Access settings in system modules via `config.sysconf.settings.*`
-4. Access settings in home modules via `osConfig.sysconf.settings.*`
-
-### Managing Users
-1. User configurations are modularized in `nix/modules/system/users/`
-2. Each user module has an enable option following the established pattern
-3. User modules are imported via `nix/modules/system/users/default.nix`
-4. Enable users in individual host `system.nix` files via `sysconf.users.<username>.enable`
-5. The sysconf user is used for Colmena deployments and has passwordless sudo access
-
-### Working with Secrets
-1. Encrypted files end with `-enc` suffix
-2. Use `sops` command to edit, never edit encrypted content directly
-3. Keys are defined in `.sops.yaml`
-
-### Testing Host Configurations
-1. Use `task build -- #<host>` to check the build for a specific host
-2. Use `task clean` after running builds
-
-### Adding New Nix Files
-1. When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing files or `git commit` until the code is working and tested.
-
-### Working with Infrastructure (OpenTofu)
-1. **This project uses OpenTofu, not Terraform**. Always use `tofu` commands, not `terraform` commands.
-2. Infrastructure code is in the `infra/` directory
-3. Common commands:
-   ```bash
-   cd infra
-   tofu init      # Initialize providers
-   tofu plan      # Preview changes
-   tofu apply     # Apply changes
-   tofu state     # Manage state (e.g., state rm, state mv for migrations)
-   ```
-4. **Provider versions**: This project uses Cloudflare provider v5+ which has breaking changes from v4:
-   - `cloudflare_zone_settings_override` was removed, use individual `cloudflare_zone_setting` resources
-   - Each zone setting (ssl, tls_1_3, etc.) is now a separate resource with `setting_id` and `value` attributes
-5. **State management**: When resources are renamed or replaced, use state commands to avoid destroying and recreating:
-   ```bash
-   tofu state rm <old_resource>              # Remove old resource from state
-   tofu import <new_resource> <resource_id>  # Import existing resource with new name
-   # OR
-   tofu state mv <old_resource> <new_resource>  # Move state between resource names
-   ```
+### Error Handling
+- Use `lib.mkDefault` for overridable defaults
+- Use `assertions` for validation (system modules)
+- Provide clear `description` fields for user-facing options
+- Use `default` values to avoid undefined errors
 
 ## Important Conventions
 
@@ -323,6 +180,10 @@ sysconf = {
   - `sysconf.programs.*` - Home Manager programs
   - `sysconf.services.*` - System services
   - `sysconf.cosmic.*` / `sysconf.gnome.*` - Desktop environments
+
+## Adding New Nix Files
+
+When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing files or `git commit` until the code is working and tested.
 
 ## Goals
 - Keep changes minimal and focused.
@@ -337,3 +198,7 @@ sysconf = {
 ## Context
 - Use only files referenced in the prompt unless told otherwise.
 - For large changes, propose a plan before editing.
+
+---
+
+For detailed information about module organization, configuration patterns, and common tasks, see [REFERENCE.md](REFERENCE.md).
