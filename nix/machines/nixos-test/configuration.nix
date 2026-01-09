@@ -34,21 +34,6 @@
     };
   };
 
-  users.mutableUsers = false;
-
-  # SSH configuration
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
-  # Firewall
-  networking.firewall.enable = true;
-
   # Enable Nginx container
   sysconf.containers.nginx.enable = true;
 }

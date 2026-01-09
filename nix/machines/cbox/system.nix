@@ -147,10 +147,8 @@
     };
   };
 
-  # The firewall is enabled when not set.
   # Open ports in the firewall.
   networking.firewall = {
-    enable = true;
     allowedTCPPorts = [ 8080 ];
   };
 
