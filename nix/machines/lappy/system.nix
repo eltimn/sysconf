@@ -1,8 +1,5 @@
 { config, ... }:
 {
-  imports = [
-    ../../modules/home/desktop
-  ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
