@@ -52,17 +52,25 @@
         enable = true;
         domain = "home.eltimn.com";
       };
+
       coredns = {
         enable = true;
       };
+
       jellyfin = {
         enable = true;
         # port = 8096;
       };
+
       ntfy = {
         enable = true;
         port = 8082;
         baseUrl = "https://ntfy.home.eltimn.com";
+      };
+
+      forgejo = {
+        enable = true;
+        port = 8083;
       };
     };
   };

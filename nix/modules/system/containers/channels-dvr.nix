@@ -18,6 +18,11 @@ in
 {
   options.sysconf.containers.channels-dvr = {
     enable = lib.mkEnableOption "channels-dvr";
+    port = lib.mkOption {
+      type = lib.types.number;
+      description = "The port Channels DVR runs on.";
+      default = 8089; # Has no effect
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -44,8 +49,8 @@ in
 
     # Firewall rules for Channels DVR
     networking.firewall.allowedTCPPorts = [
-      8089 # channels-dvr web interface
-      5353
+      cfg.port # channels-dvr web interface
+      5353 # channels-dvr Bonjour/mDNS
     ];
     networking.firewall.allowedUDPPorts = [
       5353 # channels-dvr Bonjour/mDNS

@@ -36,6 +36,7 @@ in
           tls {
             dns cloudflare {env.CF_API_TOKEN}
           }
+
           @unifi host unifi.${cfg.domain}
           handle @unifi {
             reverse_proxy https://router.${cfg.domain} {
@@ -44,6 +45,7 @@ in
               }
             }
           }
+
           @jellyfin host jellyfin.${cfg.domain}
           handle @jellyfin {
             reverse_proxy localhost:${toString config.sysconf.services.jellyfin.port}
@@ -51,7 +53,7 @@ in
 
           @dvr host dvr.${cfg.domain}
           handle @dvr {
-            reverse_proxy localhost:8089
+            reverse_proxy localhost:${toString config.sysconf.services.channels-dvr.port}
           }
 
           @ntfy host ntfy.${cfg.domain}
@@ -68,6 +70,11 @@ in
           @pics host pics.${cfg.domain}
           handle @pics {
             reverse_proxy localhost:${toString config.services.immich.port}
+          }
+
+          @forgejo host git.${cfg.domain}
+          handle @forgejo {
+            reverse_proxy localhost:${toString config.sysconf.services.forgejo.port}
           }
 
           # Fallback for otherwise unhandled domains
