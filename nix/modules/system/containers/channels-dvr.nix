@@ -20,7 +20,7 @@ in
   options.sysconf.containers.channels-dvr = {
     enable = lib.mkEnableOption "channels-dvr";
     port = lib.mkOption {
-      type = lib.types.number;
+      type = lib.types.port;
       description = "The port Channels DVR runs on.";
       default = 8089; # Has no effect
     };
