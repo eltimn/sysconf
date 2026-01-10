@@ -21,7 +21,8 @@ in
 
     passwordPath = lib.mkOption {
       type = lib.types.str;
-      description = "Path to the borg passphrase file.";
+      default = "/run/secrets/forgejo-borg-passphrase";
+      description = "Path to the borg passphrase file (defaults to /run/secrets/forgejo-borg-passphrase).";
     };
 
     backupDir = lib.mkOption {
