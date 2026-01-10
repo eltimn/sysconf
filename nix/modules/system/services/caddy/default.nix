@@ -16,7 +16,7 @@ in
       default = settings.homeDomain;
       description = "The domain used for caddy.";
     };
-    virtualHosts = lib.mkOption {
+    wildcardVirtualHosts = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = { };
       description = "Virtual host configurations. Each attribute is a subdomain, and the value is the Caddyfile config string.";
@@ -56,7 +56,7 @@ in
 
             '';
             dynamicVirtualHosts = lib.concatStringsSep "" (
-              lib.mapAttrsToList generateVirtualHost cfg.virtualHosts
+              lib.mapAttrsToList generateVirtualHost cfg.wildcardVirtualHosts
             );
           in
           ''

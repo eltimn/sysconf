@@ -61,8 +61,9 @@ in
       };
     };
 
-    sysconf.services.caddy.virtualHosts.git = ''
+    services.caddy.virtualHosts."git.${settings.homeDomain}".extraConfig = ''
       reverse_proxy localhost:${toString cfg.port}
+      tls { dns cloudflare {env.CF_API_TOKEN} }
     '';
   };
 }
