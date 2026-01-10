@@ -33,7 +33,7 @@ in
       text = ''
         if [ ! -f /var/lib/forgejo/.ssh/id_ed25519 ]; then
           ${lib.getExe' config.systemd.package "systemd-run"} --unit=forgejo-ssh-keygen --uid=forgejo --gid=forgejo \
-            ${lib.getExe' config.programs.ssh.package "ssh-keygen"} -t ed25519 -f /var/lib/forgejo/.ssh/id_ed25519 -N "" -C "forgejo@illmatic"
+            ${lib.getExe' config.programs.ssh.package "ssh-keygen"} -t ed25519 -f /var/lib/forgejo/.ssh/id_ed25519 -N "" -C "forgejo@${config.networking.hostName}"
         fi
       '';
     };
