@@ -40,5 +40,11 @@
       default = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
       description = "Borg backup repository URL for this host.";
     };
+
+    homeDomain = lib.mkOption {
+      type = lib.types.str;
+      description = "The domain of the home network.";
+      default = "home.eltimn.com";
+    };
   };
 }

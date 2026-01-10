@@ -6,6 +6,7 @@
 let
   cfg = config.sysconf.services.forgejo;
   srv = config.services.forgejo.settings.server;
+  settings = config.sysconf.settings;
 in
 {
   options.sysconf.services.forgejo = {
@@ -43,7 +44,7 @@ in
         server = {
           HTTP_PORT = cfg.port;
           HTTP_ADDR = "127.0.0.1";
-          DOMAIN = "git.home.eltimn.com";
+          DOMAIN = "git.${settings.homeDomain}";
           # You need to specify this to remove the port from URLs in the web UI.
           ROOT_URL = "https://${srv.DOMAIN}/";
           SSH_PORT = lib.head config.services.openssh.ports; # for using ssh with git

@@ -6,13 +6,14 @@
 }:
 let
   cfg = config.sysconf.services.caddy;
+  settings = config.sysconf.settings;
 in
 {
   options.sysconf.services.caddy = {
     enable = lib.mkEnableOption "caddy";
     domain = lib.mkOption {
       type = lib.types.str;
-      default = "home.eltimn.com";
+      default = settings.homeDomain;
       description = "The domain used for caddy.";
     };
     virtualHosts = lib.mkOption {
@@ -47,15 +48,13 @@ in
         extraConfig =
           let
             # Generate virtual host handlers from the virtualHosts option
-            generateVirtualHost =
-              subdomain: config:
-              ''
-                @${subdomain} host ${subdomain}.${cfg.domain}
-                handle @${subdomain} {
-                  ${config}
-                }
+            generateVirtualHost = subdomain: config: ''
+              @${subdomain} host ${subdomain}.${cfg.domain}
+              handle @${subdomain} {
+                ${config}
+              }
 
-              '';
+            '';
             dynamicVirtualHosts = lib.concatStringsSep "" (
               lib.mapAttrsToList generateVirtualHost cfg.virtualHosts
             );

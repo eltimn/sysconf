@@ -53,13 +53,18 @@
     };
 
     services = {
-      caddy = {
+      caddy.enable = true;
+      coredns.enable = true;
+      notify.enable = true;
+
+      forgejo = {
         enable = true;
-        domain = "home.eltimn.com";
+        port = 8083;
       };
 
-      coredns = {
+      forgejo-backup = {
         enable = true;
+        passwordPath = "/run/keys/borg-passphrase-illmatic";
       };
 
       jellyfin = {
@@ -70,21 +75,6 @@
       ntfy = {
         enable = true;
         port = 8082;
-        baseUrl = "https://ntfy.home.eltimn.com";
-      };
-
-      notify = {
-        enable = true;
-      };
-
-      forgejo = {
-        enable = true;
-        port = 8083;
-      };
-
-      forgejo-backup = {
-        enable = true;
-        passwordPath = "/run/keys/borg-passphrase-illmatic";
       };
     };
   };

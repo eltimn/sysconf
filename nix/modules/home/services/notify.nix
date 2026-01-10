@@ -1,18 +1,20 @@
 {
   config,
   lib,
+  osConfig,
   pkgs,
   ...
 }:
 let
   cfg = config.sysconf.services.notify;
+  settings = osConfig.sysconf.settings;
 in
 {
   options.sysconf.services.notify = {
     enable = lib.mkEnableOption "notify";
     ntfyUrl = lib.mkOption {
       type = lib.types.str;
-      default = "https://ntfy.home.eltimn.com/backups";
+      default = "https://ntfy.${settings.homeDomain}/backups";
       description = "URL for ntfy notifications.";
     };
   };

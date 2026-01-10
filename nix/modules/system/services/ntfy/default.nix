@@ -5,6 +5,7 @@
 }:
 let
   cfg = config.sysconf.services.ntfy;
+  settings = config.sysconf.settings;
 in
 {
   options.sysconf.services.ntfy = {
@@ -16,7 +17,7 @@ in
     };
     baseUrl = lib.mkOption {
       type = lib.types.str;
-      default = "https://ntfy.local";
+      default = "https://ntfy.${settings.homeDomain}";
       description = "The base URL for the ntfy service.";
     };
   };
