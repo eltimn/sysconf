@@ -48,6 +48,7 @@ in
           transport http {
             tls_insecure_skip_verify # unifi uses self-signed certs
           }
+        }
       '';
     };
 

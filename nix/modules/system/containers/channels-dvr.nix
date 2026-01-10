@@ -15,15 +15,11 @@
 let
   cfg = config.sysconf.containers.channels-dvr;
   settings = config.sysconf.settings;
+  port = 8089; # Currently, Channels DVR doesn't have a way to set the port. I believe the client also expects to use 8089 even though I use https.
 in
 {
   options.sysconf.containers.channels-dvr = {
     enable = lib.mkEnableOption "channels-dvr";
-    port = lib.mkOption {
-      type = lib.types.port;
-      description = "The port Channels DVR runs on.";
-      default = 8089; # Has no effect
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -50,7 +46,7 @@ in
 
     # Firewall rules for Channels DVR
     networking.firewall.allowedTCPPorts = [
-      cfg.port # channels-dvr web interface
+      port # channels-dvr web interface
       5353 # channels-dvr Bonjour/mDNS
     ];
     networking.firewall.allowedUDPPorts = [

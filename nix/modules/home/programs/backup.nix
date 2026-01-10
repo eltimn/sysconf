@@ -25,7 +25,6 @@ in
     passwordPath = lib.mkOption {
       type = lib.types.str;
       description = "Path to the password file.";
-      default = null;
     };
   };
 
