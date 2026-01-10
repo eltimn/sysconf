@@ -73,16 +73,17 @@ in
     };
 
     systemd.user.services.borgmatic = {
+      Unit = {
+        OnFailure = "notify@%i.service";
+      };
       Service = {
         ExecStartPre = lib.mkForce [ ]; # Remove the 3 minute sleep
         ExecStart = lib.mkForce [
           "" # Clear the existing ExecStart
           ''
             ${pkgs.borgmatic}/bin/borgmatic \
-              --stats \
               --verbosity 0 \
-              --list \
-              --syslog-verbosity 1
+              --syslog-verbosity 0
           ''
         ];
       };

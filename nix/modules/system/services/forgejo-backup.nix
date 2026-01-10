@@ -50,6 +50,9 @@ in
 
     systemd.services.forgejo-backup = {
       description = "Forgejo database and data backup";
+      unitConfig = {
+        OnFailure = "notify@%i.service";
+      };
 
       serviceConfig = {
         Type = "oneshot";

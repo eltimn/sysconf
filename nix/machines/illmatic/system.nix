@@ -73,6 +73,10 @@
         baseUrl = "https://ntfy.home.eltimn.com";
       };
 
+      notify = {
+        enable = true;
+      };
+
       forgejo = {
         enable = true;
         port = 8083;
