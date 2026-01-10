@@ -34,11 +34,11 @@
       default = "none"; # cosmic|gnome|none
       description = "Desktop Environment used.";
     };
+
+    borgRepo = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
+      description = "Borg backup repository URL for this host.";
+    };
   };
 }
-
-# host = "ruca"
-# user = "nelly"
-# editor = "codium --new-window --wait"
-# stow_packages = ["common", "code"]
-# backup_dirs = ["Audio", "Documents", "Notes", "Pictures", "code", "secret-cipher", "sysconf"]

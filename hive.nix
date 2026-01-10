@@ -103,7 +103,6 @@ let
       permissions = "0400";
     };
     # Borg needs a password
-    # config.sops.secrets."borg_passphrase_${cfg.host}".path
     "borg-passphrase-illmatic" = {
       keyCommand = [
         "sops"
@@ -113,9 +112,9 @@ let
         "secrets/secrets-enc.yaml"
       ];
       destDir = "/run/keys";
-      user = "nelly";
-      group = "users";
-      permissions = "0400";
+      user = "root";
+      group = "keys";
+      permissions = "0440";
     };
   };
 in

@@ -18,10 +18,28 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # Add forgejo user to keys group for secrets access
+    users.users.forgejo.extraGroups = [ "keys" ];
+
+    # Create SSH directory and key for forgejo user (for borg backups)
+    systemd.tmpfiles.rules = [
+      "d /var/lib/forgejo/.ssh 0700 forgejo forgejo -"
+    ];
+
+    # Generate SSH key for forgejo user if it doesn't exist
+    system.activationScripts.forgejo-ssh-key = {
+      deps = [ "users" ];
+      text = ''
+        if [ ! -f /var/lib/forgejo/.ssh/id_ed25519 ]; then
+          ${lib.getExe' config.systemd.package "systemd-run"} --unit=forgejo-ssh-keygen --uid=forgejo --gid=forgejo \
+            ${lib.getExe' config.programs.ssh.package "ssh-keygen"} -t ed25519 -f /var/lib/forgejo/.ssh/id_ed25519 -N "" -C "forgejo@illmatic"
+        fi
+      '';
+    };
+
     services.forgejo = {
       enable = true;
       settings = {
-        session.COOKIE_SECURE = true;
         server = {
           HTTP_PORT = cfg.port;
           HTTP_ADDR = "127.0.0.1";
@@ -36,9 +54,9 @@ in
           SQLITE_JOURNAL_MODE = "WAL";
         };
 
-        service.DISABLE_REGISTRATION = true;
-
         security.LOGIN_REMEMBER_DAYS = 365;
+        service.DISABLE_REGISTRATION = true;
+        session.COOKIE_SECURE = true;
       };
     };
 

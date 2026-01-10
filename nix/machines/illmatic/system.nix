@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -23,6 +24,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     borgbackup
+    sqlite
+    config.services.forgejo.package
   ];
 
   # Enable services
@@ -73,6 +76,11 @@
       forgejo = {
         enable = true;
         port = 8083;
+      };
+
+      forgejo-backup = {
+        enable = true;
+        passwordPath = "/run/keys/borg-passphrase-illmatic";
       };
     };
   };

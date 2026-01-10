@@ -2,10 +2,12 @@
   config,
   lib,
   pkgs,
+  osConfig,
   ...
 }:
 let
   cfg = config.sysconf.programs.backup;
+  settings = osConfig.sysconf.settings;
 in
 {
   options.sysconf.programs.backup = {
@@ -16,14 +18,9 @@ in
       description = "List of paths to backup.";
     };
     repo = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "The Borg repository to use for backups.";
-    };
-    host = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "The host this is running on.";
+      type = lib.types.nullOr lib.types.str;
+      default = settings.borgRepo;
+      description = "The Borg repository to use for backups. Defaults to system borgRepo setting.";
     };
     passwordPath = lib.mkOption {
       type = lib.types.str;

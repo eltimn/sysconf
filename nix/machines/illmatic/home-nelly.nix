@@ -26,8 +26,6 @@
   sysconf = {
     programs.backup = {
       enable = true;
-      repo = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
-      host = "illmatic";
       backupPaths = [
         "/mnt/backup/archives"
         "/mnt/backup/rotozen"
@@ -40,7 +38,6 @@
         "/mnt/backup/ruca/nelly/workspaces"
         "/mnt/backup/ruca/nelly/zen"
         "/mnt/music"
-        "/var/lib/forgejo"
       ];
       passwordPath = "/run/keys/borg-passphrase-illmatic";
     };
