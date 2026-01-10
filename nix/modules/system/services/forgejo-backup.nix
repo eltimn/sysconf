@@ -94,7 +94,7 @@ in
         systemctl start forgejo.service
 
         # Export borg passphrase
-        export BORG_PASSPHRASE=$(cat ${cfg.passwordPath})
+        export BORG_PASSPHRASE="$(cat ${cfg.passwordPath})"
         export BORG_REPO="${cfg.repo}"
 
         # Create borg backup
