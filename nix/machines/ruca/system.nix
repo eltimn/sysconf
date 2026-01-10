@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   pkgs-unstable,
   ...
@@ -13,7 +14,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # sops.secrets."users/nelly/password".neededForUsers = true;
+  sops.secrets."users/nelly/password".neededForUsers = true;
   # sops.age.sshKeyPaths = [
   #   "${config.users.users.nelly.home}/.ssh/id_ed25519"
   # ];
@@ -24,7 +25,7 @@
 
     users.nelly = {
       enable = true;
-      # hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
+      hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
     };
 
     # GNOME specific configuration
@@ -52,13 +53,6 @@
       pkgs.brlaser
     ];
     # logLevel = "debug";
-  };
-
-  # Allow network discovery
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
   };
 
   # Enable sound with pipewire.
@@ -172,7 +166,7 @@
 
   # sysconf services
   sysconf.services = {
-    coredns.enable = true;
+    blocky.enable = true;
   };
 
   # state version

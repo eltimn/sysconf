@@ -132,6 +132,8 @@ The repository defines custom options in `nix/modules/system/settings.nix` and `
 - `sysconf.settings.deployKeys`: SSH public keys for deployment automation (CI/CD)
 - `sysconf.settings.hostRole`: Host role - "desktop" or "server" (determines which programs/services are enabled)
 - `sysconf.settings.desktopEnvironment`: Desktop environment - "cosmic", "gnome", or "none"
+- `sysconf.settings.borgRepo`: Borg backup repo URL.
+- `sysconf.settings.homeDomain`: Domain used for the home network.
 
 **User Management Options (`nix/modules/system/users/`):**
 - `sysconf.users.nelly.enable`: Enable primary user configuration

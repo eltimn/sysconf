@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -23,14 +24,13 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     borgbackup
+    sqlite
+    config.services.forgejo.package
   ];
 
   # Enable services
   services = {
-    immich = {
-      enable = true;
-      port = 2283; # default is 2283
-    };
+    zfs.autoScrub.enable = true;
   };
 
   # sysconf config
@@ -48,21 +48,25 @@
     };
 
     services = {
-      caddy = {
+      blocky.enable = true;
+      caddy.enable = true;
+      immich.enable = true;
+      jellyfin.enable = true;
+      notify.enable = true;
+
+      forgejo = {
         enable = true;
-        domain = "home.eltimn.com";
+        port = 8083;
       };
-      coredns = {
+
+      forgejo-backup = {
         enable = true;
+        passwordPath = "/run/keys/borg-passphrase-illmatic";
       };
-      jellyfin = {
-        enable = true;
-        # port = 8096;
-      };
+
       ntfy = {
         enable = true;
         port = 8082;
-        baseUrl = "https://ntfy.home.eltimn.com";
       };
     };
   };

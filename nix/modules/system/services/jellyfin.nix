@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
   cfg = config.sysconf.services.jellyfin;
+  settings = config.sysconf.settings;
 in
 {
   options.sysconf.services.jellyfin = {
@@ -25,6 +26,13 @@ in
     #   port = cfg.port;
     #   protocol = "http";
     # };
+
+    services.caddy.virtualHosts = {
+      "jellyfin.${settings.homeDomain}".extraConfig = ''
+        reverse_proxy localhost:${toString cfg.port}
+        tls { dns cloudflare {env.CF_API_TOKEN} }
+      '';
+    };
   };
 }
 

@@ -102,6 +102,20 @@ let
       group = "caddy";
       permissions = "0400";
     };
+    # Borg needs a password
+    "borg-passphrase-illmatic" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"borg_passphrase_illmatic\"]"
+        "--decrypt"
+        "secrets/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "root";
+      group = "keys";
+      permissions = "0440";
+    };
   };
 in
 {

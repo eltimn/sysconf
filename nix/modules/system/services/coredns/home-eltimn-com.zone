@@ -17,12 +17,14 @@ cbox       IN A     192.168.0.23
 shield     IN A     192.168.0.24
 hdhr       IN A     192.168.0.25
 
+blocky     IN CNAME illmatic
 dns0       IN CNAME illmatic
 dns1       IN CNAME ruca
 dvr        IN CNAME illmatic
+git        IN CNAME illmatic
+jellyfin   IN CNAME illmatic
+ntfy       IN CNAME illmatic
 pics       IN CNAME illmatic
 unifi      IN CNAME illmatic
 web        IN CNAME illmatic
 www        IN CNAME illmatic
-jellyfin   IN CNAME illmatic
-ntfy       IN CNAME illmatic

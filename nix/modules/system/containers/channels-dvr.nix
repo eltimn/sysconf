@@ -14,6 +14,8 @@
 }:
 let
   cfg = config.sysconf.containers.channels-dvr;
+  settings = config.sysconf.settings;
+  port = 8089; # Currently, Channels DVR doesn't have a way to set the port. I believe the client also expects to use 8089 even though I use https.
 in
 {
   options.sysconf.containers.channels-dvr = {
@@ -44,8 +46,8 @@ in
 
     # Firewall rules for Channels DVR
     networking.firewall.allowedTCPPorts = [
-      8089 # channels-dvr web interface
-      5353
+      port # channels-dvr web interface
+      5353 # channels-dvr Bonjour/mDNS
     ];
     networking.firewall.allowedUDPPorts = [
       5353 # channels-dvr Bonjour/mDNS
@@ -55,5 +57,10 @@ in
     systemd.tmpfiles.rules = [
       "d /var/lib/channelsdvr/storage 0770 channelsdvr users -"
     ];
+
+    services.caddy.virtualHosts."dvr.${settings.homeDomain}".extraConfig = ''
+      reverse_proxy localhost:${toString port}
+      tls { dns cloudflare {env.CF_API_TOKEN} }
+    '';
   };
 }

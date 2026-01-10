@@ -21,6 +21,9 @@ task build -- #lappy
 # Build without deploying (dry run)
 nix build .#nixosConfigurations.ruca.config.system.build.toplevel
 
+# Build colmena hosts
+task colmena-local-build  # Build local hive (cbox, illmatic)
+
 # Validate flake structure
 nix flake check
 
@@ -76,7 +79,6 @@ task gc-hm        # User packages only
 ### Deployment
 ```bash
 # Colmena deployment to multiple hosts
-task colmena-local-build  # Build local hive
 task colmena-local        # Deploy to local hive (cbox, illmatic)
 nix run .#colmena -- apply --impure --on @local
 ```

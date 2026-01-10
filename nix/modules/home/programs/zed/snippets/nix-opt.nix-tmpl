@@ -1,0 +1,6 @@
+lib.mkOption {
+  type = lib.types.$1;
+  description = "$2";
+  default = $3;
+};
+$0

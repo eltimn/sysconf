@@ -2,10 +2,12 @@
   config,
   lib,
   pkgs,
+  osConfig,
   ...
 }:
 let
   cfg = config.sysconf.programs.backup;
+  settings = osConfig.sysconf.settings;
 in
 {
   options.sysconf.programs.backup = {
@@ -16,14 +18,13 @@ in
       description = "List of paths to backup.";
     };
     repo = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "The Borg repository to use for backups.";
+      type = lib.types.nullOr lib.types.str;
+      default = settings.borgRepo;
+      description = "The Borg repository to use for backups. Defaults to system borgRepo setting.";
     };
-    host = lib.mkOption {
+    passwordPath = lib.mkOption {
       type = lib.types.str;
-      default = "";
-      description = "The host this is running on.";
+      description = "Path to the password file.";
     };
   };
 
@@ -49,17 +50,13 @@ in
               ];
             };
           };
-          storage =
-            let
-              passPath = config.sops.secrets."borg_passphrase_${cfg.host}".path;
-            in
-            {
-              encryptionPasscommand = "${pkgs.coreutils-full}/bin/cat ${passPath}";
-              extraConfig = {
-                compression = "auto,zstd";
-                archive_name_format = "{hostname}-{now:%Y-%m-%d-%H%M%S}";
-              };
+          storage = {
+            encryptionPasscommand = "${pkgs.coreutils-full}/bin/cat ${cfg.passwordPath}";
+            extraConfig = {
+              compression = "auto,zstd";
+              archive_name_format = "{hostname}-{now:%Y-%m-%d-%H%M%S}";
             };
+          };
           retention = {
             keepDaily = 7;
             keepWeekly = 4;
@@ -74,7 +71,21 @@ in
       frequency = "daily";
     };
 
-    # SOPS secret for borg environment variables
-    sops.secrets."borg_passphrase_${cfg.host}" = { };
+    systemd.user.services.borgmatic = {
+      Unit = {
+        OnFailure = "notify@%i.service";
+      };
+      Service = {
+        ExecStartPre = lib.mkForce [ ]; # Remove the 3 minute sleep
+        ExecStart = lib.mkForce [
+          "" # Clear the existing ExecStart
+          ''
+            ${pkgs.borgmatic}/bin/borgmatic \
+              --verbosity 0 \
+              --syslog-verbosity 0
+          ''
+        ];
+      };
+    };
   };
 }
