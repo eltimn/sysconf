@@ -27,7 +27,7 @@ in
 
       Service = {
         Type = "oneshot";
-        ExecStart = "${pkgs.curl}/bin/curl -H 'Title: %i' ${cfg.ntfyUrl} -d 'Error running service on %H.'";
+        ExecStart = "${pkgs.curl}/bin/curl --fail --show-error --silent --max-time 10 -H 'Title: %i' --data 'Error running service on %H.' ${cfg.ntfyUrl}";
       };
     };
   };
