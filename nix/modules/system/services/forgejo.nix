@@ -12,7 +12,7 @@ in
   options.sysconf.services.forgejo = {
     enable = lib.mkEnableOption "forgejo";
     port = lib.mkOption {
-      type = lib.types.number;
+      type = lib.types.port;
       description = "The port Forgejo runs on.";
       default = 3000;
     };
