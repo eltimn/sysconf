@@ -33,5 +33,16 @@ in
         #auth-default-access = "deny-all";
       };
     };
+
+    services.caddy.virtualHosts."ntfy.${settings.homeDomain}".extraConfig = ''
+      reverse_proxy localhost:${toString cfg.port}
+      @httpget {
+        protocol http
+        method GET
+        path_regexp ^/([-_a-z0-9]{0,64}$|docs/|static/)
+      }
+      redir @httpget https://{host}{uri}
+      tls { dns cloudflare {env.CF_API_TOKEN} }
+    '';
   };
 }

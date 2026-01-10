@@ -30,11 +30,6 @@
 
   # Enable services
   services = {
-    immich = {
-      enable = true;
-      port = 2283; # default is 2283
-    };
-
     zfs.autoScrub.enable = true;
   };
 
@@ -56,6 +51,8 @@
       blocky.enable = true;
       caddy.enable = true;
       coredns.enable = true;
+      immich.enable = true;
+      jellyfin.enable = true;
       notify.enable = true;
 
       forgejo = {
@@ -66,11 +63,6 @@
       forgejo-backup = {
         enable = true;
         passwordPath = "/run/keys/borg-passphrase-illmatic";
-      };
-
-      jellyfin = {
-        enable = true;
-        # port = 8096;
       };
 
       ntfy = {

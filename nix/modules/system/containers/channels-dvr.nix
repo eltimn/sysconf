@@ -14,6 +14,7 @@
 }:
 let
   cfg = config.sysconf.containers.channels-dvr;
+  settings = config.sysconf.settings;
 in
 {
   options.sysconf.containers.channels-dvr = {
@@ -60,5 +61,10 @@ in
     systemd.tmpfiles.rules = [
       "d /var/lib/channelsdvr/storage 0770 channelsdvr users -"
     ];
+
+    services.caddy.virtualHosts."dvr.${settings.homeDomain}".extraConfig = ''
+      reverse_proxy localhost:${toString cfg.port}
+      tls { dns cloudflare {env.CF_API_TOKEN} }
+    '';
   };
 }
