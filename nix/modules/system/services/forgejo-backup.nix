@@ -33,12 +33,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Allow forgejo user to manage forgejo service for backups
+    # Allow forgejo user to stop and start forgejo service for backups
     security.polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
-        if (action.id == "org.freedesktop.systemd1.manage-units" &&
-            action.lookup("unit") == "forgejo.service" &&
-            subject.user == "forgejo") {
+        if ((action.id == "org.freedesktop.systemd1.manage-units" &&
+             (action.lookup("verb") == "start" || action.lookup("verb") == "stop") &&
+             action.lookup("unit") == "forgejo.service" &&
+             subject.user == "forgejo")) {
           return polkit.Result.YES;
         }
       });
@@ -73,12 +74,28 @@ in
         FORGEJO_WORK_DIR="${forgejoService.stateDir}"
         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
         DUMP_FILE="$BACKUP_DIR/forgejo-dump-$TIMESTAMP.zip"
+        FORGEJO_STOPPED=false
+
+        # Ensure Forgejo is restarted on exit, even if script fails
+        cleanup() {
+          if [ "$FORGEJO_STOPPED" = true ]; then
+            echo "Ensuring Forgejo service is restarted..."
+            if systemctl start forgejo.service; then
+              echo "Forgejo service restarted successfully"
+            else
+              echo "ERROR: Failed to restart Forgejo service!" >&2
+              exit 1
+            fi
+          fi
+        }
+        trap cleanup EXIT
 
         echo "Starting Forgejo backup..."
 
         # Stop forgejo service for consistent backup
         echo "Stopping Forgejo service..."
         systemctl stop forgejo.service
+        FORGEJO_STOPPED=true
 
         # Use forgejo dump to create backup
         echo "Running forgejo dump..."
@@ -93,6 +110,7 @@ in
         # Restart forgejo service
         echo "Restarting Forgejo service..."
         systemctl start forgejo.service
+        FORGEJO_STOPPED=false
 
         # Export borg passphrase
         export BORG_PASSPHRASE="$(cat ${cfg.passwordPath})"
