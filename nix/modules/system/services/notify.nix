@@ -26,7 +26,7 @@ in
       description = "Send ntfy notification for %i";
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${pkgs.curl}/bin/curl -H 'Title: %i' ${cfg.ntfyUrl} -d 'Error running service on %H.'";
+        ExecStart = "${pkgs.curl}/bin/curl --fail --silent --show-error --max-time 30 -H 'Title: %i' -d 'Error running service on %H.' ${cfg.ntfyUrl}";
       };
     };
   };
