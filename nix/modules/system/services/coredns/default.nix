@@ -26,10 +26,6 @@ in
     systemd.services.coredns = {
       reloadTriggers = [ zoneFile ];
     };
-
-    # Open ports in the firewall.
-    networking.firewall.allowedTCPPorts = [ 53 ];
-    networking.firewall.allowedUDPPorts = [ 53 ];
   };
 }
 

@@ -53,6 +53,7 @@
     };
 
     services = {
+      blocky.enable = true;
       caddy.enable = true;
       coredns.enable = true;
       notify.enable = true;

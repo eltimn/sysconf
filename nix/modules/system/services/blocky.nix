@@ -1,47 +1,53 @@
-{ ... }:
-
 {
-  services.blocky = {
-    enable = true;
-    settings = {
-      # Upstream DNS server configuration
-      upstream = {
-        default = [
-          # Modify these default DNS servers to your liking
-          "9.9.9.9"
-          "tcp-tls:fdns1.dismail.de:853"
-          "https://dns.digitale-gesellschaft.ch/dns-query"
-        ];
-      };
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.sysconf.services.blocky;
+in
+{
+  options.sysconf.services.blocky = {
+    enable = lib.mkEnableOption "blocky";
+  };
 
-      # Ports configuration
-      ports = {
-        dns = 53;
-        http = 4000;
-        tls = 853;
-      };
+  config = lib.mkIf cfg.enable {
+    services.blocky = {
+      enable = true;
+      settings = {
+        # Upstream DNS server configuration
+        # Forward to local CoreDNS on port 5354 for local zone resolution
+        upstreams = {
+          groups = {
+            default = [
+              "127.0.0.1:5354"
+            ];
+          };
+        };
 
-      # Logging, set this to "error" to avoid collecting user info
-      log = {
-        level = "info";
-      };
+        # Ports configuration
+        ports = {
+          dns = 53;
+        };
 
-      customDNS = {
-        customTTL = "1h";
-        mapping = {
-          "ruca.home.eltimn.com" = "192.168.1.163";
-          "illmatic.home.eltimn.com" = "192.168.1.50";
-          "cbox.home.eltimn.com" = "192.168.1.158";
+        blocking = {
+          denylists = {
+            ads = [ "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" ];
+          };
+          clientGroupsBlock = {
+            default = [ "ads" ];
+          };
+        };
 
-          "dvr.home.eltimn.com" = "illmatic.home.eltimn.com";
-          "plex.home.eltimn.com" = "illmatic.home.eltimn.com";
-          "unifi.home.eltimn.com" = "illmatic.home.eltimn.com";
-          "www.home.eltimn.com" = "illmatic.home.eltimn.com";
-          "ntfy.home.eltimn.com" = "illmatic.home.eltimn.com";
-          "router.home.eltimn.com" = "illmatic.home.eltimn.com";
-          "jfin.home.eltimn.com" = "ruca.home.eltimn.com";
+        # Logging, set this to "error" to avoid collecting user info
+        log = {
+          level = "error";
         };
       };
     };
+
+    # Open DNS port in firewall
+    networking.firewall.allowedTCPPorts = [ 53 ];
+    networking.firewall.allowedUDPPorts = [ 53 ];
   };
 }
