@@ -50,7 +50,6 @@
     services = {
       blocky.enable = true;
       caddy.enable = true;
-      coredns.enable = true;
       immich.enable = true;
       jellyfin.enable = true;
       notify.enable = true;

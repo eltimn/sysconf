@@ -1,9 +1,9 @@
 {
   imports = [
+    ./blocky
     ./caddy
     ./coredns
     ./ntfy
-    ./blocky.nix
     ./notify.nix
     ./forgejo.nix
     ./forgejo-backup.nix

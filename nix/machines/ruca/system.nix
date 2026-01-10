@@ -167,7 +167,6 @@
   # sysconf services
   sysconf.services = {
     blocky.enable = true;
-    coredns.enable = true;
   };
 
   # state version

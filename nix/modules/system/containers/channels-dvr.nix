@@ -59,7 +59,7 @@ in
     ];
 
     services.caddy.virtualHosts."dvr.${settings.homeDomain}".extraConfig = ''
-      reverse_proxy localhost:${toString cfg.port}
+      reverse_proxy localhost:${toString port}
       tls { dns cloudflare {env.CF_API_TOKEN} }
     '';
   };
