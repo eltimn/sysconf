@@ -34,10 +34,8 @@ in
     packages =
       with pkgs;
       [
-        claude-code
         crush
         gemini-cli
-        nodejs # npx is needed for MCP servers
         vulkan-tools
       ]
       ++ [
@@ -89,10 +87,17 @@ in
     containers.mongodb-rz.enable = true;
     containers.postgresql-rz.enable = true;
 
-    programs.git = {
-      githubIncludePath = config.sops.secrets."git/github".path;
-      userIncludePath = config.sops.secrets."git/user".path;
+    programs = {
+      claude.enable = true;
+      nodejs.enable = true;
+
+      git = {
+        githubIncludePath = config.sops.secrets."git/github".path;
+        userIncludePath = config.sops.secrets."git/user".path;
+      };
     };
+
+    services.notify.enable = true;
   };
 
   # Systemd user services
@@ -159,18 +164,6 @@ in
           Type = "simple";
           Environment = "SSH_AUTH_SOCK=%t/gcr/ssh";
           ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-workstation";
-        };
-      };
-
-      # @ means it's a template that accepts a single parameter. e.g. you could run `systemctl --user start notify@mysvc.service`
-      "notify@" = {
-        Unit = {
-          Description = "Send Notification";
-        };
-
-        Service = {
-          Type = "oneshot";
-          ExecStart = "${config.home.profileDirectory}/bin/notify-send --urgency=critical '%i' 'Error running %i service.'";
         };
       };
     };

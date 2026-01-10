@@ -1,5 +1,6 @@
 {
   imports = [
+    ./claude
     ./git
     ./goose
     ./opencode
@@ -14,6 +15,7 @@
     ./firefox.nix
     ./ghostty.nix
     ./micro.nix
+    ./nodejs.nix
     ./tmux.nix
   ];
 }

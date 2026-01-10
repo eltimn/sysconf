@@ -57,9 +57,14 @@
 
   # Enable sysconf modules
   sysconf = {
-    programs.git = {
-      githubIncludePath = config.sops.secrets."git/github".path;
-      userIncludePath = config.sops.secrets."git/user".path;
+    programs = {
+      claude.enable = true;
+      nodejs.enable = true;
+
+      git = {
+        githubIncludePath = config.sops.secrets."git/github".path;
+        userIncludePath = config.sops.secrets."git/user".path;
+      };
     };
   };
 }
