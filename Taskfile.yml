@@ -64,7 +64,7 @@ tasks:
   update:
     desc: Update packages and the lock file.
     cmds:
-      - nix flake update
+      - nix flake update {{.CLI_ARGS}}
 
   gc:
     desc: Run both gc tasks.
