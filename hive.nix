@@ -5,6 +5,8 @@
   ...
 }:
 let
+  secretsPath = builtins.toString inputs.sysconf-secrets;
+
   # Shared secret definitions for user passwords
   mkPasswordKeys = {
     "nelly-password" = {
@@ -13,7 +15,7 @@ let
         "--extract"
         "[\"users\"][\"nelly\"][\"password\"]"
         "--decrypt"
-        "secrets/secrets-enc.yaml"
+        "${secretsPath}/secrets-enc.yaml"
       ];
       destDir = "/run/keys";
       user = "root";
@@ -27,7 +29,7 @@ let
         "--extract"
         "[\"git\"][\"github\"]"
         "--decrypt"
-        "secrets/secrets-enc.yaml"
+        "${secretsPath}/secrets-enc.yaml"
       ];
       destDir = "/run/keys";
       user = "nelly";
@@ -41,7 +43,7 @@ let
         "--extract"
         "[\"git\"][\"user\"]"
         "--decrypt"
-        "secrets/secrets-enc.yaml"
+        "${secretsPath}/secrets-enc.yaml"
       ];
       destDir = "/run/keys";
       user = "nelly";
@@ -95,7 +97,7 @@ let
       keyCommand = [
         "sops"
         "--decrypt"
-        "secrets/caddy-enc.env"
+        "${secretsPath}/caddy-enc.env"
       ];
       destDir = "/run/keys";
       user = "caddy";
@@ -109,7 +111,7 @@ let
         "--extract"
         "[\"borg_passphrase_illmatic\"]"
         "--decrypt"
-        "secrets/secrets-enc.yaml"
+        "${secretsPath}/secrets-enc.yaml"
       ];
       destDir = "/run/keys";
       user = "root";

@@ -380,6 +380,7 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
+        "sysconf-secrets": "sysconf-secrets",
         "zen-browser-flake": "zen-browser-flake"
       }
     },
@@ -417,6 +418,24 @@
         "ref": "nixos-22.11",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "sysconf-secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768099495,
+        "narHash": "sha256-u998F9toFSvE/GXP+3R9EI1zJ1P+QeMPhbxBBYo06o0=",
+        "ref": "main",
+        "rev": "8a5d5e0e87c43edb3fd8146c5e854cf34ee0ccef",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git"
       }
     },
     "systems": {

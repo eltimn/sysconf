@@ -55,6 +55,12 @@
     };
     isd-flake.url = "github:isd-project/isd"; # systemd tui
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
+    sysconf-secrets = {
+      # SSH URL of the private repo, shallow clone, tracking the main branch
+      url = "git+ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git?ref=main&shallow=1";
+      flake = false; # we only need the files, not a Nix output
+    };
   };
 
   outputs =

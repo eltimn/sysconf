@@ -11,7 +11,7 @@ in
   options.sysconf.system.sops = {
     secretsPath = lib.mkOption {
       type = lib.types.path;
-      default = ../../../secrets;
+      default = builtins.toString inputs.sysconf-secrets;
       description = "The path secrets files are in.";
     };
   };
