@@ -179,6 +179,7 @@
             hash = "sha256-aVwmNDnTOYZZQbTy++rYS0NOGEu9Zwljg3+TXJmw4TE=";
           };
         });
+        crush = prev.callPackage ./nix/pkgs/crush.nix { };
       };
 
       # Packages
@@ -190,6 +191,7 @@
           format = "do";
         };
         colmena = inputs.colmena.packages.${pkgs.stdenv.hostPlatform.system}.colmena;
+        crush = pkgs.crush;
       };
 
       # Home Manager configurations. Non-nixos hosts.
