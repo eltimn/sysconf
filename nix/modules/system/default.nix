@@ -50,8 +50,6 @@ in
       time.timeZone = settings.timezone;
 
       # networking
-      networking.networkmanager.enable = true;
-      networking.hostName = settings.hostName;
       networking.firewall.enable = true;
 
       # Select internationalisation properties.

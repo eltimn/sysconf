@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.sysconf.services.coredns;
-  zoneFile = ./home-eltimn-com.zone;
+  zoneFile = ../blocky/home-eltimn-com.zone;
 in
 {
   options.sysconf.services.coredns = {

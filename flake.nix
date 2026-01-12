@@ -119,9 +119,6 @@
               ;
           };
           modules = [
-            {
-              config.sysconf.settings.hostName = hostName;
-            }
             inputs.disko.nixosModules.disko
             ./nix/machines/${hostName}/configuration.nix
             ./nix/modules/system # system modules
@@ -158,9 +155,6 @@
           inherit system pkgs;
           modules = [
             ./nix/modules/system # sysconf settings
-            {
-              config.sysconf.settings.hostName = "iso";
-            }
             "${nixpkgs}/nixos/modules/installer/cd-dvd/${installerName}.nix"
             "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
             ./nix/machines/iso/configuration.nix

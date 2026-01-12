@@ -1,8 +1,8 @@
 {
   config,
   lib,
-  pkgs,
   osConfig,
+  pkgs,
   ...
 }:
 let
@@ -20,7 +20,7 @@ in
     repo = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = settings.borgRepo;
-      description = "The Borg repository to use for backups. Defaults to system borgRepo setting.";
+      description = "The Borg repository to use for backups.";
     };
     passwordPath = lib.mkOption {
       type = lib.types.str;

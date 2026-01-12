@@ -10,13 +10,18 @@ $ORIGIN home.eltimn.com.
 	3600 IN NS a.iana-servers.net.
 	3600 IN NS b.iana-servers.net.
 
-router     IN A     192.168.0.1
-ruca       IN A     192.168.0.21
-illmatic   IN A     192.168.0.22
-cbox       IN A     192.168.0.23
-shield     IN A     192.168.0.24
-hdhr       IN A     192.168.0.25
+# Home network
+router     IN A     10.42.10.1
+ruca       IN A     10.42.10.21
+illmatic   IN A     10.42.10.22
+cbox       IN A     10.42.10.23
+shield     IN A     10.42.10.24
+hdhr       IN A     10.42.10.25
 
+# Work network
+#ruca       IN A     10.42.40.27
+
+# CNAMEs
 blocky     IN CNAME illmatic
 dns0       IN CNAME illmatic
 dns1       IN CNAME ruca

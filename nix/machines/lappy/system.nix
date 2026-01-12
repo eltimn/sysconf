@@ -58,6 +58,15 @@
   # Needed for yubikey
   services.pcscd.enable = true;
 
+  # networking
+  networking = {
+    hostName = "lappy";
+    # system tray applet
+    networkmanager.enable = true;
+    # Optional: Disable IPv6 if not needed
+    enableIPv6 = false;
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave

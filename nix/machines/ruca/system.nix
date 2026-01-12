@@ -4,7 +4,6 @@
   pkgs-unstable,
   ...
 }:
-
 {
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
@@ -167,6 +166,37 @@
   # sysconf services
   sysconf.services = {
     blocky.enable = true;
+  };
+
+  # networking
+  networking = {
+    hostName = "ruca";
+    useDHCP = false;
+
+    # system tray applet
+    # networkmanager.enable = true;
+
+    # Configure static IP on eth0
+    interfaces."enp10s0" = {
+      ipv4.addresses = [
+        {
+          address = "10.42.10.21";
+          prefixLength = 24; # /24 subnet
+        }
+      ];
+    };
+
+    # Default gateway
+    defaultGateway = {
+      address = "10.42.10.1";
+      interface = "enp10s0";
+    };
+
+    # DNS servers
+    nameservers = config.sysconf.settings.dnsServers;
+
+    # Optional: Disable IPv6 if not needed
+    enableIPv6 = false;
   };
 
   # state version
