@@ -3,6 +3,9 @@
   pkgs,
   ...
 }:
+let
+  settings = config.sysconf.settings;
+in
 {
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -73,6 +76,7 @@
     hostName = "illmatic";
     hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
     useDHCP = false;
+    search = [ settings.homeDomain ];
 
     # Configure static IP on eth0
     interfaces."enp0s20f3" = {

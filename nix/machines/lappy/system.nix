@@ -1,6 +1,8 @@
 { config, ... }:
+let
+  settings = config.sysconf.settings;
+in
 {
-
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -61,6 +63,7 @@
   # networking
   networking = {
     hostName = "lappy";
+    search = [ settings.homeDomain ];
     # system tray applet
     networkmanager.enable = true;
     # Optional: Disable IPv6 if not needed

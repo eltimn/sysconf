@@ -1,4 +1,7 @@
 { config, ... }:
+let
+  settings = config.sysconf.settings;
+in
 {
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -16,6 +19,7 @@
 
   networking = {
     hostName = "cbox";
+    search = [ settings.homeDomain ];
 
     # Configure static IP on eth0
     interfaces."enp0s20f3" = {

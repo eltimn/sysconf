@@ -45,7 +45,7 @@ in
       type = lib.types.listOf lib.types.str;
       description = "The DNS servers to use for the home network.";
       default = [
-        "10.42.10.21"
+        "10.42.40.27"
         "10.42.10.22"
       ];
       internal = true;
