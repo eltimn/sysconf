@@ -3,6 +3,7 @@
   lib,
   pkgs-unstable,
   osConfig,
+  inputs,
   ...
 }:
 let
@@ -16,5 +17,8 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs-unstable.claude-code ];
+
+    # Symlink AI tools skills directory
+    home.file.".claude/skills".source = "${inputs.eltimn-ai-tools}/skills";
   };
 }

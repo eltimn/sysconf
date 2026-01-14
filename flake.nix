@@ -142,7 +142,7 @@
 
                 # passes arguments to all modules in home.nix
                 extraSpecialArgs = {
-                  inherit pkgs-unstable;
+                  inherit inputs pkgs-unstable;
                 };
 
                 sharedModules = [
