@@ -17,12 +17,18 @@ in
     };
   };
 
+  # Persistent network interface naming
+  systemd.network.links."10-lan" = {
+    matchConfig.MACAddress = ""; # TODO: Fill in MAC address from `ip link show`
+    linkConfig.Name = "eth0";
+  };
+
   networking = {
     hostName = "cbox";
     search = [ settings.homeDomain ];
 
     # Configure static IP on eth0
-    interfaces."enp1s0" = {
+    interfaces."eth0" = {
       useDHCP = false;
       ipv4.addresses = [
         {
@@ -35,7 +41,7 @@ in
     # Default gateway
     defaultGateway = {
       address = "10.42.10.1";
-      interface = "enp1s0";
+      interface = "eth0";
     };
 
     # DNS servers

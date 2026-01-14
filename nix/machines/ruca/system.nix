@@ -95,6 +95,12 @@ in
     blocky.enable = true;
   };
 
+  # Persistent network interface naming
+  systemd.network.links."10-lan" = {
+    matchConfig.MACAddress = "10:ff:e0:83:15:15";
+    linkConfig.Name = "eth0";
+  };
+
   # networking
   networking = {
     hostName = "ruca";
@@ -105,7 +111,7 @@ in
     # networkmanager.enable = true;
 
     # Configure static IP on eth0
-    interfaces."enp10s0" = {
+    interfaces."eth0" = {
       ipv4.addresses = [
         {
           address = "10.42.40.27";
@@ -117,7 +123,7 @@ in
     # Default gateway
     defaultGateway = {
       address = "10.42.40.1";
-      interface = "enp10s0";
+      interface = "eth0";
     };
 
     # DNS servers

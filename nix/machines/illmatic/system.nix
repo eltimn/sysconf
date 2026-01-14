@@ -72,14 +72,20 @@ in
     };
   };
 
+  # Persistent network interface naming
+  systemd.network.links."10-lan" = {
+    matchConfig.MACAddress = "0c:c4:7a:db:ed:c3";
+    linkConfig.Name = "eth3";
+  };
+
   networking = {
     hostName = "illmatic";
     hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
     useDHCP = false;
     search = [ settings.homeDomain ];
 
-    # Configure static IP on eth0
-    interfaces."enp0s20f3" = {
+    # Configure static IP on eth3
+    interfaces."eth3" = {
       ipv4.addresses = [
         {
           address = "10.42.10.22";
@@ -91,7 +97,7 @@ in
     # Default gateway
     defaultGateway = {
       address = "10.42.10.1";
-      interface = "enp0s20f3";
+      interface = "eth3";
     };
 
     # DNS servers
