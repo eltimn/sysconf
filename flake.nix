@@ -61,6 +61,11 @@
       url = "git+ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git?ref=main&shallow=1";
       flake = false; # we only need the files, not a Nix output
     };
+
+    eltimn-ai-tools = {
+      url = "git+ssh://forgejo@git.home.eltimn.com/eltimn/eltimn-ai-tools.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -180,6 +185,13 @@
           };
         });
         crush = prev.callPackage ./nix/pkgs/crush.nix { };
+        unifi-api = inputs.eltimn-ai-tools.packages.${prev.system}.unifi-api;
+        # Or for multiple tools:
+        # inherit (inputs.eltimn-ai-tools.packages.${prev.system})
+        #   unifi-api
+        #   another-tool
+        #   yet-another
+        #   ;
       };
 
       # Packages

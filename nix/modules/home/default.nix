@@ -23,6 +23,7 @@ let
     mongodb-tools
     mongosh
     neovim
+    nix-prefetch-git
     nushell
     podman-tui
     shellcheck
