@@ -22,7 +22,7 @@ in
     search = [ settings.homeDomain ];
 
     # Configure static IP on eth0
-    interfaces."enp0s20f3" = {
+    interfaces."enp1s0" = {
       useDHCP = false;
       ipv4.addresses = [
         {
@@ -35,7 +35,7 @@ in
     # Default gateway
     defaultGateway = {
       address = "10.42.10.1";
-      interface = "enp0s20f3";
+      interface = "enp1s0";
     };
 
     # DNS servers
