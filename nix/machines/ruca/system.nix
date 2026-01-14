@@ -81,6 +81,16 @@ in
     pciutils
   ];
 
+  # Enable nix-ld for running dynamically linked executables
+  # This allows running binaries from npm packages (like @github/copilot) that expect standard Linux library locations
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      # Additional libraries can be added here if needed
+      stdenv.cc.cc.lib
+    ];
+  };
+
   programs.gnupg.agent.enable = true;
 
   # Needed for yubikey
