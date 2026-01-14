@@ -1,14 +1,8 @@
 {
   config,
   pkgs,
-  pkgs-unstable,
-  osConfig,
   ...
 }:
-let
-  ollamaUrl =
-    "http://" + osConfig.services.ollama.host + ":" + toString osConfig.services.ollama.port;
-in
 {
 
   imports = [
@@ -31,18 +25,12 @@ in
     stateVersion = "24.11";
 
     # Packages that should be installed to the user profile.
-    packages =
-      with pkgs;
-      [
-        crush
-        gemini-cli
-        unifi-api
-        vulkan-tools
-      ]
-      ++ [
-        # pkgs-unstable.lmstudio
-        pkgs-unstable.radeontop
-      ];
+    packages = with pkgs; [
+      crush
+      gemini-cli
+      unifi-api
+
+    ];
 
     # List of extra paths to include in the user profile.
     sessionPath = [
@@ -58,7 +46,6 @@ in
       EDITOR = "zeditor --wait"; # osConfig.sysconf.users.nelly.envEditor;
       VISUAL = "zeditor --wait";
       COSMIC_DATA_CONTROL_ENABLED = 1;
-      OLLAMA_HOST = ollamaUrl;
     };
 
     # some files

@@ -58,10 +58,7 @@
     "enabled": false,
     "liveIndexing": false,
     "delay": 500,
-    "exclude": [
-      ".terraform/**/*",
-      "**/.terraform/**/*"
-    ]
+    "exclude": [".terraform/**/*", "**/.terraform/**/*"]
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.suggestSelection": "first",
@@ -132,9 +129,7 @@
         // It should accepts file content in stdin and print the formatted code into stdout.
         // Type: [string] | null
         // Example: ["nixfmt"]
-        "command": [
-          "nixfmt"
-        ]
+        "command": ["nixfmt"]
       }
     }
   },
@@ -143,13 +138,8 @@
   "chat.disableAIFeatures": false,
   "http.systemCertificatesNode": true,
   "geminicodeassist.project": "tim-sandbox-481415",
-  "github.copilot.chat.byok.ollamaEndpoint": "http://127.0.0.1:11434",
   "claudeCode.preferredLocation": "panel",
-  "kilo-code.allowedCommands": [
-    "git log",
-    "git diff",
-    "git show"
-  ],
+  "kilo-code.allowedCommands": ["git log", "git diff", "git show"],
   "kilo-code.deniedCommands": [],
   "workbench.colorTheme": "Visual Studio Dark",
   "yaml.schemas": {

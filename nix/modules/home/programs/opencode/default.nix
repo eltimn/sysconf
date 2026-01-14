@@ -68,7 +68,6 @@ in
 
     home.sessionVariables = {
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
-      OPENCODE_OLLAMA_BASEURL = "http://${osConfig.services.ollama.host}:${toString osConfig.services.ollama.port}/v1/";
       OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
       OPENCODE_CONFIG = themeFileLoc; # Set OPENCODE_CONFIG to point to theme file (merged with main config)
     };
