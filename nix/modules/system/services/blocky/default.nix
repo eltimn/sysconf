@@ -33,7 +33,7 @@ in
 
         # Custom DNS for local zone
         customDNS = {
-          zone = builtins.readFile ../coredns/home-eltimn-com.zone;
+          zone = builtins.readFile ./home-eltimn-com.zone;
         };
 
         # Conditional forwarding for ACME challenges

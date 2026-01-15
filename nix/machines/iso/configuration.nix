@@ -1,9 +1,10 @@
 {
-  osConfig,
+  config,
   pkgs,
   ...
 }:
 let
+  nellyKeys = config.sysconf.settings.sshKeys.nelly;
   mountDisks = pkgs.writeShellScriptBin "mount-disks" (builtins.readFile ./scripts/mount-disks);
   prepareKey = pkgs.writeShellScriptBin "prepare-key" (builtins.readFile ./scripts/prepare-key);
   runInstall = pkgs.writeShellScriptBin "run-install" (builtins.readFile ./scripts/run-install);
@@ -38,7 +39,7 @@ in
 
   users.users = {
     nixos = {
-      openssh.authorizedKeys.keys = osConfig.sysconf.users.nelly.sshKeys;
+      openssh.authorizedKeys.keys = nellyKeys.base;
       shell = pkgs.bash;
     };
   };

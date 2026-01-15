@@ -3,7 +3,9 @@
   pkgs,
   ...
 }:
-
+let
+  settings = config.sysconf.settings;
+in
 {
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -18,7 +20,6 @@
   ];
 
   boot.zfs.forceImportRoot = false;
-  networking.hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -69,6 +70,35 @@
         port = 8082;
       };
     };
+  };
+
+  networking = {
+    hostName = "illmatic";
+    hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
+    useDHCP = false;
+    search = [ settings.homeDomain ];
+
+    # Configure static IP on eth0
+    interfaces."enp0s20f3" = {
+      ipv4.addresses = [
+        {
+          address = "10.42.10.22";
+          prefixLength = 24; # /24 subnet
+        }
+      ];
+    };
+
+    # Default gateway
+    defaultGateway = {
+      address = "10.42.10.1";
+      interface = "enp0s20f3";
+    };
+
+    # DNS servers
+    nameservers = config.sysconf.settings.dnsServers;
+
+    # Optional: Disable IPv6 if not needed
+    enableIPv6 = false;
   };
 
   ## system

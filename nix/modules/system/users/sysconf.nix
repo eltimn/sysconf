@@ -7,6 +7,7 @@
 }:
 let
   cfg = config.sysconf.users.sysconf;
+  sshKeys = config.sysconf.settings.sshKeys;
 in
 {
   options.sysconf.users.sysconf = {
@@ -22,8 +23,7 @@ in
         home = "/var/lib/sysconf";
         createHome = true;
         extraGroups = [ "wheel" ];
-        openssh.authorizedKeys.keys =
-          config.sysconf.users.nelly.sshKeys ++ config.sysconf.settings.deployKeys;
+        openssh.authorizedKeys.keys = sshKeys.nelly.base ++ sshKeys.deploy;
         shell = pkgs.bash;
       };
 

@@ -66,6 +66,26 @@
         "type": "github"
       }
     },
+    "eltimn-ai-tools": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768361336,
+        "narHash": "sha256-4jlxRVmyhl/qyatACoTd2fKFkK+YD/Qd/jahsEhaxuA=",
+        "ref": "refs/heads/main",
+        "rev": "baeaa9e02b1a0c3eb1e0ffd71d171d83bae09499",
+        "revCount": 6,
+        "type": "git",
+        "url": "ssh://forgejo@git.home.eltimn.com/eltimn/eltimn-ai-tools.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://forgejo@git.home.eltimn.com/eltimn/eltimn-ai-tools.git"
+      }
+    },
     "firefox-addons": {
       "inputs": {
         "nixpkgs": [
@@ -372,6 +392,7 @@
         "colmena": "colmena",
         "cosmic-manager": "cosmic-manager",
         "disko": "disko",
+        "eltimn-ai-tools": "eltimn-ai-tools",
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
         "isd-flake": "isd-flake",

@@ -36,6 +36,7 @@ in
       [
         crush
         gemini-cli
+        unifi-api
         vulkan-tools
       ]
       ++ [

@@ -4,7 +4,9 @@
   pkgs-unstable,
   ...
 }:
-
+let
+  settings = config.sysconf.settings;
+in
 {
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
@@ -78,6 +80,16 @@
     isd
     pciutils
   ];
+
+  # Enable nix-ld for running dynamically linked executables
+  # This allows running binaries from npm packages (like @github/copilot) that expect standard Linux library locations
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      # Additional libraries can be added here if needed
+      stdenv.cc.cc.lib
+    ];
+  };
 
   programs.gnupg.agent.enable = true;
 
@@ -167,6 +179,38 @@
   # sysconf services
   sysconf.services = {
     blocky.enable = true;
+  };
+
+  # networking
+  networking = {
+    hostName = "ruca";
+    useDHCP = false;
+    search = [ settings.homeDomain ];
+
+    # system tray applet
+    # networkmanager.enable = true;
+
+    # Configure static IP on eth0
+    interfaces."enp10s0" = {
+      ipv4.addresses = [
+        {
+          address = "10.42.40.27";
+          prefixLength = 24; # /24 subnet
+        }
+      ];
+    };
+
+    # Default gateway
+    defaultGateway = {
+      address = "10.42.40.1";
+      interface = "enp10s0";
+    };
+
+    # DNS servers
+    nameservers = config.sysconf.settings.dnsServers;
+
+    # Optional: Disable IPv6 if not needed
+    enableIPv6 = false;
   };
 
   # state version

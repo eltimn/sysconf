@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.sysconf.services.jellyfin;
   settings = config.sysconf.settings;

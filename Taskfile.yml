@@ -27,6 +27,32 @@ tasks:
     cmds:
       - "{{.NIX_BUILD_CMD}} build --flake .{{.CLI_ARGS}}" # --print-build-logs --verbose
 
+  build-do-image:
+    desc: Build the Digital Ocean custom image
+    cmd: nix build .#do-image
+
+  build-iso:
+    desc: Build an installer ISO [gnome|min]
+    cmd: nix build .#nixosConfigurations.iso-{{.CLI_ARGS}}.config.system.build.isoImage
+
+  build-hives:
+    desc: Build all hives without deploying
+    cmd: nix run .#colmena -- build --impure
+
+  build-hive:
+    desc: Build local hive without deploying
+    cmd: nix run .#colmena -- build --impure --on @{{.CLI_ARGS}}
+
+  build-all:
+    desc: Build everything.
+    cmds:
+      - nixos-rebuild build --flake .#ruca
+      - nixos-rebuild build --flake .#lappy
+      - nix run .#colmena -- build --impure
+      - nix build .#do-image
+      - nix build .#nixosConfigurations.iso-gnome.config.system.build.isoImage
+      - nix build .#nixosConfigurations.iso-min.config.system.build.isoImage
+
   switch:
     desc: Build then switch to the new build.
     cmds:
@@ -64,7 +90,7 @@ tasks:
   update:
     desc: Update packages and the lock file.
     cmds:
-      - nix flake update
+      - nix flake update {{.CLI_ARGS}}
 
   gc:
     desc: Run both gc tasks.
@@ -110,10 +136,6 @@ tasks:
     desc: List all previous generations available.
     cmd: nix profile history --profile /nix/var/nix/profiles/system
 
-  iso:
-    desc: Build an installer ISO [gnome|min]
-    cmd: nix build .#nixosConfigurations.iso-{{.CLI_ARGS}}.config.system.build.isoImage
-
   iso-burn:
     desc: Burn an iso to a USB drive
     cmd: caligula burn $(gum file ./result/iso)
@@ -122,29 +144,17 @@ tasks:
     desc: Copy the iso to a USB drive
     cmd: cp result/iso/*.iso /run/media/$USER/Ventoy
 
-  build-do-image:
-    desc: Build the Digital Ocean custom image
-    cmd: nix build .#do-image
+  deploy-hive:
+    desc: Deploy a hive
+    cmd: nix run .#colmena -- apply --impure --on @{{.CLI_ARGS}}
 
-  colmena-local:
-    desc: Deploy to local hive (cbox, illmatic) from ruca
-    cmd: nix run .#colmena -- apply --impure --on @local
+  deploy-hives:
+    desc: Deploy all hives
+    cmd: nix run .#colmena -- apply --impure
 
-  colmena-local-build:
-    desc: Build local hive without deploying
-    cmd: nix run .#colmena -- build --impure --on @local
-
-  colmena-do:
-    desc: Deploy to DO hive (manual, for testing)
-    cmd: nix run .#colmena -- apply --impure --on @do
-
-  colmena-do-build:
-    desc: Build DO hive without deploying
-    cmd: nix run .#colmena -- build --impure --on @do
-
-  colmena-build:
-    desc: Build all hives without deploying
-    cmd: nix run .#colmena -- build --impure
+  upload-keys:
+    desc: Upload deploy keys to a hive. Required after reboot.
+    cmd: nix run .#colmena -- upload-keys --impure --on @{{.CLI_ARGS}}
 
   test-blocky:
     desc: Test Blocky DNS server (default 192.168.0.22)
