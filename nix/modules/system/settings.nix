@@ -36,7 +36,7 @@ in
 
     borgRepo = lib.mkOption {
       type = lib.types.str;
-      description = "The URL of the Bord backup repo.";
+      description = "The URL of the Borg backup repo.";
       default = "ssh://dl2juhyh@dl2juhyh.repo.borgbase.com/./repo";
       internal = true;
     };
