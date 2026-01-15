@@ -104,33 +104,27 @@ in
   # networking
   networking = {
     hostName = "ruca";
-    useDHCP = false;
+    useDHCP = false; # NetworkManager handles this, but just to make sure.
     search = [ settings.homeDomain ];
-
-    # system tray applet
-    # networkmanager.enable = true;
-
-    # Configure static IP on eth0
-    interfaces."eth0" = {
-      ipv4.addresses = [
-        {
-          address = "10.42.40.27";
-          prefixLength = 24; # /24 subnet
-        }
-      ];
-    };
-
-    # Default gateway
-    defaultGateway = {
-      address = "10.42.40.1";
-      interface = "eth0";
-    };
-
-    # DNS servers
-    nameservers = config.sysconf.settings.dnsServers;
-
-    # Optional: Disable IPv6 if not needed
+    networkmanager.enable = true;
     enableIPv6 = false;
+
+    # Static IP configuration for NetworkManager
+    networkmanager.ensureProfiles.profiles = {
+      eth0 = {
+        connection = {
+          id = "eth0";
+          type = "ethernet";
+          interface-name = "eth0";
+        };
+        ipv4 = {
+          method = "manual";
+          address1 = "10.42.40.27/24,10.42.40.1";
+          dns = builtins.concatStringsSep ";" config.sysconf.settings.dnsServers;
+        };
+        ipv6.method = "disabled";
+      };
+    };
   };
 
   # state version
