@@ -51,6 +51,10 @@ in
     # logLevel = "debug";
   };
 
+  # Bluetooth (for wireless keyboards, mice, etc.)
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -73,6 +77,10 @@ in
     clinfo
     isd
     pciutils
+
+    # Bluetooth CLI tools (e.g. bluetoothctl)
+    bluez
+    blueman
   ];
 
   # Enable nix-ld for running dynamically linked executables
