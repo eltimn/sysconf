@@ -30,12 +30,14 @@ in
         gum
         htop
         jq
+        ncdu
         parted
         s3cmd
         sshfs
         stow
         tldr
         tree
+        usbutils
         vim
         wget
         whois
