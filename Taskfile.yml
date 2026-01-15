@@ -149,7 +149,7 @@ tasks:
     cmd: nix run .#colmena -- apply --impure --on @{{.CLI_ARGS}}
 
   deploy-hives:
-    desc: Deploy alls hive
+    desc: Deploy all hives
     cmd: nix run .#colmena -- apply --impure
 
   upload-keys:
