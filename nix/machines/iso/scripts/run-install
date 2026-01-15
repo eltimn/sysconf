@@ -32,55 +32,61 @@ fi
 
 section_header "Target Host"
 
-TARGET_HOST=$(ls -1 $HOME/sysconf/nix/machines/ | grep -v iso | gum choose --header="Choose the target host:")
+TARGET_HOST=$(ls -1 "$HOME/sysconf/nix/machines/" | grep -v iso | gum choose --header="Choose the target host:")
 echo "Using host: $TARGET_HOST"
 
 section_header "Disks"
 
 lsblk --nodeps -o name,size,type,serial
-echo ""
+cat <<'EOF'
 
-# look for a disks.nix file for the target host
-DISKS_NIX_FILE=$HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix
-if [ ! -e "$DISKS_NIX_FILE" ]; then
-  echo "ERROR! $(basename "$0") could not find the required disks file: $DISKS_NIX_FILE"
-  exit 1
+Manual disk setup required.
+
+- Partition + format your disks however you prefer.
+- Create filesystems labeled:
+  - boot  -> EFI system partition (vfat)
+  - nixos -> root partition (ext4)
+
+Then run:
+  sudo mount-disks
+
+EOF
+
+gum confirm --default=false "Disks are partitioned/formatted and mounted to /mnt?" || exit 1
+
+section_header "Secrets"
+
+cat <<'EOF'
+If this host requires secrets during install (e.g. /run/keys/*),
+run prepare-key first so sops/age can decrypt your secrets repo.
+
+- Plug in the USB (or disk) that contains: keys.txt.gpg
+- Then run: prepare-key /dev/<device>
+
+EOF
+
+if gum confirm --default=false "Run prepare-key now?"; then
+  key_device=$(lsblk -dpno NAME,SIZE,MODEL | gum choose --header="Select the device/partition holding keys.txt.gpg")
+  # use first column (device path)
+  key_device_path=$(echo "$key_device" | awk '{print $1}')
+  prepare-key "$key_device_path"
 fi
 
-# Prompt user to select the disk to install the OS on
-DISK_ID=$(ls /dev/disk/by-id | cut -d' ' -f1 | gum choose --header="Choose the disk to format and install the os on:")
-
-# replace disk-by-id with the actual disk id in disks.nix
-sed -i -e "s/DISK_ID/$DISK_ID/g" $DISKS_NIX_FILE
-
-echo "Edited disks.nix with actual disk id"
-echo "Contents:"
-cat $DISKS_NIX_FILE
-
-gum confirm --default=false \
-"🔥 🔥 🔥 WARNING!!!! This will ERASE ALL DATA on the disk $DISK_ID. Are you sure you want to continue?"
-
-sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
-  --mode destroy,format,mount $DISKS_NIX_FILE
-
 echo "Generating the hardware config"
-nixos-generate-config --dir $HOME/sysconf/nix/machines/$TARGET_HOST --no-filesystems
-echo "Config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
+# Write hardware config into the host directory (tracked later once back in sysconf)
+sudo nixos-generate-config --dir "$HOME/sysconf/nix/machines/$TARGET_HOST" --no-filesystems
 
-# Add the hardware-configuration.nix to git
-git -C $HOME/sysconf add $HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix
+echo "Config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
 
 section_header "Install OS"
 
-gum confirm --default=false "You are about to start the OS installation. Do you want to continue?"
+gum confirm --default=false "You are about to start the OS installation. Do you want to continue?" || exit 1
 
 sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
 
-# copy the hardware-configuration.nix and disks.nix to the new system for future reference
-mkdir -p /mnt/home/nelly/sysconf-install
-cp -r $HOME/sysconf /mnt/home/nelly
-# cp -r $HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix /mnt/home/nelly
-# cp -r $HOME/sysconf/nix/machines/$TARGET_HOST/disks.nix /mnt/home/nelly
+# copy the sysconf repo into the new system for future reference
+sudo mkdir -p /mnt/home/nelly
+sudo cp -r "$HOME/sysconf" /mnt/home/nelly
 
 # Afterwards: set password according to the manual, then create an ssh key:
 # ssh-keygen -t ed25519 -C "your_email@example.com"

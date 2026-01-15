@@ -19,7 +19,7 @@ in
 
   # Persistent network interface naming
   systemd.network.links."10-lan" = {
-    matchConfig.MACAddress = ""; # TODO: Fill in MAC address from `ip link show`
+    matchConfig.MACAddress = "d8:c4:97:3a:59:1a";
     linkConfig.Name = "eth0";
   };
 
