@@ -9,12 +9,6 @@
     ../../modules/home/desktop
   ];
 
-  # these are mainly for opentofu
-  sops.secrets."cloudflare_api_token" = { };
-  sops.secrets."do_access_token" = { };
-  sops.secrets."do_images_key" = { };
-  sops.secrets."do_spaces_key" = { };
-
   # git secrets
   sops.secrets."git/github" = { };
   sops.secrets."git/user" = { };
