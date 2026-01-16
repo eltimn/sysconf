@@ -6,6 +6,19 @@
 let
   cfg = config.sysconf.services.blocky;
   dnsPort = 53;
+
+  # # Whitelist file for domains that should never be blocked
+  # whitelistFile = pkgs.writeText "blocky-whitelist.txt" ''
+  #   # YouTube domains (for Premium users or to fix playback issues)
+  #   youtube.com
+  #   www.youtube.com
+  #   googlevideo.com
+  #   *.googlevideo.com
+  #   youtubei.googleapis.com
+  #   yt3.ggpht.com
+  #   ytimg.com
+  #   *.ytimg.com
+  # '';
 in
 {
   options.sysconf.services.blocky = {
@@ -13,6 +26,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # When using systemd-networkd, keep systemd-resolved enabled but disable the stub listener
+    # This allows systemd-resolved to manage /etc/resolv.conf and respect
+    # the DNS servers configured in systemd-networkd, while freeing port 53 for blocky
+    # When using NetworkManager, systemd-resolved is already disabled by default
+    services.resolved = lib.mkIf config.systemd.network.enable {
+      enable = true;
+      extraConfig = ''
+        DNSStubListener=no
+      '';
+    };
+
     services.blocky = {
       enable = true;
       settings = {
@@ -57,6 +81,10 @@ in
           clientGroupsBlock = {
             default = [ "ads" ];
           };
+          # Whitelist for domains that should never be blocked
+          # allowlists = {
+          #   ads = [ "${whitelistFile}" ];
+          # };
         };
 
         # Caching configuration
