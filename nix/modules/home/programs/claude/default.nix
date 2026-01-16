@@ -2,12 +2,11 @@
   config,
   lib,
   pkgs-unstable,
-  osConfig,
+  inputs,
   ...
 }:
 let
   cfg = config.sysconf.programs.claude;
-  settings = osConfig.sysconf.settings;
 in
 {
   options.sysconf.programs.claude = {
@@ -16,5 +15,9 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs-unstable.claude-code ];
+
+    # Symlink unifi-gateway-api skill
+    home.file.".claude/skills/unifi-gateway-api".source =
+      "${inputs.eltimn-ai-tools}/skills/unifi-gateway-api";
   };
 }

@@ -1,25 +1,13 @@
 {
   config,
   pkgs,
-  pkgs-unstable,
-  osConfig,
   ...
 }:
-let
-  ollamaUrl =
-    "http://" + osConfig.services.ollama.host + ":" + toString osConfig.services.ollama.port;
-in
 {
 
   imports = [
     ../../modules/home/desktop
   ];
-
-  # these are mainly for opentofu
-  sops.secrets."cloudflare_api_token" = { };
-  sops.secrets."do_access_token" = { };
-  sops.secrets."do_images_key" = { };
-  sops.secrets."do_spaces_key" = { };
 
   # git secrets
   sops.secrets."git/github" = { };
@@ -31,18 +19,12 @@ in
     stateVersion = "24.11";
 
     # Packages that should be installed to the user profile.
-    packages =
-      with pkgs;
-      [
-        crush
-        gemini-cli
-        unifi-api
-        vulkan-tools
-      ]
-      ++ [
-        # pkgs-unstable.lmstudio
-        pkgs-unstable.radeontop
-      ];
+    packages = with pkgs; [
+      crush
+      gemini-cli
+      unifi-api
+
+    ];
 
     # List of extra paths to include in the user profile.
     sessionPath = [
@@ -58,7 +40,6 @@ in
       EDITOR = "zeditor --wait"; # osConfig.sysconf.users.nelly.envEditor;
       VISUAL = "zeditor --wait";
       COSMIC_DATA_CONTROL_ENABLED = 1;
-      OLLAMA_HOST = ollamaUrl;
     };
 
     # some files

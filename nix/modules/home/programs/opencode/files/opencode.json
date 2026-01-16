@@ -6,23 +6,6 @@
   },
   "mcp": {},
   "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Ollama (local)",
-      "options": {
-        "baseURL": "{env:OPENCODE_OLLAMA_BASEURL}"
-      },
-      "models": {
-        "gptoss": {
-          "name": "GPT-OSS 20B",
-          "id": "gpt-oss:20b"
-        },
-        "qwen3coder": {
-          "name": "Qwen3 Coder 30B",
-          "id": "qwen3-coder:30b"
-        }
-      }
-    },
     "ollama-cloud": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (cloud)",

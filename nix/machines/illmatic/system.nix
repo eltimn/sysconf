@@ -72,33 +72,30 @@ in
     };
   };
 
+  # Persistent network interface naming
+  systemd.network.links."10-lan" = {
+    matchConfig.MACAddress = "0c:c4:7a:db:ed:c3";
+    linkConfig.Name = "eth3";
+  };
+
+  # Use systemd-networkd for network management
+  systemd.network.enable = true;
   networking = {
     hostName = "illmatic";
     hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
     useDHCP = false;
+    useNetworkd = true;
     search = [ settings.homeDomain ];
-
-    # Configure static IP on eth0
-    interfaces."enp0s20f3" = {
-      ipv4.addresses = [
-        {
-          address = "10.42.10.22";
-          prefixLength = 24; # /24 subnet
-        }
-      ];
-    };
-
-    # Default gateway
-    defaultGateway = {
-      address = "10.42.10.1";
-      interface = "enp0s20f3";
-    };
-
-    # DNS servers
-    nameservers = config.sysconf.settings.dnsServers;
-
-    # Optional: Disable IPv6 if not needed
     enableIPv6 = false;
+  };
+
+  # Configure static IP with systemd-networkd
+  systemd.network.networks."10-eth3" = {
+    matchConfig.Name = "eth3";
+    address = [ "10.42.10.22/24" ];
+    gateway = [ "10.42.10.1" ];
+    dns = config.sysconf.settings.dnsServers;
+    linkConfig.RequiredForOnline = "routable";
   };
 
   ## system

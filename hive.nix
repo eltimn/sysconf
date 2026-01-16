@@ -123,8 +123,8 @@ let
 in
 {
   ## Local hosts ##
-  # cbox = colmenaConfig "cbox" [ "local" ] mkPasswordKeys;
-  illmatic = colmenaConfig "illmatic" [ "local" ] illmaticKeys;
+  cbox = colmenaConfig "cbox" [ "local" "cbox" ] mkPasswordKeys;
+  illmatic = colmenaConfig "illmatic" [ "local" "illmatic" ] illmaticKeys;
 
   ## Digital Ocean (DO) hosts ##
   nixos-test-01 = colmenaConfig "nixos-test-01.eltimn.com" [ "do" "digitalocean" ] mkPasswordKeys;

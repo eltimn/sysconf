@@ -61,6 +61,13 @@ in
             "editor.background" = "#eef5eb"; # Custom background color for One Light theme
           };
         };
+        agent_servers = {
+          OpenCode = {
+            type = "custom";
+            command = "${config.programs.opencode.package}/bin/opencode";
+            args = [ "acp" ];
+          };
+        };
       };
     };
 

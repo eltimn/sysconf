@@ -17,32 +17,29 @@ in
     };
   };
 
+  # Persistent network interface naming
+  systemd.network.links."10-lan" = {
+    matchConfig.MACAddress = "d8:c4:97:3a:59:1a";
+    linkConfig.Name = "eth0";
+  };
+
+  # Use systemd-networkd for network management
+  systemd.network.enable = true;
   networking = {
     hostName = "cbox";
+    useDHCP = false;
+    useNetworkd = true;
     search = [ settings.homeDomain ];
-
-    # Configure static IP on eth0
-    interfaces."enp0s20f3" = {
-      useDHCP = false;
-      ipv4.addresses = [
-        {
-          address = "10.42.10.23";
-          prefixLength = 24; # /24 subnet
-        }
-      ];
-    };
-
-    # Default gateway
-    defaultGateway = {
-      address = "10.42.10.1";
-      interface = "enp0s20f3";
-    };
-
-    # DNS servers
-    nameservers = config.sysconf.settings.dnsServers;
-
-    # Optional: Disable IPv6 if not needed
     enableIPv6 = false;
+  };
+
+  # Configure static IP with systemd-networkd
+  systemd.network.networks."10-eth0" = {
+    matchConfig.Name = "eth0";
+    address = [ "10.42.10.23/24" ];
+    gateway = [ "10.42.10.1" ];
+    dns = config.sysconf.settings.dnsServers;
+    linkConfig.RequiredForOnline = "routable";
   };
 
   # system

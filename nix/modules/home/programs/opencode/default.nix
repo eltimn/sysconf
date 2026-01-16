@@ -2,8 +2,8 @@
 
 {
   config,
+  inputs,
   lib,
-  osConfig,
   pkgs,
   pkgs-unstable,
   ...
@@ -51,6 +51,10 @@ in
     home.file.".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
     home.file.".config/opencode/opencode.json".source = ./files/opencode.json;
 
+    # eltimn-ai-tools
+    home.file.".claude/skills/unifi-gateway-api".source =
+      "${inputs.eltimn-ai-tools}/skills/unifi-gateway-api";
+
     # Copy theme.json as a mutable file (not symlink) so it can be edited externally
     home.activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD cp -f ${./files/theme.json} "$HOME/.config/opencode/theme.json"
@@ -62,13 +66,12 @@ in
     # home.file.".config/opencode/command".source = ./goose-rpi/command;
 
     # Superpowers
-    home.file.".config/opencode/plugin/superpowers.js".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/code/ai/superpowers/.opencode/plugin/superpowers.js";
+    # home.file.".config/opencode/plugin/superpowers.js".source =
+    #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/code/ai/superpowers/.opencode/plugin/superpowers.js";
     home.file.".config/opencode/command".source = ./superpowers/command; # OpenCode plugins don't support adding commands.
 
     home.sessionVariables = {
       OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
-      OPENCODE_OLLAMA_BASEURL = "http://${osConfig.services.ollama.host}:${toString osConfig.services.ollama.port}/v1/";
       OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
       OPENCODE_CONFIG = themeFileLoc; # Set OPENCODE_CONFIG to point to theme file (merged with main config)
     };
