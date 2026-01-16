@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -10,6 +11,20 @@ let
   runInstall = pkgs.writeShellScriptBin "run-install" (builtins.readFile ./scripts/run-install);
 in
 {
+  # Make initrd extra tolerant of USB/Ventoy-style boot media.
+  boot.initrd.availableKernelModules = lib.mkDefault [
+    "xhci_pci"
+    "ehci_pci"
+    "uhci_hcd"
+    "usb_storage"
+    "uas"
+    "sd_mod"
+    "sr_mod"
+  ];
+
+  # Avoid early USB autosuspend issues on some firmware.
+  boot.kernelParams = lib.mkDefault [ "usbcore.autosuspend=-1" ];
+
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13;
   # boot.supportedFilesystems.zfs = lib.mkForce false;
@@ -35,6 +50,7 @@ in
     mountDisks
     prepareKey
     runInstall
+    zed-editor
   ];
 
   users.users = {

@@ -27,6 +27,7 @@ in
         dnsutils
         ghostty.terminfo
         git
+        gptfdisk
         gum
         htop
         jq
