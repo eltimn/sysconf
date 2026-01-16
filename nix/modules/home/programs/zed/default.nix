@@ -64,7 +64,7 @@ in
         agent_servers = {
           OpenCode = {
             type = "custom";
-            command = "${config.programs.zed-editor.package}/bin/opencode";
+            command = "${config.programs.opencode.package}/bin/opencode";
             args = [ "acp" ];
           };
         };
