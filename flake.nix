@@ -184,7 +184,7 @@
             hash = "sha256-aVwmNDnTOYZZQbTy++rYS0NOGEu9Zwljg3+TXJmw4TE=";
           };
         });
-        crush = prev.callPackage ./nix/pkgs/crush.nix { };
+        # crush = prev.callPackage ./nix/pkgs/crush.nix { };
         unifi-api = inputs.eltimn-ai-tools.packages.${prev.system}.unifi-api;
         # Or for multiple tools:
         # inherit (inputs.eltimn-ai-tools.packages.${prev.system})
@@ -203,7 +203,7 @@
           format = "do";
         };
         colmena = inputs.colmena.packages.${pkgs.stdenv.hostPlatform.system}.colmena;
-        crush = pkgs.crush;
+        # crush = pkgs.crush;
       };
 
       # Home Manager configurations. Non-nixos hosts.
