@@ -86,7 +86,7 @@ in
       };
 
       sops = {
-        age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+        age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
         defaultSopsFile = "${osConfig.sysconf.system.sops.secretsPath}/secrets-enc.yaml";
         defaultSopsFormat = "yaml";
       };

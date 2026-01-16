@@ -22,7 +22,7 @@ in
     # SOPS
     sops = {
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      defaultSopsFile = "${cfg.secretsPath}/secrets-enc.yaml";
+      defaultSopsFile = "${config.sysconf.system.sops.secretsPath}/secrets-enc.yaml";
       defaultSopsFormat = "yaml";
     };
   };

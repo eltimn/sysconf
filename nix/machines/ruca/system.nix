@@ -16,9 +16,6 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   sops.secrets."users/nelly/password".neededForUsers = true;
-  # sops.age.sshKeyPaths = [
-  #   "${config.users.users.nelly.home}/.ssh/id_ed25519"
-  # ];
 
   sysconf = {
     settings.hostRole = "desktop";
