@@ -10,5 +10,6 @@
     ./immich.nix
     ./jellyfin.nix
     ./sshd.nix
+    ./wireguard.nix
   ];
 }

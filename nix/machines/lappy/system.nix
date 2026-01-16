@@ -17,6 +17,18 @@ in
       enable = true;
       hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
     };
+
+    services.wireguard = {
+      enable = true;
+      address = [ "10.42.12.2/32" ];
+      dns = [
+        "10.42.10.22"
+        "10.42.10.23"
+      ];
+      serverPublicKey = "TNLVb4Fx/S7XjORz/Uu+gGnWOt2/aui+//dTImziOW0=";
+      endpoint = "pad.eltimn.com:51820";
+      allowedIPs = [ "0.0.0.0/0" ];
+    };
   };
 
   # Enable CUPS to print documents.
