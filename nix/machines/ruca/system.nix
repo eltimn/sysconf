@@ -98,11 +98,6 @@ in
   # Needed for yubikey
   services.pcscd.enable = true;
 
-  # sysconf services
-  sysconf.services = {
-    blocky.enable = true;
-  };
-
   # Persistent network interface naming
   systemd.network.links."10-lan" = {
     matchConfig.MACAddress = "10:ff:e0:83:15:15";

@@ -45,8 +45,8 @@ in
       type = lib.types.listOf lib.types.str;
       description = "The DNS servers to use for the home network.";
       default = [
-        "10.42.40.27"
-        "10.42.10.22"
+        "10.42.10.22" # illmatic
+        "10.42.10.23" # cbox
       ];
       internal = true;
     };

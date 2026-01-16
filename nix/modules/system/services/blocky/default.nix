@@ -103,6 +103,13 @@ in
       };
     };
 
+    # Ensure blocky starts after systemd-resolved is ready for DNS resolution
+    # (needed to download blocklists at startup)
+    systemd.services.blocky = {
+      after = [ "systemd-resolved.service" ];
+      wants = [ "systemd-resolved.service" ];
+    };
+
     # Open DNS port in firewall
     networking.firewall.allowedTCPPorts = [ dnsPort ];
     networking.firewall.allowedUDPPorts = [ dnsPort ];

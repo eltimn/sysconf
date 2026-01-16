@@ -1,14 +1,4 @@
 $ORIGIN home.eltimn.com.
-@	3600 IN	SOA sns.dns.icann.org. noc.dns.icann.org. (
-				2017042745 ; serial
-				7200       ; refresh (2 hours)
-				3600       ; retry (1 hour)
-				1209600    ; expire (2 weeks)
-				3600       ; minimum (1 hour)
-				)
-
-	3600 IN NS a.iana-servers.net.
-	3600 IN NS b.iana-servers.net.
 
 ; Home network
 router     IN A     10.42.10.1
@@ -24,7 +14,7 @@ ruca       IN A     10.42.40.27
 ; CNAMEs
 blocky     IN CNAME illmatic
 dns0       IN CNAME illmatic
-dns1       IN CNAME ruca
+dns1       IN CNAME cbox
 dvr        IN CNAME illmatic
 git        IN CNAME illmatic
 jellyfin   IN CNAME illmatic

@@ -15,6 +15,10 @@ in
       };
       sysconf.enable = true;
     };
+
+    services = {
+      blocky.enable = true;
+    };
   };
 
   # Persistent network interface naming
