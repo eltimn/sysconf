@@ -73,11 +73,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768361336,
-        "narHash": "sha256-4jlxRVmyhl/qyatACoTd2fKFkK+YD/Qd/jahsEhaxuA=",
+        "lastModified": 1768370812,
+        "narHash": "sha256-8I0daVJF+2th/xfxNhVogXo4CmSZrZXf+/l0kq4Vt4c=",
         "ref": "refs/heads/main",
-        "rev": "baeaa9e02b1a0c3eb1e0ffd71d171d83bae09499",
-        "revCount": 6,
+        "rev": "50eeec8b4e0df05493a3d248d44a4a12472f02ef",
+        "revCount": 7,
         "type": "git",
         "url": "ssh://forgejo@git.home.eltimn.com/eltimn/eltimn-ai-tools.git"
       },
@@ -94,11 +94,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1767845018,
-        "narHash": "sha256-mT00ZXQ4/myUWL3pTDw9gMV8/45yLN1/Faw9YanMa4k=",
+        "lastModified": 1768536226,
+        "narHash": "sha256-d1VSTNa7ajTxT39QBp3gKSbgmgn7yx8RxTZuvZwNX9Y=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "fabfd99ebed009f2a44cbc3fb436d0d2a145a120",
+        "rev": "b092ea4a7d083e09e0aa2de909c1b35b9efb3ee0",
         "type": "gitlab"
       },
       "original": {
@@ -167,11 +167,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767850628,
-        "narHash": "sha256-D3QzdIT11J66I4mzwmIpAGLzPAcbCS2VaKN8fmOe6+E=",
+        "lastModified": 1767910483,
+        "narHash": "sha256-MOU5YdVu4DVwuT5ztXgQpPuRRBjSjUGIdUzOQr9iQOY=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8c8a16d41353a174767c38b962359b51a56ca02e",
+        "rev": "82fb7dedaad83e5e279127a38ef410bcfac6d77c",
         "type": "github"
       },
       "original": {
@@ -208,11 +208,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1767838417,
-        "narHash": "sha256-UJ6qBXzOh/FMYgP/OlM8QeKolpQYN0198onIu8oB6dM=",
+        "lastModified": 1768529686,
+        "narHash": "sha256-CRTi1Sr9q2lx5sKisO7/+sPQtwULTy12BG2gYMJBLPc=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "4e92639f25e4f530990a99a32da696ee9117eb1e",
+        "rev": "4b49917cd4d3b31eb4e01ef3ae453f4ff9664fb3",
         "type": "github"
       },
       "original": {
@@ -275,11 +275,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1767767207,
-        "narHash": "sha256-Mj3d3PfwltLmukFal5i3fFt27L6NiKXdBezC1EBuZs4=",
+        "lastModified": 1768305791,
+        "narHash": "sha256-AIdl6WAn9aymeaH/NvBj0H9qM+XuAuYbGMZaP0zcXAQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5912c1772a44e31bf1c63c0390b90501e5026886",
+        "rev": "1412caf7bf9e660f2f962917c14b1ea1c3bc695e",
         "type": "github"
       },
       "original": {
@@ -323,11 +323,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1767799921,
-        "narHash": "sha256-r4GVX+FToWVE2My8VVZH4V0pTIpnu2ZE8/Z4uxGEMBE=",
+        "lastModified": 1768323494,
+        "narHash": "sha256-yBXJLE6WCtrGo7LKiB6NOt6nisBEEkguC/lq/rP3zRQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d351d0653aeb7877273920cd3e823994e7579b0b",
+        "rev": "2c3e5ec5df46d3aeee2a1da0bfedd74e21f4bf3a",
         "type": "github"
       },
       "original": {
@@ -412,11 +412,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767826491,
-        "narHash": "sha256-WSBENPotD2MIhZwolL6GC9npqgaS5fkM7j07V2i/Ur8=",
+        "lastModified": 1768481291,
+        "narHash": "sha256-NjKtkJraCZEnLHAJxLTI+BfdU//9coAz9p5TqveZwPU=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "ea3adcb6d2a000d9a69d0e23cad1f2cacb3a9fbe",
+        "rev": "e085e303dfcce21adcb5fec535d65aacb066f101",
         "type": "github"
       },
       "original": {
@@ -444,10 +444,10 @@
     "sysconf-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1768594845,
-        "narHash": "sha256-N5LaAYZuaK+Q2LxytTom9gy/DHYsoR+qb+nsG180spU=",
+        "lastModified": 1768597561,
+        "narHash": "sha256-gWPlOJx1DCzNwdif5vW/0IHtROrLrYk3FaRYaGrszuE=",
         "ref": "main",
-        "rev": "b9fbbaf557289ccf758d7f28876533cad23a147d",
+        "rev": "481b507ec247da91ea8a448de77481bb460d5ace",
         "shallow": true,
         "type": "git",
         "url": "ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git"
@@ -509,11 +509,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767763594,
-        "narHash": "sha256-5ysv8EuVAgDoYmNuXEUNf7vBzdeRaFxeIlIndv5HMvs=",
+        "lastModified": 1768379550,
+        "narHash": "sha256-z94S29l5V86h11LZbPIMbHTJyksDG63aqISsZkTTuJY=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "8b2302d8c10369c9135552cc892da75cff5ddb03",
+        "rev": "06f61b4e4f4f6ba8027c96a5611c63dc0db12b90",
         "type": "github"
       },
       "original": {

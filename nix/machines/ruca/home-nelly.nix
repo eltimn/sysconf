@@ -20,7 +20,6 @@
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
-      crush
       gemini-cli
       unifi-api
 
