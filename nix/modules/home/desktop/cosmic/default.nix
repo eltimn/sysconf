@@ -87,7 +87,7 @@ in
         anchor_gap = false;
         autohide = config.lib.cosmic.mkRON "optional" null;
         background = config.lib.cosmic.mkRON "enum" "Dark";
-        expand_to_edges = true;
+        expand_to_edges = false;
         margin = 0;
         opacity = mkRaw "1.0";
         output = outputConfig;
