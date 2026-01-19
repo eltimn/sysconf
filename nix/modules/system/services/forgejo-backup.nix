@@ -33,21 +33,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Allow forgejo user to stop and start forgejo service for backups
-    security.polkit.extraConfig = ''
-      polkit.addRule(function(action, subject) {
-        if ((action.id == "org.freedesktop.systemd1.manage-units" &&
-             (action.lookup("verb") == "start" || action.lookup("verb") == "stop") &&
-             action.lookup("unit") == "forgejo.service" &&
-             subject.user == "forgejo")) {
-          return polkit.Result.YES;
-        }
-      });
-    '';
-
-    # Ensure backup directory exists
+    # Ensure backup directory exists with correct permissions
+    # Owned by forgejo so dump can write, but root can still read/write for borg
     systemd.tmpfiles.rules = [
-      "d ${cfg.backupDir} 0700 forgejo forgejo -"
+      "d ${cfg.backupDir} 0755 forgejo forgejo -"
     ];
 
     systemd.services.forgejo-backup = {
@@ -58,13 +47,15 @@ in
 
       serviceConfig = {
         Type = "oneshot";
-        User = "forgejo";
-        Group = "forgejo";
+        # Run as root to have permission to stop/start forgejo service
+        User = "root";
+        Group = "root";
       };
 
       path = with pkgs; [
         borgbackup
         forgejoService.package
+        pkgs.sudo
       ];
 
       script = ''
@@ -97,10 +88,10 @@ in
         systemctl stop forgejo.service
         FORGEJO_STOPPED=true
 
-        # Use forgejo dump to create backup
+        # Use forgejo dump to create backup (run as forgejo user since it refuses to run as root)
         echo "Running forgejo dump..."
         cd "$BACKUP_DIR"
-        ${forgejoService.package}/bin/forgejo dump \
+        sudo -u forgejo ${forgejoService.package}/bin/forgejo dump \
           --work-path "$FORGEJO_WORK_DIR" \
           --file "$DUMP_FILE" \
           --skip-log
@@ -112,24 +103,25 @@ in
         systemctl start forgejo.service
         FORGEJO_STOPPED=false
 
-        # Export borg passphrase
-        export BORG_PASSPHRASE="$(cat ${cfg.passwordPath})"
-        export BORG_REPO="${cfg.repo}"
+        # Run borg backup and prune as forgejo user (to use forgejo's SSH keys)
+        sudo -u forgejo env \
+          BORG_PASSPHRASE="$(cat ${cfg.passwordPath})" \
+          BORG_REPO="${cfg.repo}" \
+          DUMP_FILE="$DUMP_FILE" \
+          ${pkgs.bash}/bin/bash -c '
+            echo "Creating Borg backup..."
+            borg create \
+              --stats \
+              --compression auto,zstd \
+              "::forgejo-{now:%Y-%m-%d-%H%M%S}" \
+              "$DUMP_FILE"
 
-        # Create borg backup
-        echo "Creating Borg backup..."
-        borg create \
-          --stats \
-          --compression auto,zstd \
-          "::forgejo-{now:%Y-%m-%d-%H%M%S}" \
-          "$DUMP_FILE"
-
-        # Prune old backups
-        echo "Pruning old backups..."
-        borg prune \
-          --keep-daily 7 \
-          --keep-weekly 4 \
-          --keep-monthly 6
+            echo "Pruning old backups..."
+            borg prune \
+              --keep-daily 7 \
+              --keep-weekly 4 \
+              --keep-monthly 6
+          '
 
         # Clean up old dump files (keep last 3 days locally)
         find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +3 -delete
