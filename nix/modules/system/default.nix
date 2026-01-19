@@ -25,6 +25,7 @@ in
         bat
         btop
         dnsutils
+        dysk
         ghostty.terminfo
         git
         gptfdisk

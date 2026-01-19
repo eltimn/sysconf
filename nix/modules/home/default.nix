@@ -59,7 +59,7 @@ let
     notify-osd
     obsidian
     # sqlitebrowser
-    # sqlitestudio
+    sqlitestudio
     # vivaldi
     # vivaldi-ffmpeg-codecs
     vhs
