@@ -52,7 +52,9 @@ let
     meld
     # mongodb-compass
     # neofetch
-    # nerdfonts
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.hack
     # net-tools
     nixfmt-rfc-style
     nixpkgs-lint-community

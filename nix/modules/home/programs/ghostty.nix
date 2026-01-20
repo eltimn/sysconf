@@ -20,7 +20,7 @@ in
       settings = {
         theme = "dark:cosmic-dark,light:cosmic-light";
         window-theme = "ghostty";
-        font-family = "DejaVu Sans Mono";
+        font-family = "JetBrainsMono Nerd Font";
         font-size = 13;
         keybind = [
           "ctrl+a>c=new_tab"
