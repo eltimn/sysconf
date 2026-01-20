@@ -22,20 +22,20 @@ in
         window-theme = "ghostty";
         font-family = "JetBrainsMono Nerd Font";
         font-size = 13;
-        keybind = [
-          "ctrl+a>c=new_tab"
-          "ctrl+a>w=close_surface"
-          "ctrl+a>v=new_split:right"
-          "ctrl+a>h=new_split:down"
-          "ctrl+a>1=goto_tab:1"
-          "ctrl+a>2=goto_tab:2"
-          "ctrl+a>3=goto_tab:3"
-          "ctrl+a>4=goto_tab:4"
-          "ctrl+a>5=goto_tab:5"
-          "ctrl+a>6=goto_tab:6"
-          "ctrl+a>7=goto_tab:7"
-          "ctrl+a>8=goto_tab:8"
-        ];
+        # keybind = [
+        #   "ctrl+a>c=new_tab"
+        #   "ctrl+a>w=close_surface"
+        #   "ctrl+a>v=new_split:right"
+        #   "ctrl+a>h=new_split:down"
+        #   "ctrl+a>1=goto_tab:1"
+        #   "ctrl+a>2=goto_tab:2"
+        #   "ctrl+a>3=goto_tab:3"
+        #   "ctrl+a>4=goto_tab:4"
+        #   "ctrl+a>5=goto_tab:5"
+        #   "ctrl+a>6=goto_tab:6"
+        #   "ctrl+a>7=goto_tab:7"
+        #   "ctrl+a>8=goto_tab:8"
+        # ];
       };
 
       themes = {
