@@ -112,6 +112,7 @@ in
             echo "Creating Borg backup..."
             borg create \
               --stats \
+              --lock-wait 10 \ # seconds (default: 1)
               --compression auto,zstd \
               "::forgejo-{now:%Y-%m-%d-%H%M%S}" \
               "$DUMP_FILE"
