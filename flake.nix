@@ -185,7 +185,7 @@
           };
         });
         # crush = prev.callPackage ./nix/pkgs/crush.nix { };
-        unifi-api = inputs.eltimn-ai-tools.packages.${prev.system}.unifi-api;
+        unifi-api = inputs.eltimn-ai-tools.packages.${prev.stdenv.hostPlatform.system}.unifi-api;
         # Or for multiple tools:
         # inherit (inputs.eltimn-ai-tools.packages.${prev.system})
         #   unifi-api
