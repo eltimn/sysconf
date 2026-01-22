@@ -55,7 +55,7 @@ in
       path = with pkgs; [
         borgbackup
         forgejoService.package
-        pkgs.sudo
+        sudo
       ];
 
       script = ''
@@ -112,7 +112,7 @@ in
             echo "Creating Borg backup..."
             borg create \
               --stats \
-              --lock-wait 10 \ # seconds (default: 1)
+              --lock-wait 10 \
               --compression auto,zstd \
               "::forgejo-{now:%Y-%m-%d-%H%M%S}" \
               "$DUMP_FILE"
