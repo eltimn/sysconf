@@ -54,6 +54,7 @@ in
       immich.enable = true;
       jellyfin.enable = true;
       notify.enable = true;
+      pocketid.enable = true;
 
       forgejo = {
         enable = true;
@@ -87,6 +88,8 @@ in
     useNetworkd = true;
     search = [ settings.homeDomain ];
     enableIPv6 = false;
+    # Keep global nameservers so systemd-resolved always uses local DNS.
+    nameservers = config.sysconf.settings.dnsServers;
   };
 
   # Configure static IP with systemd-networkd

@@ -250,6 +250,9 @@
           pipx
           sops
           ssh-to-age
+          # terraform-providers.cloudflare_cloudflare
+          # terraform-providers.digitalocean_digitalocean
+          # terraform-providers.trozz_pocketid
         ];
 
         shellHook = ''

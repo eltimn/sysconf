@@ -9,6 +9,7 @@
     ./forgejo-backup.nix
     ./immich.nix
     ./jellyfin.nix
+    ./pocketid.nix
     ./sshd.nix
     ./wireguard.nix
   ];

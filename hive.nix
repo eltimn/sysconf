@@ -79,6 +79,19 @@ let
       group = "keys";
       permissions = "0440";
     };
+    "pocketid-encryption-key" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"pocketid\"][\"encryption_key\"]"
+        "--decrypt"
+        "${secretsPath}/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "pocket-id";
+      group = "keys";
+      permissions = "0440";
+    };
   };
 
   # a function to create a colmena configuration
