@@ -73,11 +73,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768370812,
-        "narHash": "sha256-8I0daVJF+2th/xfxNhVogXo4CmSZrZXf+/l0kq4Vt4c=",
+        "lastModified": 1768977306,
+        "narHash": "sha256-q9MqT92yssOuUXZ9ZCAa/Xtfzs17Xe7UvlYTBS1QTAU=",
         "ref": "refs/heads/main",
-        "rev": "50eeec8b4e0df05493a3d248d44a4a12472f02ef",
-        "revCount": 7,
+        "rev": "7d5f0a36731622e729e1d7ad3aea1e9fe3894f82",
+        "revCount": 8,
         "type": "git",
         "url": "ssh://forgejo@git.home.eltimn.com/eltimn/eltimn-ai-tools.git"
       },

@@ -52,8 +52,10 @@ in
     home.file.".config/opencode/opencode.json".source = ./files/opencode.json;
 
     # eltimn-ai-tools
-    home.file.".claude/skills/unifi-gateway-api".source =
+    home.file.".config/opencode/skills/unifi-gateway-api".source =
       "${inputs.eltimn-ai-tools}/skills/unifi-gateway-api";
+    home.file.".config/opencode/skills/init-new-project".source =
+      "${inputs.eltimn-ai-tools}/skills/init-new-project";
 
     # Copy theme.json as a mutable file (not symlink) so it can be edited externally
     home.activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
