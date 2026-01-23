@@ -23,7 +23,7 @@ in
     # Ensure backup directory exists with correct permissions
     # Owned by pocket-id so it can write if needed, but root can still read/write for borg
     systemd.tmpfiles.rules = [
-      "d ${cfg.backupDir} 0755 pocket-id pocket-id -"
+      "d ${cfg.backupDir} 0750 pocket-id pocket-id -"
     ];
 
     systemd.services.pocketid-backup = {
