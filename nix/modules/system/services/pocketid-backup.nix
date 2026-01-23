@@ -77,8 +77,7 @@ in
         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
         TAR_FILE="$BACKUP_DIR/pocketid-data-$TIMESTAMP.tar.gz"
         echo "Creating tar archive: $TAR_FILE"
-        cd "$POCKETID_DATA_DIR"
-        tar czf "$TAR_FILE" .
+        tar --exclude-caches-all --warning=no-file-changed -czf "$TAR_FILE" -C "$POCKETID_DATA_DIR" .
 
         # Restart pocket-id service
         echo "Restarting PocketID service..."
