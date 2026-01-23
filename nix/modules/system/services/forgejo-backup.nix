@@ -15,15 +15,21 @@ in
     backupDir = lib.mkOption {
       type = lib.types.str;
       default = "/var/backups/forgejo";
-      description = "Directory to store temporary backup files.";
+      description = "Directory to store local backup files.";
+    };
+
+    remoteBackupLocation = lib.mkOption {
+      type = lib.types.str;
+      description = "Remote location to sync backup files to.";
+      default = "/mnt/backup/services/forgejo";
     };
   };
 
   config = lib.mkIf cfg.enable {
     # Ensure backup directory exists with correct permissions
-    # Owned by forgejo so dump can write, but root can still read/write for borg
+    # Owned by forgejo so dump can write
     systemd.tmpfiles.rules = [
-      "d ${cfg.backupDir} 0755 forgejo forgejo -"
+      "d ${cfg.backupDir} 0750 forgejo forgejo -"
     ];
 
     systemd.services.forgejo-backup = {
@@ -40,8 +46,8 @@ in
       };
 
       path = with pkgs; [
-        borgbackup
         forgejoService.package
+        rsync
         sudo
       ];
 
@@ -83,6 +89,9 @@ in
           --file "$DUMP_FILE" \
           --skip-log
 
+        chown root:forgejo "$DUMP_FILE"
+        chmod 640 "$DUMP_FILE"
+
         echo "Forgejo dump created: $DUMP_FILE"
 
         # Restart forgejo service
@@ -90,31 +99,12 @@ in
         systemctl start forgejo.service
         FORGEJO_STOPPED=false
 
-        # Copy dump to ZFS backup location
-        echo "Copying dump to ZFS backup..."
-        DEST_DIR="/mnt/backup/services/forgejo"
-        mkdir -p "$DEST_DIR"
-        cp "$DUMP_FILE" "$DEST_DIR/"
+        # Clean up old dump files (keep last 7 days locally)
+        find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +6 -delete
 
-        # Verify that the copy to ZFS backup succeeded
-        DEST_FILE="$DEST_DIR/$(basename "$DUMP_FILE")"
-        if [ ! -f "$DEST_FILE" ]; then
-          echo "ERROR: Copied backup file not found at $DEST_FILE" >&2
-          exit 1
-        fi
-
-        SRC_SIZE=$(stat -c%s "$DUMP_FILE")
-        DEST_SIZE=$(stat -c%s "$DEST_FILE")
-        if [ "$SRC_SIZE" -ne "$DEST_SIZE" ]; then
-          echo "ERROR: Copied backup file size mismatch (src: $SRC_SIZE, dest: $DEST_SIZE)" >&2
-          exit 1
-        fi
-
-        # Clean up old files in ZFS backup (keep last 7 days)
-        find "$DEST_DIR" -name "forgejo-dump-*.zip" -mtime +6 -delete
-
-        # Clean up old dump files (keep last 3 days locally)
-        find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +2 -delete
+        # Sync backups to remote location
+        echo "Syncing backups to remote ..."
+        rsync -ar  --delete "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
 
         echo "Forgejo backup completed successfully"
       '';

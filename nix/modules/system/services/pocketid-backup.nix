@@ -17,11 +17,16 @@ in
       default = "/var/backups/pocketid";
       description = "Directory to store temporary backup files.";
     };
+
+    remoteBackupLocation = lib.mkOption {
+      type = lib.types.str;
+      description = "Remote location to sync backup files to.";
+      default = "/mnt/backup/services/pocketid";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     # Ensure backup directory exists with correct permissions
-    # Owned by pocket-id so it can write if needed, but root can still read/write for borg
     systemd.tmpfiles.rules = [
       "d ${cfg.backupDir} 0750 pocket-id pocket-id -"
     ];
@@ -42,6 +47,7 @@ in
       path = with pkgs; [
         gnutar
         gzip
+        rsync
         sudo
       ];
 
@@ -78,35 +84,20 @@ in
         TAR_FILE="$BACKUP_DIR/pocketid-data-$TIMESTAMP.tar.gz"
         echo "Creating tar archive: $TAR_FILE"
         tar --exclude-caches-all --warning=no-file-changed -czf "$TAR_FILE" -C "$POCKETID_DATA_DIR" .
+        chgrp pocket-id "$TAR_FILE"
+        chmod 640 "$TAR_FILE"
 
         # Restart pocket-id service
         echo "Restarting PocketID service..."
         systemctl start pocket-id.service
         POCKETID_STOPPED=false
 
-        # Copy tar to ZFS backup location
-        echo "Copying tar to ZFS backup..."
-        mkdir -p /mnt/backup/services/pocketid
-        cp "$TAR_FILE" /mnt/backup/services/pocketid/
+        # Clean up old tar files (keep last 7 days locally)
+        find "$BACKUP_DIR" -name "pocketid-data-*.tar.gz" -mtime +6 -delete
 
-        # Verify that the backup was copied successfully
-        DEST_FILE="/mnt/backup/services/pocketid/$(basename "$TAR_FILE")"
-        if [ ! -f "$DEST_FILE" ]; then
-          echo "ERROR: Backup file not found at ZFS location: $DEST_FILE" >&2
-          exit 1
-        fi
-        SRC_SIZE=$(stat -c%s "$TAR_FILE")
-        DEST_SIZE=$(stat -c%s "$DEST_FILE")
-        if [ "$SRC_SIZE" -ne "$DEST_SIZE" ]; then
-          echo "ERROR: Backup file size mismatch between local ($SRC_SIZE) and ZFS ($DEST_SIZE)" >&2
-          exit 1
-        fi
-        echo "Verified backup copy at ZFS location: $DEST_FILE"
-        # Clean up old files in ZFS backup (keep last 7 days)
-        find /mnt/backup/services/pocketid -name "pocketid-data-*.tar.gz" -mtime +6 -delete
-
-        # Clean up old tar files (keep last 3 days locally)
-        find "$BACKUP_DIR" -name "pocketid-data-*.tar.gz" -mtime +2 -delete
+        # Sync backups to remote location
+        echo "Syncing backups to remote ..."
+        rsync -ar --delete "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
 
         echo "PocketID backup completed successfully"
       '';
