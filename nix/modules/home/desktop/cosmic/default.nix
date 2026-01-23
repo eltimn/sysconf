@@ -1,5 +1,10 @@
 # COSMIC Desktop Configuration
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.sysconf.desktop.cosmic;
   mkRaw = config.lib.cosmic.mkRON "raw";
@@ -39,12 +44,45 @@ in
     # Enable COSMIC Calculator
     programs.cosmic-ext-calculator.enable = true;
 
-    # Theme mode configuration (auto-switch enabled based on time of day)
+    # Theme mode configuration (auto-switch DISABLED in favor of custom systemd timer)
     wayland.desktopManager.cosmic.configFile."com.system76.CosmicTheme.Mode" = {
       version = 1;
       entries = {
-        auto_switch = true;
+        auto_switch = false;
       };
+    };
+
+    # Systemd timers for custom theme scheduling (08:00 Light / 20:00 Dark)
+    systemd.user.services.cosmic-theme-dark = {
+      Unit.Description = "Switch COSMIC to Dark Mode";
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'echo true > %h/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark'";
+      };
+    };
+    systemd.user.timers.cosmic-theme-dark = {
+      Unit.Description = "Timer for COSMIC Dark Mode";
+      Timer = {
+        OnCalendar = "20:00";
+        Persistent = true;
+      };
+      Install.WantedBy = [ "timers.target" ];
+    };
+
+    systemd.user.services.cosmic-theme-light = {
+      Unit.Description = "Switch COSMIC to Light Mode";
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'echo false > %h/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark'";
+      };
+    };
+    systemd.user.timers.cosmic-theme-light = {
+      Unit.Description = "Timer for COSMIC Light Mode";
+      Timer = {
+        OnCalendar = "08:00";
+        Persistent = true;
+      };
+      Install.WantedBy = [ "timers.target" ];
     };
 
     # Panel and Dock configuration

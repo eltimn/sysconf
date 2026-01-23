@@ -32,6 +32,9 @@ in
     # When using NetworkManager, systemd-resolved is already disabled by default
     services.resolved = lib.mkIf config.systemd.network.enable {
       enable = true;
+      # Ensure resolved never falls back to public DNS.
+      fallbackDns = [ ];
+      domains = [ "~home.eltimn.com" ];
       extraConfig = ''
         DNSStubListener=no
       '';

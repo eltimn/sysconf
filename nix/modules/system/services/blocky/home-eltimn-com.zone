@@ -17,6 +17,7 @@ dns0       IN CNAME illmatic
 dns1       IN CNAME cbox
 dvr        IN CNAME illmatic
 git        IN CNAME illmatic
+id         IN CNAME illmatic
 jellyfin   IN CNAME illmatic
 ntfy       IN CNAME illmatic
 pics       IN CNAME illmatic

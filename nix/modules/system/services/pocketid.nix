@@ -37,7 +37,7 @@ in
         ANALYTICS_DISABLED = true;
       };
       credentials = {
-        ENCRYPTION_KEY = "/run/secrets/pocketid-encryption-key";
+        ENCRYPTION_KEY = "/run/keys/pocketid-encryption-key";
       };
     };
 
