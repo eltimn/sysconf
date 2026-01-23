@@ -10,6 +10,7 @@
     ./immich.nix
     ./jellyfin.nix
     ./pocketid.nix
+    ./pocketid-backup.nix
     ./sshd.nix
     ./wireguard.nix
   ];

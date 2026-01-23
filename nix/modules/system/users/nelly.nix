@@ -39,6 +39,7 @@ in
           "networkmanager"
           "keys"
           "forgejo"
+          "pocket-id"
         ];
         hashedPasswordFile = cfg.hashedPasswordFile;
         openssh.authorizedKeys.keys = config.sysconf.settings.sshKeys.nelly.base;

@@ -39,6 +39,7 @@ in
         stow
         tldr
         tree
+        unzip
         usbutils
         vim
         wget

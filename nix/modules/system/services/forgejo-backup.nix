@@ -6,37 +6,30 @@
 }:
 let
   cfg = config.sysconf.services.forgejo-backup;
-  settings = config.sysconf.settings;
   forgejoService = config.services.forgejo;
 in
 {
   options.sysconf.services.forgejo-backup = {
     enable = lib.mkEnableOption "forgejo-backup";
 
-    repo = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = settings.borgRepo;
-      description = "The Borg repository to use for backups.";
-    };
-
-    passwordPath = lib.mkOption {
-      type = lib.types.str;
-      default = "/run/secrets/forgejo-borg-passphrase";
-      description = "Path to the borg passphrase file (defaults to /run/secrets/forgejo-borg-passphrase).";
-    };
-
     backupDir = lib.mkOption {
       type = lib.types.str;
       default = "/var/backups/forgejo";
-      description = "Directory to store temporary backup files.";
+      description = "Directory to store local backup files.";
+    };
+
+    remoteBackupLocation = lib.mkOption {
+      type = lib.types.str;
+      description = "Remote location to sync backup files to.";
+      default = "/mnt/backup/services/forgejo";
     };
   };
 
   config = lib.mkIf cfg.enable {
     # Ensure backup directory exists with correct permissions
-    # Owned by forgejo so dump can write, but root can still read/write for borg
+    # Owned by forgejo so dump can write
     systemd.tmpfiles.rules = [
-      "d ${cfg.backupDir} 0755 forgejo forgejo -"
+      "d ${cfg.backupDir} 0750 forgejo forgejo -"
     ];
 
     systemd.services.forgejo-backup = {
@@ -53,8 +46,8 @@ in
       };
 
       path = with pkgs; [
-        borgbackup
         forgejoService.package
+        rsync
         sudo
       ];
 
@@ -96,6 +89,9 @@ in
           --file "$DUMP_FILE" \
           --skip-log
 
+        chown root:forgejo "$DUMP_FILE"
+        chmod 640 "$DUMP_FILE"
+
         echo "Forgejo dump created: $DUMP_FILE"
 
         # Restart forgejo service
@@ -103,29 +99,12 @@ in
         systemctl start forgejo.service
         FORGEJO_STOPPED=false
 
-        # Run borg backup and prune as forgejo user (to use forgejo's SSH keys)
-        sudo -u forgejo env \
-          BORG_PASSPHRASE="$(cat ${cfg.passwordPath})" \
-          BORG_REPO="${cfg.repo}" \
-          DUMP_FILE="$DUMP_FILE" \
-          ${pkgs.bash}/bin/bash -c '
-            echo "Creating Borg backup..."
-            borg create \
-              --stats \
-              --lock-wait 10 \
-              --compression auto,zstd \
-              "::forgejo-{now:%Y-%m-%d-%H%M%S}" \
-              "$DUMP_FILE"
+        # Clean up old dump files (keep last 7 days locally)
+        find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +6 -delete
 
-            echo "Pruning old backups..."
-            borg prune \
-              --keep-daily 7 \
-              --keep-weekly 4 \
-              --keep-monthly 6
-          '
-
-        # Clean up old dump files (keep last 3 days locally)
-        find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +3 -delete
+        # Sync backups to remote location
+        echo "Syncing backups to remote ..."
+        rsync -ar  --delete "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
 
         echo "Forgejo backup completed successfully"
       '';

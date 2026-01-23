@@ -14,7 +14,7 @@ in
     enable = lib.mkEnableOption "backup";
     backupPaths = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "${config.home.homeDirectory}/sysconf" ];
+      default = [ ];
       description = "List of paths to backup.";
     };
     repo = lib.mkOption {
@@ -81,7 +81,7 @@ in
           "" # Clear the existing ExecStart
           ''
             ${pkgs.borgmatic}/bin/borgmatic \
-              --verbosity 0 \
+              --verbosity 1 \
               --syslog-verbosity 0
           ''
         ];

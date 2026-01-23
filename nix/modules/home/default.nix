@@ -95,7 +95,6 @@ in
       };
 
       # enable some modules
-      # sysconf.programs.backup.enable = true;
       sysconf.programs.bat.enable = true;
       sysconf.programs.direnv.enable = true;
       sysconf.programs.git.enable = true;

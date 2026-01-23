@@ -5,6 +5,7 @@
 }:
 let
   settings = config.sysconf.settings;
+  remoteBackupBase = "/mnt/backup/services";
 in
 {
   # Bootloader
@@ -55,6 +56,10 @@ in
       jellyfin.enable = true;
       notify.enable = true;
       pocketid.enable = true;
+      pocketid-backup = {
+        enable = true;
+        remoteBackupLocation = "${remoteBackupBase}/pocketid";
+      };
 
       forgejo = {
         enable = true;
@@ -63,7 +68,7 @@ in
 
       forgejo-backup = {
         enable = true;
-        passwordPath = "/run/keys/borg-passphrase-illmatic";
+        remoteBackupLocation = "${remoteBackupBase}/forgejo";
       };
 
       ntfy = {
@@ -72,6 +77,12 @@ in
       };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d ${remoteBackupBase} 0750 nelly users -"
+    "d ${remoteBackupBase}/forgejo 0750 forgejo forgejo -"
+    "d ${remoteBackupBase}/pocketid 0750 pocket-id pocket-id -"
+  ];
 
   # Persistent network interface naming
   systemd.network.links."10-lan" = {
