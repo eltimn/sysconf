@@ -44,6 +44,10 @@ in
     # Enable COSMIC Calculator
     programs.cosmic-ext-calculator.enable = true;
 
+    home.packages = with pkgs; [
+      cosmic-reader
+    ];
+
     # Theme mode configuration (auto-switch DISABLED in favor of custom systemd timer)
     wayland.desktopManager.cosmic.configFile."com.system76.CosmicTheme.Mode" = {
       version = 1;
