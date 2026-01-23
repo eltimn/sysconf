@@ -32,12 +32,12 @@
         "/mnt/backup/ruca/nelly/Audio"
         "/mnt/backup/ruca/nelly/Documents"
         "/mnt/backup/ruca/nelly/Notes"
-        "/mnt/backup/ruca/nelly/Pictures"
         "/mnt/backup/ruca/nelly/secret-cipher"
         "/mnt/backup/ruca/nelly/sysconf"
         "/mnt/backup/ruca/nelly/workspaces"
         "/mnt/backup/ruca/nelly/zen"
         "/mnt/music"
+        "/mnt/pictures"
       ];
       passwordPath = "/run/keys/borg-passphrase-illmatic";
     };
