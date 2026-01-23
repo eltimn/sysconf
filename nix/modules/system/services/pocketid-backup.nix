@@ -90,6 +90,19 @@ in
         mkdir -p /mnt/backup/services/pocketid
         cp "$TAR_FILE" /mnt/backup/services/pocketid/
 
+        # Verify that the backup was copied successfully
+        DEST_FILE="/mnt/backup/services/pocketid/$(basename "$TAR_FILE")"
+        if [ ! -f "$DEST_FILE" ]; then
+          echo "ERROR: Backup file not found at ZFS location: $DEST_FILE" >&2
+          exit 1
+        fi
+        SRC_SIZE=$(stat -c%s "$TAR_FILE")
+        DEST_SIZE=$(stat -c%s "$DEST_FILE")
+        if [ "$SRC_SIZE" -ne "$DEST_SIZE" ]; then
+          echo "ERROR: Backup file size mismatch between local ($SRC_SIZE) and ZFS ($DEST_SIZE)" >&2
+          exit 1
+        fi
+        echo "Verified backup copy at ZFS location: $DEST_FILE"
         # Clean up old files in ZFS backup (keep last 7 days)
         find /mnt/backup/services/pocketid -name "pocketid-data-*.tar.gz" -mtime +6 -delete
 
