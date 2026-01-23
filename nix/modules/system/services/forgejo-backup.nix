@@ -6,24 +6,11 @@
 }:
 let
   cfg = config.sysconf.services.forgejo-backup;
-  settings = config.sysconf.settings;
   forgejoService = config.services.forgejo;
 in
 {
   options.sysconf.services.forgejo-backup = {
     enable = lib.mkEnableOption "forgejo-backup";
-
-    repo = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = settings.borgRepo;
-      description = "The Borg repository to use for backups.";
-    };
-
-    passwordPath = lib.mkOption {
-      type = lib.types.str;
-      default = "/run/secrets/forgejo-borg-passphrase";
-      description = "Path to the borg passphrase file (defaults to /run/secrets/forgejo-borg-passphrase).";
-    };
 
     backupDir = lib.mkOption {
       type = lib.types.str;
@@ -103,29 +90,16 @@ in
         systemctl start forgejo.service
         FORGEJO_STOPPED=false
 
-        # Run borg backup and prune as forgejo user (to use forgejo's SSH keys)
-        sudo -u forgejo env \
-          BORG_PASSPHRASE="$(cat ${cfg.passwordPath})" \
-          BORG_REPO="${cfg.repo}" \
-          DUMP_FILE="$DUMP_FILE" \
-          ${pkgs.bash}/bin/bash -c '
-            echo "Creating Borg backup..."
-            borg create \
-              --stats \
-              --lock-wait 10 \
-              --compression auto,zstd \
-              "::forgejo-{now:%Y-%m-%d-%H%M%S}" \
-              "$DUMP_FILE"
+        # Copy dump to ZFS backup location
+        echo "Copying dump to ZFS backup..."
+        mkdir -p /mnt/backup/services/forgejo
+        cp "$DUMP_FILE" /mnt/backup/services/forgejo/
 
-            echo "Pruning old backups..."
-            borg prune \
-              --keep-daily 7 \
-              --keep-weekly 4 \
-              --keep-monthly 6
-          '
+        # Clean up old files in ZFS backup (keep last 7 days)
+        find /mnt/backup/services/forgejo -name "forgejo-dump-*.zip" -mtime +6 -delete
 
         # Clean up old dump files (keep last 3 days locally)
-        find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +3 -delete
+        find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +2 -delete
 
         echo "Forgejo backup completed successfully"
       '';

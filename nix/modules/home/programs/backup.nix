@@ -14,7 +14,10 @@ in
     enable = lib.mkEnableOption "backup";
     backupPaths = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "${config.home.homeDirectory}/sysconf" ];
+      default = [
+        "${config.home.homeDirectory}/sysconf"
+        "/mnt/backup/services"
+      ];
       description = "List of paths to backup.";
     };
     repo = lib.mkOption {

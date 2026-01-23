@@ -36,6 +36,7 @@
         "/mnt/backup/ruca/nelly/sysconf"
         "/mnt/backup/ruca/nelly/workspaces"
         "/mnt/backup/ruca/nelly/zen"
+        "/mnt/backup/services"
         "/mnt/music"
         "/mnt/pictures"
       ];

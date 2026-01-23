@@ -55,16 +55,14 @@ in
       jellyfin.enable = true;
       notify.enable = true;
       pocketid.enable = true;
+      pocketid-backup.enable = true;
 
       forgejo = {
         enable = true;
         port = 8083;
       };
 
-      forgejo-backup = {
-        enable = true;
-        passwordPath = "/run/keys/borg-passphrase-illmatic";
-      };
+      forgejo-backup.enable = true;
 
       ntfy = {
         enable = true;
