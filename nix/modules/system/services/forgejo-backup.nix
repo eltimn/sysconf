@@ -92,11 +92,26 @@ in
 
         # Copy dump to ZFS backup location
         echo "Copying dump to ZFS backup..."
-        mkdir -p /mnt/backup/services/forgejo
-        cp "$DUMP_FILE" /mnt/backup/services/forgejo/
+        DEST_DIR="/mnt/backup/services/forgejo"
+        mkdir -p "$DEST_DIR"
+        cp "$DUMP_FILE" "$DEST_DIR/"
+
+        # Verify that the copy to ZFS backup succeeded
+        DEST_FILE="$DEST_DIR/$(basename "$DUMP_FILE")"
+        if [ ! -f "$DEST_FILE" ]; then
+          echo "ERROR: Copied backup file not found at $DEST_FILE" >&2
+          exit 1
+        fi
+
+        SRC_SIZE=$(stat -c%s "$DUMP_FILE")
+        DEST_SIZE=$(stat -c%s "$DEST_FILE")
+        if [ "$SRC_SIZE" -ne "$DEST_SIZE" ]; then
+          echo "ERROR: Copied backup file size mismatch (src: $SRC_SIZE, dest: $DEST_SIZE)" >&2
+          exit 1
+        fi
 
         # Clean up old files in ZFS backup (keep last 7 days)
-        find /mnt/backup/services/forgejo -name "forgejo-dump-*.zip" -mtime +6 -delete
+        find "$DEST_DIR" -name "forgejo-dump-*.zip" -mtime +6 -delete
 
         # Clean up old dump files (keep last 3 days locally)
         find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +2 -delete
