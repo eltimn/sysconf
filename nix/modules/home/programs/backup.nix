@@ -81,7 +81,7 @@ in
           "" # Clear the existing ExecStart
           ''
             ${pkgs.borgmatic}/bin/borgmatic \
-              --verbosity 0 \
+              --verbosity 1 \
               --syslog-verbosity 0
           ''
         ];
