@@ -8,7 +8,7 @@ local file="${1:-.}"
 [[ $file = /* ]] || file="$PWD/$file"
 
 # Copy the absolute path without resolving symlinks
-# If clipcopy fails, exit the function with an error
-print -n "${file:a}" | xclip -selection clipboard || return 1
+# If wl-copy fails, exit the function with an error
+print -n "${file:a}" | wl-copy || return 1
 
 echo ${(%):-"%B${file:a}%b copied to clipboard."}

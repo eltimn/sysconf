@@ -1,53 +1,48 @@
 #!/usr/bin/env bash
-
+# FIXME: jq: parse error: Unfinished JSON term at EOF at line 1, column 1
 set -e
 
 copy_uname_and_passwd () {
 
   # Print the name of the selected login
-
   echo "Name: $(printf "%s" "$1" | jq -r ".name")"
-
   echo "> Copying Username"
 
   # Copy the username to the clipboard
-
-  printf "%s" "$1" | jq -r ".login.username" | xclip
-
+  printf "%s" "$1" | jq -r ".login.username" | wl-copy
   echo "> Press any key to copy password..."
 
   # Wait for user input before coping the password
-
   read
+  echo "> Copying Password (will clear in 30 seconds)"
 
-  echo "> Copying Password"
+  # Copy the password to the clipboard with timeout
+  printf "%s" "$1" | jq -r ".login.password" | wl-copy
 
-  # Copy the password to the clipboard
-
-  printf "%s" "$1" | jq -r ".login.password" | xclip
-
+  # Clear clipboard after 30 seconds
+  (sleep 30 && echo "" | wl-copy) &
 }
 
-
-
 # Search for passwords using the search term
-
-logins="$(bw list items --search $1)"
-
-
-if [ $(printf "%s" "$logins" | jq ". | length") -eq 1  ]
-
-then
-
-  login="$(printf "%s" "$logins" | jq ".[0]")"
-
-else
-
-  name="$(printf "%s" "$logins" | jq -r ".[].name" | fzf --reverse)"
-
-  login="$(printf "%s" "$logins" | jq ".[] | select(.name == \"$name\")")"
-
+if [ -z "$1" ]; then
+  echo "Usage: bwc <search-term>"
+  exit 1
 fi
 
+logins="$(bw list items --search "$1")"
+
+echo "$logins"
+
+if [ -z "$logins" ] || [ "$(printf "%s" "$logins" | jq ". | length")" -eq 0 ]; then
+  echo "No logins found for: $1"
+  exit 1
+fi
+
+if [ "$(printf "%s" "$logins" | jq ". | length")" -eq 1  ]; then
+  login="$(printf "%s" "$logins" | jq ".[0]")"
+else
+  name="$(printf "%s" "$logins" | jq -r ".[].name" | fzf --reverse)"
+  login="$(printf "%s" "$logins" | jq ".[] | select(.name == \"$name\")")"
+fi
 
 copy_uname_and_passwd $login
