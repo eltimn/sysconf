@@ -52,12 +52,12 @@ parse_git_dirty() {
   local FLAGS
   FLAGS=('--porcelain')
   if [[ "$(command git config --get custom.zsh-hide-dirty 2>/dev/null)" != "1" ]]; then
-    if [[ $POST_1_7_2_GIT -gt 0 ]]; then
-      FLAGS+=('--ignore-submodules=dirty')
-    fi
-    if [[ "$DISABLE_UNTRACKED_FILES_DIRTY" == "true" ]]; then
-      FLAGS+=('--untracked-files=no')
-    fi
+    # if [[ $POST_1_7_2_GIT -gt 0 ]]; then
+    #   FLAGS+=('--ignore-submodules=dirty')
+    # fi
+    # if [[ "$DISABLE_UNTRACKED_FILES_DIRTY" == "true" ]]; then
+    #   FLAGS+=('--untracked-files=no')
+    # fi
     STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
   fi
   if [[ -n $STATUS ]]; then
