@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -13,8 +14,12 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      file.".oh-my-zsh-custom/themes".source = ./files/themes;
       file.".config/zsh/funcs".source = ./files/funcs;
+
+      packages = with pkgs; [
+        wl-clipboard
+        zsh-fzf-tab
+      ];
     };
 
     programs = {
@@ -24,17 +29,7 @@ in
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
 
-        oh-my-zsh = {
-          enable = true;
-          # theme = "alanpeabody";
-          theme = "philips"; # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-          custom = "$HOME/.oh-my-zsh-custom";
-          plugins = [
-            "copyfile"
-            "copypath"
-            "colorize"
-          ];
-        };
+        plugins = [ ];
 
         # dirHashes = {
         #   docs = "$HOME/Documents";
@@ -59,8 +54,8 @@ in
 
           myip = "curl icanhazip.com";
 
-          pbcopy = "xclip -selection clipboard";
-          pbpaste = "xclip -selection clipboard -o";
+          pbcopy = "wl-copy";
+          pbpaste = "wl-paste";
 
           ".." = "cd ..";
           "..." = "cd ../../../";
@@ -78,7 +73,16 @@ in
           unmount-secret = "fusermount -u ~/secret";
         };
 
-        initContent = "source ${./init.zsh}";
+        initContent = ''
+          source ${./init.zsh}
+
+          # Custom theme
+          source ${./files/themes/philips.zsh-theme}
+
+          # Load fzf-tab after theme is loaded
+          source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+        '';
+
       };
       # zsh = {
       #   shellInit = ''
