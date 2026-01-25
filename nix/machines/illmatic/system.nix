@@ -80,8 +80,8 @@ in
 
   systemd.tmpfiles.rules = [
     "d ${remoteBackupBase} 0750 nelly users -"
-    "d ${remoteBackupBase}/forgejo 0750 forgejo forgejo -"
-    "d ${remoteBackupBase}/pocketid 0750 pocket-id pocket-id -"
+    "d ${remoteBackupBase}/forgejo 0750 forgejo backup -"
+    "d ${remoteBackupBase}/pocketid 0750 pocket-id backup -"
   ];
 
   # Persistent network interface naming

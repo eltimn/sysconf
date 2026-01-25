@@ -29,7 +29,7 @@ in
     # Ensure backup directory exists with correct permissions
     # Owned by forgejo so dump can write
     systemd.tmpfiles.rules = [
-      "d ${cfg.backupDir} 0750 forgejo forgejo -"
+      "d ${cfg.backupDir} 0750 forgejo backup -"
     ];
 
     systemd.services.forgejo-backup = {
@@ -89,7 +89,7 @@ in
           --file "$DUMP_FILE" \
           --skip-log
 
-        chown root:forgejo "$DUMP_FILE"
+        chown forgejo:backup "$DUMP_FILE"
         chmod 640 "$DUMP_FILE"
 
         echo "Forgejo dump created: $DUMP_FILE"
