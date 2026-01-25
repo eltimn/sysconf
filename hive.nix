@@ -92,6 +92,19 @@ let
       group = "keys";
       permissions = "0440";
     };
+    "filen-cli-auth-config" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"filen\"][\"auth_config\"]"
+        "--decrypt"
+        "${secretsPath}/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "nelly";
+      group = "users";
+      permissions = "0400";
+    };
   };
 
   # a function to create a colmena configuration

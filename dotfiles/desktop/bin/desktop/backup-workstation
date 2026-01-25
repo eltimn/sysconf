@@ -96,11 +96,7 @@ backup_zen_profile () {
 # backup_zen_profile "pmd2fg35.Default (release)"
 backup_zen_data
 
-backup_local_dir Audio
-backup_local_dir Documents
 backup_local_dir Gateway
-backup_local_dir Notes
-backup_local_dir secret-cipher
 # backup_local_dir workspaces
 
 backup_code_dir code

@@ -29,14 +29,10 @@
       backupPaths = [
         "/mnt/backup/archives"
         "/mnt/backup/rotozen"
-        "/mnt/backup/ruca/nelly/Audio"
-        "/mnt/backup/ruca/nelly/Documents"
-        "/mnt/backup/ruca/nelly/Notes"
-        "/mnt/backup/ruca/nelly/secret-cipher"
         "/mnt/backup/ruca/nelly/sysconf"
-        "/mnt/backup/ruca/nelly/workspaces"
         "/mnt/backup/ruca/nelly/zen"
         "/mnt/backup/services"
+        "/mnt/files"
         "/mnt/music"
         "/mnt/pictures"
       ];
@@ -49,5 +45,46 @@
     };
 
     services.notify.enable = true;
+
+    services.filen-sync = {
+      enable = true;
+      syncPairs = [
+        {
+          local = "/mnt/files/Audio";
+          remote = "/Audio";
+          syncMode = "cloudBackup";
+        }
+        {
+          local = "/mnt/files/Camera";
+          remote = "/Camera";
+          syncMode = "cloudBackup";
+        }
+        {
+          local = "/mnt/files/Documents";
+          remote = "/Documents";
+          syncMode = "cloudBackup";
+        }
+        {
+          local = "/mnt/files/Notes";
+          remote = "/Notes";
+          syncMode = "cloudBackup";
+        }
+        {
+          local = "/mnt/files/secret-cipher";
+          remote = "/secret-cipher";
+          syncMode = "cloudBackup";
+        }
+      ];
+      onCalendar = "hourly";
+    };
   };
+
+  systemd.user.tmpfiles.rules = [
+    "Z /mnt/files - - - - -" # Z updates user:group
+    "d /mnt/files/Audio - - - - -"
+    "d /mnt/files/Camera - - - - -"
+    "d /mnt/files/Documents - - - - -"
+    "d /mnt/files/Notes - - - - -"
+    "d /mnt/files/secret-cipher - - - - -"
+  ];
 }
