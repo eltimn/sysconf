@@ -38,14 +38,11 @@ in
           "wheel"
           "networkmanager"
           "keys"
-          "backup"
         ];
         hashedPasswordFile = cfg.hashedPasswordFile;
         openssh.authorizedKeys.keys = config.sysconf.settings.sshKeys.nelly.base;
         shell = pkgs.zsh;
       };
-
-      groups.backup = { };
     };
   };
 }

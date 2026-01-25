@@ -43,6 +43,7 @@ in
         hashedPasswordFile = "/run/keys/nelly-password";
       };
       sysconf.enable = true;
+      backup.enable = true;
     };
 
     containers = {
