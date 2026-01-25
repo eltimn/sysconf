@@ -12,10 +12,10 @@ in
   sysconf = {
     settings.hostRole = "desktop";
     settings.desktopEnvironment = "gnome";
-
     users.nelly = {
       enable = true;
       hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
+      envEditor = "zeditor --wait";
     };
 
     services.wireguard = {

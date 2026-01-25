@@ -24,6 +24,7 @@ in
     users.nelly = {
       enable = true;
       hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
+      envEditor = "zeditor --wait";
     };
 
     # GNOME specific configuration
