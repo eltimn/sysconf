@@ -28,7 +28,7 @@ in
   config = lib.mkIf cfg.enable {
     # Ensure backup directory exists with correct permissions
     systemd.tmpfiles.rules = [
-      "d ${cfg.backupDir} 0750 pocket-id pocket-id -"
+      "d ${cfg.backupDir} 0750 pocket-id backup -"
     ];
 
     systemd.services.pocketid-backup = {
@@ -84,7 +84,7 @@ in
         TAR_FILE="$BACKUP_DIR/pocketid-data-$TIMESTAMP.tar.gz"
         echo "Creating tar archive: $TAR_FILE"
         tar --exclude-caches-all --warning=no-file-changed -czf "$TAR_FILE" -C "$POCKETID_DATA_DIR" .
-        chgrp pocket-id "$TAR_FILE"
+        chown pocket-id:backup "$TAR_FILE"
         chmod 640 "$TAR_FILE"
 
         # Restart pocket-id service

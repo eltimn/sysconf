@@ -11,3 +11,4 @@ junk/
 .terraform.lock.hcl
 *.tfstate*
 *.tfvars
+.zed/

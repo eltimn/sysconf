@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   ...
 }:
@@ -37,8 +38,8 @@
 
     # List of environment variables.
     sessionVariables = {
-      EDITOR = "zeditor --wait"; # osConfig.sysconf.users.nelly.envEditor;
-      VISUAL = "zeditor --wait";
+      EDITOR = osConfig.sysconf.users.nelly.envEditor;
+      VISUAL = osConfig.sysconf.users.nelly.envEditor;
       COSMIC_DATA_CONTROL_ENABLED = 1;
     };
 

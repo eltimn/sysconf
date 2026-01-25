@@ -50,7 +50,8 @@ in
           dfl = "diff HEAD~1"; # diff last commit
           dff = "diff --no-ext-diff"; # plain diff
           dfm = "difftool --tool=meld"; # meld
-          dfc = "difftool"; # codeium
+          dft = "difftool";
+          dfz = "difftool --tool=zed";
           st = "status";
           sw = "switch";
           cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
@@ -65,14 +66,17 @@ in
         };
 
         diff = {
-          tool = "codeium";
+          tool = "zed";
           # external = "difft --color auto --background light --display side-by-side";
         };
 
         difftool = {
           prompt = false;
           codeium = {
-            cmd = "codium --wait --new-window --diff $LOCAL $REMOTE";
+            cmd = "codium --wait --new-window --diff \"$LOCAL\" \"$REMOTE\"";
+          };
+          zed = {
+            cmd = "zeditor --wait --diff \"$LOCAL\" \"$REMOTE\"";
           };
         };
       };

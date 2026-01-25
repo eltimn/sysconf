@@ -37,6 +37,7 @@
     # List of environment variables.
     sessionVariables = {
       EDITOR = osConfig.sysconf.users.nelly.envEditor;
+      VISUAL = osConfig.sysconf.users.nelly.envEditor;
       COSMIC_DATA_CONTROL_ENABLED = 1;
     };
 

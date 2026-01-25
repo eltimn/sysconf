@@ -68,6 +68,9 @@ in
             args = [ "acp" ];
           };
         };
+        features = {
+          edit_prediction_provider = "copilot";
+        };
       };
     };
 
