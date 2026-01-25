@@ -73,10 +73,10 @@ in
         difftool = {
           prompt = false;
           codeium = {
-            cmd = "codium --wait --new-window --diff $LOCAL $REMOTE";
+            cmd = "codium --wait --new-window --diff \"$LOCAL\" \"$REMOTE\"";
           };
           zed = {
-            cmd = "zeditor --wait --diff $LOCAL $REMOTE";
+            cmd = "zeditor --wait --diff \"$LOCAL\" \"$REMOTE\"";
           };
         };
       };
