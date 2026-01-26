@@ -92,8 +92,10 @@ let
         exit 1
       fi
 
-      # Ensure mount point exists
+      # Ensure mount point exists with explicit, restrictive permissions
       mkdir -p "$MOUNT_POINT"
+      chown root:root "$MOUNT_POINT"
+      chmod 0750 "$MOUNT_POINT"
 
       # Mount using keyfile if available, otherwise prompt for password
       if [[ -f "$KEY_FILE" ]]; then
