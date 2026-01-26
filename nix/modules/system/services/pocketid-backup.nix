@@ -76,7 +76,9 @@ in
           fi
           if [ "$VAULT_MOUNTED" = true ]; then
             echo "Unmounting encrypted vault..."
-            mount-vault services unmount || true
+            if ! mount-vault services unmount; then
+              echo "ERROR: Failed to unmount encrypted vault!" >&2
+            fi
           fi
         }
         trap cleanup EXIT
