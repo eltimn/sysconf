@@ -7,6 +7,7 @@
 let
   cfg = config.sysconf.services.forgejo-backup;
   forgejoService = config.services.forgejo;
+  mountVault = config.sysconf.services.mount-vault;
 in
 {
   options.sysconf.services.forgejo-backup = {
@@ -21,7 +22,7 @@ in
     remoteBackupLocation = lib.mkOption {
       type = lib.types.str;
       description = "Remote location to sync backup files to.";
-      default = "/mnt/backup/services/forgejo";
+      default = "${mountVault.mountDir}/services/forgejo";
     };
   };
 
@@ -45,10 +46,11 @@ in
         Group = "root";
       };
 
-      path = with pkgs; [
+      path = [
         forgejoService.package
-        rsync
-        sudo
+        mountVault.package
+        pkgs.rsync
+        pkgs.sudo
       ];
 
       script = ''
@@ -59,8 +61,9 @@ in
         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
         DUMP_FILE="$BACKUP_DIR/forgejo-dump-$TIMESTAMP.zip"
         FORGEJO_STOPPED=false
+        VAULT_MOUNTED=false
 
-        # Ensure Forgejo is restarted on exit, even if script fails
+        # Ensure Forgejo is restarted and vault unmounted on exit, even if script fails
         cleanup() {
           if [ "$FORGEJO_STOPPED" = true ]; then
             echo "Ensuring Forgejo service is restarted..."
@@ -68,8 +71,11 @@ in
               echo "Forgejo service restarted successfully"
             else
               echo "ERROR: Failed to restart Forgejo service!" >&2
-              exit 1
             fi
+          fi
+          if [ "$VAULT_MOUNTED" = true ]; then
+            echo "Unmounting encrypted vault..."
+            mount-vault services unmount || true
           fi
         }
         trap cleanup EXIT
@@ -102,9 +108,15 @@ in
         # Clean up old dump files (keep last 7 days locally)
         find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +6 -delete
 
+        # Mount encrypted vault and sync backups
+        echo "Mounting encrypted vault..."
+        mount-vault services mount
+        VAULT_MOUNTED=true
+
         # Sync backups to remote location
         echo "Syncing backups to remote ..."
-        rsync -ar  --delete "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
+        rsync -rltD --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
+        chown -R forgejo:backup "${cfg.remoteBackupLocation}"
 
         echo "Forgejo backup completed successfully"
       '';

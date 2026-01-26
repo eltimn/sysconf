@@ -5,7 +5,6 @@
 }:
 let
   settings = config.sysconf.settings;
-  remoteBackupBase = "/mnt/backup/services";
 in
 {
   # Bootloader
@@ -55,22 +54,17 @@ in
       caddy.enable = true;
       immich.enable = true;
       jellyfin.enable = true;
+      mount-vault.enable = true;
       notify.enable = true;
       pocketid.enable = true;
-      pocketid-backup = {
-        enable = true;
-        remoteBackupLocation = "${remoteBackupBase}/pocketid";
-      };
+      pocketid-backup.enable = true;
 
       forgejo = {
         enable = true;
         port = 8083;
       };
 
-      forgejo-backup = {
-        enable = true;
-        remoteBackupLocation = "${remoteBackupBase}/forgejo";
-      };
+      forgejo-backup.enable = true;
 
       ntfy = {
         enable = true;
@@ -78,12 +72,6 @@ in
       };
     };
   };
-
-  systemd.tmpfiles.rules = [
-    "d ${remoteBackupBase} 0750 nelly users -"
-    "d ${remoteBackupBase}/forgejo 0750 forgejo backup -"
-    "d ${remoteBackupBase}/pocketid 0750 pocket-id backup -"
-  ];
 
   # Persistent network interface naming
   systemd.network.links."10-lan" = {

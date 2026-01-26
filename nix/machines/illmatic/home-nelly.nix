@@ -27,11 +27,10 @@
     programs.backup = {
       enable = true;
       backupPaths = [
-        "/mnt/backup/archives"
-        "/mnt/backup/rotozen"
+        "/mnt/backup/archives-enc"
         "/mnt/backup/ruca/nelly/sysconf"
         "/mnt/backup/ruca/nelly/zen"
-        "/mnt/backup/services"
+        "/mnt/backup/services-enc"
         "/mnt/files"
         "/mnt/music"
         "/mnt/pictures"

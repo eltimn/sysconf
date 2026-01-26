@@ -105,6 +105,19 @@ let
       group = "users";
       permissions = "0400";
     };
+    "gocryptfs-services" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"gocryptfs\"][\"services\"]"
+        "--decrypt"
+        "${secretsPath}/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "root";
+      group = "root";
+      permissions = "0400";
+    };
   };
 
   # a function to create a colmena configuration
