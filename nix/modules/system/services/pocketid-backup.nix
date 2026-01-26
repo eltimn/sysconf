@@ -27,6 +27,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # Enable mount-vault dependency
+    sysconf.services.mount-vault.enable = true;
+
     # Ensure backup directory exists with correct permissions
     systemd.tmpfiles.rules = [
       "d ${cfg.backupDir} 0750 pocket-id backup -"

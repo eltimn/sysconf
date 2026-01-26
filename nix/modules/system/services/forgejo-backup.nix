@@ -27,6 +27,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # Enable mount-vault dependency
+    sysconf.services.mount-vault.enable = true;
+
     # Ensure backup directory exists with correct permissions
     # Owned by forgejo so dump can write
     systemd.tmpfiles.rules = [

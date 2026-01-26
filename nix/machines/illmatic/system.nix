@@ -54,7 +54,6 @@ in
       caddy.enable = true;
       immich.enable = true;
       jellyfin.enable = true;
-      mount-vault.enable = true;
       notify.enable = true;
       pocketid.enable = true;
       pocketid-backup.enable = true;
