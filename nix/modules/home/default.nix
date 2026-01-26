@@ -98,7 +98,6 @@ in
       sysconf.programs.bat.enable = true;
       sysconf.programs.direnv.enable = true;
       sysconf.programs.git.enable = true;
-      sysconf.programs.micro.enable = true;
       sysconf.programs.tmux.enable = true;
       sysconf.programs.zsh.enable = true;
     }
