@@ -108,6 +108,11 @@ in
           }
           trap cleanup EXIT
 
+          # Ensure source auth config exists and is readable
+          if [ ! -r "${cfg.authConfigFile}" ]; then
+            echo "filen-sync: auth config file not found or not readable: ${cfg.authConfigFile}" >&2
+            exit 1
+          fi
           # Copy auth config from tmpfs to working directory
           ${pkgs.coreutils}/bin/cp "${cfg.authConfigFile}" "$AUTH_CONFIG"
           ${pkgs.coreutils}/bin/chmod 400 "$AUTH_CONFIG"
