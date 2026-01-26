@@ -79,7 +79,7 @@
   };
 
   systemd.user.tmpfiles.rules = [
-    "Z /mnt/files - - - - -" # Z updates user:group
+    "z /mnt/files - - - - -" # z updates user:group only when created
     "d /mnt/files/Audio - - - - -"
     "d /mnt/files/Camera - - - - -"
     "d /mnt/files/Documents - - - - -"
