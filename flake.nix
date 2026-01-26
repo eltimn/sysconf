@@ -246,6 +246,7 @@
           caddy
           doctl
           go-task
+          immich-cli
           opentofu
           pipx
           sops

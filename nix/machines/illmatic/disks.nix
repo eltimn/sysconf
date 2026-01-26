@@ -26,6 +26,11 @@
     fsType = "zfs";
   };
 
+  fileSystems."/mnt/files" = {
+    device = "datapool/files";
+    fsType = "zfs";
+  };
+
   fileSystems."/mnt/mobile" = {
     device = "datapool/mobile";
     fsType = "zfs";

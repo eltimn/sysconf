@@ -1,5 +1,16 @@
 # ZFS
 
+## Creating new datasets (recommended)
+
+Use legacy mounts so systemd/NixOS controls ordering and dependencies.
+
+```shell
+sudo zfs create datapool/<name>
+sudo zfs set mountpoint=legacy datapool/<name>
+```
+
+Then add a `fileSystems` entry in `disks.nix`, keep pool roots with `mountpoint=none` and `canmount=off`, ensure `boot.zfs.extraPools` lists the pool, and set `networking.hostId`.
+
 On Illmatic, the drives that were created on Ubuntu were converted for use with NixOS. This involved:
 
 1. A forced manual import `sudo zpool import -f datapool`.
@@ -58,7 +69,6 @@ There are two ways to mount ZFS datasets.
 - **Legacy Mounting (Recommended for NixOS):**
   - **How it works:** You set `mountpoint=legacy` on the ZFS dataset itself (using `zfs set`). Then, you define the mount in your disks.nix using fileSystems.
   - **Why:** This gives NixOS (via systemd) full control over when and how it mounts. It prevents race conditions where ZFS tries to mount it before the system is ready.
-	- **Your Config:** You are using this method effectively by setting `options = [ "zfsutil" ]` in your `fileSystems` config. This tells systemd "I will handle this mount, ZFS should not auto-mount it."
 - **ZFS Auto-mounting:**
 	- **How it works:** You set `mountpoint=/mnt/backup` on the dataset. ZFS tries to mount it automatically when the pool is imported.
 	- **Why:** It's the "standard" ZFS way, but on NixOS, it **can** conflict with the declarative configuration.
