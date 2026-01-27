@@ -62,7 +62,8 @@ in
         BACKUP_DIR="${cfg.backupDir}"
         FORGEJO_WORK_DIR="${forgejoService.stateDir}"
         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-        DUMP_FILE="$BACKUP_DIR/forgejo-dump-$TIMESTAMP.zip"
+        DUMP_FILE_NAME="forgejo-dump-$TIMESTAMP.zip"
+        DUMP_FILE="$BACKUP_DIR/$DUMP_FILE_NAME"
         FORGEJO_STOPPED=false
         VAULT_MOUNTED=false
 
@@ -121,7 +122,7 @@ in
         # Sync backups to remote location
         echo "Syncing backups to remote ..."
         rsync -rltD --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
-        chown -R forgejo:backup "${cfg.remoteBackupLocation}"
+        chown forgejo:backup "${cfg.remoteBackupLocation}/$DUMP_FILE_NAME"
 
         echo "Forgejo backup completed successfully"
       '';

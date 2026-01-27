@@ -92,7 +92,8 @@ in
 
         # Create tar archive of PocketID data
         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-        TAR_FILE="$BACKUP_DIR/pocketid-data-$TIMESTAMP.tar.gz"
+        TAR_FILE_NAME="pocketid-data-$TIMESTAMP.tar.gz
+        TAR_FILE="$BACKUP_DIR/$TAR_FILE_NAME"
         echo "Creating tar archive: $TAR_FILE"
         tar --exclude-caches-all --warning=no-file-changed -czf "$TAR_FILE" -C "$POCKETID_DATA_DIR" .
         chown pocket-id:backup "$TAR_FILE"
@@ -114,7 +115,7 @@ in
         # Sync backups to remote location
         echo "Syncing backups to remote ..."
         rsync -rltD --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
-        chown -R pocket-id:backup "${cfg.remoteBackupLocation}"
+        chown pocket-id:backup "${cfg.remoteBackupLocation}/$TAR_FILE_NAME"
 
         echo "PocketID backup completed successfully"
       '';
