@@ -30,8 +30,6 @@
     # List of extra paths to include in the user profile.
     sessionPath = [
       "$HOME/bin"
-      "$HOME/bin/common"
-      "$HOME/bin/desktop"
       "$HOME/go/bin"
       "$HOME/.local/bin"
     ];

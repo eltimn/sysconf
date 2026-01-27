@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+OUTPUT_FILE=/home/nelly/secret/bitwarden/bw-export-$(date "+%Y%m%d%H%M%S").json
+
+bw export --format json --output $OUTPUT_FILE

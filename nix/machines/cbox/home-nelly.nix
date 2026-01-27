@@ -7,7 +7,6 @@
     stateVersion = "23.11"; # don't change unless reinstalling from scratch
 
     sessionPath = [
-      "$HOME/bin/common"
       "$HOME/bin"
     ];
 
