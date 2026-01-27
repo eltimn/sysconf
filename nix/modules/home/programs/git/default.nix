@@ -27,7 +27,6 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       file.".config/git/extra.inc".source = ./files/extra.inc;
-      file.".gitignore".source = ./files/gitignore;
     };
 
     programs.difftastic = {
