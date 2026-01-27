@@ -113,8 +113,7 @@ in
 
         # Sync backups to remote location
         echo "Syncing backups to remote ..."
-        rsync -rltD --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
-        chown -R pocket-id:backup "${cfg.remoteBackupLocation}"
+        rsync -rltD --chown=pocket-id:backup --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
 
         echo "PocketID backup completed successfully"
       '';

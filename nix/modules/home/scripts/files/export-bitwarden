@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Export the bitwarden vault and save to an encrypted directory
+SAVE_DIR="$HOME/secret/bitwarden"
+TIMESTAMP=$(date "+%Y%m%d%H%M%S")
+OUTPUT_FILE="$SAVE_DIR/bw-export-$TIMESTAMP.json"
+
+mkdir -p "$SAVE_DIR"
+
+bw export --format json --output "$OUTPUT_FILE"
+chmod 600 "$OUTPUT_FILE"

@@ -120,8 +120,7 @@ in
 
         # Sync backups to remote location
         echo "Syncing backups to remote ..."
-        rsync -rltD --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
-        chown -R forgejo:backup "${cfg.remoteBackupLocation}"
+        rsync -rltD --chown=forgejo:backup --delete-after "$BACKUP_DIR/" "${cfg.remoteBackupLocation}"
 
         echo "Forgejo backup completed successfully"
       '';

@@ -9,7 +9,6 @@
     stateVersion = "25.11";
 
     sessionPath = [
-      "$HOME/bin/common"
       "$HOME/bin"
     ];
     sessionVariables = {
