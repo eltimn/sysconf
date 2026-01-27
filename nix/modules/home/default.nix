@@ -78,6 +78,7 @@ in
   imports = [
     ./containers
     ./programs
+    ./scripts
     ./services
   ];
 

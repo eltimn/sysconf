@@ -16,6 +16,11 @@ in
     home = {
       file.".config/zsh/funcs".source = ./files/funcs;
 
+      file.".ackrc".source = ./files/ackrc;
+      file.".ansible.cfg".source = ./files/ansible.cfg;
+      file.".editorconfig".source = ./files/editorconfig;
+      file.".mongoshrc.js".source = ./files/mongoshrc.js;
+
       packages = with pkgs; [
         wl-clipboard
         zsh-fzf-tab
