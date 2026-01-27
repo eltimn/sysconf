@@ -7,14 +7,15 @@
 }:
 let
   cfg = config.sysconf.desktop.cosmic;
-  mkRaw = config.lib.cosmic.mkRON "raw";
+  cosmicLib = config.lib.cosmic;
+  mkRaw = cosmicLib.mkRON "raw";
 
   # Build output config based on primaryMonitor setting
   outputConfig =
     if cfg.primaryMonitor == null then
-      config.lib.cosmic.mkRON "enum" "All"
+      cosmicLib.mkRON "enum" "All"
     else
-      config.lib.cosmic.mkRON "enum" {
+      cosmicLib.mkRON "enum" {
         variant = "Name";
         value = [ cfg.primaryMonitor ];
       };
@@ -38,8 +39,106 @@ in
   };
 
   config = {
-    # Enable COSMIC Desktop declarative configuration
-    wayland.desktopManager.cosmic.enable = true;
+    # cosmic manager options
+    wayland.desktopManager.cosmic = {
+      # Enable COSMIC Desktop declarative configuration
+      enable = true;
+
+      # Panel and Dock configuration
+      panels = [
+        # Top Panel
+        {
+          name = "Panel";
+          anchor = cosmicLib.mkRON "enum" "Top";
+          anchor_gap = true;
+          autohide = cosmicLib.mkRON "optional" null;
+          background = cosmicLib.mkRON "enum" "Dark";
+          expand_to_edges = true;
+          margin = 0;
+          opacity = mkRaw "1.0";
+          output = outputConfig;
+          plugins_center = cosmicLib.mkRON "optional" [
+            "com.system76.CosmicAppletTime"
+          ];
+          plugins_wings = cosmicLib.mkRON "optional" (
+            cosmicLib.mkRON "tuple" [
+              [
+                "com.system76.CosmicAppletWorkspaces"
+              ]
+              [
+                "com.system76.CosmicAppletStatusArea"
+                "com.system76.CosmicAppletTiling"
+                "com.system76.CosmicAppletAudio"
+                "com.system76.CosmicAppletNetwork"
+                "com.system76.CosmicAppletNotifications"
+                "com.system76.CosmicAppletPower"
+              ]
+            ]
+          );
+          size = cosmicLib.mkRON "enum" "XS";
+        }
+        # Left Dock
+        {
+          name = "Dock";
+          anchor = cosmicLib.mkRON "enum" "Left";
+          anchor_gap = false;
+          autohide = cosmicLib.mkRON "optional" null;
+          background = cosmicLib.mkRON "enum" "Dark";
+          expand_to_edges = false;
+          margin = 0;
+          opacity = mkRaw "1.0";
+          output = outputConfig;
+          plugins_center = cosmicLib.mkRON "optional" [ ];
+          plugins_wings = cosmicLib.mkRON "optional" (
+            cosmicLib.mkRON "tuple" [
+              [
+                "com.system76.CosmicAppList"
+                "com.system76.CosmicAppletMinimize"
+              ]
+              [ ]
+            ]
+          );
+          size = cosmicLib.mkRON "enum" "M";
+        }
+      ];
+
+      # Custom keyboard shortcuts
+      shortcuts = [
+        {
+          key = "Ctrl+Alt+H";
+          action = cosmicLib.mkRON "enum" {
+            variant = "Spawn";
+            value = [ "rofi-cliphist" ];
+          };
+          description = cosmicLib.mkRON "optional" "Clipboard manager";
+        }
+      ];
+
+      # Theme mode configuration (auto-switch DISABLED in favor of custom systemd timer)
+      configFile."com.system76.CosmicTheme.Mode" = {
+        version = 1;
+        entries = {
+          auto_switch = false;
+        };
+      };
+
+      wallpapers = [
+        {
+          filter_by_theme = false;
+          filter_method = cosmicLib.mkRON "enum" "Lanczos";
+          output = "all";
+          rotation_frequency = 600;
+          sampling_method = cosmicLib.mkRON "enum" "Alphanumeric";
+          scaling_mode = cosmicLib.mkRON "enum" "Zoom";
+          source = cosmicLib.mkRON "enum" {
+            value = [
+              "${config.home.homeDirectory}/background-image"
+            ];
+            variant = "Path";
+          };
+        }
+      ];
+    };
 
     # Enable COSMIC Calculator
     programs.cosmic-ext-calculator.enable = true;
@@ -47,14 +146,6 @@ in
     home.packages = with pkgs; [
       cosmic-reader
     ];
-
-    # Theme mode configuration (auto-switch DISABLED in favor of custom systemd timer)
-    wayland.desktopManager.cosmic.configFile."com.system76.CosmicTheme.Mode" = {
-      version = 1;
-      entries = {
-        auto_switch = false;
-      };
-    };
 
     # Systemd timers for custom theme scheduling (08:00 Light / 20:00 Dark)
     systemd.user.services.cosmic-theme-dark = {
@@ -88,75 +179,5 @@ in
       };
       Install.WantedBy = [ "timers.target" ];
     };
-
-    # Panel and Dock configuration
-    wayland.desktopManager.cosmic.panels = [
-      # Top Panel
-      {
-        name = "Panel";
-        anchor = config.lib.cosmic.mkRON "enum" "Top";
-        anchor_gap = true;
-        autohide = config.lib.cosmic.mkRON "optional" null;
-        background = config.lib.cosmic.mkRON "enum" "Dark";
-        expand_to_edges = true;
-        margin = 0;
-        opacity = mkRaw "1.0";
-        output = outputConfig;
-        plugins_center = config.lib.cosmic.mkRON "optional" [
-          "com.system76.CosmicAppletTime"
-        ];
-        plugins_wings = config.lib.cosmic.mkRON "optional" (
-          config.lib.cosmic.mkRON "tuple" [
-            [
-              "com.system76.CosmicAppletWorkspaces"
-            ]
-            [
-              "com.system76.CosmicAppletStatusArea"
-              "com.system76.CosmicAppletTiling"
-              "com.system76.CosmicAppletAudio"
-              "com.system76.CosmicAppletNetwork"
-              "com.system76.CosmicAppletNotifications"
-              "com.system76.CosmicAppletPower"
-            ]
-          ]
-        );
-        size = config.lib.cosmic.mkRON "enum" "XS";
-      }
-      # Left Dock
-      {
-        name = "Dock";
-        anchor = config.lib.cosmic.mkRON "enum" "Left";
-        anchor_gap = false;
-        autohide = config.lib.cosmic.mkRON "optional" null;
-        background = config.lib.cosmic.mkRON "enum" "Dark";
-        expand_to_edges = false;
-        margin = 0;
-        opacity = mkRaw "1.0";
-        output = outputConfig;
-        plugins_center = config.lib.cosmic.mkRON "optional" [ ];
-        plugins_wings = config.lib.cosmic.mkRON "optional" (
-          config.lib.cosmic.mkRON "tuple" [
-            [
-              "com.system76.CosmicAppList"
-              "com.system76.CosmicAppletMinimize"
-            ]
-            [ ]
-          ]
-        );
-        size = config.lib.cosmic.mkRON "enum" "M";
-      }
-    ];
-
-    # Custom keyboard shortcuts
-    wayland.desktopManager.cosmic.shortcuts = [
-      {
-        key = "Ctrl+Alt+H";
-        action = config.lib.cosmic.mkRON "enum" {
-          variant = "Spawn";
-          value = [ "rofi-cliphist" ];
-        };
-        description = config.lib.cosmic.mkRON "optional" "Clipboard manager";
-      }
-    ];
   };
 }

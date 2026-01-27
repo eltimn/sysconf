@@ -9,6 +9,9 @@ in
   ];
 
   config = lib.mkMerge [
+    {
+      home.file."background-image".source = ./lightning-wallpaper;
+    }
     (lib.mkIf (settings.desktopEnvironment == "gnome") {
       sysconf.desktop.gnome.enable = true;
     })
