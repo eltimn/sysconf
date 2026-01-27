@@ -103,7 +103,7 @@
       #   };
       #   Service = {
       #     Type = "simple";
-      #     ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-borg";
+      #     ExecStart = "${config.home.homeDirectory}/bin/backup-borg";
       #   };
       # };
 
@@ -131,7 +131,7 @@
         };
         Service = {
           Type = "simple";
-          ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-secrets";
+          ExecStart = "${config.home.homeDirectory}/bin/backup-secrets";
         };
       };
 
@@ -144,7 +144,7 @@
         Service = {
           Type = "simple";
           Environment = "SSH_AUTH_SOCK=%t/gcr/ssh";
-          ExecStart = "${config.home.homeDirectory}/bin/desktop/backup-workstation";
+          ExecStart = "${config.home.homeDirectory}/bin/backup-workstation";
         };
       };
     };
