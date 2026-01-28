@@ -63,6 +63,11 @@
         githubIncludePath = config.sops.secrets."git/github".path;
         userIncludePath = config.sops.secrets."git/user".path;
       };
+
+      zen-browser = {
+        enable = true;
+        profileName = "nelly";
+      };
     };
   };
 }
