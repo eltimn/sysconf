@@ -48,7 +48,7 @@ in
           user_pref("browser.tabs.warnOnClose", false);
           user_pref("sidebar.verticalTabs", true);
           user_pref("widget.gtk.libadwaita-colors.enabled", false); // disable libadwaita theming
-          user_pref("zen.view.use-single-toolbar", false); # puts the url bar on top instead of in sidebar
+          user_pref("zen.view.use-single-toolbar", false); // puts the url bar on top instead of in sidebar
           user_pref("zen.urlbar.behavior", "normal");
 
           // Disable telemetry and data collection
