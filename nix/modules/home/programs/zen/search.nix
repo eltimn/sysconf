@@ -122,7 +122,7 @@
       "Google Maps" = {
         urls = [
           {
-            template = "http://maps.google.com";
+            template = "https://maps.google.com";
             params = [
               {
                 name = "q";

@@ -119,12 +119,14 @@ in
 
         settings = {
           # Basic settings
-          # "browser.shell.checkDefaultBrowser" = false;
+          "browser.shell.checkDefaultBrowser" = false;
           "browser.startup.homepage" = "about:blank";
           "browser.tabs.warnOnClose" = false;
           "sidebar.verticalTabs" = true;
           "widget.gtk.libadwaita-colors.enabled" = false;
           "zen.view.use-single-toolbar" = false;
+          "browser.newtabpage.activity-stream.showSponsored" = false;
+          "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
 
           # Extension auto-enable
           "extensions.autoDisableScopes" = 0;
@@ -152,6 +154,7 @@ in
           # Disable Firefox studies
           "app.shield.optoutstudies.enabled" = false;
           "app.normandy.enabled" = false;
+
         }
         // cfg.settings;
       };
