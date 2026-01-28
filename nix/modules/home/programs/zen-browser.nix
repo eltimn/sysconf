@@ -82,6 +82,5 @@ in
 
     # Chrome directory for CSS customization
     home.file.".zen/${profileName}/chrome/userChrome.css".text = "";
-    home.file.".zen/${profileName}/chrome/zen-themes.css".text = "";
   };
 }
