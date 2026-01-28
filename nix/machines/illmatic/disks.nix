@@ -16,43 +16,42 @@
   # zfs configuration
   boot.zfs.devNodes = "/dev/disk/by-id"; # needed because pools were created using disk ids.
   boot.zfs.extraPools = [
-    "datapool"
     "mediapool"
   ];
 
   # existing zfs disks
   fileSystems."/mnt/backup" = {
-    device = "datapool/backup";
+    device = "mediapool/backup";
     fsType = "zfs";
   };
 
   fileSystems."/mnt/files" = {
-    device = "datapool/files";
+    device = "mediapool/files";
     fsType = "zfs";
   };
 
   fileSystems."/mnt/mobile" = {
-    device = "datapool/mobile";
+    device = "mediapool/mobile";
     fsType = "zfs";
   };
 
   fileSystems."/mnt/music" = {
-    device = "datapool/music";
+    device = "mediapool/music";
     fsType = "zfs";
   };
 
   fileSystems."/mnt/pictures" = {
-    device = "datapool/pictures";
+    device = "mediapool/pictures";
     fsType = "zfs";
   };
 
   fileSystems."/mnt/plex" = {
-    device = "datapool/plex";
+    device = "mediapool/plex";
     fsType = "zfs";
   };
 
   fileSystems."/mnt/video" = {
-    device = "datapool/video";
+    device = "mediapool/video";
     fsType = "zfs";
   };
 
