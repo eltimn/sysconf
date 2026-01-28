@@ -7,6 +7,7 @@
     ./rofi
     ./vscode
     ./zed
+    ./zen
     ./zsh
     ./backup.nix
     ./bat.nix
@@ -17,6 +18,5 @@
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix
-    ./zen-browser.nix
   ];
 }
