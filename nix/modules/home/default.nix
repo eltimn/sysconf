@@ -111,7 +111,6 @@ in
       sysconf.programs.opencode.enable = true;
       sysconf.programs.rofi.enable = true;
       sysconf.programs.vscode.enable = true;
-      sysconf.programs.zen-browser.enable = true;
       sysconf.programs.zed-editor.enable = true;
     })
   ];
