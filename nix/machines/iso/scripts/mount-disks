@@ -9,7 +9,10 @@ fi
 
 # Safely unmount everything under /mnt if it exists
 if mountpoint -q /mnt; then
-  umount -R /mnt
+  if ! umount -R /mnt; then
+    echo "Failed to recursively unmount /mnt. Please close any open files or terminals using /mnt and try again." >&2
+    exit 1
+  fi
 fi
 
 disk_type="${1:-ext4}"
