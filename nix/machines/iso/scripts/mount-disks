@@ -21,7 +21,7 @@ if [ "$disk_type" = "ext4" ]; then
   mount /dev/disk/by-label/nixos /mnt
   # UEFI systems
   mkdir -p /mnt/boot
-  mount -o umask=077 /dev/disk/by-label/boot /mnt/boot
+  mount -o umask=0077 /dev/disk/by-label/boot /mnt/boot
 elif [ "$disk_type" = "btrfs" ]; then
   # mount root subvolume
   mount -o subvol=@ /dev/disk/by-partlabel/disk-main-root /mnt
@@ -36,7 +36,7 @@ elif [ "$disk_type" = "btrfs" ]; then
 
   # UEFI systems
   mkdir -p /mnt/boot
-  mount -o umask=077 /dev/disk/by-partlabel/boot /mnt/boot
+  mount -o umask=0077 /dev/disk/by-partlabel/boot /mnt/boot
 
   echo "Btrfs subvolumes on /mnt:"
   btrfs subvolume list /mnt
