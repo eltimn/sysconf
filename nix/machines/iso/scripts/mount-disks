@@ -7,9 +7,55 @@ if [ "$EUID" -ne 0 ]; then
 	exit 1
 fi
 
-mount /dev/disk/by-label/nixos /mnt
-# UEFI systems
-mkdir -p /mnt/boot
-mount -o umask=077 /dev/disk/by-label/boot /mnt/boot
+# Safely unmount everything under /mnt if it exists
+if mountpoint -q /mnt; then
+  if ! umount -R /mnt; then
+    echo "Failed to recursively unmount /mnt. Please close any open files or terminals using /mnt and try again." >&2
+    exit 1
+  fi
+fi
 
-ls /mnt/boot
+disk_type="${1:-ext4}"
+
+if [ "$disk_type" = "ext4" ]; then
+  mount /dev/disk/by-label/nixos /mnt
+  # UEFI systems
+  mkdir -p /mnt/boot
+  mount -o umask=0077 /dev/disk/by-label/boot /mnt/boot
+elif [ "$disk_type" = "btrfs" ]; then
+  # mount root subvolume
+  mount -o subvol=@,compress=zstd,noatime /dev/disk/by-partlabel/disk-main-root /mnt
+
+  # Create directories just in case the subvol is empty
+  mkdir -p /mnt/{home,nix,var/log}
+
+  # mount subvolumes
+  mount -o subvol=@home,compress=zstd,noatime /dev/disk/by-partlabel/disk-main-root /mnt/home
+  mount -o subvol=@nix,compress=zstd,noatime /dev/disk/by-partlabel/disk-main-root /mnt/nix
+  mount -o subvol=@log,compress=zstd,noatime /dev/disk/by-partlabel/disk-main-root /mnt/var/log
+
+  # UEFI systems
+  mkdir -p /mnt/boot
+  mount -o umask=0077 /dev/disk/by-partlabel/boot /mnt/boot
+
+  echo "Btrfs subvolumes on /mnt:"
+  btrfs subvolume list /mnt
+else
+  echo "Invalid disk type: $disk_type"
+  exit 1
+fi
+
+echo "----------- /mnt"
+ls -alh /mnt
+
+echo "----------- /mnt/boot"
+ls -alh /mnt/boot
+
+echo "----------- /mnt/home"
+ls -alh /mnt/home
+
+echo "----------- /mnt/nix"
+ls -alh /mnt/nix
+
+echo "----------- /mnt/var/log"
+ls -alh /mnt/var/log

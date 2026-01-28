@@ -1,94 +1,63 @@
 {
-  disko.devices = {
-    disk = {
-      main = {
-        type = "disk";
-        device = "/dev/disk/by-id/nvme-CT1000P3SSD8_24414B7BA68A";
-        content = {
-          type = "gpt";
-          partitions = {
-            ESP = {
-              priority = 1;
-              name = "ESP";
-              label = "boot";
-              # size = "1024M";
-              start = "1M";
-              end = "1024M";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
-              };
-            };
-            root = {
-              size = "100%";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
-              };
-            };
-
-            # btrfs
-            # root = {
-            #   size = "100%";
-            #   label = "root";
-            #   content = {
-            #     type = "btrfs";
-            #     extraArgs = [
-            #       "-L"
-            #       "nixos"
-            #       "-f"
-            #     ];
-            #     subvolumes = {
-            #       "/root" = {
-            #         mountpoint = "/";
-            #         mountOptions = [
-            #           "subvol=root"
-            #           "compress=zstd"
-            #           "noatime"
-            #         ];
-            #       };
-            #       "/home" = {
-            #         mountpoint = "/home";
-            #         mountOptions = [
-            #           "subvol=home"
-            #           "noatime"
-            #         ];
-            #       };
-            #       "/data" = {
-            #         mountpoint = "/data";
-            #         mountOptions = [
-            #           "subvol=data"
-            #           "compress=zstd"
-            #           "noatime"
-            #         ];
-            #       };
-            #       "/nix" = {
-            #         mountpoint = "/nix";
-            #         mountOptions = [
-            #           "subvol=nix"
-            #           "compress=zstd"
-            #           "noatime"
-            #         ];
-            #       };
-            #       "/swap" = {
-            #         mountpoint = "/swap";
-            #         swap.swapfile.size = "32G";
-            #       };
-            #     };
-            #   };
-            # };
-          };
-        };
-      };
-    };
+  # Boot partition
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-partlabel/boot";
+    fsType = "vfat";
+    options = [ "umask=0077" ];
   };
 
-  fileSystems."/mnt/data" = {
+  # Root filesystem
+  fileSystems."/" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@"
+    ];
+  };
+
+  # Home subvolume
+  fileSystems."/home" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@home"
+    ];
+  };
+
+  # Nix subvolume
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@nix"
+    ];
+  };
+
+  # Log subvolume
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@log"
+    ];
+  };
+
+  # Data disk (will be converted to btrfs later)
+  fileSystems."/srv/data" = {
     device = "/dev/disk/by-label/data";
     fsType = "ext4";
+    # fsType = "btrfs";
+    # options = [
+    #   "compress=zstd"
+    #   "noatime"
+    # ];
   };
 }

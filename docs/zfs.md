@@ -1,5 +1,12 @@
 # ZFS
 
+## Taking Snapshots
+
+```shell
+sudo zfs snapshot mypool/mydataset@$(date +%Y%m%d-%H%M%S)
+zfs list -t snapshot
+```
+
 ## Creating new datasets (recommended)
 
 Use legacy mounts so systemd/NixOS controls ordering and dependencies.
@@ -10,6 +17,8 @@ sudo zfs set mountpoint=legacy datapool/<name>
 ```
 
 Then add a `fileSystems` entry in `disks.nix`, keep pool roots with `mountpoint=none` and `canmount=off`, ensure `boot.zfs.extraPools` lists the pool, and set `networking.hostId`.
+
+## Illmatic Conversion to NixOS
 
 On Illmatic, the drives that were created on Ubuntu were converted for use with NixOS. This involved:
 
