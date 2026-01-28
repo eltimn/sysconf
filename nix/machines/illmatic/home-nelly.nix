@@ -28,7 +28,6 @@
       backupPaths = [
         "/mnt/backup/archives-enc"
         "/mnt/backup/ruca/nelly/sysconf"
-        "/mnt/backup/ruca/nelly/zen"
         "/mnt/backup/services-enc"
         "/mnt/files"
         "/mnt/music"

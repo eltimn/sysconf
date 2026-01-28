@@ -17,5 +17,6 @@
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix
+    ./zen-browser.nix
   ];
 }

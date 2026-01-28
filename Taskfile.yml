@@ -121,14 +121,12 @@ tasks:
     cmds:
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles code
       - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles common
-      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles zen
 
   clean-dotfiles:
     desc: Unstow the dotfiles.
     cmds:
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles code
       - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles common
-      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles zen
 
   history:
     desc: List all previous generations available.
