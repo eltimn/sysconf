@@ -148,6 +148,7 @@
                 sharedModules = [
                   inputs.cosmic-manager.homeManagerModules.cosmic-manager
                   inputs.sops-nix.homeManagerModules.sops
+                  inputs.zen-browser-flake.homeModules.default
                 ];
               };
             }
