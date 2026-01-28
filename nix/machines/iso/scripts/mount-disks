@@ -21,15 +21,15 @@ if [ "$disk_type" = "ext4" ]; then
   mount -o umask=077 /dev/disk/by-label/boot /mnt/boot
 elif [ "$disk_type" = "btrfs" ]; then
   # mount root subvolume
-  mount -o subvol=@ /dev/disk/by-partlabel/root-main-disk /mnt
+  mount -o subvol=@ /dev/disk/by-partlabel/disk-main-root /mnt
 
   # Create directories just in case the subvol is empty
   mkdir -p /mnt/{home,nix,var/log}
 
   # mount subvolumes
-  mount -o subvol=@home /dev/disk/by-partlabel/root-main-disk /mnt/home
-  mount -o subvol=@nix /dev/disk/by-partlabel/root-main-disk /mnt/nix
-  mount -o subvol=@log /dev/disk/by-partlabel/root-main-disk /mnt/var/log
+  mount -o subvol=@home /dev/disk/by-partlabel/disk-main-root /mnt/home
+  mount -o subvol=@nix /dev/disk/by-partlabel/disk-main-root /mnt/nix
+  mount -o subvol=@log /dev/disk/by-partlabel/disk-main-root /mnt/var/log
 
   # UEFI systems
   mkdir -p /mnt/boot
