@@ -19,6 +19,11 @@ in
 
   sops.secrets."users/nelly/password".neededForUsers = true;
 
+  systemd.tmpfiles.rules = [
+    "d /mnt/btr_main/btrbk_snapshots 0755 root root -"
+    "d /mnt/btr_data/main_snapshots 0755 root root -"
+  ];
+
   sysconf = {
     settings.hostRole = "desktop";
     settings.desktopEnvironment = "cosmic";
@@ -27,6 +32,24 @@ in
       enable = true;
       hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
       envEditor = "zeditor --wait";
+    };
+
+    # BTRFS snapshots for home directory
+    services.btrbk = {
+      enable = true;
+      configFile = ''
+        snapshot_preserve_min   2d
+        snapshot_preserve      14d
+
+        target_preserve_min    no
+        target_preserve        20d 10w 6m
+
+        snapshot_dir           btrbk_snapshots
+
+        volume /mnt/btr_main
+          target /mnt/btr_data/main_snapshots
+          subvolume @home
+      '';
     };
 
     # GNOME specific configuration
