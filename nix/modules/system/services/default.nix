@@ -4,6 +4,7 @@
     ./caddy
     ./coredns
     ./ntfy
+    ./btrbk.nix
     ./forgejo.nix
     ./forgejo-backup.nix
     ./immich.nix

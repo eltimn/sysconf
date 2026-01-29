@@ -6,7 +6,18 @@
     options = [ "umask=0077" ];
   };
 
-  ## Root filesystem ##
+  ## Main system disk ##
+  fileSystems."/mnt/btr_main" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvolid=5"
+    ];
+  };
+
+  # Root filesystem
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "btrfs";
@@ -51,14 +62,13 @@
   };
 
   ## Data disk ##
-  # Home snaphots subvolume
-  fileSystems."/srv/snapshots/home" = {
+  fileSystems."/mnt/btr_data" = {
     device = "/dev/disk/by-label/data";
     fsType = "btrfs";
     options = [
       "compress=zstd"
       "noatime"
-      "subvol=@snapshots-home"
+      "subvolid=5"
     ];
   };
 }
