@@ -1,6 +1,6 @@
 # btrfs
 
-Always mount each disk at the top level (subvolid=5) so it's easier to manage subvolumes and understand what's going on. If you also mount subvolumes elswhere the data will be available in both places and update both places.
+Always mount each disk at the top level (subvolid=5) so it's easier to manage subvolumes and understand what's going on. If you also mount subvolumes elsewhere the data will be available in both places and update both places.
 
 On Ruca these are:
 
