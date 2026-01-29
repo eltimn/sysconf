@@ -28,7 +28,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    config.sysconf.services.notify.enable = true;
+    sysconf.services.notify.enable = true;
 
     environment.systemPackages = [ pkgs.btrbk ];
 
