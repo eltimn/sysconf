@@ -30,7 +30,7 @@ fileSystems."/mnt/btr_data" = {
 
 ## Add New Subvolume
 
-## Add New Subvolume to either drive
+You can add a new subvolume to either drive:
 1. Create the subvolume:
 ```bash
 sudo btrfs subvolume create /mnt/btr_main/@newsubvol # (replace with your name)
