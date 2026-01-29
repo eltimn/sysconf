@@ -46,7 +46,7 @@ in
       script = ''
         set -e
 
-        ${pkgs.btrbk}/bin/btrbk run
+        ${pkgs.btrbk}/bin/btrbk --config /etc/btrbk/btrbk.conf run
       '';
     };
 
