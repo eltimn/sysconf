@@ -1,12 +1,12 @@
 {
-  # Boot partition
+  ## Boot partition ##
   fileSystems."/boot" = {
     device = "/dev/disk/by-partlabel/boot";
     fsType = "vfat";
     options = [ "umask=0077" ];
   };
 
-  # Root filesystem
+  ## Root filesystem ##
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "btrfs";
@@ -50,14 +50,15 @@
     ];
   };
 
-  # Data disk (will be converted to btrfs later)
-  fileSystems."/srv/data" = {
+  ## Data disk ##
+  # Home snaphots subvolume
+  fileSystems."/srv/snapshots/home" = {
     device = "/dev/disk/by-label/data";
-    fsType = "ext4";
-    # fsType = "btrfs";
-    # options = [
-    #   "compress=zstd"
-    #   "noatime"
-    # ];
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@snapshots-home"
+    ];
   };
 }
