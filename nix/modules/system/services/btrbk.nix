@@ -13,7 +13,6 @@ in
 
     configFile = lib.mkOption {
       type = lib.types.str;
-      default = "";
       description = "btrbk configuration file content.";
     };
 
@@ -29,6 +28,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    config.sysconf.services.notify.enable = true;
+
     environment.systemPackages = [ pkgs.btrbk ];
 
     systemd.services.btrbk = {

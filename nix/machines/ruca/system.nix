@@ -41,11 +41,8 @@ in
         snapshot_preserve_min   2d
         snapshot_preserve      14d
 
-        # Create snapshots only if the backup disk is attached
-        #snapshot_create ondemand
-
         target_preserve_min    no
-        target_preserve        20d 10w *m
+        target_preserve        20d 10w 6m
 
         snapshot_dir           btrbk_snapshots
 
