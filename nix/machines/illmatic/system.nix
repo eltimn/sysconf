@@ -15,11 +15,17 @@ in
   # https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html
   # https://nixos.org/manual/nixos/stable/options.html#opt-networking.hostId
   boot.supportedFilesystems = [
+    "btrfs"
     "zfs"
     "ext4"
   ];
 
   boot.zfs.forceImportRoot = false;
+  services.btrfs.autoScrub.enable = true;
+
+  users.users."root".openssh.authorizedKeys.keys = [
+    settings.sshKeys.btrbk.ruca
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

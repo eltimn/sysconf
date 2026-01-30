@@ -31,7 +31,7 @@ in
 
   config = lib.mkIf cfg.enable {
     users = {
-      users.nelly = {
+      users."nelly" = {
         isNormalUser = true;
         description = "Tim Nelson";
         extraGroups = [

@@ -19,11 +19,6 @@ in
 
   sops.secrets."users/nelly/password".neededForUsers = true;
 
-  systemd.tmpfiles.rules = [
-    "d /mnt/btr_main/btrbk_snapshots 0755 root root -"
-    "d /mnt/btr_data/main_snapshots 0755 root root -"
-  ];
-
   sysconf = {
     settings.hostRole = "desktop";
     settings.desktopEnvironment = "cosmic";
@@ -38,17 +33,40 @@ in
     services.btrbk = {
       enable = true;
       configFile = ''
-        snapshot_preserve_min   2d
-        snapshot_preserve      14d
+        # Enable transaction logging
+        transaction_log            /var/log/btrbk.log
+        # Use a lockfile so only one btrbk instance can run at a time
+        lockfile                   /run/lock/btrbk.lock
+        # Enable stream buffering
+        stream_buffer              256m
 
-        target_preserve_min    no
-        target_preserve        20d 10w 6m
+        # Store snapshots under /snapshots under the root of the volume
+        snapshot_dir               /snapshots
+        # Only create new snapshots when changes have been made
+        snapshot_create            onchange
+        # Preserve hourly snapshots for up to 48 hours, and daily snapshots for up to 14 days
+        snapshot_preserve          48h 14d 0w 0m 0y
+        # The latest snapshot is always kept, regardless of the preservation policy
+        snapshot_preserve_min      latest
 
-        snapshot_dir           btrbk_snapshots
+        # Preserve daily backups for up to 21 days, weekly backups for up to 6 weeks, monthly backups for up to 3 months, and yearly backups for up to a year
+        target_preserve            0h 21d 6w 3m 1y
+        # Preserve the latest snapshot, regardless of the preservation policy
+        target_preserve_min        latest
 
-        volume /mnt/btr_main
-          target /mnt/btr_data/main_snapshots
-          subvolume @home
+        # Preserve one archive of each type except hourly backups
+        archive_preserve           0h 1d 1w 1m 1y
+        archive_preserve_min       latest
+
+        # ssh
+        ssh_identity /etc/btrbk/ssh/id_ed25519
+        ssh_user root
+
+        # things to snapshot
+        volume /
+          subvolume /home
+            target /srv/data/snapshots-main
+            target ssh://nas.home.eltimn.com/srv/data/snapshots-ruca
       '';
     };
 

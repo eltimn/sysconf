@@ -17,6 +17,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -200,16 +201,18 @@ let
     };
 
   # Helper to check if a group is a "well-known" group that shouldn't be auto-created
-  isExistingGroup = groupName: builtins.elem groupName [
-    "users"
-    "wheel"
-    "systemd-journal"
-    "audio"
-    "video"
-    "networkmanager"
-    "docker"
-    "podman"
-  ];
+  isExistingGroup =
+    groupName:
+    builtins.elem groupName [
+      "users"
+      "wheel"
+      "systemd-journal"
+      "audio"
+      "video"
+      "networkmanager"
+      "docker"
+      "podman"
+    ];
 
 in
 {
@@ -229,7 +232,8 @@ in
 
     # Create groups for users that need them
     users.groups = lib.mkMerge (
-      lib.mapAttrsToList (username: userCfg:
+      lib.mapAttrsToList (
+        username: userCfg:
         lib.mkIf (userCfg.createGroup && !isExistingGroup userCfg.group) {
           ${userCfg.group} = {
             gid = userCfg.uid; # Use same ID as user for simplicity
@@ -246,7 +250,7 @@ in
       extraGroups = userCfg.extraGroups;
       home = userCfg.home;
       createHome = true;
-      shell = "/run/current-system/sw/bin/bash";
+      shell = pkgs.bash;
       linger = true;
       autoSubUidGidRange = true;
     }) cfg.users;

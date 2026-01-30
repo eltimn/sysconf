@@ -17,7 +17,7 @@ in
   config = lib.mkIf cfg.enable {
 
     users = {
-      users.sysconf = {
+      users."sysconf" = {
         isSystemUser = true;
         group = "sysconf";
         home = "/var/lib/sysconf";
@@ -27,7 +27,7 @@ in
         shell = pkgs.bash;
       };
 
-      groups.sysconf = { };
+      groups."sysconf" = { };
     };
 
     # Passwordless sudo for sysconf user (required by Colmena)

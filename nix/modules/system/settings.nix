@@ -73,6 +73,10 @@ in
             illmaticKey
           ];
         };
+
+        btrbk = {
+          ruca = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEC+qZcmc5msutqL7SKm9xG1vcU3Qqgt+7NgBtZwBxhB btrbk@ruca";
+        };
       };
       internal = true;
     };

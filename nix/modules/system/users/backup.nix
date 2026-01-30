@@ -12,7 +12,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    users.groups.backup = {
+    users.groups."backup" = {
       members = [ "nelly" ];
     };
   };
