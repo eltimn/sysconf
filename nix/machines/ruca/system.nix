@@ -41,7 +41,7 @@ in
         stream_buffer              256m
 
         # Store snapshots under /snapshots under the root of the volume
-        snapshot_dir               /snapshots
+        snapshot_dir               @snapshots
         # Only create new snapshots when changes have been made
         snapshot_create            onchange
         # Preserve hourly snapshots for up to 48 hours, and daily snapshots for up to 14 days
@@ -63,8 +63,8 @@ in
         ssh_user root
 
         # things to snapshot
-        volume /
-          subvolume /home
+        volume /mnt/btr-main
+          subvolume @home
             target /srv/data/snapshots-main
             target ssh://nas.home.eltimn.com/srv/data/snapshots-ruca
       '';

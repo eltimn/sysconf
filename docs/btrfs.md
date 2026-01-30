@@ -1,10 +1,36 @@
 # btrfs
 
+Mount each disk at the top level (subvolid=5) so it's easier to manage subvolumes and is recommended by btrbk. If you also mount subvolumes elsewhere the data will be available in both places and update both places.
+
+On Ruca these are:
+
+```nix
+## Main system disk ##
+fileSystems."/mnt/btr-main" = {
+  device = "/dev/disk/by-partlabel/disk-main-root";
+  fsType = "btrfs";
+  options = [
+    "compress=zstd"
+    "noatime"
+    "subvolid=5"
+  ];
+};
+
+## Data disk ##
+fileSystems."/mnt/btr-data" = {
+  device = "/dev/disk/by-label/data";
+  fsType = "btrfs";
+  options = [
+    "compress=zstd"
+    "noatime"
+    "subvolid=5"
+  ];
+};
+```
+
 ## Add New Subvolume
 
-You can add a new subvolume to a drive:
-
-1. Temporarily mount the root subvolume to a directory:
+1. Mount the disk at the top level  (subvolid=5) if not already.
 ```shell
 sudo mkdir -p /mnt/btrtmp
 sudo mount -o compress=zstd,noatime,subvolid=5 /dev/nvme0n1p2 /mnt/btrtmp
@@ -12,7 +38,7 @@ sudo mount -o compress=zstd,noatime,subvolid=5 /dev/nvme0n1p2 /mnt/btrtmp
 
 2. Create the subvolume:
 ```shell
-sudo btrfs subvolume create /mnt/btrtmp/@newsubvol # (replace with your name)
+sudo btrfs subvolume create /mnt/btr-main/@newsubvol # (replace with your name)
 ```
 
 3. Update NixOS config to mount it (e.g., at /srv/data/newmount), then nixos-rebuild switch.
@@ -27,7 +53,8 @@ fileSystems."/srv/data/newvol" = {
   ];
 };
 ```
-4. Cleanup
+
+4. Cleanup if necessary
 ```shell
 sudo umount /mnt/btrtmp
 sudo rmdir /mnt/btrtmp
