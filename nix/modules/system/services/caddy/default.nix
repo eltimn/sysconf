@@ -52,6 +52,12 @@ in
       '';
     };
 
+    # Wait for the key service before starting
+    systemd.services.caddy = {
+      after = [ "caddy-env-key.service" ];
+      wants = [ "caddy-env-key.service" ];
+    };
+
     # Open ports in the firewall.
     networking.firewall.allowedTCPPorts = [
       80

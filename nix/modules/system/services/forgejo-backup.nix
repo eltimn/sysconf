@@ -43,6 +43,10 @@ in
           OnFailure = "notify@%i.service";
         };
 
+        # Wait for gocryptfs key service before starting
+        after = [ "gocryptfs-services-key.service" ];
+        wants = [ "gocryptfs-services-key.service" ];
+
         serviceConfig = {
           Type = "oneshot";
           # Run as root to have permission to stop/start forgejo service

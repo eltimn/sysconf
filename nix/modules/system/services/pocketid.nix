@@ -41,6 +41,12 @@ in
       };
     };
 
+    # Wait for the key service before starting
+    systemd.services.pocket-id = {
+      after = [ "pocketid-encryption-key-key.service" ];
+      wants = [ "pocketid-encryption-key-key.service" ];
+    };
+
     services.caddy.virtualHosts = {
       "id.${settings.homeDomain}".extraConfig = ''
         reverse_proxy localhost:${toString cfg.port}
