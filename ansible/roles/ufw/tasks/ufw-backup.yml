@@ -1,7 +1,0 @@
----
-- name: allow ssh
-  community.general.ufw:
-    name: OpenSSH
-    from_ip: "{{ item }}"
-    rule: allow
-  with_items: "{{ ssh_allowed_ips }}"

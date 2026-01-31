@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Terminal=false
-Name=Click-Script
-Icon=utilities-terminal
-Exec=bash -c '/opt/iris/Iris.sh'
-Name[en_US]=Iris
-Comment=Software for eye protection, health and productivity

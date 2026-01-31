@@ -1,4 +1,0 @@
-[EmbyServer]
-title=Emby Server
-description=Port for Emby.
-ports=8096/tcp

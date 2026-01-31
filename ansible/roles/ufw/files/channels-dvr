@@ -1,4 +1,0 @@
-[ChannelsDVR]
-title=Channels DVR
-description=This opens up Channels DVR zeroconf port.
-ports=5353/tcp|8089/tcp

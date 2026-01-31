@@ -1,3 +1,0 @@
-mongo_version: 8.0
-mongo_repo_baseurl: https://repo.mongodb.org
-mongo_repo_gpg_key: "https://pgp.mongodb.com/server-{{ mongo_version }}.asc"

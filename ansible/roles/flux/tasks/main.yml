@@ -1,8 +1,0 @@
----
-- name: Add repo
-  apt_repository: repo='ppa:nathan-renniewaldock/flux' state=present
-  tags: flux
-
-- name: Install flux
-  apt: pkg=fluxgui state=latest update_cache=yes
-  tags: flux
