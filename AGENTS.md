@@ -21,7 +21,7 @@ Some machines are built with standard nix commands (ruca,lappy) and some are bui
 task build -- ruca
 
 # Build colmena hosts (cbox, illmatic)
-task build-hive -- tag  # Tag can be cbox, illmatic, local, dns, or digitalocean.
+task build-hive -- <tag>  # <tag> can be cbox, illmatic, local, dns, or digitalocean.
 
 # Build without deploying (dry run)
 nix build .#nixosConfigurations.ruca.config.system.build.toplevel
