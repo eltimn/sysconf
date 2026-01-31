@@ -1,0 +1,8 @@
+# Rumdl config for opencode agent files
+# Disables rules that conflict with agent file format
+
+[global]
+disable = [
+  "MD013",  # Line length (agent files have long description fields)
+  "MD036",  # Emphasis used instead of a heading (agent files use **bold** for section labels)
+]

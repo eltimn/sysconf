@@ -1,0 +1,9 @@
+# Rumdl config for sysconf project
+# https://github.com/rvben/rumdl
+
+[global]
+# Exclude opencode agent files from linting
+# These have a special format that opencode expects
+exclude = [
+  "nix/modules/home/programs/opencode/files/agents/",
+]

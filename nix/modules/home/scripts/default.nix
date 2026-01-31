@@ -8,10 +8,10 @@ in
       # common scripts
       home.file = {
         "bin/export-bitwarden".source = ./files/export-bitwarden;
-        "bin/reset-cosmic-theme".source = ./files/reset-cosmic-theme;
+        "bin/generate-templates".source = ./files/generate-templates;
+        "bin/init-project".source = ./files/init-project;
         "bin/rm-known-host".source = ./files/rm-known-host;
         "bin/search-vscode-ext".source = ./files/search-vscode-ext;
-        # "bin/full-upgrade".source = ./files/full-upgrade;
       };
     }
 
@@ -23,6 +23,7 @@ in
         "bin/backup-workstation".source = ./files/desktop/backup-workstation;
         "bin/mount-nas".source = ./files/desktop/mount-nas;
         "bin/mount-nas-dir".source = ./files/desktop/mount-nas-dir;
+        "bin/reset-cosmic-theme".source = ./files/reset-cosmic-theme;
       };
     })
   ];
