@@ -7,13 +7,13 @@
   };
 
   ## Main system disk ##
-  fileSystems."/mnt/btr_main" = {
+  fileSystems."/mnt/btr-main" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "btrfs";
     options = [
+      "subvolid=5"
       "compress=zstd"
       "noatime"
-      "subvolid=5"
     ];
   };
 
@@ -61,14 +61,36 @@
     ];
   };
 
+  # Snapshots subvolume
+  fileSystems."/snapshots" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@snapshots"
+    ];
+  };
+
   ## Data disk ##
-  fileSystems."/mnt/btr_data" = {
+  fileSystems."/mnt/btr-data" = {
+    device = "/dev/disk/by-label/data";
+    fsType = "btrfs";
+    options = [
+      "subvolid=5"
+      "compress=zstd"
+      "noatime"
+    ];
+  };
+
+  # Snapshots-main subvolume
+  fileSystems."/srv/data/snapshots-main" = {
     device = "/dev/disk/by-label/data";
     fsType = "btrfs";
     options = [
       "compress=zstd"
       "noatime"
-      "subvolid=5"
+      "subvol=@snapshots-main"
     ];
   };
 }

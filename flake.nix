@@ -248,10 +248,13 @@
           doctl
           go-task
           immich-cli
+          nixfmt
+          nixfmt-tree
           opentofu
           pipx
           sops
           ssh-to-age
+          statix
           # terraform-providers.cloudflare_cloudflare
           # terraform-providers.digitalocean_digitalocean
           # terraform-providers.trozz_pocketid

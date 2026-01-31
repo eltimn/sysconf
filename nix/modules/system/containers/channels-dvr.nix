@@ -27,12 +27,12 @@ in
     sysconf.rootlessContainers = {
       enable = true;
 
-      users.channelsdvr = {
+      users."channelsdvr" = {
         uid = 989;
         group = "users";
         createGroup = false;
 
-        containers.channels-dvr = {
+        containers."channels-dvr" = {
           description = "Channels DVR Container";
           image = "docker.io/fancybits/channels-dvr@sha256:52a8ed8d2071f01dbb30932b8e8d28b2b507289c2fde6f00f43779f657b5ed82";
           network = "host";

@@ -79,4 +79,15 @@
     device = "mediapool/videos";
     fsType = "zfs";
   };
+
+  ## Data disk mirror ##
+  fileSystems."/srv/data/snapshots-ruca" = {
+    device = "/dev/disk/by-label/data";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=@snapshots-ruca"
+    ];
+  };
 }

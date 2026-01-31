@@ -4,9 +4,6 @@
   inputs,
   ...
 }:
-let
-  cfg = config.sysconf.system.sops;
-in
 {
   options.sysconf.system.sops = {
     secretsPath = lib.mkOption {

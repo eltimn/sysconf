@@ -25,7 +25,12 @@ in
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
+
       };
+      extraConfig = ''
+        Match Address 10.42.10.0/24,10.42.40.0/24
+          PermitRootLogin prohibit-password
+      '';
     };
   };
 }

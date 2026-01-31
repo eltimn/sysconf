@@ -156,7 +156,10 @@ let
           ];
         };
         extraSpecialArgs = { inherit pkgs-unstable; };
-        sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
+        sharedModules = [
+          inputs.sops-nix.homeManagerModules.sops
+          inputs.zen-browser-flake.homeModules.default
+        ];
       };
     };
 in

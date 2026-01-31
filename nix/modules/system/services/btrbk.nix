@@ -30,33 +30,36 @@ in
   config = lib.mkIf cfg.enable {
     sysconf.services.notify.enable = true;
 
-    environment.systemPackages = [ pkgs.btrbk ];
-
-    systemd.services.btrbk = {
-      description = "BTRFS backup tool";
-      unitConfig = {
-        OnFailure = "notify@%i.service";
-      };
-
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
-        Group = "root";
-      };
-
-      script = ''
-        set -e
-
-        ${pkgs.btrbk}/bin/btrbk --config /etc/btrbk/btrbk.conf run
-      '';
+    environment = {
+      etc."btrbk/btrbk.conf".text = cfg.configFile;
+      systemPackages = [ pkgs.btrbk ];
     };
 
-    systemd.timers.btrbk = {
-      description = "Timer for btrbk snapshots";
-      wantedBy = [ "timers.target" ];
-      timerConfig = cfg.timerConfig;
-    };
+    systemd = {
+      services.btrbk = {
+        description = "BTRFS backup tool";
+        unitConfig = {
+          OnFailure = "notify@%i.service";
+        };
 
-    environment.etc."btrbk/btrbk.conf".text = cfg.configFile;
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+          Group = "root";
+        };
+
+        script = ''
+          set -e
+
+          ${pkgs.btrbk}/bin/btrbk --config /etc/btrbk/btrbk.conf run
+        '';
+      };
+
+      timers.btrbk = {
+        description = "Timer for btrbk snapshots";
+        wantedBy = [ "timers.target" ];
+        timerConfig = cfg.timerConfig;
+      };
+    };
   };
 }

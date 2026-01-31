@@ -444,10 +444,10 @@
     "sysconf-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1769381483,
-        "narHash": "sha256-Sw+wjP25Uu46prbcfi4+ScfNFNUHj4oJHTC8DMSPqaA=",
+        "lastModified": 1769827107,
+        "narHash": "sha256-WP54P7WAhhQohcY7BJ0fvNdKqAw5RjBnE/W5wzmzQEs=",
         "ref": "main",
-        "rev": "119aedffde4818b7b38ab87e5c9bb0fe20f8b413",
+        "rev": "781bbd168dbedd04e5a1d440b6a54df6a29bedf9",
         "shallow": true,
         "type": "git",
         "url": "ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git"
