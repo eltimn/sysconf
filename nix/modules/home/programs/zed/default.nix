@@ -56,6 +56,15 @@ in
             ".envrc"
           ];
         };
+        lsp = {
+          nixd = {
+            settings = {
+              formatting = {
+                command = [ "nixfmt" ];
+              };
+            };
+          };
+        };
         theme_overrides = {
           "One Light" = {
             "editor.background" = "#eef5eb"; # Custom background color for One Light theme
