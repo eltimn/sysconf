@@ -95,23 +95,27 @@ in
       };
 
       # enable some modules
-      sysconf.programs.bat.enable = true;
-      sysconf.programs.direnv.enable = true;
-      sysconf.programs.git.enable = true;
-      sysconf.programs.tmux.enable = true;
-      sysconf.programs.zsh.enable = true;
+      sysconf.programs = {
+        bat.enable = true;
+        direnv.enable = true;
+        git.enable = true;
+        tmux.enable = true;
+        zsh.enable = true;
+      };
     }
 
     (lib.mkIf (settings.hostRole == "desktop") {
       # Desktop-specific modules
-      sysconf.programs.chromium.enable = true;
-      sysconf.programs.firefox.enable = true;
-      sysconf.programs.ghostty.enable = true;
-      sysconf.programs.goose.enable = true;
-      sysconf.programs.opencode.enable = true;
-      sysconf.programs.rofi.enable = true;
-      sysconf.programs.vscode.enable = true;
-      sysconf.programs.zed-editor.enable = true;
+      sysconf.programs = {
+        chromium.enable = true;
+        firefox.enable = true;
+        ghostty.enable = true;
+        goose.enable = true;
+        opencode.enable = true;
+        rofi.enable = true;
+        vscode.enable = true;
+        zed-editor.enable = true;
+      };
     })
   ];
 }

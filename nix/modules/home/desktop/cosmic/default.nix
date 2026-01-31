@@ -148,36 +148,38 @@ in
     ];
 
     # Systemd timers for custom theme scheduling (08:00 Light / 20:00 Dark)
-    systemd.user.services.cosmic-theme-dark = {
-      Unit.Description = "Switch COSMIC to Dark Mode";
-      Service = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'echo true > %h/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark'";
+    systemd.user = {
+      services.cosmic-theme-dark = {
+        Unit.Description = "Switch COSMIC to Dark Mode";
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.bash}/bin/bash -c 'echo true > %h/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark'";
+        };
       };
-    };
-    systemd.user.timers.cosmic-theme-dark = {
-      Unit.Description = "Timer for COSMIC Dark Mode";
-      Timer = {
-        OnCalendar = "20:00";
-        Persistent = true;
+      timers.cosmic-theme-dark = {
+        Unit.Description = "Timer for COSMIC Dark Mode";
+        Timer = {
+          OnCalendar = "20:00";
+          Persistent = true;
+        };
+        Install.WantedBy = [ "timers.target" ];
       };
-      Install.WantedBy = [ "timers.target" ];
-    };
 
-    systemd.user.services.cosmic-theme-light = {
-      Unit.Description = "Switch COSMIC to Light Mode";
-      Service = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'echo false > %h/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark'";
+      services.cosmic-theme-light = {
+        Unit.Description = "Switch COSMIC to Light Mode";
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.bash}/bin/bash -c 'echo false > %h/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark'";
+        };
       };
-    };
-    systemd.user.timers.cosmic-theme-light = {
-      Unit.Description = "Timer for COSMIC Light Mode";
-      Timer = {
-        OnCalendar = "08:00";
-        Persistent = true;
+      timers.cosmic-theme-light = {
+        Unit.Description = "Timer for COSMIC Light Mode";
+        Timer = {
+          OnCalendar = "08:00";
+          Persistent = true;
+        };
+        Install.WantedBy = [ "timers.target" ];
       };
-      Install.WantedBy = [ "timers.target" ];
     };
   };
 }

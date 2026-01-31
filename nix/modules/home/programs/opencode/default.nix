@@ -45,40 +45,40 @@ in
   config = lib.mkIf cfg.enable {
     sops.secrets."ollama_api_key" = { };
 
-    # Symlink config directories
-    home.file.".config/opencode/plugin/env-protect.js".source = ./files/plugin/env-protect.js;
-    home.file.".config/opencode/themes".source = ./files/themes;
-    home.file.".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
-    home.file.".config/opencode/opencode.json".source = ./files/opencode.json;
+    home = {
+      # Symlink config directories
+      file = {
+        ".config/opencode/plugin/env-protect.js".source = ./files/plugin/env-protect.js;
+        ".config/opencode/themes".source = ./files/themes;
+        ".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
+        ".config/opencode/opencode.json".source = ./files/opencode.json;
 
-    # eltimn-ai-tools
-    home.file.".config/opencode/skills/unifi-gateway-api".source =
-      "${inputs.eltimn-ai-tools}/skills/unifi-gateway-api";
-    home.file.".config/opencode/skills/init-new-project".source =
-      "${inputs.eltimn-ai-tools}/skills/init-new-project";
+        # eltimn-ai-tools
+        ".config/opencode/skills/unifi-gateway-api".source =
+          "${inputs.eltimn-ai-tools}/skills/unifi-gateway-api";
+        ".config/opencode/skills/init-new-project".source =
+          "${inputs.eltimn-ai-tools}/skills/init-new-project";
 
-    # Copy theme.json as a mutable file (not symlink) so it can be edited externally
-    home.activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD cp -f ${./files/theme.json} "$HOME/.config/opencode/theme.json"
-      $DRY_RUN_CMD chmod u+w "$HOME/.config/opencode/theme.json"
-    '';
+        # Superpowers
+        # ".config/opencode/plugin/superpowers.js".source =
+        #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/code/ai/superpowers/.opencode/plugin/superpowers.js";
+        ".config/opencode/command".source = ./superpowers/command; # OpenCode plugins don't support adding commands.
+      };
 
-    # Goose RPI
-    # home.file.".config/opencode/agent".source = ./goose-rpi/agent;
-    # home.file.".config/opencode/command".source = ./goose-rpi/command;
+      # Copy theme.json as a mutable file (not symlink) so it can be edited externally
+      activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD cp -f ${./files/theme.json} "$HOME/.config/opencode/theme.json"
+        $DRY_RUN_CMD chmod u+w "$HOME/.config/opencode/theme.json"
+      '';
 
-    # Superpowers
-    # home.file.".config/opencode/plugin/superpowers.js".source =
-    #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/code/ai/superpowers/.opencode/plugin/superpowers.js";
-    home.file.".config/opencode/command".source = ./superpowers/command; # OpenCode plugins don't support adding commands.
+      sessionVariables = {
+        OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
+        OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
+        OPENCODE_CONFIG = themeFileLoc; # Set OPENCODE_CONFIG to point to theme file (merged with main config)
+      };
 
-    home.sessionVariables = {
-      OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
-      OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
-      OPENCODE_CONFIG = themeFileLoc; # Set OPENCODE_CONFIG to point to theme file (merged with main config)
+      packages = [ oc ];
     };
-
-    home.packages = [ oc ];
 
     programs.opencode = {
       enable = true;

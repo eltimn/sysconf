@@ -40,11 +40,12 @@
     };
 
     # some files
-    file.".config/borg/backup_dirs".text =
-      "export BACKUP_DIRS='Documents Notes code secret-cipher sysconf'";
-    # autostart files (run on login)
-    file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
-    file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
+    file = {
+      ".config/borg/backup_dirs".text = "export BACKUP_DIRS='Documents Notes code secret-cipher sysconf'";
+      # autostart files (run on login)
+      ".config/autostart/filen.desktop".source = ./files/filen.desktop;
+      ".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
+    };
   };
 
   # Packages that are installed as programs also allow for configuration.

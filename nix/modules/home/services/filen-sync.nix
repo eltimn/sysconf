@@ -81,61 +81,63 @@ in
       filen-cli
     ];
 
-    # Ensure data directory exists
-    systemd.user.tmpfiles.rules = [
-      "d ${cfg.dataDir} 0700 - - -"
-    ];
+    systemd.user = {
+      # Ensure data directory exists
+      tmpfiles.rules = [
+        "d ${cfg.dataDir} 0700 - - -"
+      ];
 
-    systemd.user.services.filen-sync = {
-      Unit = {
-        Description = "Filen cloud sync";
-        After = [ "network-online.target" ];
-        Wants = [ "network-online.target" ];
-        OnFailure = [ "notify@%i.service" ];
+      services.filen-sync = {
+        Unit = {
+          Description = "Filen cloud sync";
+          After = [ "network-online.target" ];
+          Wants = [ "network-online.target" ];
+          OnFailure = [ "notify@%i.service" ];
+        };
+
+        Service = {
+          Type = "oneshot";
+          WorkingDirectory = cfg.dataDir;
+          ExecStart = pkgs.writeShellScript "filen-sync" ''
+            set -e
+
+            AUTH_CONFIG="${cfg.dataDir}/.filen-cli-auth-config"
+
+            # Cleanup auth config on exit (success or failure)
+            cleanup() {
+              ${pkgs.coreutils}/bin/rm -f "$AUTH_CONFIG"
+            }
+            trap cleanup EXIT
+
+            # Ensure source auth config exists and is readable
+            if [ ! -r "${cfg.authConfigFile}" ]; then
+              echo "filen-sync: auth config file not found or not readable: ${cfg.authConfigFile}" >&2
+              exit 1
+            fi
+            # Copy auth config from tmpfs to working directory
+            ${pkgs.coreutils}/bin/cp "${cfg.authConfigFile}" "$AUTH_CONFIG"
+            ${pkgs.coreutils}/bin/chmod 400 "$AUTH_CONFIG"
+
+            # Run sync
+            ${pkgs.filen-cli}/bin/filen sync ${syncPairsFile}
+          '';
+        };
       };
 
-      Service = {
-        Type = "oneshot";
-        WorkingDirectory = cfg.dataDir;
-        ExecStart = pkgs.writeShellScript "filen-sync" ''
-          set -e
+      timers.filen-sync = {
+        Unit = {
+          Description = "Filen sync timer";
+        };
 
-          AUTH_CONFIG="${cfg.dataDir}/.filen-cli-auth-config"
+        Timer = {
+          OnCalendar = cfg.onCalendar;
+          Persistent = true;
+          RandomizedDelaySec = "5m";
+        };
 
-          # Cleanup auth config on exit (success or failure)
-          cleanup() {
-            ${pkgs.coreutils}/bin/rm -f "$AUTH_CONFIG"
-          }
-          trap cleanup EXIT
-
-          # Ensure source auth config exists and is readable
-          if [ ! -r "${cfg.authConfigFile}" ]; then
-            echo "filen-sync: auth config file not found or not readable: ${cfg.authConfigFile}" >&2
-            exit 1
-          fi
-          # Copy auth config from tmpfs to working directory
-          ${pkgs.coreutils}/bin/cp "${cfg.authConfigFile}" "$AUTH_CONFIG"
-          ${pkgs.coreutils}/bin/chmod 400 "$AUTH_CONFIG"
-
-          # Run sync
-          ${pkgs.filen-cli}/bin/filen sync ${syncPairsFile}
-        '';
-      };
-    };
-
-    systemd.user.timers.filen-sync = {
-      Unit = {
-        Description = "Filen sync timer";
-      };
-
-      Timer = {
-        OnCalendar = cfg.onCalendar;
-        Persistent = true;
-        RandomizedDelaySec = "5m";
-      };
-
-      Install = {
-        WantedBy = [ "timers.target" ];
+        Install = {
+          WantedBy = [ "timers.target" ];
+        };
       };
     };
   };

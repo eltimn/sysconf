@@ -20,19 +20,21 @@ in
 
   config = lib.mkIf cfg.enable {
     # X Server configuration
-    services.xserver = {
-      enable = true;
-      xkb = {
-        layout = "us";
-        variant = "";
+    services = {
+      xserver = {
+        enable = true;
+        xkb = {
+          layout = "us";
+          variant = "";
+        };
+
+        videoDrivers = cfg.videoDrivers;
       };
 
-      videoDrivers = cfg.videoDrivers;
+      # Display Manager and Desktop Environment
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
     };
-
-    # Display Manager and Desktop Environment
-    services.displayManager.gdm.enable = true;
-    services.desktopManager.gnome.enable = true;
 
     # GNOME Package Exclusions
     environment.gnome.excludePackages = with pkgs; [

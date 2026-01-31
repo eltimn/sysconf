@@ -10,12 +10,17 @@ in
   # linux kernel
   # boot.kernelPackages = pkgs.linuxPackages_6_13; # need this to support the Realtek 2.5G NIC
   # boot.supportedFilesystems.zfs = lib.mkForce false; # this is because zfs kernel modules are usually behind and don't compile with the newer kernels.
-  boot.supportedFilesystems = [ "btrfs" ];
-  services.btrfs.autoScrub.enable = true;
+  boot = {
+    supportedFilesystems = [ "btrfs" ];
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    # Bootloader
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
+
+  services = {
+    btrfs.autoScrub.enable = true;
+  };
 
   sops.secrets."users/nelly/password".neededForUsers = true;
   sops.secrets."sshkeys/btrbk/ruca" = {
@@ -88,18 +93,9 @@ in
   };
 
   # Enable CUPS to print documents.
-  services.printing = {
-    enable = true;
-    # Add Brother printer drivers
-    drivers = [
-      pkgs.brlaser
-    ];
-    # logLevel = "debug";
-  };
-
   # Bluetooth (for wireless keyboards, mice, etc.)
+
   hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
 
   environment.systemPackages = with pkgs; [
     clinfo
@@ -125,6 +121,19 @@ in
 
   # Needed for yubikey
   services.pcscd.enable = true;
+
+  services = {
+    printing = {
+      enable = true;
+      # Add Brother printer drivers
+      drivers = [
+        pkgs.brlaser
+      ];
+      # logLevel = "debug";
+    };
+
+    blueman.enable = true;
+  };
 
   # Persistent network interface naming
   systemd.network.links."10-lan" = {
