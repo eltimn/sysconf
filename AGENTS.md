@@ -42,13 +42,22 @@ task update           # Update flake.lock (all inputs)
 ```
 
 ### Linting and Formatting
+
+The project uses `nixfmt` (version 1.2.0+), which is the official Nix formatter implementing RFC 166. Both `nixd` and `nil` LSPs use this formatter.
+
 ```bash
 # Format Nix files (RFC 166 style)
-nixfmt-rfc-style nix/modules/home/programs/example.nix
-nixfmt-rfc-style nix/**/*.nix  # Format all Nix files
+nixfmt nix/modules/home/programs/example.nix
+
+# Format all Nix files recursively (requires nixfmt-tree)
+nixfmt-tree  # or: treefmt
+
+# Note: nixfmt formats one file at a time, while nixfmt-tree (via treefmt)
+# handles entire projects recursively. Use nixfmt-tree for bulk formatting
+# and nixfmt for single files or editor integration.
 
 # Lint Nix files
-nixpkgs-lint-community nix/modules/
+statix check nix/  # General Nix code linter (catches anti-patterns)
 
 # Check for issues
 nix flake check  # Comprehensive validation
@@ -122,7 +131,7 @@ in
 - **Final newline**: Required
 - **Trailing whitespace**: Remove
 - **Max line length**: No hard limit, but keep readable (~100 chars preferred)
-- Use `nixfmt-rfc-style` for consistent formatting
+- Use `nixfmt` for consistent formatting (RFC 166 style, used by nixd and nil LSPs)
 
 ### Naming Conventions
 - **Variables**: camelCase (`cfg`, `basePkgs`, `desktopPkgs`)
