@@ -324,6 +324,7 @@
         shellHook = ''
           echo "Welcome to sysconf!"
           ${self.checks.${system}.pre-commit.shellHook}
+          ${self.checks.${system}.pre-commit-md-agents.shellHook}
         '';
       };
     };

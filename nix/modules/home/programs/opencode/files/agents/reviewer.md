@@ -1,6 +1,6 @@
 <!-- From: https://github.com/jbeck018/agents-opencode MIT License -->
 
-# Researcher Subagent
+# Reviewer Subagent
 
 ---
 
