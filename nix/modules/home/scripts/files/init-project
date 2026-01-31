@@ -153,6 +153,16 @@ if [[ ! -f ".envrc" ]]; then
     echo "use flake" > .envrc
 fi
 
+# Check if .gitignore exists, if not create it
+if [[ ! -f ".gitignore" ]]; then
+    echo "Creating .gitignore file..."
+    cat > .gitignore << 'EOF'
+.direnv
+.envrc
+result/
+EOF
+fi
+
 # Run direnv allow
 echo "Running direnv allow..."
 direnv allow
