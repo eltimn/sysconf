@@ -18,7 +18,7 @@ let
   settings = config.sysconf.settings;
   port = 8089; # Currently, Channels DVR doesn't have a way to set the port. I believe the client also expects to use 8089 even though I use https.
   storageDir = "/var/lib/channelsdvr/storage";
-  pathToUnitName = path: lib.removePrefix "-" (lib.strings.escapeSystemdPath path);
+  pathToUnitName = path: lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" path);
 in
 {
   options.sysconf.containers.channels-dvr = {
