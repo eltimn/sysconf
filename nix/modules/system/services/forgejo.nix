@@ -22,22 +22,6 @@ in
     # Add forgejo user to keys group for secrets access
     users.users.forgejo.extraGroups = [ "keys" ];
 
-    # Create SSH directory and key for forgejo user (for borg backups)
-    systemd.tmpfiles.rules = [
-      "d /var/lib/forgejo/.ssh 0700 forgejo forgejo -"
-    ];
-
-    # Generate SSH key for forgejo user if it doesn't exist
-    system.activationScripts.forgejo-ssh-key = {
-      deps = [ "users" ];
-      text = ''
-        if [ ! -f /var/lib/forgejo/.ssh/id_ed25519 ]; then
-          ${lib.getExe' config.systemd.package "systemd-run"} --unit=forgejo-ssh-keygen --uid=forgejo --gid=forgejo \
-            ${lib.getExe' config.programs.ssh.package "ssh-keygen"} -t ed25519 -f /var/lib/forgejo/.ssh/id_ed25519 -N "" -C "forgejo@${config.networking.hostName}"
-        fi
-      '';
-    };
-
     services.forgejo = {
       enable = true;
       settings = {
