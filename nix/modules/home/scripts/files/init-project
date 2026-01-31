@@ -5,8 +5,27 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 JSON_DIR="$HOME/.local/state/init-project"
 JSON_FILE="${JSON_DIR}/nix-templates.json"
-GENERATOR_SCRIPT="${SCRIPT_DIR}/generate-templates"
+GENERATOR_SCRIPT="${SCRIPT_DIR}/generate-templates.py"
 
+# Check dependencies
+check_dependencies() {
+    local deps=("python3" "jq" "gum" "direnv")
+    local missing=()
+
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing+=("$dep")
+        fi
+    done
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        echo "Error: Missing required dependencies: ${missing[*]}" >&2
+        echo "Install with: nix-env -iA nixpkgs.{${missing[*]}}" >&2
+        exit 1
+    fi
+}
+
+# Create JSON directory if needed
 if [ ! -d "$JSON_DIR" ]; then
   mkdir -p "$JSON_DIR"
 fi
@@ -20,12 +39,15 @@ generate_json() {
         exit 1
     fi
 
-    local cmd="\"$GENERATOR_SCRIPT\" -o \"$JSON_FILE\""
+    # Build command arguments for Python script
+    local args=("python3" "$GENERATOR_SCRIPT")
+    args+=("-o" "$JSON_FILE")
     if [[ "$force_flag" == "--force" ]]; then
-        cmd="$cmd -f"
+        args+=("-f")
     fi
 
-    eval "$cmd"
+    # Execute Python script directly
+    "${args[@]}"
 }
 
 # Function to check if JSON exists and generate if needed
@@ -38,11 +60,6 @@ check_json() {
 
 # Function to parse JSON and extract templates
 parse_templates() {
-    if ! command -v jq &> /dev/null; then
-        echo "Error: jq is required but not installed" >&2
-        exit 1
-    fi
-
     jq -r '.templates[] | "\(.ref)|\(.name) - \(.description) (\(.source))"' "$JSON_FILE"
 }
 
@@ -74,6 +91,9 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Check dependencies before proceeding
+check_dependencies
 
 # Handle update mode
 if [[ "$UPDATE_MODE" == true ]]; then
@@ -122,7 +142,10 @@ fi
 
 # Run nix flake init
 echo "Initializing project with template: $selected_template"
-nix flake init --template "$selected_template"
+if ! nix flake init --template "$selected_template"; then
+    echo "Error: Failed to initialize project with template" >&2
+    exit 1
+fi
 
 # Check if .envrc exists, if not create it
 if [[ ! -f ".envrc" ]]; then

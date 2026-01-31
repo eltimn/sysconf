@@ -8,7 +8,7 @@ in
       # common scripts
       home.file = {
         "bin/export-bitwarden".source = ./files/export-bitwarden;
-        "bin/generate-templates".source = ./files/generate-templates;
+        "bin/generate-templates.py".source = ./files/generate-templates.py;
         "bin/init-project".source = ./files/init-project;
         "bin/rm-known-host".source = ./files/rm-known-host;
         "bin/search-vscode-ext".source = ./files/search-vscode-ext;
