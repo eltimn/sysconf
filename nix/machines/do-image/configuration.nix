@@ -16,8 +16,10 @@ in
   ];
 
   # Temporary hostname for image
-  networking.hostName = lib.mkForce "nixos-do";
-  networking.hostId = "8425e349";
+  networking = {
+    hostName = lib.mkForce "nixos-do";
+    hostId = "8425e349";
+  };
 
   # Enable flakes and nix-command for deployment
   nix.settings.experimental-features = [

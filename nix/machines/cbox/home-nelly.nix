@@ -20,11 +20,11 @@
     home-manager.enable = true;
   };
 
-  sysconf = {
-    programs.bat.enable = true;
-    programs.micro.enable = true;
+  sysconf.programs = {
+    bat.enable = true;
+    micro.enable = true;
 
-    programs.git = {
+    git = {
       githubIncludePath = "/run/keys/nelly-git-github";
       userIncludePath = "/run/keys/nelly-git-user";
     };

@@ -7,20 +7,22 @@ let
   settings = config.sysconf.settings;
 in
 {
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    # Bootloader
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
 
-  # Enable ZFS support
-  # https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html
-  # https://nixos.org/manual/nixos/stable/options.html#opt-networking.hostId
-  boot.supportedFilesystems = [
-    "btrfs"
-    "zfs"
-    "ext4"
-  ];
+    # Enable ZFS support
+    # https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html
+    # https://nixos.org/manual/nixos/stable/options.html#opt-networking.hostId
+    supportedFilesystems = [
+      "btrfs"
+      "zfs"
+      "ext4"
+    ];
 
-  boot.zfs.forceImportRoot = false;
+    zfs.forceImportRoot = false;
+  };
   services.btrfs.autoScrub.enable = true;
 
   users.users."root".openssh.authorizedKeys.keys = [
@@ -78,14 +80,26 @@ in
     };
   };
 
-  # Persistent network interface naming
-  systemd.network.links."10-lan" = {
-    matchConfig.MACAddress = "0c:c4:7a:db:ed:c3";
-    linkConfig.Name = "eth3";
+  systemd.network = {
+    # Persistent network interface naming
+    links."10-lan" = {
+      matchConfig.MACAddress = "0c:c4:7a:db:ed:c3";
+      linkConfig.Name = "eth3";
+    };
+
+    # Use systemd-networkd for network management
+    enable = true;
+
+    # Configure static IP with systemd-networkd
+    networks."10-eth3" = {
+      matchConfig.Name = "eth3";
+      address = [ "10.42.10.22/24" ];
+      gateway = [ "10.42.10.1" ];
+      dns = config.sysconf.settings.dnsServers;
+      linkConfig.RequiredForOnline = "routable";
+    };
   };
 
-  # Use systemd-networkd for network management
-  systemd.network.enable = true;
   networking = {
     hostName = "illmatic";
     hostId = "60a48c03"; # Unique among my machines. Generated with: `head -c 4 /dev/urandom | sha256sum | cut -c1-8`
@@ -95,15 +109,6 @@ in
     enableIPv6 = false;
     # Keep global nameservers so systemd-resolved always uses local DNS.
     nameservers = config.sysconf.settings.dnsServers;
-  };
-
-  # Configure static IP with systemd-networkd
-  systemd.network.networks."10-eth3" = {
-    matchConfig.Name = "eth3";
-    address = [ "10.42.10.22/24" ];
-    gateway = [ "10.42.10.1" ];
-    dns = config.sysconf.settings.dnsServers;
-    linkConfig.RequiredForOnline = "routable";
   };
 
   ## system

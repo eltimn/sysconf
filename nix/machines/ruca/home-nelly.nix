@@ -11,9 +11,11 @@
   ];
 
   # git secrets
-  sops.secrets."git/github" = { };
-  sops.secrets."git/user" = { };
-  sops.secrets."borg_passphrase_illmatic" = { };
+  sops.secrets = {
+    "git/github" = { };
+    "git/user" = { };
+    "borg_passphrase_illmatic" = { };
+  };
 
   home = {
     username = "nelly";

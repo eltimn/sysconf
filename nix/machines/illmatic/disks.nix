@@ -1,12 +1,86 @@
 {
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "ext4";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "ext4";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/boot";
-    fsType = "vfat";
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "vfat";
+    };
+
+    # existing zfs disks
+    "/mnt/backup" = {
+      device = "mediapool/backup";
+      fsType = "zfs";
+    };
+
+    "/mnt/files" = {
+      device = "mediapool/files";
+      fsType = "zfs";
+    };
+
+    "/mnt/mobile" = {
+      device = "mediapool/mobile";
+      fsType = "zfs";
+    };
+
+    "/mnt/music" = {
+      device = "mediapool/music";
+      fsType = "zfs";
+    };
+
+    "/mnt/pictures" = {
+      device = "mediapool/pictures";
+      fsType = "zfs";
+    };
+
+    "/mnt/plex" = {
+      device = "mediapool/plex";
+      fsType = "zfs";
+    };
+
+    "/mnt/video" = {
+      device = "mediapool/video";
+      fsType = "zfs";
+    };
+
+    "/mnt/channels" = {
+      device = "mediapool/channels";
+      fsType = "zfs";
+    };
+
+    "/mnt/comedy" = {
+      device = "mediapool/comedy";
+      fsType = "zfs";
+    };
+
+    "/mnt/movies" = {
+      device = "mediapool/movies";
+      fsType = "zfs";
+    };
+
+    "/mnt/tv" = {
+      device = "mediapool/tv";
+      fsType = "zfs";
+    };
+
+    "/mnt/videos" = {
+      device = "mediapool/videos";
+      fsType = "zfs";
+    };
+
+    ## Data disk mirror ##
+    "/srv/data/snapshots-ruca" = {
+      device = "/dev/disk/by-label/data";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "noatime"
+        "subvol=@snapshots-ruca"
+      ];
+    };
   };
 
   swapDevices = [
@@ -18,76 +92,4 @@
   boot.zfs.extraPools = [
     "mediapool"
   ];
-
-  # existing zfs disks
-  fileSystems."/mnt/backup" = {
-    device = "mediapool/backup";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/files" = {
-    device = "mediapool/files";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/mobile" = {
-    device = "mediapool/mobile";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/music" = {
-    device = "mediapool/music";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/pictures" = {
-    device = "mediapool/pictures";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/plex" = {
-    device = "mediapool/plex";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/video" = {
-    device = "mediapool/video";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/channels" = {
-    device = "mediapool/channels";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/comedy" = {
-    device = "mediapool/comedy";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/movies" = {
-    device = "mediapool/movies";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/tv" = {
-    device = "mediapool/tv";
-    fsType = "zfs";
-  };
-
-  fileSystems."/mnt/videos" = {
-    device = "mediapool/videos";
-    fsType = "zfs";
-  };
-
-  ## Data disk mirror ##
-  fileSystems."/srv/data/snapshots-ruca" = {
-    device = "/dev/disk/by-label/data";
-    fsType = "btrfs";
-    options = [
-      "compress=zstd"
-      "noatime"
-      "subvol=@snapshots-ruca"
-    ];
-  };
 }

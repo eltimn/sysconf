@@ -18,12 +18,13 @@ in
     lib.mkMerge [
       {
         home = {
-          file.".config/zsh/funcs".source = ./files/funcs;
-
-          file.".ackrc".source = ./files/ackrc;
-          file.".ansible.cfg".source = ./files/ansible.cfg;
-          file.".editorconfig".source = ./files/editorconfig;
-          file.".mongoshrc.js".source = ./files/mongoshrc.js;
+          file = {
+            ".config/zsh/funcs".source = ./files/funcs;
+            ".ackrc".source = ./files/ackrc;
+            ".ansible.cfg".source = ./files/ansible.cfg;
+            ".editorconfig".source = ./files/editorconfig;
+            ".mongoshrc.js".source = ./files/mongoshrc.js;
+          };
 
           packages = with pkgs; [
             wl-clipboard
@@ -131,9 +132,11 @@ in
 
       (lib.mkIf (settings.hostRole == "desktop") {
         # desktop scripts
-        home.file.".abcde.conf".source = ./files/desktop/abcde.conf;
-        home.file.".config/backup/exclude-code.txt".source = ./files/desktop/exclude-code.txt;
-        home.file.".config/backup/exclude-local.txt".source = ./files/desktop/exclude-local.txt;
+        home.file = {
+          ".abcde.conf".source = ./files/desktop/abcde.conf;
+          ".config/backup/exclude-code.txt".source = ./files/desktop/exclude-code.txt;
+          ".config/backup/exclude-local.txt".source = ./files/desktop/exclude-local.txt;
+        };
       })
     ]
   );
