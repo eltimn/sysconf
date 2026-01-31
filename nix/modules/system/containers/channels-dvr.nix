@@ -17,10 +17,17 @@ let
   cfg = config.sysconf.containers.channels-dvr;
   settings = config.sysconf.settings;
   port = 8089; # Currently, Channels DVR doesn't have a way to set the port. I believe the client also expects to use 8089 even though I use https.
+  storageDir = "/var/lib/channelsdvr/storage";
+  pathToUnitName = path: lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" path);
 in
 {
   options.sysconf.containers.channels-dvr = {
     enable = lib.mkEnableOption "channels-dvr";
+    dvrDir = lib.mkOption {
+      type = lib.types.str;
+      description = "The location of the DVR directory.";
+      default = "/mnt/channels";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -38,9 +45,13 @@ in
           network = "host";
           devices = [ "/dev/dri:/dev/dri" ];
           volumes = [
-            "/var/lib/channelsdvr/storage:/channels-dvr"
-            "/mnt/channels:/shares/DVR"
+            "${storageDir}:/channels-dvr"
+            "${cfg.dvrDir}:/shares/DVR"
           ];
+          unitConfig = ''
+            After=${pathToUnitName cfg.dvrDir}.mount
+            Requires=${pathToUnitName cfg.dvrDir}.mount
+          '';
         };
       };
     };
@@ -56,7 +67,7 @@ in
 
     # Storage directory
     systemd.tmpfiles.rules = [
-      "d /var/lib/channelsdvr/storage 0770 channelsdvr users -"
+      "d ${storageDir} 0770 channelsdvr users -"
     ];
 
     services.caddy.virtualHosts."dvr.${settings.homeDomain}".extraConfig = ''
