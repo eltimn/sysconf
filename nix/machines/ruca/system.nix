@@ -18,6 +18,11 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   sops.secrets."users/nelly/password".neededForUsers = true;
+  sops.secrets."sshkeys/btrbk/ruca" = {
+    owner = "root";
+    group = "root";
+    mode = "0600";
+  };
 
   sysconf = {
     settings.hostRole = "desktop";
@@ -59,7 +64,7 @@ in
         archive_preserve_min       latest
 
         # ssh
-        ssh_identity /etc/btrbk/ssh/id_ed25519
+        ssh_identity ${config.sops.secrets."sshkeys/btrbk/ruca".path}
         ssh_user root
 
         # things to snapshot

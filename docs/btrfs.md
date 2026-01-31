@@ -60,14 +60,6 @@ sudo umount /mnt/btrtmp
 sudo rmdir /mnt/btrtmp
 ```
 
-## btrbk
-
-Create SSH key pair:
-```shell
-mkdir -p /etc/btrbk/ssh
-ssh-keygen -t ed25519 -f /etc/btrbk/ssh/id_ed25519 -C btrbk@ruca -N ""
-```
-
 ## Resources
 [NixOS Wiki](https://wiki.nixos.org/wiki/Btrfs)
 [Arch Wiki](https://wiki.archlinux.org/title/Btrfs)
