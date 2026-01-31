@@ -57,7 +57,7 @@ nixfmt-tree  # or: treefmt
 # and nixfmt for single files or editor integration.
 
 # Lint Nix files
-statix check nix/  # General Nix code linter (catches anti-patterns)
+statix check  # General Nix code linter (catches anti-patterns)
 
 # Check for issues
 nix flake check  # Comprehensive validation

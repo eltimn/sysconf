@@ -129,11 +129,11 @@ let
     {
 
       deployment = {
+        inherit tags;
         targetHost = fqdn;
         targetUser = "sysconf";
         targetPort = 22;
         keys = deploymentKeys;
-        tags = tags;
       };
 
       imports = [

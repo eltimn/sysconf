@@ -66,6 +66,11 @@
       url = "git+ssh://forgejo@git.home.eltimn.com/eltimn/eltimn-ai-tools.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -74,6 +79,7 @@
       nixpkgs,
       nixpkgs-unstable,
       nixos-generators,
+      git-hooks,
       ...
     }@inputs:
     let
@@ -239,8 +245,40 @@
         }
       );
 
-      # tools for managing this repository and the host machines
-      devShells.${pkgs.stdenv.hostPlatform.system}.default = pkgs.mkShell {
+      # nix flake templates
+      templates = rec {
+        default = basic;
+
+        basic = {
+          path = ./nix/templates/basic;
+          description = "A basic flake";
+        };
+
+        go-basic = {
+          path = ./nix/templates/go-basic;
+          description = "A basic Go flake";
+        };
+
+        go-templ = {
+          path = ./nix/templates/go-templ;
+          description = "A Go/Templ flake";
+        };
+      };
+
+      # Formatter for `nix fmt`
+      formatter.${system} = pkgs.nixfmt-tree;
+
+      # Pre-commit hooks configuration (git-hooks.nix)
+      checks.${system}.pre-commit = git-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          nixfmt.enable = true;
+          statix.enable = true;
+        };
+      };
+
+      # DevShell with pre-commit hooks
+      devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
           age
           borgbackup
@@ -262,27 +300,8 @@
 
         shellHook = ''
           echo "Welcome to sysconf!"
+          ${self.checks.${system}.pre-commit.shellHook}
         '';
-      };
-
-      # nix flake templates
-      templates = rec {
-        default = basic;
-
-        basic = {
-          path = ./nix/templates/basic;
-          description = "A basic flake";
-        };
-
-        go-basic = {
-          path = ./nix/templates/go-basic;
-          description = "A basic Go flake";
-        };
-
-        go-templ = {
-          path = ./nix/templates/go-templ;
-          description = "A Go/Templ flake";
-        };
       };
     };
 }
