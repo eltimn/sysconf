@@ -52,7 +52,6 @@ in
         ".config/opencode/themes".source = ./files/themes;
         ".config/opencode/AGENTS.md".source = ./files/AGENTS.md;
         ".config/opencode/opencode.json".source = ./files/opencode.json;
-        ".config/opencode/agents".source = ./files/agents;
 
         # eltimn-ai-tools
         ".config/opencode/skills/unifi-gateway-api".source =

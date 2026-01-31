@@ -269,33 +269,11 @@
       formatter.${system} = pkgs.nixfmt-tree;
 
       # Pre-commit hooks configuration (git-hooks.nix)
-      checks.${system} = {
-        pre-commit = git-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            nixfmt.enable = true;
-            statix.enable = true;
-            # Comment for now.
-            # rumdl = {
-            #   enable = true;
-            #   entry = "${pkgs.rumdl}/bin/rumdl check . --config ./.config/rumdl.toml";
-            #   pass_filenames = false;
-            # };
-          };
-        };
-
-        # Separate check for opencode agent files with different rules
-        pre-commit-md-agents = git-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            rumdl-agents = {
-              enable = true;
-              name = "rumdl-agents";
-              entry = "${pkgs.rumdl}/bin/rumdl check nix/modules/home/programs/opencode/files/agents/ --config nix/modules/home/programs/opencode/files/agents/rumdl.toml";
-              pass_filenames = false;
-              files = "^nix/modules/home/programs/opencode/files/agents/.*\\.md$";
-            };
-          };
+      checks.${system}.pre-commit = git-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          nixfmt.enable = true;
+          statix.enable = true;
         };
       };
 
@@ -312,7 +290,6 @@
           nixfmt-tree
           opentofu
           pipx
-          rumdl
           sops
           ssh-to-age
           statix

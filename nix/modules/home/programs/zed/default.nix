@@ -34,7 +34,6 @@ in
     home.packages = with pkgs; [
       nil
       nixd
-      rumdl
     ];
 
     # https://home-manager-options.extranix.com/?query=programs.zed-editor&release=release-25.11
@@ -45,7 +44,6 @@ in
         "html"
         "nix"
         "opentofu"
-        "rumdl"
         "sql"
         "templ"
         "toml"
