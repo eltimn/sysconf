@@ -18,10 +18,6 @@ in
     loader.efi.canTouchEfiVariables = true;
   };
 
-  services = {
-    btrfs.autoScrub.enable = true;
-  };
-
   sops.secrets."users/nelly/password".neededForUsers = true;
   sops.secrets."sshkeys/btrbk/ruca" = {
     owner = "root";
@@ -123,6 +119,7 @@ in
   services.pcscd.enable = true;
 
   services = {
+    btrfs.autoScrub.enable = true;
     printing = {
       enable = true;
       # Add Brother printer drivers
