@@ -13,16 +13,18 @@ This repository contains declarative system configurations for multiple machines
 ## Build, Lint, and Test Commands
 
 ### Building Configurations
+
+Some machines are built with standard nix commands (ruca,lappy) and some are built using Colmena (cbox,illmatic). All have tasks in Taskfile.yml. See @hive.nix for details about Colmena.
+
 ```bash
-# Build configuration for a specific host
-task build -- #ruca
-task build -- #lappy
+# Build configuration for a specific host (ruca, lappy)
+task build -- ruca
+
+# Build colmena hosts (cbox, illmatic)
+task build-hive -- <tag>  # <tag> can be cbox, illmatic, local, dns, or digitalocean.
 
 # Build without deploying (dry run)
 nix build .#nixosConfigurations.ruca.config.system.build.toplevel
-
-# Build colmena hosts
-task colmena-local-build  # Build local hive (cbox, illmatic)
 
 # Validate flake structure
 nix flake check
@@ -57,7 +59,7 @@ nixfmt-tree  # or: treefmt
 # and nixfmt for single files or editor integration.
 
 # Lint Nix files
-statix check nix/  # General Nix code linter (catches anti-patterns)
+statix check  # General Nix code linter (catches anti-patterns)
 
 # Check for issues
 nix flake check  # Comprehensive validation

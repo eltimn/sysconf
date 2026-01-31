@@ -23,8 +23,14 @@ in
 
     zfs.forceImportRoot = false;
   };
-  services.btrfs.autoScrub.enable = true;
 
+  # Enable services
+  services = {
+    btrfs.autoScrub.enable = true;
+    zfs.autoScrub.enable = true;
+  };
+
+  # authorized ssh keys for btrbk
   users.users."root".openssh.authorizedKeys.keys = [
     settings.sshKeys.btrbk.ruca
   ];
@@ -36,11 +42,6 @@ in
     sqlite
     config.services.forgejo.package
   ];
-
-  # Enable services
-  services = {
-    zfs.autoScrub.enable = true;
-  };
 
   # sysconf config
   sysconf = {
@@ -78,6 +79,12 @@ in
         port = 8082;
       };
     };
+  };
+
+  # Ensure immich waits for the pictures mount
+  systemd.services.immich-server = {
+    after = [ "mnt-pictures.mount" ];
+    requires = [ "mnt-pictures.mount" ];
   };
 
   systemd.network = {
