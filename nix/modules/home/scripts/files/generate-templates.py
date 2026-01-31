@@ -6,8 +6,10 @@ Sources are defined in the init-new-project skill.
 
 import argparse
 import json
+import os
 import re
 import sys
+import tempfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -117,27 +119,42 @@ def extract_templates_section(content: str) -> Optional[str]:
 
 
 def count_braces_outside_strings(line: str, brace: str) -> int:
-    """Count braces that are outside of strings."""
+    """Count braces that are outside of strings (including Nix multiline strings '')."""
     count = 0
     in_string = False
+    in_multiline = False
     string_char = None
+    escaped = False
     i = 0
     while i < len(line):
         char = line[i]
 
-        # Handle string start/end
-        if char in ('"', "'") and not in_string:
+        # Handle multiline string start ('')
+        if not in_string and not in_multiline and char == "'" and i + 1 < len(line) and line[i + 1] == "'":
+            in_multiline = True
+            i += 2
+            continue
+
+        # Handle multiline string end ('')
+        if in_multiline and char == "'" and i + 1 < len(line) and line[i + 1] == "'":
+            in_multiline = False
+            i += 2
+            continue
+
+        # Handle regular strings
+        if char in ('"', "'") and not in_string and not in_multiline and not escaped:
             in_string = True
             string_char = char
-        elif char == string_char and in_string:
-            # Check for escaped quotes
-            if i > 0 and line[i - 1] != "\\":
-                in_string = False
-                string_char = None
+        elif char == string_char and in_string and not escaped:
+            in_string = False
+            string_char = None
 
-        # Count braces only outside strings
-        elif char == brace and not in_string:
+        # Count braces only outside all string types
+        elif char == brace and not in_string and not in_multiline:
             count += 1
+
+        # Track escape state for next character
+        escaped = (char == "\\" and not escaped)
 
         i += 1
 
@@ -179,7 +196,8 @@ def parse_templates(content: str, source: Source) -> list[Template]:
             if match:
                 template_name = match.group(1)
                 # Skip if it's an alias like "default = basic;"
-                if stripped.rstrip().endswith("{"):
+                # Check for actual block start (allow trailing whitespace and comments)
+                if re.search(r'=\s*\{\s*(#.*)?$', stripped):
                     in_template = True
                     template_brace_count = 1
                     description = ""
@@ -200,7 +218,8 @@ def parse_templates(content: str, source: Source) -> list[Template]:
             if template_brace_count == 0:
                 if template_name and description:
                     if source.type == "flakehub":
-                        ref = f"https://flakehub.com/f/{source.owner}/{source.repo}/0.1#{template_name}"
+                        # Use wildcard to get latest version
+                        ref = f"https://flakehub.com/f/{source.owner}/{source.repo}/*#{template_name}"
                     else:
                         ref = f"github:{source.owner}/{source.repo}#{template_name}"
 
@@ -274,10 +293,17 @@ def generate_json(output_file: Path, force: bool = False) -> bool:
         },
     }
 
-    # Write JSON file
+    # Write JSON file atomically using temp file
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_file, "w") as f:
-        json.dump(data, f, indent=2)
+    temp_fd, temp_path = tempfile.mkstemp(dir=output_file.parent, suffix=".tmp")
+    try:
+        with os.fdopen(temp_fd, "w") as f:
+            json.dump(data, f, indent=2)
+        os.rename(temp_path, output_file)
+    except Exception as e:
+        os.unlink(temp_path)
+        print(f"Error writing JSON file: {e}", file=sys.stderr)
+        return False
 
     print(
         f"Generated {output_file} with {len(all_templates)} templates", file=sys.stderr

@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+# Validate HOME is set
+if [[ -z "${HOME:-}" ]]; then
+    echo "Error: HOME environment variable not set" >&2
+    exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 JSON_DIR="$HOME/.local/state/init-project"
 JSON_FILE="${JSON_DIR}/nix-templates.json"
@@ -25,10 +31,11 @@ check_dependencies() {
     fi
 }
 
-# Create JSON directory if needed
-if [ ! -d "$JSON_DIR" ]; then
-  mkdir -p "$JSON_DIR"
-fi
+# Create JSON directory (mkdir -p is idempotent, avoids race condition)
+mkdir -p "$JSON_DIR" || {
+    echo "Error: Failed to create directory $JSON_DIR" >&2
+    exit 1
+}
 
 # Function to generate JSON file
 generate_json() {
@@ -54,6 +61,9 @@ generate_json() {
 check_json() {
     if [[ ! -f "$JSON_FILE" ]]; then
         echo "Template file not found. Generating..."
+        generate_json
+    elif ! jq empty "$JSON_FILE" 2>/dev/null; then
+        echo "Template file is corrupted. Regenerating..."
         generate_json
     fi
 }
@@ -124,7 +134,10 @@ for template in "${TEMPLATES[@]}"; do
 done
 
 # Use gum filter to search and select a template
-selected_display=$(printf '%s\n' "${display_names[@]}" | gum filter --placeholder="Type to filter templates...")
+selected_display=$(printf '%s\n' "${display_names[@]}" | gum filter --placeholder="Type to filter templates...") || {
+    echo "Selection cancelled" >&2
+    exit 0
+}
 
 # Find the corresponding template URL
 selected_template=""
