@@ -1,5 +1,5 @@
 # COSMIC Terminal Configuration
-{ ... }:
+_:
 {
   programs.cosmic-term = {
     enable = true;
