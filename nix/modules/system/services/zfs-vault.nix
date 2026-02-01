@@ -204,7 +204,7 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      zfsVaultScript
+      cfg.package
     ];
 
     # Ensure the lock directory exists
