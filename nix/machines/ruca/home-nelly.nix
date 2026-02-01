@@ -10,6 +10,8 @@
     ../../modules/home/desktop
   ];
 
+  sysconf.settings.secretCipherPath = "/srv/ext/nelly/secret-cipher";
+
   # git secrets
   sops.secrets = {
     "git/github" = { };
@@ -44,10 +46,9 @@
 
     # some files
     file.".config/borg/backup_dirs".text =
-      "export BACKUP_DIRS='Audio Documents Notes Pictures code secret-cipher sysconf'";
+      "export BACKUP_DIRS='Audio Documents Notes Pictures code sysconf'";
     # autostart files (run on login)
     file.".config/autostart/filen.desktop".source = ./files/filen.desktop;
-    # file.".config/autostart/mount-secret.desktop".source = ./files/mount-secret.desktop;
   };
 
   # Packages that are installed as programs also allow for configuration.
@@ -91,6 +92,15 @@
   systemd.user = {
     enable = true;
 
+    tmpfiles.rules = [
+      "d ${config.sysconf.settings.secretCipherPath} 0700 - - -"
+      "d ${config.home.homeDirectory}/secret 0700 - - -"
+      # Filen sync directories
+      "d ${config.home.homeDirectory}/Audio 0750 - - -"
+      "d ${config.home.homeDirectory}/Documents 0700 - - -"
+      "d ${config.home.homeDirectory}/Notes 0700 - - -"
+    ];
+
     # Set PATH for all systemd user services
     sessionVariables = {
       PATH = "/run/current-system/sw/bin";
@@ -121,7 +131,7 @@
         Service = {
           Type = "exec";
           Environment = "PATH=/run/wrappers/bin:${pkgs.gocryptfs}/bin:${pkgs.libsecret}/bin";
-          ExecStart = "${pkgs.gocryptfs}/bin/gocryptfs -fg --extpass='${pkgs.libsecret}/bin/secret-tool lookup gocryptfs secret' ${config.home.homeDirectory}/secret-cipher ${config.home.homeDirectory}/secret";
+          ExecStart = "${pkgs.gocryptfs}/bin/gocryptfs -fg --extpass='${pkgs.libsecret}/bin/secret-tool lookup gocryptfs secret' ${config.sysconf.settings.secretCipherPath} ${config.home.homeDirectory}/secret";
           ExecStop = "/run/wrappers/bin/fusermount -u ${config.home.homeDirectory}/secret";
         };
         Install = {

@@ -8,7 +8,7 @@
 
 let
   # 1. DEFINE PATHS
-  cipherDir = "${config.home.homeDirectory}/secret-cipher";
+  cipherDir = config.sysconf.settings.secretCipherPath;
   mountPoint = "${config.home.homeDirectory}/secret";
 
   # 2. HELPER SCRIPT

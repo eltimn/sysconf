@@ -81,28 +81,39 @@ in
   };
 
   # Ensure immich waits for the pictures mount
-  systemd.services.immich-server = {
-    after = [ "mnt-pictures.mount" ];
-    requires = [ "mnt-pictures.mount" ];
-  };
+  systemd = {
+    tmpfiles.rules = [
+      "z /mnt/files 0755 nelly users -" # z updates user:group
+      "d /mnt/files/Audio 0755 nelly users -"
+      "d /mnt/files/Camera 0755 nelly users -"
+      "d /mnt/files/Documents 0755 nelly users -"
+      "d /mnt/files/Notes 0755 nelly users -"
+      "d /mnt/files/secret-cipher 0755 nelly users -"
+    ];
 
-  systemd.network = {
-    # Persistent network interface naming
-    links."10-lan" = {
-      matchConfig.MACAddress = "0c:c4:7a:db:ed:c3";
-      linkConfig.Name = "eth3";
+    network = {
+      # Persistent network interface naming
+      links."10-lan" = {
+        matchConfig.MACAddress = "0c:c4:7a:db:ed:c3";
+        linkConfig.Name = "eth3";
+      };
+
+      # Use systemd-networkd for network management
+      enable = true;
+
+      # Configure static IP with systemd-networkd
+      networks."10-eth3" = {
+        matchConfig.Name = "eth3";
+        address = [ "10.42.10.22/24" ];
+        gateway = [ "10.42.10.1" ];
+        dns = config.sysconf.settings.dnsServers;
+        linkConfig.RequiredForOnline = "routable";
+      };
     };
 
-    # Use systemd-networkd for network management
-    enable = true;
-
-    # Configure static IP with systemd-networkd
-    networks."10-eth3" = {
-      matchConfig.Name = "eth3";
-      address = [ "10.42.10.22/24" ];
-      gateway = [ "10.42.10.1" ];
-      dns = config.sysconf.settings.dnsServers;
-      linkConfig.RequiredForOnline = "routable";
+    services.immich-server = {
+      after = [ "mnt-pictures.mount" ];
+      requires = [ "mnt-pictures.mount" ];
     };
   };
 

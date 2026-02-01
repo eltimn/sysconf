@@ -94,5 +94,11 @@
         "subvol=@snapshots-main"
       ];
     };
+
+    ## Ext disk ##
+    "/srv/ext" = {
+      device = "/dev/disk/by-uuid/f37a87a5-058e-453f-ad93-702d7655422c";
+      fsType = "ext4";
+    };
   };
 }

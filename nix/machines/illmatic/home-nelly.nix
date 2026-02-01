@@ -77,14 +77,4 @@
       };
     };
   };
-
-  # TODO: move these to system level since they are mounted by root
-  systemd.user.tmpfiles.rules = [
-    "z /mnt/files - - - - -" # z updates user:group only when created
-    "d /mnt/files/Audio - - - - -"
-    "d /mnt/files/Camera - - - - -"
-    "d /mnt/files/Documents - - - - -"
-    "d /mnt/files/Notes - - - - -"
-    "d /mnt/files/secret-cipher - - - - -"
-  ];
 }
