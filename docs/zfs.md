@@ -167,8 +167,8 @@ If you remove `fileSystems` entries and use ZFS automounting:
 
   3. **Empty Directory Issues:** If ZFS fails to mount (e.g., pool error), the
      directory `/mnt/plex` might still exist (as a folder on your root drive).
-     Applications might silently fill up your root partition writing to it
-     .`fileSystems` mounts handle this more gracefully by failing the
+     Applications might silently fill up your root partition writing to it.
+     `fileSystems` mounts handle this more gracefully by failing the
      dependency.
 
 [NixOS Wiki - ZFS](https://wiki.nixos.org/wiki/ZFS)
