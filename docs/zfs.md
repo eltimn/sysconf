@@ -22,11 +22,11 @@ lists the pool, and set `networking.hostId`.
 
 ## Creating an encrypted parent dataset
 
-The childen will inherit the encryption settings from the parent.
+The children will inherit the encryption settings from the parent.
 
 ```shell
 # Encrypted parent dataset
-zfs create -o encryption=aes-256-gcm \
+sudo zfs create -o encryption=aes-256-gcm \
   -o keyformat=passphrase \
   -o keylocation=prompt \
   -o compression=zstd \
@@ -34,11 +34,18 @@ zfs create -o encryption=aes-256-gcm \
   mediapool/private
 
 # Children datasets
-zfs create mediapool/private/archives
-zfs create mediapool/private/backup
+sudo zfs create mediapool/private/archives
+sudo zfs create mediapool/private/backup
 
-# Manually mount dataset and children
-zfs mount -R mediapool/private
+# Manually unlock key and mount dataset and children
+sudo zfs load-key -L "file://$KEY_FILE" mediapool/private
+sudo zfs mount -R mediapool/private
+
+# Manually unmount and unload key
+sudo zfs unmount mediapool/private/archives
+sudo zfs unmount mediapool/private/backup
+sudo zfs unmount mediapool/private
+sudo zfs unload-key mediapool/private
 ```
 
 ## Illmatic Conversion to NixOS
