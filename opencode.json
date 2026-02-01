@@ -11,9 +11,9 @@
     "build": {
       "permission": {
         "bash": {
+          "git*": "ask",
           "git status": "allow",
           "git diff": "allow",
-          "git*": "ask",
           "ls": "allow",
           "pwd": "allow",
           "task switch": "deny",
@@ -22,5 +22,12 @@
       }
     }
   },
-  "instructions": ["AGENTS.md"]
+  "instructions": ["AGENTS.md"],
+  "permission": {
+    "external_directory": {
+      "~/Pictures/**": "allow",
+      "~/code/ai": "allow",
+      "~/code/eltimn/eltimn-ai-tools": "allow"
+    }
+  }
 }

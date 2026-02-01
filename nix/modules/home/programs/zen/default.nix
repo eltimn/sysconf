@@ -87,6 +87,67 @@ in
       profiles.${cfg.profileName} = {
         userChrome = cfg.userChrome + ''
           /* Personal Zen Browser UI customizations */
+          /* Cosmic Theme Integration - Responsive to system dark/light mode */
+
+          /* Dark Mode */
+          @media (prefers-color-scheme: dark) {
+            :root, html#main-window, body {
+              /* Zen Specific Variables */
+              --zen-primary-color: #2E598C !important;
+              --zen-main-browser-background: #3b414d !important;
+              --zen-main-browser-background-toolbar: #000000 !important;
+
+              /* Legacy/Standard Variables - Dark */
+              --zen-colors-primary: #2E598C !important;
+              --zen-colors-secondary: #2e343eff !important;
+              --zen-colors-tertiary: #3b414d !important;
+              --zen-colors-border: #2e343eff !important;
+              --zen-colors-background: #3b414d !important;
+              --zen-colors-sidebar: #000000 !important;
+              --toolbar-bgcolor: #000000 !important;
+              --lwt-text-color: #eceff4 !important;
+              --lwt-sidebar-background-color: #000000 !important;
+            }
+
+            #navigator-toolbox {
+               background-color: #3b414d !important;
+               border-bottom: 1px solid #474747 !important;
+            }
+
+            #sidebar-box, .sidebar-panel, #sidebar-search-container {
+               background-color: #000000 !important;
+            }
+          }
+
+          /* Light Mode */
+          @media (prefers-color-scheme: light) {
+            :root, html#main-window, body {
+               /* Zen Specific Variables */
+               --zen-primary-color: #003a99 !important;
+               --zen-main-browser-background: #e2e2e2 !important;
+               --zen-main-browser-background-toolbar: #f5f7fa !important;
+
+               /* Legacy/Standard Variables - Light */
+               --zen-colors-primary: #003a99 !important;
+               --zen-colors-secondary: #c6c6c6 !important;
+               --zen-colors-tertiary: #ffffff !important;
+               --zen-colors-border: #c6c6c6 !important;
+               --zen-colors-background: #e2e2e2 !important;
+               --zen-colors-sidebar: #f5f7fa !important;
+               --toolbar-bgcolor: #e2e2e2 !important;
+               --lwt-text-color: #292929 !important;
+               --lwt-sidebar-background-color: #f5f7fa !important;
+            }
+
+            #navigator-toolbox {
+               background-color: #e2e2e2 !important;
+               border-bottom: 1px solid #c6c6c6 !important;
+            }
+
+            #sidebar-box, .sidebar-panel, #sidebar-search-container {
+               background-color: #f5f7fa !important;
+            }
+          }
 
           /* Hide tab bar if using vertical tabs */
           #tabbrowser-tabs[orient="horizontal"] {
@@ -96,11 +157,7 @@ in
           /* Compact sidebar styling */
           .sidebar-panel {
             font-size: 12px !important;
-          }
-
-          /* Better URL bar visibility */
-          #urlbar {
-            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: var(--lwt-text-color) !important;
           }
         '';
 
@@ -119,6 +176,7 @@ in
 
         settings = {
           # Basic settings
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           "browser.shell.checkDefaultBrowser" = false;
           "browser.startup.homepage" = "about:blank";
           "browser.tabs.warnOnClose" = false;
