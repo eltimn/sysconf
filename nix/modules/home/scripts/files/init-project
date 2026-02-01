@@ -2,14 +2,39 @@
 
 set -euo pipefail
 
+# Validate HOME is set
+if [[ -z "${HOME:-}" ]]; then
+    echo "Error: HOME environment variable not set" >&2
+    exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 JSON_DIR="$HOME/.local/state/init-project"
 JSON_FILE="${JSON_DIR}/nix-templates.json"
-GENERATOR_SCRIPT="${SCRIPT_DIR}/generate-templates"
+GENERATOR_SCRIPT="${SCRIPT_DIR}/generate-templates.py"
 
-if [ ! -d "$JSON_DIR" ]; then
-  mkdir -p "$JSON_DIR"
-fi
+# Check dependencies
+check_dependencies() {
+    local deps=("python3" "jq" "gum" "direnv")
+    local missing=()
+
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing+=("$dep")
+        fi
+    done
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        echo "Error: Missing required dependencies: ${missing[*]}" >&2
+        exit 1
+    fi
+}
+
+# Create JSON directory (mkdir -p is idempotent, avoids race condition)
+mkdir -p "$JSON_DIR" || {
+    echo "Error: Failed to create directory $JSON_DIR" >&2
+    exit 1
+}
 
 # Function to generate JSON file
 generate_json() {
@@ -20,12 +45,15 @@ generate_json() {
         exit 1
     fi
 
-    local cmd="\"$GENERATOR_SCRIPT\" -o \"$JSON_FILE\""
+    # Build command arguments for Python script
+    local args=("python3" "$GENERATOR_SCRIPT")
+    args+=("-o" "$JSON_FILE")
     if [[ "$force_flag" == "--force" ]]; then
-        cmd="$cmd -f"
+        args+=("-f")
     fi
 
-    eval "$cmd"
+    # Execute Python script directly
+    "${args[@]}"
 }
 
 # Function to check if JSON exists and generate if needed
@@ -33,16 +61,14 @@ check_json() {
     if [[ ! -f "$JSON_FILE" ]]; then
         echo "Template file not found. Generating..."
         generate_json
+    elif ! jq empty "$JSON_FILE" 2>/dev/null; then
+        echo "Template file is corrupted. Regenerating..."
+        generate_json
     fi
 }
 
 # Function to parse JSON and extract templates
 parse_templates() {
-    if ! command -v jq &> /dev/null; then
-        echo "Error: jq is required but not installed" >&2
-        exit 1
-    fi
-
     jq -r '.templates[] | "\(.ref)|\(.name) - \(.description) (\(.source))"' "$JSON_FILE"
 }
 
@@ -75,6 +101,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Check dependencies before proceeding
+check_dependencies
+
 # Handle update mode
 if [[ "$UPDATE_MODE" == true ]]; then
     echo "Updating templates from sources..."
@@ -104,7 +133,10 @@ for template in "${TEMPLATES[@]}"; do
 done
 
 # Use gum filter to search and select a template
-selected_display=$(printf '%s\n' "${display_names[@]}" | gum filter --placeholder="Type to filter templates...")
+selected_display=$(printf '%s\n' "${display_names[@]}" | gum filter --placeholder="Type to filter templates...") || {
+    echo "Selection cancelled" >&2
+    exit 0
+}
 
 # Find the corresponding template URL
 selected_template=""
@@ -122,12 +154,24 @@ fi
 
 # Run nix flake init
 echo "Initializing project with template: $selected_template"
-nix flake init --template "$selected_template"
+if ! nix flake init --template "$selected_template"; then
+    echo "Error: Failed to initialize project with template" >&2
+    exit 1
+fi
 
 # Check if .envrc exists, if not create it
 if [[ ! -f ".envrc" ]]; then
     echo "Creating .envrc file..."
     echo "use flake" > .envrc
+fi
+
+# Check if .gitignore exists, if not create it
+if [[ ! -f ".gitignore" ]]; then
+    echo "Creating .gitignore file..."
+    cat > .gitignore << 'EOF'
+.direnv
+result
+EOF
 fi
 
 # Run direnv allow

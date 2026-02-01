@@ -34,6 +34,7 @@ in
         jq
         ncdu
         parted
+        python3
         s3cmd
         sshfs
         stow
