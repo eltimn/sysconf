@@ -10,6 +10,8 @@
     ../../modules/home/desktop
   ];
 
+  sysconf.settings.secretCipherPath = "/srv/ext/nelly/secret-cipher";
+
   # git secrets
   sops.secrets = {
     "git/github" = { };
@@ -91,12 +93,12 @@
     enable = true;
 
     tmpfiles.rules = [
-      "d ${config.sysconf.settings.secretCipherPath} - - - -"
-      "d ${config.home.homeDirectory}/secret - - - -"
+      "d ${config.sysconf.settings.secretCipherPath} 0700 - - -"
+      "d ${config.home.homeDirectory}/secret 0700 - - -"
       # Filen sync directories
-      "d ${config.home.homeDirectory}/Audio - - - -"
-      "d ${config.home.homeDirectory}/Documents - - - -"
-      "d ${config.home.homeDirectory}/Notes - - - -"
+      "d ${config.home.homeDirectory}/Audio 0750 - - -"
+      "d ${config.home.homeDirectory}/Documents 0700 - - -"
+      "d ${config.home.homeDirectory}/Notes 0700 - - -"
     ];
 
     # Set PATH for all systemd user services

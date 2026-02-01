@@ -85,7 +85,7 @@ in
     secretCipherPath = lib.mkOption {
       type = lib.types.path;
       description = "Path to the secret-cipher directory.";
-      default = "/srv/ext/nelly/secret-cipher";
+      default = "${config.home.homeDirectory}/secret-cipher";
     };
   };
 

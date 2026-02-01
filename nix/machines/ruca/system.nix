@@ -140,7 +140,7 @@ in
     };
 
     tmpfiles.rules = [
-      "d /srv/ext/nelly 0755 nelly users -"
+      "d /srv/ext/nelly 0750 nelly users -"
     ];
   };
 
