@@ -18,6 +18,8 @@ let
 
     set -euo pipefail
 
+    LOCK_DIR="/run/zfs-vault"
+
     usage() {
       echo "Usage: zfs-vault <unlock|lock|status>"
       echo ""
@@ -36,6 +38,11 @@ let
     DATASET="${cfg.dataset}"
     KEY_FILE="${cfg.keyFile}"
 
+    # Ensure lock directory exists
+    mkdir -p "$LOCK_DIR"
+
+    LOCK_FILE="$LOCK_DIR/lock"
+
     is_key_loaded() {
       local keystatus
       keystatus=$(zfs get -H -o value keystatus "$DATASET" 2>/dev/null || echo "unavailable")
@@ -48,10 +55,36 @@ let
       [[ "$mounted" == "yes" ]]
     }
 
-    do_unlock() {
-      if is_key_loaded; then
-        echo "Key already loaded for $DATASET"
+    get_lock_count() {
+      if [[ -f "$LOCK_FILE" ]]; then
+        cat "$LOCK_FILE"
       else
+        echo "0"
+      fi
+    }
+
+    increment_lock() {
+      local count
+      count=$(get_lock_count)
+      echo $((count + 1)) > "$LOCK_FILE"
+    }
+
+    decrement_lock() {
+      local count
+      count=$(get_lock_count)
+      if [[ $count -gt 0 ]]; then
+        echo $((count - 1)) > "$LOCK_FILE"
+      fi
+    }
+
+    do_unlock() {
+      if is_key_loaded && is_mounted; then
+        echo "Dataset already mounted: $DATASET"
+        increment_lock
+        return 0
+      fi
+
+      if ! is_key_loaded; then
         if [[ ! -f "$KEY_FILE" ]]; then
           echo "Error: Key file does not exist: $KEY_FILE"
           echo "Ensure the Colmena key service has deployed the key."
@@ -63,16 +96,25 @@ let
         echo "Key loaded successfully."
       fi
 
-      if is_mounted; then
-        echo "Dataset already mounted: $DATASET"
-      else
+      if ! is_mounted; then
         echo "Mounting $DATASET and all children..."
         zfs mount -R "$DATASET"
         echo "Dataset mounted."
       fi
+
+      increment_lock
     }
 
     do_lock() {
+      decrement_lock
+      local count
+      count=$(get_lock_count)
+
+      if [[ $count -gt 0 ]]; then
+        echo "Lock deferred: $count other process(es) still using $DATASET"
+        return 0
+      fi
+
       if is_mounted; then
         echo "Unmounting $DATASET and children..."
         # Unmount child datasets first (reverse order)
@@ -110,6 +152,8 @@ let
       else
         echo "Key file: NOT FOUND"
       fi
+
+      echo "Lock count: $(get_lock_count)"
     }
 
     case "$ACTION" in
@@ -161,6 +205,11 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       zfsVaultScript
+    ];
+
+    # Ensure the lock directory exists
+    systemd.tmpfiles.rules = [
+      "d /run/zfs-vault 0755 root root -"
     ];
   };
 }
