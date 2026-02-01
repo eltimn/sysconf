@@ -79,7 +79,7 @@ in
               # attach to a tmux session using fzf
               # tma = "tmux attach -t $(tmux ls  | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\"  | fzf)";
 
-              mount-secret = "gocryptfs --idle 2h ~/secret-cipher ~/secret";
+              mount-secret = "gocryptfs --idle 2h ${config.sysconf.settings.secretCipherPath} ~/secret";
               unmount-secret = "fusermount -u ~/secret";
             };
 

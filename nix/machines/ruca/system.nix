@@ -133,9 +133,15 @@ in
   };
 
   # Persistent network interface naming
-  systemd.network.links."10-lan" = {
-    matchConfig.MACAddress = "10:ff:e0:83:15:15";
-    linkConfig.Name = "eth0";
+  systemd = {
+    network.links."10-lan" = {
+      matchConfig.MACAddress = "10:ff:e0:83:15:15";
+      linkConfig.Name = "eth0";
+    };
+
+    tmpfiles.rules = [
+      "d /srv/ext/nelly 0755 nelly users -"
+    ];
   };
 
   # networking

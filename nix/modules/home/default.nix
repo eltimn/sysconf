@@ -81,6 +81,14 @@ in
     ./services
   ];
 
+  options.sysconf.settings = {
+    secretCipherPath = lib.mkOption {
+      type = lib.types.path;
+      description = "Path to the secret-cipher directory.";
+      default = "/srv/ext/nelly/secret-cipher";
+    };
+  };
+
   config = lib.mkMerge [
     {
       home = {
