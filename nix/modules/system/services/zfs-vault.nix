@@ -12,6 +12,7 @@ let
     export PATH="${
       lib.makeBinPath [
         pkgs.coreutils
+        pkgs.flock
         pkgs.zfs
       ]
     }:$PATH"
@@ -43,6 +44,9 @@ let
 
     LOCK_FILE="$LOCK_DIR/lock"
 
+    # Open lock file descriptor for synchronization
+    exec 200>"$LOCK_DIR/.lock"
+
     is_key_loaded() {
       local keystatus
       keystatus=$(zfs get -H -o value keystatus "$DATASET" 2>/dev/null || echo "unavailable")
@@ -63,24 +67,15 @@ let
       fi
     }
 
-    increment_lock() {
-      local count
-      count=$(get_lock_count)
-      echo $((count + 1)) > "$LOCK_FILE"
-    }
-
-    decrement_lock() {
-      local count
-      count=$(get_lock_count)
-      if [[ $count -gt 0 ]]; then
-        echo $((count - 1)) > "$LOCK_FILE"
-      fi
-    }
-
     do_unlock() {
       if is_key_loaded && is_mounted; then
         echo "Dataset already mounted: $DATASET"
-        increment_lock
+        (
+          flock 200
+          local count
+          count=$(get_lock_count)
+          echo $((count + 1)) > "$LOCK_FILE"
+        )
         return 0
       fi
 
@@ -102,18 +97,27 @@ let
         echo "Dataset mounted."
       fi
 
-      increment_lock
+      (
+        flock 200
+        local count
+        count=$(get_lock_count)
+        echo $((count + 1)) > "$LOCK_FILE"
+      )
     }
 
     do_lock() {
-      decrement_lock
-      local count
-      count=$(get_lock_count)
-
-      if [[ $count -gt 0 ]]; then
-        echo "Lock deferred: $count other process(es) still using $DATASET"
-        return 0
-      fi
+      (
+        flock 200
+        local count
+        count=$(get_lock_count)
+        if [[ $count -le 1 ]]; then
+          echo 0 > "$LOCK_FILE"
+        else
+          echo $((count - 1)) > "$LOCK_FILE"
+          echo "Lock deferred: $((count - 1)) other process(es) still using $DATASET"
+          exit 0
+        fi
+      )
 
       if is_mounted; then
         echo "Unmounting $DATASET and children..."
