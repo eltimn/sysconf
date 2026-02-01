@@ -117,6 +117,7 @@ in
       sysconf.programs = {
         chromium.enable = true;
         firefox.enable = true;
+        foot.enable = true;
         ghostty.enable = true;
         goose.enable = true;
         opencode.enable = true;

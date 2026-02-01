@@ -14,6 +14,7 @@
     ./chromium.nix
     ./direnv.nix
     ./firefox.nix
+    ./foot.nix
     ./ghostty.nix
     ./micro.nix
     ./nodejs.nix
