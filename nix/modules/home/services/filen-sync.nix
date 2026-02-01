@@ -77,6 +77,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sysconf.services.notify.enable = true;
     home.packages = with pkgs; [
       filen-cli
     ];

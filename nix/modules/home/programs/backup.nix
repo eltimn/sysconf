@@ -29,6 +29,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sysconf.services.notify.enable = true;
     home.packages = [ pkgs.borgmatic ];
 
     programs.borgmatic = {
