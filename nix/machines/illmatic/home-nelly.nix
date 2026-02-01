@@ -77,13 +77,4 @@
       };
     };
   };
-
-  systemd.user.tmpfiles.rules = [
-    "z /mnt/files - - - - -" # z updates user:group
-    "d /mnt/files/Audio - - - - -"
-    "d /mnt/files/Camera - - - - -"
-    "d /mnt/files/Documents - - - - -"
-    "d /mnt/files/Notes - - - - -"
-    "d /mnt/files/secret-cipher - - - - -"
-  ];
 }
