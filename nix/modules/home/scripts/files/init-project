@@ -26,7 +26,6 @@ check_dependencies() {
 
     if [[ ${#missing[@]} -gt 0 ]]; then
         echo "Error: Missing required dependencies: ${missing[*]}" >&2
-        echo "Install with: nix-env -iA nixpkgs.{${missing[*]}}" >&2
         exit 1
     fi
 }
@@ -171,8 +170,7 @@ if [[ ! -f ".gitignore" ]]; then
     echo "Creating .gitignore file..."
     cat > .gitignore << 'EOF'
 .direnv
-.envrc
-result/
+result
 EOF
 fi
 
