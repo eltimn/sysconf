@@ -8,6 +8,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 from dataclasses import dataclass
@@ -297,9 +298,12 @@ def generate_json(output_file: Path, force: bool = False) -> bool:
     output_file.parent.mkdir(parents=True, exist_ok=True)
     temp_fd, temp_path = tempfile.mkstemp(dir=output_file.parent, suffix=".tmp")
     try:
+        # Restrict permissions to owner only
+        os.fchmod(temp_fd, 0o600)
         with os.fdopen(temp_fd, "w") as f:
             json.dump(data, f, indent=2)
-        os.rename(temp_path, output_file)
+        # Use shutil.move for cross-filesystem support
+        shutil.move(temp_path, output_file)
     except Exception as e:
         os.unlink(temp_path)
         print(f"Error writing JSON file: {e}", file=sys.stderr)
