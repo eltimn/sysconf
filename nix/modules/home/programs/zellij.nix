@@ -6,6 +6,25 @@
 }:
 let
   cfg = config.sysconf.programs.zellij;
+
+  zellij-session-picker = pkgs.writeShellScriptBin "zellij-session-picker" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    ZJ_SESSIONS=$(zellij list-sessions 2>/dev/null || true)
+
+    if [ -z "''${ZJ_SESSIONS}" ]; then
+      zellij attach -c
+    else
+      SESSION_LINE=$(echo "''${ZJ_SESSIONS}" | ${pkgs.gum}/bin/gum choose --header "Select zellij session:")
+      if [ -n "''${SESSION_LINE}" ]; then
+        SESSION=$(echo "''${SESSION_LINE}" | awk '{print $1}')
+        zellij attach "''${SESSION}"
+      else
+        zellij attach -c
+      fi
+    fi
+  '';
 in
 {
   options.sysconf.programs.zellij = {
@@ -28,10 +47,11 @@ in
       };
     };
 
+    home.packages = [ zellij-session-picker ];
+
     # Create a shell alias for easy session attachment
     home.shellAliases = {
-      zj = "zellij";
-      zja = "zellij attach";
+      zjs = "zellij-session-picker";
     };
   };
 }
