@@ -19,5 +19,6 @@
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix
+    ./zellij.nix
   ];
 }
