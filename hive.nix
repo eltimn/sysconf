@@ -118,6 +118,19 @@ let
       group = "root";
       permissions = "0400";
     };
+    "zfs-encryption-private" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"zfs_encryption\"][\"private\"]"
+        "--decrypt"
+        "${secretsPath}/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "root";
+      group = "root";
+      permissions = "0400";
+    };
   };
 
   # a function to create a colmena configuration

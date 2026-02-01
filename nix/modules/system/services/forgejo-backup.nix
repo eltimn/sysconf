@@ -7,7 +7,7 @@
 let
   cfg = config.sysconf.services.forgejo-backup;
   forgejoService = config.services.forgejo;
-  mountVault = config.sysconf.services.mount-vault;
+  zfsVault = config.sysconf.services.zfs-vault;
 in
 {
   options.sysconf.services.forgejo-backup = {
@@ -22,13 +22,14 @@ in
     remoteBackupLocation = lib.mkOption {
       type = lib.types.str;
       description = "Remote location to sync backup files to.";
-      default = "${mountVault.mountDir}/services/forgejo";
+      default = "${zfsVault.mountDir}/backup/forgejo";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # Enable mount-vault dependency
-    sysconf.services.mount-vault.enable = true;
+    # Enable zfs-vault dependency
+    sysconf.services.zfs-vault.enable = true;
+    sysconf.services.notify.enable = true;
 
     # Ensure backup directory exists with correct permissions
     # Owned by forgejo so dump can write
@@ -43,9 +44,9 @@ in
           OnFailure = "notify@%i.service";
         };
 
-        # Wait for gocryptfs key service before starting
-        after = [ "gocryptfs-services-key.service" ];
-        wants = [ "gocryptfs-services-key.service" ];
+        # Wait for ZFS encryption key service before starting
+        after = [ "zfs-encryption-private-key.service" ];
+        wants = [ "zfs-encryption-private-key.service" ];
 
         serviceConfig = {
           Type = "oneshot";
@@ -56,7 +57,7 @@ in
 
         path = [
           forgejoService.package
-          mountVault.package
+          zfsVault.package
           pkgs.rsync
           pkgs.sudo
         ];
@@ -69,9 +70,9 @@ in
           TIMESTAMP=$(date +%Y%m%d_%H%M%S)
           DUMP_FILE="$BACKUP_DIR/forgejo-dump-$TIMESTAMP.zip"
           FORGEJO_STOPPED=false
-          VAULT_MOUNTED=false
+          VAULT_UNLOCKED=false
 
-          # Ensure Forgejo is restarted and vault unmounted on exit, even if script fails
+          # Ensure Forgejo is restarted and vault locked on exit, even if script fails
           cleanup() {
             if [ "$FORGEJO_STOPPED" = true ]; then
               echo "Ensuring Forgejo service is restarted..."
@@ -81,10 +82,10 @@ in
                 echo "ERROR: Failed to restart Forgejo service!" >&2
               fi
             fi
-            if [ "$VAULT_MOUNTED" = true ]; then
-              echo "Unmounting encrypted vault..."
-              if ! mount-vault services unmount; then
-                echo "ERROR: Failed to unmount encrypted vault. It may remain mounted." >&2
+            if [ "$VAULT_UNLOCKED" = true ]; then
+              echo "Locking ZFS vault..."
+              if ! zfs-vault lock; then
+                echo "ERROR: Failed to lock ZFS vault. Dataset may remain unlocked." >&2
               fi
             fi
           }
@@ -118,10 +119,10 @@ in
           # Clean up old dump files (keep last 7 days locally)
           find "$BACKUP_DIR" -name "forgejo-dump-*.zip" -mtime +6 -delete
 
-          # Mount encrypted vault and sync backups
-          echo "Mounting encrypted vault..."
-          mount-vault services mount
-          VAULT_MOUNTED=true
+          # Unlock ZFS vault and sync backups
+          echo "Unlocking ZFS vault..."
+          zfs-vault unlock
+          VAULT_UNLOCKED=true
 
           # Sync backups to remote location
           echo "Syncing backups to remote ..."

@@ -7,7 +7,7 @@
 let
   cfg = config.sysconf.services.pocketid-backup;
   pocketidService = config.services.pocket-id;
-  mountVault = config.sysconf.services.mount-vault;
+  zfsVault = config.sysconf.services.zfs-vault;
 in
 {
   options.sysconf.services.pocketid-backup = {
@@ -22,13 +22,14 @@ in
     remoteBackupLocation = lib.mkOption {
       type = lib.types.str;
       description = "Remote location to sync backup files to.";
-      default = "${mountVault.mountDir}/services/pocketid";
+      default = "${zfsVault.mountDir}/backup/pocketid";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # Enable mount-vault dependency
-    sysconf.services.mount-vault.enable = true;
+    # Enable zfs-vault dependency
+    sysconf.services.zfs-vault.enable = true;
+    sysconf.services.notify.enable = true;
 
     systemd = {
       # Ensure backup directory exists with correct permissions
@@ -42,9 +43,9 @@ in
           OnFailure = "notify@%i.service";
         };
 
-        # Wait for gocryptfs key service before starting
-        after = [ "gocryptfs-services-key.service" ];
-        wants = [ "gocryptfs-services-key.service" ];
+        # Wait for ZFS encryption key service before starting
+        after = [ "zfs-encryption-private-key.service" ];
+        wants = [ "zfs-encryption-private-key.service" ];
 
         serviceConfig = {
           Type = "oneshot";
@@ -54,7 +55,7 @@ in
         };
 
         path = [
-          mountVault.package
+          zfsVault.package
           pkgs.gnutar
           pkgs.gzip
           pkgs.rsync
@@ -67,9 +68,9 @@ in
           BACKUP_DIR="${cfg.backupDir}"
           POCKETID_DATA_DIR="${pocketidService.dataDir}"
           POCKETID_STOPPED=false
-          VAULT_MOUNTED=false
+          VAULT_UNLOCKED=false
 
-          # Ensure PocketID is restarted and vault unmounted on exit, even if script fails
+          # Ensure PocketID is restarted and vault locked on exit, even if script fails
           cleanup() {
             if [ "$POCKETID_STOPPED" = true ]; then
               echo "Ensuring PocketID service is restarted..."
@@ -79,10 +80,10 @@ in
                 echo "ERROR: Failed to restart PocketID service!" >&2
               fi
             fi
-            if [ "$VAULT_MOUNTED" = true ]; then
-              echo "Unmounting encrypted vault..."
-              if ! mount-vault services unmount; then
-                echo "ERROR: Failed to unmount encrypted vault!" >&2
+            if [ "$VAULT_UNLOCKED" = true ]; then
+              echo "Locking ZFS vault..."
+              if ! zfs-vault lock; then
+                echo "ERROR: Failed to lock ZFS vault. Dataset may remain unlocked." >&2
               fi
             fi
           }
@@ -111,10 +112,10 @@ in
           # Clean up old tar files (keep last 7 days locally)
           find "$BACKUP_DIR" -name "pocketid-data-*.tar.gz" -mtime +6 -delete
 
-          # Mount encrypted vault and sync backups
-          echo "Mounting encrypted vault..."
-          mount-vault services mount
-          VAULT_MOUNTED=true
+          # Unlock ZFS vault and sync backups
+          echo "Unlocking ZFS vault..."
+          zfs-vault unlock
+          VAULT_UNLOCKED=true
 
           # Sync backups to remote location
           echo "Syncing backups to remote ..."

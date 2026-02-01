@@ -44,8 +44,6 @@
     };
 
     services = {
-      notify.enable = true;
-
       filen-sync = {
         enable = true;
         syncPairs = [

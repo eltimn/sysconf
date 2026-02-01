@@ -15,5 +15,6 @@
     ./pocketid-backup.nix
     ./sshd.nix
     ./wireguard.nix
+    ./zfs-vault.nix
   ];
 }
