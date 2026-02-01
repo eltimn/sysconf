@@ -26,7 +26,6 @@
     packages = with pkgs; [
       gemini-cli
       unifi-api
-
     ];
 
     # List of extra paths to include in the user profile.
