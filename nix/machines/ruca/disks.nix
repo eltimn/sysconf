@@ -73,6 +73,17 @@
       ];
     };
 
+    # Incus subvolume
+    "/srv/main/incus" = {
+      device = "/dev/disk/by-partlabel/disk-main-root";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "noatime"
+        "subvol=@incus"
+      ];
+    };
+
     ## Data disk ##
     "/mnt/btr-data" = {
       device = "/dev/disk/by-partlabel/data";

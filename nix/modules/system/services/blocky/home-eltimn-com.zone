@@ -18,6 +18,7 @@ dns1       IN CNAME cbox
 dvr        IN CNAME illmatic
 git        IN CNAME illmatic
 id         IN CNAME illmatic
+incus      IN CNAME ruca
 jellyfin   IN CNAME illmatic
 nas        IN CNAME illmatic
 ntfy       IN CNAME illmatic

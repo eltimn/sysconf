@@ -4,7 +4,7 @@
   ...
 }:
 let
-  settings = config.sysconf.settings;
+  inherit (config.sysconf) settings;
 in
 {
   boot = {
@@ -28,6 +28,15 @@ in
   services = {
     btrfs.autoScrub.enable = true;
     zfs.autoScrub.enable = true;
+
+    # Route gateway admin web thru caddy to avoid ssl cert warnings
+    caddy.virtualHosts."unifi.${settings.homeDomain}".extraConfig = ''
+      reverse_proxy https://router.${settings.homeDomain} {
+        transport http {
+          tls_insecure_skip_verify # unifi uses self-signed certs
+        }
+      }
+    '';
   };
 
   # authorized ssh keys for btrbk
