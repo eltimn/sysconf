@@ -91,6 +91,16 @@ in
 
               # Load fzf-tab after theme is loaded
               source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+
+              # Bind standard Ctrl+arrow key sequences for terminals
+              bindkey "^[[1;5C" forward-word      # Ctrl+Right (standard)
+              bindkey "^[[1;5D" backward-word     # Ctrl+Left (standard)
+              bindkey "^[[1;5A" beginning-of-line # Ctrl+Up (standard)
+              bindkey "^[[1;5B" end-of-line       # Ctrl+Down (standard)
+
+              # Alternative sequences some terminals send
+              bindkey "^[Oc" forward-word         # xterm-style Ctrl+Right
+              bindkey "^[Od" backward-word        # xterm-style Ctrl+Left
             '';
 
           };

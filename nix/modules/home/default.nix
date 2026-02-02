@@ -108,6 +108,7 @@ in
         direnv.enable = true;
         git.enable = true;
         tmux.enable = true;
+        zellij.enable = true;
         zsh.enable = true;
       };
     }
@@ -117,6 +118,7 @@ in
       sysconf.programs = {
         chromium.enable = true;
         firefox.enable = true;
+        foot.enable = true;
         ghostty.enable = true;
         goose.enable = true;
         opencode.enable = true;
