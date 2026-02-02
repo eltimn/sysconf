@@ -24,7 +24,7 @@ in
           dpi-aware = "yes";
           initial-window-size-chars = "100x30";
           initial-window-mode = "windowed";
-          word-delimiters = ",│\`|:\"'\"'\"'()[]{}<>";
+          word-delimiters = ",│`|:\"'()[]{}<>";
           selection-target = "clipboard";
         };
 
