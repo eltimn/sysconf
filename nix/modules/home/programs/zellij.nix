@@ -8,22 +8,40 @@ let
   cfg = config.sysconf.programs.zellij;
 
   zellij-session-picker = pkgs.writeShellScriptBin "zellij-session-picker" ''
-    #!/usr/bin/env bash
     set -euo pipefail
 
-    ZJ_SESSIONS=$(zellij list-sessions 2>/dev/null || true)
+    # Ensure zellij is available
+    command -v zellij >/dev/null 2>&1 || { echo "Error: zellij not found" >&2; exit 1; }
+
+    # Get list of sessions, treating "no sessions" as empty
+    ZJ_SESSIONS=$(zellij list-sessions 2>/dev/null) || ZJ_SESSIONS=""
 
     if [ -z "''${ZJ_SESSIONS}" ]; then
-      zellij attach -c
-    else
-      SESSION_LINE=$(echo "''${ZJ_SESSIONS}" | ${pkgs.gum}/bin/gum choose --header "Select zellij session:")
-      if [ -n "''${SESSION_LINE}" ]; then
-        SESSION=$(echo "''${SESSION_LINE}" | awk '{print $1}')
-        zellij attach "''${SESSION}"
-      else
-        zellij attach -c
-      fi
+      # No existing sessions - create new one
+      exec zellij attach -c
     fi
+
+    # Let user choose a session
+    SESSION_LINE=$(echo "''${ZJ_SESSIONS}" | ${pkgs.gum}/bin/gum choose --header "Select zellij session:") || {
+      # User cancelled or error - create new session
+      exec zellij attach -c
+    }
+
+    if [ -z "''${SESSION_LINE}" ]; then
+      exec zellij attach -c
+    fi
+
+    # Extract session name (first field)
+    SESSION=$(echo "''${SESSION_LINE}" | awk '{print $1}')
+
+    # Validate session name to prevent injection
+    if [[ ! "''${SESSION}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+      echo "Error: Invalid session name format: ''${SESSION}" >&2
+      exit 1
+    fi
+
+    # Attach to selected session
+    exec zellij attach "''${SESSION}"
   '';
 in
 {
@@ -47,9 +65,11 @@ in
       };
     };
 
-    home.packages = [ zellij-session-picker ];
+    home.packages = [
+      zellij-session-picker
+      pkgs.gum
+    ];
 
-    # Create a shell alias for easy session attachment
     home.shellAliases = {
       zjs = "zellij-session-picker";
     };
