@@ -75,7 +75,7 @@
 
     ## Data disk ##
     "/mnt/btr-data" = {
-      device = "/dev/disk/by-label/data";
+      device = "/dev/disk/by-partlabel/data";
       fsType = "btrfs";
       options = [
         "subvolid=5"
@@ -86,7 +86,7 @@
 
     # Snapshots-main subvolume
     "/srv/data/snapshots-main" = {
-      device = "/dev/disk/by-label/data";
+      device = "/dev/disk/by-partlabel/data";
       fsType = "btrfs";
       options = [
         "compress=zstd"
@@ -95,9 +95,9 @@
       ];
     };
 
-    ## Ext disk ##
+    ## Ext partition ##
     "/srv/ext" = {
-      device = "/dev/disk/by-uuid/f37a87a5-058e-453f-ad93-702d7655422c";
+      device = "/dev/disk/by-partlabel/ext";
       fsType = "ext4";
     };
   };
