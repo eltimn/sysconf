@@ -32,7 +32,7 @@ let
     fi
 
     # Extract session name (first field)
-    SESSION=$(echo "''${SESSION_LINE}" | awk '{print $1}')
+    SESSION="''${SESSION_LINE%% *}"
 
     # Validate session name to prevent injection
     if [[ ! "''${SESSION}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
