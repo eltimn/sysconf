@@ -16,6 +16,11 @@ in
       default = settings.homeDomain;
       description = "The domain used for caddy.";
     };
+    environmentFile = lib.mkOption {
+      type = lib.types.path;
+      description = "The path to an environment file.";
+      default = "/run/keys/caddy-env";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -25,7 +30,7 @@ in
         plugins = [ "github.com/caddy-dns/cloudflare@v0.2.2" ];
         hash = "sha256-dnhEjopeA0UiI+XVYHYpsjcEI6Y1Hacbi28hVKYQURg=";
       };
-      environmentFile = "/run/keys/caddy-env";
+      environmentFile = cfg.environmentFile;
 
       # config settings
       # https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates
@@ -42,18 +47,10 @@ in
           abort
         }
       '';
-
-      virtualHosts."unifi.${cfg.domain}".extraConfig = ''
-        reverse_proxy https://router.${cfg.domain} {
-          transport http {
-            tls_insecure_skip_verify # unifi uses self-signed certs
-          }
-        }
-      '';
     };
 
     # Wait for the key service before starting
-    systemd.services.caddy = {
+    systemd.services.caddy = lib.mkIf (cfg.environmentFile == "/run/keys/caddy-env") {
       after = [ "caddy-env-key.service" ];
       wants = [ "caddy-env-key.service" ];
     };

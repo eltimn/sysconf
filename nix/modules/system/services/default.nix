@@ -8,6 +8,7 @@
     ./forgejo.nix
     ./forgejo-backup.nix
     ./immich.nix
+    ./incus.nix
     ./jellyfin.nix
     ./mount-vault.nix
     ./notify.nix
