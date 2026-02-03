@@ -55,7 +55,6 @@ This document provides detailed reference information about the sysconf reposito
 │   ├── vps.tf             # DigitalOcean VPS/Droplet resources
 │   ├── spaces.tf          # DigitalOcean Spaces (S3-compatible storage)
 │   └── variables.tf       # Input variables
-├── dotfiles/              # Additional dotfiles managed with stow
 ├── secrets/               # Encrypted secrets (SOPS)
 └── docs/                  # Documentation
 ```

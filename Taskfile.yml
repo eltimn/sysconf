@@ -55,9 +55,7 @@ tasks:
 
   switch:
     desc: Build then switch to the new build.
-    cmds:
-      - "{{.NIX_CMD}} switch --flake ."
-      - task: dotfiles
+    cmd: "{{.NIX_CMD}} switch --flake ."
 
   boot:
     desc: Build the flake and set for next boot.
@@ -115,24 +113,6 @@ tasks:
     desc: Display Home Manager news
     cmds:
       - home-manager news --flake .
-
-  dotfiles:
-    desc: Stow the dotfiles.
-    requires:
-      vars:
-        - "DOTFILES_DIR"
-    cmds:
-      - stow --verbose --stow --dotfiles --target=$HOME --dir=$DOTFILES_DIR code
-      - stow --verbose --stow --dotfiles --target=$HOME --dir=$DOTFILES_DIR common
-
-  clean-dotfiles:
-    desc: Unstow the dotfiles.
-    requires:
-      vars:
-        - "DOTFILES_DIR"
-    cmds:
-      - stow --verbose --delete --target=$HOME --dir=$DOTFILES_DIR code
-      - stow --verbose --delete --target=$HOME --dir=$DOTFILES_DIR common
 
   history:
     desc: List all previous generations available.
