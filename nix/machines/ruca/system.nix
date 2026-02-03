@@ -193,7 +193,7 @@ in
           stp = false; # Fixes 30s delay / blocking
         };
         ethernet = {
-          cloned-mac-address = "10:ff:e0:83:15:15"; # Spoof the physical MAC so the router accepts traffic
+          cloned-mac-address = "10:ff:e0:83:15:15"; # Use the physical MAC so the router accepts traffic
         };
         ipv4 = {
           method = "manual";
