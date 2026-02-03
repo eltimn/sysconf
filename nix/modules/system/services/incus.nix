@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -23,11 +24,23 @@ in
       description = "Parent network interface for the Incus bridge.";
     };
 
-    bindAdress = lib.mkOption {
+    bindAddress = lib.mkOption {
       type = lib.types.str;
       description = "The network address to bind to.";
       default = "0.0.0.0";
     };
+
+    oidcClientIdFile = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the file containing the OIDC Client ID for Pocket ID integration.";
+    };
+
+    adminUsers = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "Users to add to the incus-admin group.";
+      default = [ ];
+    };
+
   };
 
   config = lib.mkIf cfg.enable {
@@ -37,9 +50,7 @@ in
 
       preseed = {
         config = {
-          "core.https_address" = "${cfg.bindAdress}:8443";
-          "oidc.audience" = "6a13c9d4-3eb3-4f42-8e7d-69f5b8faf50a";
-          "oidc.client.id" = "6a13c9d4-3eb3-4f42-8e7d-69f5b8faf50a";
+          "core.https_address" = "${cfg.bindAddress}:8443";
           "oidc.issuer" = "https://id.${settings.homeDomain}";
           "oidc.scopes" = "openid,email,profile";
         };
@@ -75,6 +86,22 @@ in
       };
     };
 
+    systemd.services.incus.postStart = lib.mkAfter ''
+      oidc_file='${cfg.oidcClientIdFile}'
+
+      if [ -r "$oidc_file" ]; then
+        client_id="$(${pkgs.coreutils}/bin/cat "$oidc_file")"
+        client_id="''${client_id//$'\n'/}"
+        client_id="''${client_id//$'\r'/}"
+
+        if [ -n "$client_id" ]; then
+          export INCUS_DIR=/var/lib/incus
+          ${pkgs.incus}/bin/incus config set oidc.client.id "$client_id" || true
+          ${pkgs.incus}/bin/incus config set oidc.audience "$client_id" || true
+        fi
+      fi
+    '';
+
     # Ensure the required kernel modules for bridge networking are loaded if not already
     boot.kernelModules = [ "bridge" ];
 
@@ -84,14 +111,17 @@ in
       "net.ipv6.conf.all.forwarding" = 1;
     };
 
-    # Add the user to the incus-admin group
-    users.users.nelly.extraGroups = [ "incus-admin" ];
+    # Add configured admin users to the incus-admin group
+    users.users = lib.genAttrs cfg.adminUsers (user: {
+      extraGroups = lib.mkAfter [ "incus-admin" ];
+    });
 
-    # Incus on NixOS requires nftables
-    networking.nftables.enable = true;
-
-    # Open the Incus API port in the firewall
-    networking.firewall.allowedTCPPorts = [ 8443 ];
+    networking = {
+      # Incus on NixOS requires nftables
+      nftables.enable = true;
+      # Open the Incus API port in the firewall
+      firewall.allowedTCPPorts = [ 8443 ];
+    };
 
     # Caddy reverse proxy for Incus UI
     services.caddy.virtualHosts."incus.${settings.homeDomain}".extraConfig = ''

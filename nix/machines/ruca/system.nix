@@ -34,6 +34,11 @@ in
       group = config.users.users.caddy.group;
       mode = "0400";
     };
+    "incus/pocketid_client_id" = {
+      owner = "root";
+      group = "root";
+      mode = "0600";
+    };
   };
 
   sysconf = {
@@ -93,7 +98,10 @@ in
         environmentFile = config.sops.secrets."caddy-env".path;
       };
 
-      incus.enable = true;
+      incus = {
+        enable = true;
+        oidcClientIdFile = config.sops.secrets."incus/pocketid_client_id".path;
+      };
     };
 
     # GNOME specific configuration
