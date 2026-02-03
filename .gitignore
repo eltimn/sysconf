@@ -1,7 +1,7 @@
 .ai
 .claude
 .crush
-.envrc
+.env*
 .direnv
 *.code-workspace
 result
