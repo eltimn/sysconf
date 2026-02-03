@@ -42,7 +42,11 @@ in
       enable = true;
       extensions = [
         "git-firefly"
+        "gleam"
         "html"
+        "kdl"
+        "lua"
+        "make"
         "nix"
         "opentofu"
         "rumdl"
