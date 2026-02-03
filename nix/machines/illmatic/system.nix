@@ -48,6 +48,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     borgbackup
+    ffmpeg
     sqlite
     config.services.forgejo.package
   ];
