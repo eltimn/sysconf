@@ -281,13 +281,7 @@
             #   entry = "${pkgs.rumdl}/bin/rumdl check . --config ./.config/rumdl.toml";
             #   pass_filenames = false;
             # };
-          };
-        };
 
-        # Separate check for opencode agent files with different rules
-        pre-commit-md-agents = git-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
             rumdl-agents = {
               enable = true;
               name = "rumdl-agents";
@@ -324,7 +318,6 @@
         shellHook = ''
           echo "Welcome to sysconf!"
           ${self.checks.${system}.pre-commit.shellHook}
-          ${self.checks.${system}.pre-commit-md-agents.shellHook}
         '';
       };
     };
