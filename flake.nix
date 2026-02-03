@@ -275,7 +275,7 @@
           hooks = {
             nixfmt.enable = true;
             statix.enable = true;
-            # Comment for now.
+            # Comment out for now (too many issues)
             # rumdl = {
             #   enable = true;
             #   entry = "${pkgs.rumdl}/bin/rumdl check . --config ./.config/rumdl.toml";

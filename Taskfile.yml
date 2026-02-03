@@ -118,15 +118,21 @@ tasks:
 
   dotfiles:
     desc: Stow the dotfiles.
+    requires:
+      vars:
+        - "DOTFILES_DIR"
     cmds:
-      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles code
-      - stow --verbose --stow --dotfiles --target=$HOME --dir=$HOME/sysconf/dotfiles common
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$DOTFILES_DIR code
+      - stow --verbose --stow --dotfiles --target=$HOME --dir=$DOTFILES_DIR common
 
   clean-dotfiles:
     desc: Unstow the dotfiles.
+    requires:
+      vars:
+        - "DOTFILES_DIR"
     cmds:
-      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles code
-      - stow --verbose --delete --target=$HOME --dir=$HOME/sysconf/dotfiles common
+      - stow --verbose --delete --target=$HOME --dir=$DOTFILES_DIR code
+      - stow --verbose --delete --target=$HOME --dir=$DOTFILES_DIR common
 
   history:
     desc: List all previous generations available.
