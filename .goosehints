@@ -12,7 +12,6 @@ This repository contains the complete NixOS and Home Manager configurations for 
 - `home/`: Shared Home Manager configurations, organized into common settings, programs, and services.
 - `system/`: Shared NixOS system-level configurations.
 - `templates/`: Nix flake templates for bootstrapping new projects.
-- `dotfiles/`: Contains dotfiles managed outside of Nix/Home Manager, symlinked into place.
 - `ansible/`: Deprecated Ansible playbooks. Not in active use.
 - `flake.nix`: The entry point for the Nix configuration, defining flake outputs for each machine.
 ## Host Information
@@ -29,7 +28,6 @@ This project uses `task` (from [taskfile.dev](https://taskfile.dev)) to automate
 - **`task switch`**: Build and switch to the new system configuration.
 - **`task boot`**: Build the configuration and set it as the boot default.
 - **`task update`**: Update all flake inputs and the lock file.
-- **`task dotfiles`**: Symlink dotfiles into the home directory using `stow`.
 - **`task gc`**: Run garbage collection to remove old, unused packages.
 - **`task iso`**: Build a bootable installer ISO.
 ## Secret Management
