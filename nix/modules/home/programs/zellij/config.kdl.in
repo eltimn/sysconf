@@ -1,0 +1,7 @@
+copy_clipboard "system"
+copy_on_select true
+default_shell "zsh"
+pane_frames false
+scrollback_editor "@scrollback_editor@"
+simplified_ui true
+theme "nord"

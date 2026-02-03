@@ -7,6 +7,7 @@
     ./rofi
     ./vscode
     ./zed
+    ./zellij
     ./zen
     ./zsh
     ./backup.nix
@@ -19,6 +20,5 @@
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix
-    ./zellij.nix
   ];
 }

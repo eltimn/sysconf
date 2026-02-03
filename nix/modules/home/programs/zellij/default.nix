@@ -50,28 +50,22 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.zellij = {
-      enable = true;
+    programs.zellij.enable = true;
 
-      settings = {
-        theme = "nord";
-        default_layout = "compact";
-        default_shell = "zsh";
-        pane_frames = false;
-        simplified_ui = true;
-        copy_clipboard = "system";
-        copy_on_select = true;
-        scrollback_editor = "${pkgs.micro}/bin/micro";
+    home = {
+      file.".config/zellij/config.kdl".source = pkgs.replaceVars ./config.kdl.in {
+        scrollback_editor = "${pkgs.neovim}/bin/nvim";
       };
-    };
 
-    home.packages = [
-      zellij-session-picker
-      pkgs.gum
-    ];
+      packages = [
+        zellij-session-picker
+        pkgs.gum
+      ];
 
-    home.shellAliases = {
-      zjs = "zellij-session-picker";
+      shellAliases = {
+        zj = "zellij";
+        zjs = "zellij-session-picker";
+      };
     };
   };
 }
