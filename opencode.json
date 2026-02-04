@@ -11,11 +11,7 @@
     "build": {
       "permission": {
         "bash": {
-          "git*": "ask",
-          "git status": "allow",
-          "git diff": "allow",
-          "ls": "allow",
-          "pwd": "allow",
+          "nixos-rebuild switch": "deny",
           "task switch": "deny",
           "sudo": "deny"
         }
