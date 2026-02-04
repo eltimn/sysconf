@@ -8,12 +8,19 @@ let
   cfg = config.sysconf.programs.rofi;
 
   rofi-cliphist = pkgs.writeShellScriptBin "rofi-cliphist" ''
+    # Theme detection: check COSMIC, fallback to dark
     COSMIC_THEME_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
 
-    if [[ -f "$COSMIC_THEME_FILE" ]] && [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
-      THEME="dark"
+    if [[ -f "$COSMIC_THEME_FILE" ]]; then
+      if [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
+        THEME="dark"
+      else
+        THEME="light"
+      fi
     else
-      THEME="light"
+      # Default to dark for non-COSMIC sessions (niri, etc.)
+      # TODO: Add niri/noctalia theme detection when available
+      THEME="dark"
     fi
 
     cliphist list | rofi -dmenu -theme "$HOME/.config/rofi/$THEME.rasi" -p "Clipboard" | cliphist decode | wl-copy
@@ -56,7 +63,7 @@ in
 
     programs.rofi = {
       enable = true;
-      package = pkgs.rofi;
+      package = pkgs.rofi-wayland;
     };
   };
 }

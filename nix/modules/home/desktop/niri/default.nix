@@ -148,6 +148,9 @@ let
       Print { spawn-sh "grim - | swappy -f -"; }
       Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
 
+      // Clipboard history
+      Ctrl+Alt+H { spawn "rofi-cliphist"; }
+
       Mod+Shift+E { quit; }
     }
   '';
