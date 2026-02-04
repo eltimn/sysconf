@@ -97,5 +97,8 @@ in
     (lib.mkIf (settings.desktopEnvironment == "cosmic") {
       sysconf.desktop.cosmic.enable = true;
     })
+    (lib.mkIf (settings.desktopEnvironment == "niri") {
+      sysconf.desktop.niri.enable = true;
+    })
   ];
 }

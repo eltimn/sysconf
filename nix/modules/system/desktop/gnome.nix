@@ -10,7 +10,7 @@ let
 in
 {
   options.sysconf.desktop.gnome = {
-    enable = lib.mkEnableOption "cosmic";
+    enable = lib.mkEnableOption "gnome";
     videoDrivers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];

@@ -23,7 +23,7 @@ in
 
     desktopEnvironment = lib.mkOption {
       type = lib.types.str;
-      default = "none"; # cosmic|gnome|none
+      default = "none"; # cosmic|gnome|niri|none
       description = "Desktop Environment used.";
     };
 
