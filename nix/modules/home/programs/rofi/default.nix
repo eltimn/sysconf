@@ -63,7 +63,7 @@ in
 
     programs.rofi = {
       enable = true;
-      package = pkgs.rofi-wayland;
+      package = pkgs.rofi; # Includes Wayland support as of nixpkgs 25.11
     };
   };
 }
