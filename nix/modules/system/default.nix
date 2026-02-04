@@ -100,5 +100,13 @@ in
     (lib.mkIf (settings.desktopEnvironment == "niri") {
       sysconf.desktop.niri.enable = true;
     })
+    # Multi-session: both COSMIC and Niri with greetd session chooser
+    (lib.mkIf (settings.desktopEnvironment == "cosmic+niri") {
+      sysconf.desktop = {
+        greetd.enable = true;
+        cosmic.enable = true;
+        niri.enable = true;
+      };
+    })
   ];
 }

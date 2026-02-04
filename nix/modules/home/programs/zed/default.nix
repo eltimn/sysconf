@@ -48,6 +48,7 @@ in
         "lua"
         "make"
         "nix"
+        "opencode"
         "opentofu"
         "rumdl"
         "sql"

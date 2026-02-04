@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.sysconf.desktop.niri;
+  greetdEnabled = config.sysconf.desktop.greetd.enable;
 in
 {
   options.sysconf.desktop.niri = {
@@ -19,8 +20,9 @@ in
 
     programs.niri.enable = true;
 
-    # Simple, reliable login for wlroots compositors.
-    services.greetd = {
+    # Only enable greetd here if greetd module is not managing sessions
+    # (fallback for single-DE setups using just niri)
+    services.greetd = lib.mkIf (!greetdEnabled) {
       enable = true;
       settings = {
         default_session = {
