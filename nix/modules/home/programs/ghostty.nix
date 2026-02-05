@@ -1,10 +1,12 @@
 {
   config,
   lib,
+  osConfig,
   ...
 }:
 let
   cfg = config.sysconf.programs.ghostty;
+  fonts = osConfig.sysconf.fonts;
 in
 {
   options.sysconf.programs.ghostty = {
@@ -20,7 +22,7 @@ in
       settings = {
         theme = "dark:cosmic-dark,light:cosmic-light";
         window-theme = "ghostty";
-        font-family = "JetBrainsMono Nerd Font";
+        font-family = fonts.monospace;
         font-size = 13;
         # keybind = [
         #   "ctrl+a>c=new_tab"

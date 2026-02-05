@@ -51,10 +51,6 @@ let
     # logseq
     meld
     # mongodb-compass
-    # neofetch
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.hack
     # net-tools
     nixfmt-rfc-style
     nixpkgs-lint-community

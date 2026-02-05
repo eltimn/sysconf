@@ -12,6 +12,7 @@ in
   imports = [
     ./containers
     ./desktop
+    ./fonts.nix
     ./services
     ./users
     ./settings.nix

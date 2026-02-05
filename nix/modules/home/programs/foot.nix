@@ -19,7 +19,7 @@ in
       settings = {
         main = {
           term = "xterm-256color";
-          font = "monospace:size=11";
+          font = "monospace:size=13";
           pad = "12x12";
           dpi-aware = "yes";
           initial-window-size-chars = "100x30";
