@@ -23,7 +23,9 @@
     "external_directory": {
       "~/Pictures/**": "allow",
       "~/code/ai": "allow",
-      "~/code/eltimn/eltimn-ai-tools": "allow"
+      "~/code/eltimn/eltimn-ai-tools": "allow",
+      "~/.config/niri": "allow",
+      "~/.config/noctalia": "allow"
     }
   }
 }

@@ -66,6 +66,7 @@
   # Enable sysconf modules
   sysconf = {
     desktop.cosmic.primaryMonitor = "HDMI-A-1";
+    # desktop.niri.leftHandedMouse = true;
 
     containers.mongodb-rz.enable = true;
     containers.postgresql-rz.enable = true;

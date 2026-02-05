@@ -38,6 +38,12 @@ in
         xdg-desktop-portal-gtk
         xdg-desktop-portal-wlr
       ];
+      config.common.default = [ "gtk" ];
+      config.niri = {
+        default = [ "gtk" ];
+        "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+        "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+      };
     };
   };
 }
