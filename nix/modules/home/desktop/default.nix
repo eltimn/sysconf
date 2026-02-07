@@ -6,6 +6,7 @@ in
   imports = [
     ./cosmic
     ./niri
+    ./shells/noctalia
     ./gnome.nix
   ];
 
@@ -21,11 +22,15 @@ in
     })
     (lib.mkIf (settings.desktopEnvironment == "niri") {
       sysconf.desktop.niri.enable = true;
+      sysconf.desktop.noctalia.enable = true;
     })
     # Multi-session: enable Home Manager config for both COSMIC and Niri
     (lib.mkIf (settings.desktopEnvironment == "cosmic+niri") {
-      sysconf.desktop.cosmic.enable = true;
-      sysconf.desktop.niri.enable = true;
+      sysconf.desktop = {
+        cosmic.enable = true;
+        niri.enable = true;
+        noctalia.enable = true;
+      };
     })
   ];
 }

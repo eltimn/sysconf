@@ -226,17 +226,5 @@ in
     };
 
     home.file.".zen/${cfg.profileName}/chrome/userContent.css".text = cfg.userContent;
-
-    # Create user css files as mutable files (not symlink) so it can be edited externally
-    # home.activation.copyZenConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    #   $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userChrome.css"
-    #   @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userChrome.css";
-    #   EOF
-    #   $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userContent.css"
-    #   @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userContent.css";
-    #   EOF
-    #   $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userChrome.css"
-    #   $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userContent.css"
-    # '';
   };
 }
