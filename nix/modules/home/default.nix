@@ -63,6 +63,7 @@ let
     vhs
     vlc
     # warp-terminal
+    wev
     # wezterm # https://github.com/wezterm/wezterm/issues/6025
     wl-color-picker
     yubioath-flutter

@@ -19,3 +19,4 @@ Theme switching is handled by Nocatalia. When the mode is switched, Noctalia:
 - Noctalia overwrites some config files for apps that it controls. Zen creates
   config files that are not controlled by Nix, so that Noctalia can overwrite
   them.
+- Noctalia only overwrites files when first configuring app templates.

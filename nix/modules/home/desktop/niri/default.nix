@@ -105,6 +105,7 @@ in
 
       file = {
         ".config/niri/binds.kdl".source = ./files/binds.kdl;
+        ".config/niri/config.kdl".source = ./files/config.kdl;
         ".config/niri/main.kdl".source = ./files/main.kdl;
         ".config/niri/extra.kdl".text = cfg.extraConfig;
         ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
@@ -113,15 +114,15 @@ in
       };
 
       # Create config file as a mutable file (not symlink) so it can be edited externally by Noctalia
-      activation.copyNiriConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.config/niri/config.kdl"
-        include "./main.kdl"
-        include "./binds.kdl"
-        include "./extra.kdl"
-        include "./noctalia.kdl"
-        EOF
-        $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.config/niri/config.kdl"
-      '';
+      # activation.copyNiriConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      #   $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.config/niri/config.kdl"
+      #   include "./main.kdl"
+      #   include "./binds.kdl"
+      #   include "./extra.kdl"
+      #   include "./noctalia.kdl"
+      #   EOF
+      #   $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.config/niri/config.kdl"
+      # '';
     };
 
     # Config files are managed manually in ~/.config/niri/ and ~/.config/noctalia/
