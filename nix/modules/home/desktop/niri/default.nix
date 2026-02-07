@@ -68,6 +68,13 @@ in
 {
   options.sysconf.desktop.niri = {
     enable = lib.mkEnableOption "niri";
+
+    extraConfig = lib.mkOption {
+      type = lib.types.str;
+      description = "Extra config to add to Niri";
+      default = "";
+    };
+
   };
 
   imports = [
@@ -81,7 +88,7 @@ in
         [
           niri
           foot
-          fuzzel
+          # fuzzel
           grim
           mako
           playerctl
@@ -97,10 +104,24 @@ in
         ++ [ pkgs-unstable.noctalia-shell ];
 
       file = {
+        ".config/niri/binds.kdl".source = ./files/binds.kdl;
+        ".config/niri/main.kdl".source = ./files/main.kdl;
+        ".config/niri/extra.kdl".text = cfg.extraConfig;
         ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
         ".config/noctalia-bg-hex.in".text = "{{colors.surface.default.hex}}";
         ".config/noctalia/user-templates.toml".text = noctaliaUserTemplates;
       };
+
+      # Create config file as a mutable file (not symlink) so it can be edited externally by Noctalia
+      activation.copyNiriConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.config/niri/config.kdl"
+        include "./main.kdl"
+        include "./binds.kdl"
+        include "./extra.kdl"
+        include "./noctalia.kdl"
+        EOF
+        $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.config/niri/config.kdl"
+      '';
     };
 
     # Config files are managed manually in ~/.config/niri/ and ~/.config/noctalia/
