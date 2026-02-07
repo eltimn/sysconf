@@ -12,11 +12,67 @@ let
     defaultWallpaper = "${config.home.homeDirectory}/background-image";
     wallpapers = { };
   };
+
+  syncDarkman = ''
+    # Read the hex value from the file Noctalia just generated
+    HEX_FILE="$HOME/.cache/noctalia-bg-hex"
+
+    if [ ! -f "$HEX_FILE" ]; then
+      echo "Hex file not found"
+      exit 1
+    fi
+
+    # Read file and remove potential # prefix and whitespace
+    HEX=$(cat "$HEX_FILE" | tr -d '#[:space:]')
+
+    # Extract RGB components using Bash substring expansion
+    # Note the double single-quotes for Nix escaping
+    R_HEX=''${HEX:0:2}
+    G_HEX=''${HEX:2:2}
+    B_HEX=''${HEX:4:2}
+
+    # Convert to decimal and calculate luminance
+    R=$((16#''${R_HEX}))
+    G=$((16#''${G_HEX}))
+    B=$((16#''${B_HEX}))
+
+    # YIQ Luminance Formula
+    YIQ=$(( (R*299 + G*587 + B*114) / 1000 ))
+
+    if [ "$YIQ" -lt 128 ]; then
+      ${pkgs.darkman}/bin/darkman set dark
+    else
+      ${pkgs.darkman}/bin/darkman set light
+    fi
+  '';
+
+  noctaliaUserTemplates = ''
+    [config]
+
+    [templates]
+
+    # User-defined templates
+    # Add your custom templates below
+    # Example:
+    # [templates.myapp]
+    # input_path = "~/.config/noctalia/templates/myapp.css"
+    # output_path = "~/.config/myapp/theme.css"
+    # post_hook = "myapp --reload-theme"
+
+    [templates.darkman-sync]
+    input_path = "${config.home.homeDirectory}/.config/noctalia-bg-hex.in"
+    output_path = "${config.home.homeDirectory}/.cache/noctalia-bg-hex"
+    post_hook = 'sync-darkman'
+  '';
 in
 {
   options.sysconf.desktop.niri = {
     enable = lib.mkEnableOption "niri";
   };
+
+  imports = [
+    ./darkman.nix
+  ];
 
   config = lib.mkIf cfg.enable {
     home = {
@@ -36,10 +92,15 @@ in
           wl-clipboard
           xdg-desktop-portal-gtk
           xdg-desktop-portal-wlr
+          (pkgs.writeShellScriptBin "sync-darkman" syncDarkman)
         ]
         ++ [ pkgs-unstable.noctalia-shell ];
 
-      file.".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
+      file = {
+        ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
+        ".config/noctalia-bg-hex.in".text = "{{colors.surface.default.hex}}";
+        ".config/noctalia/user-templates.toml".text = noctaliaUserTemplates;
+      };
     };
 
     # Config files are managed manually in ~/.config/niri/ and ~/.config/noctalia/

@@ -57,6 +57,11 @@ in
         "xml"
       ];
       userSettings = {
+        theme = {
+          mode = "system";
+          dark = "Noctalia Dark";
+          light = "One Light";
+        };
         file_types = {
           "Shell Script" = [
             ".env.*"

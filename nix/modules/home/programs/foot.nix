@@ -18,6 +18,7 @@ in
 
       settings = {
         main = {
+          include = "${config.home.homeDirectory}/.config/foot/themes/noctalia";
           term = "xterm-256color";
           font = "monospace:size=13";
           pad = "12x12";
@@ -37,28 +38,28 @@ in
           hide-when-typing = "yes";
         };
 
-        colors = {
-          alpha = 0.95;
-          background = "1a1a1a";
-          foreground = "d4d4d4";
-          cursor = "111111 cccccc";
-          regular0 = "1a1a1a";
-          regular1 = "ff5f56";
-          regular2 = "5af78e";
-          regular3 = "f3f99d";
-          regular4 = "57c7ff";
-          regular5 = "ff6ac1";
-          regular6 = "9aedfe";
-          regular7 = "f1f1f0";
-          bright0 = "686868";
-          bright1 = "ff5f56";
-          bright2 = "5af78e";
-          bright3 = "f3f99d";
-          bright4 = "57c7ff";
-          bright5 = "ff6ac1";
-          bright6 = "9aedfe";
-          bright7 = "f1f1f0";
-        };
+        # colors = {
+        #   alpha = 0.95;
+        #   background = "1a1a1a";
+        #   foreground = "d4d4d4";
+        #   cursor = "111111 cccccc";
+        #   regular0 = "1a1a1a";
+        #   regular1 = "ff5f56";
+        #   regular2 = "5af78e";
+        #   regular3 = "f3f99d";
+        #   regular4 = "57c7ff";
+        #   regular5 = "ff6ac1";
+        #   regular6 = "9aedfe";
+        #   regular7 = "f1f1f0";
+        #   bright0 = "686868";
+        #   bright1 = "ff5f56";
+        #   bright2 = "5af78e";
+        #   bright3 = "f3f99d";
+        #   bright4 = "57c7ff";
+        #   bright5 = "ff6ac1";
+        #   bright6 = "9aedfe";
+        #   bright7 = "f1f1f0";
+        # };
 
         key-bindings = {
           scrollback-up-page = "Shift+Page_Up";

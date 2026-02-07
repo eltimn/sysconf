@@ -37,10 +37,17 @@ in
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
         xdg-desktop-portal-wlr
+        darkman
       ];
-      config.common.default = [ "gtk" ];
+      config.common = {
+        default = [ "gtk" ];
+        "org.freedesktop.impl.portal.Settings" = [ "darkman" ];
+      };
       config.niri = {
         default = [ "gtk" ];
+        # Explicitly route theme/setting requests to darkman
+        "org.freedesktop.impl.portal.Settings" = [ "darkman" ];
+        # Screenshot and screencast
         "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
         "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
       };
