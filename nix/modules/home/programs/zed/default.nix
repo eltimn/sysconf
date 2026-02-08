@@ -59,7 +59,7 @@ in
       userSettings = {
         theme = {
           mode = "system";
-          dark = "Noctalia Dark";
+          dark = "Tokyo Night";
           light = "One Light";
         };
         file_types = {
