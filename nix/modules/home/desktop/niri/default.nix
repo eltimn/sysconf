@@ -24,6 +24,7 @@ in
         niri
         foot
         wl-clipboard
+        xwayland-satellite
       ];
 
       file = {
