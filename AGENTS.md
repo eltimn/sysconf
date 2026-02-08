@@ -1,24 +1,30 @@
 # Agent Configuration for sysconf Codebase
 
-This document provides guidance for AI agents working with this NixOS/Home Manager configuration repository.
+This document provides guidance for AI agents working with this
+NixOS/Home Manager configuration repository.
 
 ## Agent Role
 
-You are the operator's pair programmer. You help write code, but don't manage git or building the code.
+You are the operator's pair programmer. You help write code, but don't manage
+git or building the code.
 
 ## Overview
 
-This repository contains declarative system configurations for multiple machines using Nix flake technology. It manages both system-level (NixOS) and user-level (Home Manager) configurations.
+This repository contains declarative system configurations for multiple machines
+using Nix flake technology. It manages both system-level (NixOS) and user-level
+(Home Manager) configurations.
 
 ## Build, Lint, and Test Commands
 
 ### Building Configurations
 
-Some machines are built with standard nix commands (ruca,lappy) and some are built using Colmena (cbox,illmatic). All have tasks in Taskfile.yml. See @hive.nix for details about Colmena.
+Some machines are built with standard nix commands (ruca,lappy) and some are
+built using Colmena (cbox,illmatic). All have tasks in Taskfile.yml.
+See @hive.nix for details about Colmena.
 
 ```bash
 # Build configuration for a specific host (ruca, lappy)
-task build -- ruca
+task build -- '#ruca'
 
 # Build colmena hosts (cbox, illmatic)
 task build-hive -- <tag>  # <tag> can be cbox, illmatic, local, dns, or digitalocean.
@@ -37,8 +43,8 @@ task clean
 ```
 
 ### Applying Configurations
+
 ```bash
-task switch           # Build and apply to current host
 task boot             # Set as boot default (applies on next boot)
 task update           # Update flake.lock (all inputs)
 ```
@@ -66,6 +72,7 @@ nix flake check  # Comprehensive validation
 ```
 
 ### Infrastructure (OpenTofu)
+
 ```bash
 cd infra
 tofu init      # Initialize providers (first time)
@@ -76,11 +83,11 @@ tofu apply     # Apply changes
 ```
 
 ### Secret Management
-```bash
-sops secrets/secrets-enc.yaml    # Edit encrypted secrets
-```
+
+Secrets are stored in a separate repository.
 
 ### Garbage Collection
+
 ```bash
 task gc           # Run both system and home garbage collection
 task gc-os        # System packages only
@@ -88,17 +95,15 @@ task gc-hm        # User packages only
 ```
 
 ### Deployment
-```bash
-# Colmena deployment to multiple hosts
-task colmena-local        # Deploy to local hive (cbox, illmatic)
-nix run .#colmena -- apply --impure --on @local
-```
+
+Deployments will be done manually.
 
 ## Code Style Guidelines
 
 ### Nix Module Structure
 
 **Standard module imports (order matters):**
+
 ```nix
 {
   config,      # Module config
@@ -110,6 +115,7 @@ nix run .#colmena -- apply --impure --on @local
 ```
 
 **Module pattern:**
+
 ```nix
 let
   cfg = config.sysconf.programs.<name>;  # Use 'cfg' for module config
@@ -128,6 +134,7 @@ in
 ```
 
 ### Formatting and Whitespace
+
 - **Indentation**: 2 spaces (no tabs)
 - **Line endings**: LF (Unix-style)
 - **Final newline**: Required
@@ -136,6 +143,7 @@ in
 - Use `nixfmt` for consistent formatting (RFC 166 style, used by nixd and nil LSPs)
 
 ### Naming Conventions
+
 - **Variables**: camelCase (`cfg`, `basePkgs`, `desktopPkgs`)
 - **Options**: camelCase with dots (`sysconf.programs.git.enable`)
 - **Files**: kebab-case (`sshd.nix`, `git-worktree-runner.nix`)
@@ -143,28 +151,34 @@ in
 - **Let bindings**: Descriptive names (`cfg`, `settings`, not `c` or `s`)
 
 ### Imports and Dependencies
+
 - **Package sources**: Use `pkgs` for stable, `pkgs-unstable` for unstable channel
 - **Import order**: No strict order, but group logically (directories first)
 - **Avoid duplicates**: Use `imports = [ ./dir ]` to import all in directory
 
 ### Comments
+
 - **Inline comments**: Use `#` for brief explanations
 - **Section headers**: Use comments to separate logical sections
 - **Documentation**: Option descriptions go in `description` field, not comments
 - **TODOs**: Acceptable but should be addressed
 
 ### Type Safety
-- Always specify types for options: `lib.types.str`, `lib.types.bool`, `lib.types.listOf`
+
+- Always specify types for options: `lib.types.str`, `lib.types.bool`,
+  `lib.types.listOf`
 - Use `lib.mkOption` for options with defaults or complex types
 - Use `lib.mkEnableOption` for simple boolean enable flags
 - Provide `default` values when appropriate
 - Always include `description` for options
 
 ### Conditional Configuration
+
 - Use `lib.mkIf` for conditional config blocks
 - Use `lib.mkMerge` to combine multiple conditional blocks
 - Use `lib.optionals` for conditional lists
 - Example:
+
 ```nix
 config = lib.mkMerge [
   {
@@ -177,6 +191,7 @@ config = lib.mkMerge [
 ```
 
 ### Error Handling
+
 - Use `lib.mkDefault` for overridable defaults
 - Use `assertions` for validation (system modules)
 - Provide clear `description` fields for user-facing options
@@ -196,22 +211,29 @@ config = lib.mkMerge [
 
 ## Adding New Nix Files
 
-When adding new nix files, they must be added to git before `task build` or any `nix` command will run properly. This applies only to new nix files, existing files do not need to be added. Do not run `git add` for existing files or `git commit` until the code is working and tested.
+When adding new nix files, they must be added to git before `task build` or any
+`nix` command will run properly. This applies only to new nix files, existing
+files do not need to be added. Do not run `git add` for existing files or
+`git commit` until the code is working and tested.
 
 ## Goals
+
 - Keep changes minimal and focused.
 - Preserve existing code style and structure.
 - Ask before making broad refactors.
 
 ## Behavior
+
 - Do not invent APIs or dependencies.
 - Prefer small, testable diffs.
 - Call out assumptions and missing context.
 
 ## Context
+
 - Use only files referenced in the prompt unless told otherwise.
 - For large changes, propose a plan before editing.
 
 ---
 
-For detailed information about module organization, configuration patterns, and common tasks, see [REFERENCE.md](REFERENCE.md).
+For detailed information about module organization, configuration patterns, and
+common tasks, see [REFERENCE.md](REFERENCE.md).

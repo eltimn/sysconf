@@ -43,7 +43,7 @@ in
 
   sysconf = {
     settings.hostRole = "desktop";
-    settings.desktopEnvironment = "cosmic";
+    settings.desktopEnvironment = "cosmic+niri";
 
     users.nelly = {
       enable = true;

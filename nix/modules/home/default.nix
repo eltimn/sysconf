@@ -51,10 +51,6 @@ let
     # logseq
     meld
     # mongodb-compass
-    # neofetch
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.hack
     # net-tools
     nixfmt-rfc-style
     nixpkgs-lint-community
@@ -67,6 +63,7 @@ let
     vhs
     vlc
     # warp-terminal
+    wev
     # wezterm # https://github.com/wezterm/wezterm/issues/6025
     wl-color-picker
     yubioath-flutter

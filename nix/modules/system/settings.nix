@@ -23,8 +23,8 @@ in
 
     desktopEnvironment = lib.mkOption {
       type = lib.types.str;
-      default = "none"; # cosmic|gnome|none
-      description = "Desktop Environment used.";
+      default = "none"; # cosmic|gnome|niri|cosmic+niri|none
+      description = "Desktop Environment used. Use 'cosmic+niri' for multi-session with greetd chooser.";
     };
 
     homeDomain = lib.mkOption {

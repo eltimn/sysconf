@@ -53,7 +53,7 @@ in
     programs.zellij.enable = true;
 
     home = {
-      file.".config/zellij/config.kdl".source = pkgs.replaceVars ./config.kdl.in {
+      file.".config/zellij/config.kdl".source = pkgs.replaceVars ./tmpl-config.kdl {
         scrollback_editor = "${pkgs.neovim}/bin/nvim";
       };
 
