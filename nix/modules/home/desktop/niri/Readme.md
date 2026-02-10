@@ -2,7 +2,7 @@
 
 ## Theming
 
-Theme switching is handled by Nocatalia. When the mode is switched, Noctalia:
+Theme switching is handled by Noctalia. When the mode is switched, Noctalia:
 
 1. Updates its own settings.json file with colorSchemes.darkMode = true/false
 2. Updates any app's theme it is controlling.

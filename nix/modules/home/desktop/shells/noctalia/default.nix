@@ -13,6 +13,7 @@ let
     wallpapers = { };
   };
 
+  # User defined templates to extend their built-in ones.
   noctaliaUserTemplates = ''
     [config]
 
@@ -26,6 +27,7 @@ let
     # output_path = "~/.config/myapp/theme.css"
     # post_hook = "myapp --reload-theme"
 
+    # Create a file that darkman can read to determine drak/light theme.
     [templates.darkman-sync]
     input_path = "${config.home.homeDirectory}/.config/noctalia-bg-hex.in"
     output_path = "${config.home.homeDirectory}/.cache/noctalia-bg-hex"
@@ -84,10 +86,10 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       file = {
-        ".config/noctalia/settings.json".source = settingsJsonPath;
         ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
-        ".config/noctalia-bg-hex.in".text = "{{colors.surface.default.hex}}";
+        ".config/noctalia/settings.json".source = settingsJsonPath;
         ".config/noctalia/user-templates.toml".text = noctaliaUserTemplates;
+        ".config/noctalia-bg-hex.in".text = "{{colors.surface.default.hex}}";
       };
 
       packages =
@@ -106,14 +108,6 @@ in
           (pkgs.writeShellScriptBin "sync-darkman" syncDarkman)
         ]
         ++ [ pkgs-unstable.noctalia-shell ];
-
-      # Noctalia doesn't seem to be able to read the settings if home.file is used.
-      # activation.copySettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      #   $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.config/noctalia/settings.json"
-      #   ${settingsJson}
-      #   EOF
-      #   $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.config/noctalia/settings.json"
-      # '';
     };
 
     # Switching between light/dark will be managed by Noctalia. This just provides the dbus backend.
