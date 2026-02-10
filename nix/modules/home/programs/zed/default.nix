@@ -48,6 +48,7 @@ in
         "lua"
         "make"
         "nix"
+        "opencode"
         "opentofu"
         "rumdl"
         "sql"
@@ -56,6 +57,11 @@ in
         "xml"
       ];
       userSettings = {
+        theme = {
+          mode = "system";
+          dark = "Tokyo Night";
+          light = "One Light";
+        };
         file_types = {
           "Shell Script" = [
             ".env.*"

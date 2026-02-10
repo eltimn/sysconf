@@ -1,0 +1,4 @@
+include "./main.kdl"
+include "./binds.kdl"
+include "./extra.kdl"
+include "./noctalia.kdl"

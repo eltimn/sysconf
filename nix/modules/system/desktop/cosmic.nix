@@ -7,6 +7,7 @@
 
 let
   cfg = config.sysconf.desktop.cosmic;
+  greetdEnabled = config.sysconf.desktop.greetd.enable;
 in
 {
   options.sysconf.desktop.cosmic = {
@@ -15,8 +16,8 @@ in
 
   config = lib.mkIf cfg.enable {
     services = {
-      # Enable the COSMIC login manager
-      displayManager.cosmic-greeter.enable = true;
+      # Only enable cosmic-greeter if greetd is not managing sessions
+      displayManager.cosmic-greeter.enable = !greetdEnabled;
 
       # Enable the COSMIC desktop environment
       desktopManager.cosmic.enable = true;

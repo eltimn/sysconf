@@ -8,11 +8,20 @@ let
   cfg = config.sysconf.programs.rofi;
 
   rofi-cliphist = pkgs.writeShellScriptBin "rofi-cliphist" ''
+    # Theme detection: check Noctalia, then Cosmic
     COSMIC_THEME_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
+    NOCTALIA_THEME_FILE="$HOME/.config/rofi/noctalia.rasi"
 
-    if [[ -f "$COSMIC_THEME_FILE" ]] && [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
-      THEME="dark"
+    if [[ -f "$NOCTALIA_THEME_FILE" ]]; then
+      THEME="noctalia"
+    elif [[ -f "$COSMIC_THEME_FILE" ]]; then
+      if [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
+        THEME="dark"
+      else
+        THEME="light"
+      fi
     else
+      # Default to light for non-COSMIC/Noctalia sessions
       THEME="light"
     fi
 
@@ -44,8 +53,11 @@ in
 
     home = {
       # Symlink themes to ~/.config/rofi
-      file.".config/rofi/dark.rasi".source = ./themes/dark.rasi;
-      file.".config/rofi/light.rasi".source = ./themes/light.rasi;
+      file = {
+        ".config/rofi/dark.rasi".source = ./themes/dark.rasi;
+        ".config/rofi/light.rasi".source = ./themes/light.rasi;
+        ".config/rofi/tmpl-noctalia.rasi".source = ./tmpl-noctalia.rasi;
+      };
 
       packages = with pkgs; [
         cliphist
@@ -56,7 +68,7 @@ in
 
     programs.rofi = {
       enable = true;
-      package = pkgs.rofi;
+      package = pkgs.rofi; # Includes Wayland support as of nixpkgs 25.11
     };
   };
 }
