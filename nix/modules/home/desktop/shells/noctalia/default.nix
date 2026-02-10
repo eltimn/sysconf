@@ -32,6 +32,10 @@ let
     input_path = "${config.home.homeDirectory}/.config/noctalia-bg-hex.in"
     output_path = "${config.home.homeDirectory}/.cache/noctalia-bg-hex"
     post_hook = 'sync-darkman'
+
+    [templates.rofi]
+    input_path = "${config.home.homeDirectory}/.config/rofi/tmpl-noctalia.rasi"
+    output_path = "${config.home.homeDirectory}/.config/rofi/noctalia.rasi"
   '';
 
   syncDarkman = ''
