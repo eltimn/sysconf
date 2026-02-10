@@ -258,7 +258,7 @@
     "allowPanelsOnScreenWithoutBar": true,
     "animationDisabled": false,
     "animationSpeed": 1,
-    "avatarImage": "/home/nelly/.face",
+    "avatarImage": "@facePath@",
     "boxRadiusRatio": 1,
     "compactLockScreen": false,
     "dimmerOpacity": 0.2,

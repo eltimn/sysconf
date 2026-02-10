@@ -13,6 +13,7 @@ in
   config = lib.mkMerge [
     {
       home.file."background-image".source = ./lightning-wallpaper;
+      home.file."eightbit-me.png".source = ./eightbit-me.png;
     }
     (lib.mkIf (settings.desktopEnvironment == "gnome") {
       sysconf.desktop.gnome.enable = true;

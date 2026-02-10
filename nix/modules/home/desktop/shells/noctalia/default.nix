@@ -70,6 +70,7 @@ let
   # To find out what changes the GUI makes, run `noctalia-shell ipc call state all | jq .settings.bar.widgets.right`
   settingsJsonPath = pkgs.replaceVars ./tmpl-settings.json {
     barMonitor = cfg.barMonitor;
+    facePath = "${config.home.homeDirectory}/eightbit-me.png";
   };
 in
 {
@@ -79,7 +80,7 @@ in
     barMonitor = lib.mkOption {
       type = lib.types.str;
       description = "The monitor to include the topbar on.";
-      default = [ ];
+      default = "";
     };
   };
 
