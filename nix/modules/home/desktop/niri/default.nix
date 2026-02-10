@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.sysconf.desktop.niri;
+  noctaliaConfigFile = "${config.home.homeDirectory}/.config/niri/noctalia.kdl";
 in
 {
   options.sysconf.desktop.niri = {
@@ -41,6 +42,13 @@ in
         ".config/niri/main.kdl".source = ./files/main.kdl;
         ".config/niri/extra.kdl".text = cfg.extraConfig;
       };
+
+      activation.initNiri = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        # ensure noctalia config file exists
+        if [[ ! -f "${noctaliaConfigFile}" ]]; then
+          touch "${noctaliaConfigFile}"
+        fi
+      '';
     };
   };
 }

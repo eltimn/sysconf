@@ -22,15 +22,26 @@ in
       sysconf.desktop.cosmic.enable = true;
     })
     (lib.mkIf (settings.desktopEnvironment == "niri") {
-      sysconf.desktop.niri.enable = true;
-      sysconf.desktop.noctalia.enable = true;
+      sysconf = {
+        desktop.niri.enable = true;
+        desktop.noctalia.enable = true;
+        programs.foot.theme = "noctalia";
+        programs.ghostty.theme = "noctalia";
+      };
     })
     # Multi-session: enable Home Manager config for both COSMIC and Niri
     (lib.mkIf (settings.desktopEnvironment == "cosmic+niri") {
-      sysconf.desktop = {
-        cosmic.enable = true;
-        niri.enable = true;
-        noctalia.enable = true;
+      sysconf = {
+        desktop = {
+          cosmic.enable = true;
+          niri.enable = true;
+          noctalia.enable = true;
+        };
+
+        programs = {
+          foot.theme = "noctalia";
+          ghostty.theme = "noctalia";
+        };
       };
     })
   ];

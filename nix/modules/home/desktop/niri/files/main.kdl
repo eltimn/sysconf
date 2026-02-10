@@ -43,7 +43,7 @@
     position x=1280 y=0
 }
 
-// Noctalia reccomendations
+// Noctalia recommendations
 // Example: enable rounded corners for all windows.
 window-rule {
   geometry-corner-radius 20
