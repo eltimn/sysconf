@@ -108,7 +108,7 @@
           "drawerEnabled": true,
           "hidePassive": false,
           "id": "Tray",
-          "pinned": []
+          "pinned": ["Filen", "Bluetooth Enabled"]
         },
         {
           "hideWhenZero": false,

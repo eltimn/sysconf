@@ -65,6 +65,7 @@ let
     fi
   '';
 
+  # To find out what changes the GUI makes, run `noctalia-shell ipc call state all | jq .settings.bar.widgets.right`
   settingsJsonPath = pkgs.replaceVars ./tmpl-settings.json {
     barMonitor = cfg.barMonitor;
   };
