@@ -87,6 +87,11 @@ in
         enable = true;
         port = 8082;
       };
+
+      searxng = {
+        enable = true;
+        port = 8888;
+      };
     };
   };
 

@@ -131,6 +131,19 @@ let
       group = "root";
       permissions = "0400";
     };
+    "searxng-env" = {
+      keyCommand = [
+        "sops"
+        "--extract"
+        "[\"searxng_env\"]"
+        "--decrypt"
+        "${secretsPath}/secrets-enc.yaml"
+      ];
+      destDir = "/run/keys";
+      user = "root";
+      group = "root";
+      permissions = "0400";
+    };
   };
 
   # a function to create a colmena configuration

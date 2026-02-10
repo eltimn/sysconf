@@ -14,6 +14,7 @@
     ./notify.nix
     ./pocketid.nix
     ./pocketid-backup.nix
+    ./searxng.nix
     ./sshd.nix
     ./wireguard.nix
     ./zfs-vault.nix

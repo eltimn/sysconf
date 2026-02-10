@@ -23,6 +23,7 @@ jellyfin   IN CNAME illmatic
 nas        IN CNAME illmatic
 ntfy       IN CNAME illmatic
 pics       IN CNAME illmatic
+search     IN CNAME illmatic
 unifi      IN CNAME illmatic
 web        IN CNAME illmatic
 www        IN CNAME illmatic
