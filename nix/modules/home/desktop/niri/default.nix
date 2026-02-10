@@ -46,6 +46,7 @@ in
       activation.initNiri = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         # ensure noctalia config file exists
         if [[ ! -f "${noctaliaConfigFile}" ]]; then
+          mkdir -p $(dirname "${noctaliaConfigFile}")
           touch "${noctaliaConfigFile}"
         fi
       '';
