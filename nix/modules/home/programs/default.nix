@@ -20,5 +20,6 @@
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix
+    ./tv.nix
   ];
 }

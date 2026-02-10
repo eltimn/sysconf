@@ -105,6 +105,7 @@ in
         direnv.enable = true;
         git.enable = true;
         tmux.enable = true;
+        tv.enable = true;
         zellij.enable = true;
         zsh.enable = true;
       };
