@@ -7,15 +7,21 @@
 let
   secretsPath = builtins.toString inputs.sysconf-secrets;
 
+  mkKeyCommand = pathSegments: [
+    "sops"
+    "--extract"
+    (lib.concatStrings (map (s: ''["${s}"]'') pathSegments))
+    "--decrypt"
+    "${secretsPath}/secrets-enc.yaml"
+  ];
+
   # Shared secret definitions for user passwords
   mkPasswordKeys = {
     "nelly-password" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"users\"][\"nelly\"][\"password\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "users"
+        "nelly"
+        "password"
       ];
       destDir = "/run/keys";
       user = "root";
@@ -24,12 +30,9 @@ let
     };
 
     "nelly-git-github" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"git\"][\"github\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "git"
+        "github"
       ];
       destDir = "/run/keys";
       user = "nelly";
@@ -38,12 +41,9 @@ let
     };
 
     "nelly-git-user" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"git\"][\"user\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "git"
+        "user"
       ];
       destDir = "/run/keys";
       user = "nelly";
@@ -67,25 +67,16 @@ let
     };
     # Borg needs a password
     "borg-passphrase-illmatic" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"borg_passphrase_illmatic\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
-      ];
+      keyCommand = mkKeyCommand [ "borg_passphrase_illmatic" ];
       destDir = "/run/keys";
       user = "root";
       group = "keys";
       permissions = "0440";
     };
     "pocketid-encryption-key" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"pocketid\"][\"encryption_key\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "pocketid"
+        "encryption_key"
       ];
       destDir = "/run/keys";
       user = "pocket-id";
@@ -93,12 +84,9 @@ let
       permissions = "0440";
     };
     "filen-cli-auth-config" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"filen\"][\"auth_config\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "filen"
+        "auth_config"
       ];
       destDir = "/run/keys";
       user = "nelly";
@@ -106,12 +94,9 @@ let
       permissions = "0400";
     };
     "gocryptfs-services" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"gocryptfs\"][\"services\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "gocryptfs"
+        "services"
       ];
       destDir = "/run/keys";
       user = "root";
@@ -119,12 +104,9 @@ let
       permissions = "0400";
     };
     "zfs-encryption-private" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"zfs_encryption\"][\"private\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
+      keyCommand = mkKeyCommand [
+        "zfs_encryption"
+        "private"
       ];
       destDir = "/run/keys";
       user = "root";
@@ -132,13 +114,7 @@ let
       permissions = "0400";
     };
     "searxng-env" = {
-      keyCommand = [
-        "sops"
-        "--extract"
-        "[\"searxng_env\"]"
-        "--decrypt"
-        "${secretsPath}/secrets-enc.yaml"
-      ];
+      keyCommand = mkKeyCommand [ "searxng_env" ];
       destDir = "/run/keys";
       user = "root";
       group = "root";
