@@ -21,6 +21,9 @@ binds {
     Mod+E hotkey-overlay-title="Open Yazi in floating window" {
       spawn "footclient" "--app-id=foot-floating" "--" "yazi";
     }
+    Mod+D hotkey-overlay-title="Open Television in floating window" {
+      spawn "footclient" "--app-id=foot-floating" "--" "tv";
+    }
     // Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 

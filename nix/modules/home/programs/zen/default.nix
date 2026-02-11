@@ -153,10 +153,10 @@ in
 
     home.activation.copySettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userChrome.css"
-      @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userChrome.css";
+      ${cfg.userChrome}
       EOF
       $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userContent.css"
-      @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userContent.css";
+      ${cfg.userContent}
       EOF
       $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userChrome.css"
       $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userContent.css"
