@@ -318,5 +318,6 @@ window-rule {
 // checks for floating window
 window-rule {
   match app-id="-floating$"
+  match title="-floating$"
   open-floating true
 }

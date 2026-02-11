@@ -29,7 +29,8 @@ in
         theme = cfg.theme;
         window-theme = "ghostty";
         font-family = fonts.monospace;
-        font-size = fonts.size;
+        font-size = fonts.size - 1;
+        quit-after-last-window-closed = false;
       };
 
       themes = {
