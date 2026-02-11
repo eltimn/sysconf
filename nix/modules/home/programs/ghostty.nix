@@ -29,7 +29,7 @@ in
         theme = cfg.theme;
         window-theme = "ghostty";
         font-family = fonts.monospace;
-        font-size = 13;
+        font-size = fonts.size;
       };
 
       themes = {

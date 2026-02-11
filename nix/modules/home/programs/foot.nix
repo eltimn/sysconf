@@ -1,10 +1,12 @@
 {
   config,
   lib,
+  osConfig,
   ...
 }:
 let
   cfg = config.sysconf.programs.foot;
+  fonts = osConfig.sysconf.fonts;
 in
 {
   options.sysconf.programs.foot = {
@@ -26,7 +28,7 @@ in
         main = {
           include = "${config.home.homeDirectory}/.config/foot/themes/${cfg.theme}";
           term = "xterm-256color";
-          font = "monospace:size=13";
+          font = "monospace:size=${toString fonts.size}";
           pad = "12x12";
           dpi-aware = "yes";
           initial-window-size-chars = "100x30";

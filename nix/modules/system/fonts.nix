@@ -37,6 +37,12 @@ in
       default = "Noto Color Emoji";
       description = "Default emoji font family";
     };
+
+    size = lib.mkOption {
+      type = lib.types.number;
+      description = "Font size to use in terminals, editors, etc.";
+      default = 18;
+    };
   };
 
   config = lib.mkIf cfg.enable {
