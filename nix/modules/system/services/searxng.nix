@@ -45,7 +45,7 @@ in
           bind_address = "127.0.0.1";
           port = cfg.port;
           secret_key = "$SEARXNG_SECRET";
-          limiter = true;
+          limiter = false;
           public_instance = false;
           image_proxy = true;
           method = "GET";
@@ -55,6 +55,10 @@ in
           safe_search = 2;
           autocomplete_min = 2;
           autocomplete = "duckduckgo";
+          formats = [
+            "html"
+            "json"
+          ];
         };
 
         ui = {
@@ -70,6 +74,13 @@ in
           max_request_timeout = 15.0;
           enable_http2 = true;
         };
+
+        engines = [
+          {
+            name = "wolframalpha";
+            disabled = false;
+          }
+        ];
       };
     };
 
