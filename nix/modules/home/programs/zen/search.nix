@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   force = true;
-  default = "ddg";
+  default = "SearXNG";
   engines =
     let
       nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
@@ -161,10 +161,10 @@
         ];
       };
 
-      "StartPage" = {
+      "SearXNG" = {
         urls = [
           {
-            template = "https://www.startpage.com/sp/search";
+            template = "https://search.home.eltimn.com";
             params = [
               {
                 name = "q";
@@ -174,11 +174,9 @@
           }
         ];
         definedAliases = [
-          "startpage"
-          "sp"
-          "pp"
+          "sx"
         ];
-        icon = "https://www.startpage.com/sp/cdn/favicons/favicon-gradient.ico";
+        icon = "https://search.home.eltimn.com/favicon.png";
         updateInterval = 24 * 60 * 60 * 1000;
       };
 
