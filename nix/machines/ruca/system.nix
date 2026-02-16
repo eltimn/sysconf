@@ -125,6 +125,7 @@ in
     clinfo
     isd
     pciutils
+    system-config-printer
 
     # Bluetooth CLI tools (e.g. bluetoothctl)
     bluez
@@ -158,6 +159,7 @@ in
     };
 
     blueman.enable = true;
+    system-config-printer.enable = true;
   };
 
   # Persistent network interface naming
