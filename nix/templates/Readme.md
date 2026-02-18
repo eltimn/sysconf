@@ -1,15 +1,15 @@
-## Nix Flake Templates
+# Nix Flake Templates
 
 Templates are there to help you start your Nix project.
 
-```console
+```shell
 nix flake init --template templates#full
 nix flake init --template github:eltimn/sysconf#basic
 ```
 
 or
 
-```console
+```shell
 nix flake new --template templates#full ./my-new-project
 nix flake init --template github:eltimn/sysconf#basic ./my-new-project
 ```
