@@ -41,7 +41,7 @@ in
     size = lib.mkOption {
       type = lib.types.number;
       description = "Font size to use in terminals, editors, etc.";
-      default = 18;
+      default = 15;
     };
   };
 

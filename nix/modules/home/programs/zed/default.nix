@@ -8,6 +8,7 @@
 let
   cfg = config.sysconf.programs.zed-editor;
   fonts = osConfig.sysconf.fonts;
+  fontSize = fonts.size + 1;
 
   # Read the nix-module templates
   nixModuleTemplate = builtins.readFile ./snippets/nix-module.nix-tmpl;
@@ -97,11 +98,11 @@ in
 
         # fonts
         ui_font_family = fonts.sansSerif;
-        ui_font_size = fonts.size;
-        buffer_font_size = fonts.size;
+        ui_font_size = fontSize;
+        buffer_font_size = fontSize;
         buffer_font_family = fonts.monospace;
         terminal = {
-          font_size = fonts.size;
+          font_size = fontSize;
           # Terminal line height: comfortable (1.618), standard(1.3) or `{ "custom": 2 }`
           line_height = "standard";
         };

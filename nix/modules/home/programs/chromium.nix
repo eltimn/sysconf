@@ -15,22 +15,18 @@ in
   config = lib.mkIf cfg.enable {
     programs.chromium = {
       enable = true;
-      package = pkgs.ungoogled-chromium;
+      package = pkgs.chromium; # extensions don't work with ungoogled version
       extensions = [
         {
           # Bitwarden
           id = "nngceckbapebfimnlniiiahkandclblb";
-          version = "2025.12.0";
+          version = "2026.1.0";
         }
+
         {
-          # Grammarly
-          id = "kbfnbcaeplbcioakkpcpgfkobkghlhen";
-          version = "14.1267.0";
-        }
-        {
-          # Start page
-          id = "fgmjlmbojbkmdpofahffgcpkhkngfpef";
-          version = "3.0.8";
+          # floccus
+          id = "fnaicdffflnofjppbagibeoednhnbjhg";
+          version = "5.8.6";
         }
       ];
     };

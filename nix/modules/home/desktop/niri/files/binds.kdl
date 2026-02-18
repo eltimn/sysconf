@@ -14,12 +14,16 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="Open a Terminal: foot" { spawn "footclient"; }
-    Mod+Shift+T hotkey-overlay-title="Open a Terminal in floating window: foot" {
-      spawn "footclient" "--app-id=foot-floating";
+    Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty" "+new-window"; }
+    Mod+Shift+T hotkey-overlay-title="Open a Terminal in floating window: ghostty" {
+      spawn "ghostty" "--title=ghostty-floating";
     }
+    // +new-window ignores the --title flag, so there's not a way to make it float with it.
     Mod+E hotkey-overlay-title="Open Yazi in floating window" {
-      spawn "footclient" "--app-id=foot-floating" "--" "yazi";
+      spawn "ghostty" "--title=yazi-floating" "-e" "yazi";
+    }
+    Mod+D hotkey-overlay-title="Open Television in floating window" {
+      spawn "ghostty" "--title=tv-floating" "-e" "tv";
     }
     // Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }

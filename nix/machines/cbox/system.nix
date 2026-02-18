@@ -1,6 +1,7 @@
 { config, ... }:
 let
   settings = config.sysconf.settings;
+  consts = import ../../constants.nix;
 in
 {
   # Bootloader
@@ -17,7 +18,13 @@ in
     };
 
     services = {
-      blocky.enable = true;
+      blocky = {
+        enable = true;
+        listenAddresses = [
+          consts.networks.home.cbox
+          "127.0.0.1"
+        ];
+      };
     };
   };
 
@@ -34,8 +41,8 @@ in
     # Configure static IP with systemd-networkd
     networks."10-eth0" = {
       matchConfig.Name = "eth0";
-      address = [ "10.42.10.23/24" ];
-      gateway = [ "10.42.10.1" ];
+      address = [ "${consts.networks.home.cbox}/24" ];
+      gateway = [ consts.networks.home.gateway ];
       dns = config.sysconf.settings.dnsServers;
       linkConfig.RequiredForOnline = "routable";
     };

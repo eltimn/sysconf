@@ -68,83 +68,88 @@
     desktop = {
       cosmic.primaryMonitor = "HDMI-A-1";
       noctalia.barMonitor = "HDMI-A-1";
-      niri.extraConfig = ''
-        // https://yalter.github.io/niri/Configuration:-Input
-        input {
-          keyboard {
-            xkb {
-              // You can set rules, model, layout, variant and options.
-              // For more information, see xkeyboard-config(7).
+      niri = {
+        # lockTimeout = 600; # Lock after 10 minutes
+        monitorOffTimeout = 1200; # Turn off monitors after 20 minutes
+        suspendTimeout = 1800; # Suspend after 30 minutes
+        extraConfig = ''
+          // https://yalter.github.io/niri/Configuration:-Input
+          input {
+            keyboard {
+              xkb {
+                // You can set rules, model, layout, variant and options.
+                // For more information, see xkeyboard-config(7).
 
-              // For example:
-              // layout "us,ru"
-              // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+                // For example:
+                // layout "us,ru"
+                // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
 
-              // If this section is empty, niri will fetch xkb settings
-              // from org.freedesktop.locale1. You can control these using
-              // localectl set-x11-keymap.
+                // If this section is empty, niri will fetch xkb settings
+                // from org.freedesktop.locale1. You can control these using
+                // localectl set-x11-keymap.
+              }
+
+              // Enable numlock on startup, omitting this setting disables it.
+              numlock
             }
 
-            // Enable numlock on startup, omitting this setting disables it.
-            numlock
+            // Next sections include libinput settings.
+            // Omitting settings disables them, or leaves them at their default values.
+            // All commented-out settings here are examples, not defaults.
+            touchpad {
+              off
+              //tap
+              // dwt
+              // dwtp
+              // drag false
+              // drag-lock
+              //natural-scroll
+              // accel-speed 0.2
+              // accel-profile "flat"
+              // scroll-method "two-finger"
+              // disabled-on-external-mouse
+            }
+
+            mouse {
+              // off
+              // natural-scroll
+              // accel-speed 0.2
+              // accel-profile "flat"
+              // scroll-method "no-scroll"
+              left-handed
+            }
+
+            trackpoint {
+              off
+              // natural-scroll
+              // accel-speed 0.2
+              // accel-profile "flat"
+              // scroll-method "on-button-down"
+              // scroll-button 273
+              // scroll-button-lock
+              // middle-emulation
+            }
+
+            // Uncomment this to make the mouse warp to the center of newly focused windows.
+            // warp-mouse-to-focus
+
+            // Focus windows and outputs automatically when moving the mouse into them.
+            // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
+            // focus-follows-mouse max-scroll-amount="0%"
           }
 
-          // Next sections include libinput settings.
-          // Omitting settings disables them, or leaves them at their default values.
-          // All commented-out settings here are examples, not defaults.
-          touchpad {
-            off
-            //tap
-            // dwt
-            // dwtp
-            // drag false
-            // drag-lock
-            //natural-scroll
-            // accel-speed 0.2
-            // accel-profile "flat"
-            // scroll-method "two-finger"
-            // disabled-on-external-mouse
+          // Monitor configuration
+          // Samsung (main) on the left, Dell on the right
+          output "HDMI-A-1" {
+            position x=0 y=0
+            focus-at-startup
           }
 
-          mouse {
-            // off
-            // natural-scroll
-            // accel-speed 0.2
-            // accel-profile "flat"
-            // scroll-method "no-scroll"
-            left-handed
+          output "DP-2" {
+            position x=2560 y=0
           }
-
-          trackpoint {
-            off
-            // natural-scroll
-            // accel-speed 0.2
-            // accel-profile "flat"
-            // scroll-method "on-button-down"
-            // scroll-button 273
-            // scroll-button-lock
-            // middle-emulation
-          }
-
-          // Uncomment this to make the mouse warp to the center of newly focused windows.
-          // warp-mouse-to-focus
-
-          // Focus windows and outputs automatically when moving the mouse into them.
-          // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
-          // focus-follows-mouse max-scroll-amount="0%"
-        }
-
-        // Monitor configuration
-        // Samsung (main) on the left, Dell on the right
-        output "HDMI-A-1" {
-          position x=0 y=0
-          focus-at-startup
-        }
-
-        output "DP-2" {
-          position x=2560 y=0
-        }
-      '';
+        '';
+      };
     };
 
     containers.mongodb-rz.enable = true;

@@ -23,6 +23,17 @@ in
 {
   options.sysconf.services.blocky = {
     enable = lib.mkEnableOption "blocky";
+
+    listenAddresses = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ "0.0.0.0" ];
+      description = ''
+        The IP addresses to bind the DNS server to.
+        Default [ "0.0.0.0" ] binds to all interfaces.
+        Use specific IPs (e.g., [ "10.42.10.22" "127.0.0.1" ]) to bind only
+        to LAN and localhost interfaces to avoid conflicts with podman.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -72,9 +83,9 @@ in
           };
         };
 
-        # Ports configuration
+        # Ports configuration - bind to all specified addresses
         ports = {
-          dns = dnsPort;
+          dns = map (addr: "${addr}:${toString dnsPort}") cfg.listenAddresses;
         };
 
         blocking = {

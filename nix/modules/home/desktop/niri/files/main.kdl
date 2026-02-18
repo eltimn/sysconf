@@ -278,6 +278,8 @@ xwayland-satellite {
   path "xwayland-satellite"
 }
 
+// Find details about a window, run `niri msg pick-window` and click on the window.
+
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Window-Rules
@@ -318,5 +320,6 @@ window-rule {
 // checks for floating window
 window-rule {
   match app-id="-floating$"
+  match title="-floating$"
   open-floating true
 }

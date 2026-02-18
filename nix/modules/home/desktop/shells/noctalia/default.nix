@@ -107,7 +107,6 @@ in
           polkit_gnome
           slurp
           swappy
-          swayidle
           xdg-desktop-portal-gtk
           xdg-desktop-portal-wlr
           (pkgs.writeShellScriptBin "sync-darkman" syncDarkman)
@@ -165,22 +164,6 @@ in
         };
         Service = {
           ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-          Restart = "on-failure";
-        };
-        Install = {
-          WantedBy = [ "graphical-session.target" ];
-        };
-      };
-
-      swayidle = {
-        Unit = {
-          Description = "Idle manager";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-          ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
-        };
-        Service = {
-          ExecStart = "${pkgs.swayidle}/bin/swayidle -w timeout 600 'noctalia-shell ipc call lockScreen lock' before-sleep 'noctalia-shell ipc call lockScreen lock'";
           Restart = "on-failure";
         };
         Install = {
