@@ -30,6 +30,14 @@ let
 
       # Build before-sleep command (always lock before sleep if lockTimeout is set)
       beforeSleep = lib.optionalString hasLockTimeout "before-sleep '${lockCmd}'";
+
+      # When monitorOffTimeout is set but is less than or equal to lockTimeout,
+      # the monitor-off timeout is skipped (Line 25-27), but the resume command
+      # on Line 29 is still added. This results in a resume directive without a
+      # corresponding timeout for monitor-off.
+
+      # While swayidle handles this gracefully (the resume is simply never triggered),
+      # it's unnecessary and could be confusing.
     in
     if hasLockTimeout || hasMonitorTimeout || hasSuspendTimeout then
       "${pkgs.swayidle}/bin/swayidle -w ${timeouts}${beforeSleep}"
