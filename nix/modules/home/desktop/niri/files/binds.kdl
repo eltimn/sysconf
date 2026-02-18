@@ -31,7 +31,8 @@ binds {
     // Noctalia actions
     Mod+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     Mod+P { spawn "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
-    Super+Alt+L { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    Mod+Alt+L { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    Mod+Alt+M { power-off-monitors; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
