@@ -20,7 +20,7 @@ in
         {
           # Bitwarden
           id = "nngceckbapebfimnlniiiahkandclblb";
-          version = "2026.1.1";
+          version = "2026.1.0";
         }
 
         {
