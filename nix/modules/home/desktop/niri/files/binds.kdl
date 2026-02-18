@@ -16,7 +16,7 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty" "+new-window"; }
     Mod+Shift+T hotkey-overlay-title="Open a Terminal in floating window: ghostty" {
-      spawn "ghostty" "+new-window";
+      spawn "ghostty" "--title=ghostty-floating";
     }
     // +new-window ignores the --title flag, so there's not a way to make it float with it.
     Mod+E hotkey-overlay-title="Open Yazi in floating window" {
