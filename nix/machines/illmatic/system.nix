@@ -5,6 +5,7 @@
 }:
 let
   inherit (config.sysconf) settings;
+  consts = import ../../constants.nix;
 in
 {
   boot = {
@@ -69,7 +70,13 @@ in
     };
 
     services = {
-      blocky.enable = true;
+      blocky = {
+        enable = true;
+        listenAddresses = [
+          consts.networks.home.illmatic
+          "127.0.0.1"
+        ];
+      };
       caddy.enable = true;
       immich.enable = true;
       jellyfin.enable = true;
@@ -119,8 +126,8 @@ in
       # Configure static IP with systemd-networkd
       networks."10-eth3" = {
         matchConfig.Name = "eth3";
-        address = [ "10.42.10.22/24" ];
-        gateway = [ "10.42.10.1" ];
+        address = [ "${consts.networks.home.illmatic}/24" ];
+        gateway = [ consts.networks.home.gateway ];
         dns = config.sysconf.settings.dnsServers;
         linkConfig.RequiredForOnline = "routable";
       };
