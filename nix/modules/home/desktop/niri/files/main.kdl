@@ -46,7 +46,7 @@
 // Noctalia recommendations
 // Example: enable rounded corners for all windows.
 window-rule {
-  geometry-corner-radius 20
+  geometry-corner-radius 12
   clip-to-geometry true
 }
 
@@ -73,7 +73,7 @@ overview {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 16
+    gaps 12
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -124,7 +124,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 4
+        width 3
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -244,7 +244,7 @@ spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLA
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
-    // skip-at-startup
+    skip-at-startup
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
@@ -312,8 +312,12 @@ window-rule {
   // block-out-from "screencast"
 }
 
+// Apps to open maximized by default
 window-rule {
   match app-id="zed"
+  match app-id="zen-beta"
+  match app-id="obsidian"
+
   open-maximized true
 }
 
@@ -321,5 +325,9 @@ window-rule {
 window-rule {
   match app-id="-floating$"
   match title="-floating$"
+
+  default-window-height { proportion 0.66667; }
+  default-column-width { proportion 0.66667; }
+
   open-floating true
 }
