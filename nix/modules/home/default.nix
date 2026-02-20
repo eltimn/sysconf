@@ -25,6 +25,7 @@ let
     neovim
     nix-prefetch-git
     nushell
+    pgcli
     podman-tui
     shellcheck
     # tmux

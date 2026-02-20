@@ -152,8 +152,11 @@
       };
     };
 
-    containers.mongodb-rz.enable = true;
-    containers.postgresql-rz.enable = true;
+    containers = {
+      mongodb-rz.enable = true;
+      postgresql-rz.enable = true;
+      postgresql-test.enable = true;
+    };
 
     programs = {
       claude.enable = true;

@@ -22,7 +22,7 @@ in
       containers = {
         "postgresql-rz" = {
           image = "docker.io/postgres:latest";
-          ports = [ "5433:5432" ];
+          ports = [ "127.0.0.1:5433:5432" ];
           volumes = [
             "postgresql-rz-data:/var/lib/postgresql"
           ];
