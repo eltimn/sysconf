@@ -20,7 +20,7 @@ let
 
     # Determine theme based on Cosmic theme setting
     if [[ -f "$COSMIC_THEME_FILE" ]] && [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
-      THEME="palenight"
+      THEME="tokyonight"
     else
       THEME="cosmic-light"
     fi
