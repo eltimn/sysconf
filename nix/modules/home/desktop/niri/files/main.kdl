@@ -312,6 +312,18 @@ window-rule {
   // block-out-from "screencast"
 }
 
+// checks for floating window
+window-rule {
+  match app-id="-floating$"
+  match title="-floating$"
+  match title="^Extension: (Bitwarden Password Manager)"
+
+  default-window-height { proportion 0.66667; }
+  default-column-width { proportion 0.66667; }
+
+  open-floating true
+}
+
 // Apps to open maximized by default
 window-rule {
   match app-id="zed"
@@ -319,15 +331,4 @@ window-rule {
   match app-id="obsidian"
 
   open-maximized true
-}
-
-// checks for floating window
-window-rule {
-  match app-id="-floating$"
-  match title="-floating$"
-
-  default-window-height { proportion 0.66667; }
-  default-column-width { proportion 0.66667; }
-
-  open-floating true
 }
