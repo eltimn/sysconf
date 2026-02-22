@@ -44,7 +44,7 @@ let
     ffmpeg
     filen-desktop
     firefox
-    git-worktree-runner
+    # git-worktree-runner
     google-chrome
     # libnss3-tools
     libnotify

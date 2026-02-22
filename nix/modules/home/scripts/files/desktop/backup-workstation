@@ -65,35 +65,9 @@ backup_mongo () {
 }
 
 backup_zen_data () {
-	rsync $RSYNC_OPTS "/home/$USERNAME/.zen/" $BACKUP_LOC/$USERNAME/zen
+	rsync $RSYNC_OPTS "/home/$USERNAME/.config/zen/" $BACKUP_LOC/$USERNAME/zen
 }
 
-backup_zen_profile () {
-	local zen_profile_dir="$1"
-	# pmd2fg35.Default (release)
-	# places.sqlite: Contains bookmarks and history.
-	# cookies.sqlite: Stores login sessions.
-	# cert9.db + key4.db + logins.json: Holds your saved passwords.
-	# extension-preferences.json + extensions.json + extension-settings.json + extensions folder: These files keep track of your installed add-ons (but not their custom settings).
-	# search.json.mozlz4: Stores your search engine preferences.
-	# sessionCheckpoints.json + sessionstore.jsonlz4: Saves your currently open tabs.
-	# prefs.js: Contains your about:config settings.
-
-	# rsync $RSYNC_OPTS $zen_profile_dir/places.sqlite $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/cookies.sqlite $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/extensions.json $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/extension-preferences.json $BACKUP_LOC/$USERNAME/zen-profile
-	# # rsync $RSYNC_OPTS $zen_profile_dir/extension-settings.json $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/extensions $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/search.json.mozlz4 $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/sessionCheckpoints.json $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/sessionstore.jsonlz4 $BACKUP_LOC/$USERNAME/zen-profile
-	# rsync $RSYNC_OPTS $zen_profile_dir/prefs.js $BACKUP_LOC/$USERNAME/zen-profile
-
-	rsync $RSYNC_OPTS "/home/$USERNAME/.zen/$zen_profile_dir" $BACKUP_LOC/$USERNAME/zen-profile
-}
-
-# backup_zen_profile "pmd2fg35.Default (release)"
 backup_zen_data
 
 backup_local_dir Gateway

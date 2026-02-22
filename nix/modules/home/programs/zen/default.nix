@@ -7,6 +7,7 @@
 
 let
   cfg = config.sysconf.programs.zen-browser;
+  chromeDir = "${config.home.homeDirectory}/.config/zen/${cfg.profileName}/chrome";
 in
 {
   imports = [
@@ -75,6 +76,7 @@ in
       enable = true;
       languagePacks = [ "en-US" ];
       nativeMessagingHosts = with pkgs; [ vdhcoapp ]; # video download helper companion app
+      suppressXdgMigrationWarning = true;
       policies = {
         DisableAppUpdate = true;
         DisableTelemetry = true;
@@ -149,17 +151,16 @@ in
       };
     };
 
-    # home.file.".zen/${cfg.profileName}/chrome/userContent.css".text = cfg.userContent;
-
     home.activation.copySettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userChrome.css"
+      $DRY_RUN_CMD mkdir -p "${chromeDir}"
+      $DRY_RUN_CMD cat << EOF > "${chromeDir}/userChrome.css"
       ${cfg.userChrome}
       EOF
-      $DRY_RUN_CMD cat << EOF > "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userContent.css"
+      $DRY_RUN_CMD cat << EOF > "${chromeDir}/userContent.css"
       ${cfg.userContent}
       EOF
-      $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userChrome.css"
-      $DRY_RUN_CMD chmod u+w "${config.home.homeDirectory}/.zen/${cfg.profileName}/chrome/userContent.css"
+      $DRY_RUN_CMD chmod u+w "${chromeDir}/userChrome.css"
+      $DRY_RUN_CMD chmod u+w "${chromeDir}/userContent.css"
     '';
   };
 }

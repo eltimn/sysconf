@@ -27,7 +27,7 @@ let
     # output_path = "~/.config/myapp/theme.css"
     # post_hook = "myapp --reload-theme"
 
-    # Create a file that darkman can read to determine drak/light theme.
+    # Create a file that darkman can read to determine dark/light theme.
     [templates.darkman-sync]
     input_path = "${config.home.homeDirectory}/.config/noctalia-bg-hex.in"
     output_path = "${config.home.homeDirectory}/.cache/noctalia-bg-hex"

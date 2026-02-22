@@ -181,7 +181,7 @@
         zen-browser = inputs.zen-browser-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
-        git-worktree-runner = prev.callPackage ./nix/pkgs/git-worktree-runner.nix { };
+        # git-worktree-runner = prev.callPackage ./nix/pkgs/git-worktree-runner.nix { };
         nix-2-33 = prev.nix.overrideAttrs (oldAttrs: {
           version = "2.33.0";
           src = prev.fetchFromGitHub {
@@ -203,7 +203,7 @@
 
       # Packages
       packages.${pkgs.stdenv.hostPlatform.system} = {
-        git-worktree-runner = pkgs.git-worktree-runner;
+        # git-worktree-runner = pkgs.git-worktree-runner;
         do-image = nixos-generators.nixosGenerate {
           system = "x86_64-linux";
           modules = [ ./nix/machines/do-image/configuration.nix ];
