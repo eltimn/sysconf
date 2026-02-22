@@ -126,6 +126,7 @@ in
     isd
     pciutils
     system-config-printer
+    quickemu
 
     # Bluetooth CLI tools (e.g. bluetoothctl)
     bluez
