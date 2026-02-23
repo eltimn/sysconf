@@ -66,8 +66,10 @@ let
 
     if [ "$YIQ" -lt 128 ]; then
       ${pkgs.darkman}/bin/darkman set dark
+      ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
     else
       ${pkgs.darkman}/bin/darkman set light
+      ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
     fi
   '';
 
