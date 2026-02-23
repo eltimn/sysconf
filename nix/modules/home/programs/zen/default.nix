@@ -102,6 +102,7 @@ in
             bitwarden
             floccus
             privacy-badger
+            pwas-for-firefox
             tranquility-1
             # video-downloadhelper
           ]
