@@ -35,9 +35,10 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
+      kdlfmt
       nil
       nixd
-      rumdl
+      rumdl # markdown formatter
     ];
 
     # https://home-manager-options.extranix.com/?query=programs.zed-editor&release=release-25.11
@@ -105,6 +106,21 @@ in
           font_size = fontSize;
           # Terminal line height: comfortable (1.618), standard(1.3) or `{ "custom": 2 }`
           line_height = "standard";
+        };
+
+        languages = {
+          Kdl = {
+            formatter = {
+              external = {
+                command = "${pkgs.kdlfmt}/bin/kdlfmt";
+                arguments = [
+                  "format"
+                  "--stdin"
+                  "{buffer_path}"
+                ];
+              };
+            };
+          };
         };
       };
     };

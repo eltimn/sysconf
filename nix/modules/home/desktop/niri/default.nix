@@ -108,32 +108,22 @@ in
       };
 
       file = {
-        ".config/niri/binds.kdl".source = ./files/binds.kdl;
-        "niri-hm-config" = {
-          # target = ".config/niri/${
-          #   if osConfig.sysconf.settings.niriShell == "dms" then "hm.kdl" else "config.kdl"
-          # }";
-          target = ".config/niri/config.kdl";
-          text = ''
-            include "./main.kdl"
-            include "./binds.kdl"
-            include "./extra.kdl"
-            ${lib.optionalString (
-              osConfig.sysconf.settings.niriShell == "noctalia"
-            ) ''include "./noctalia.kdl"''}
-            ${lib.optionalString (osConfig.sysconf.settings.niriShell == "dms") ''
-              include "./dms/alttab.kdl"
-              include "./dms/binds.kdl"
-              include "./dms/colors.kdl"
-              include "./dms/cursor.kdl"
-              include "./dms/layout.kdl"
-              include "./dms/outputs.kdl"
-              include "./dms/windowrules.kdl"
-              include "./dms/wpblur.kdl"
-            ''}
-          '';
-        };
+        ".config/niri/config.kdl".text = ''
+          include "./main.kdl"
+          include "./binds.kdl"
+          include "./extra.kdl"
+          ${lib.optionalString (
+            osConfig.sysconf.settings.niriShell == "noctalia"
+          ) ''include "./noctalia.kdl"''}
+          ${lib.optionalString (osConfig.sysconf.settings.niriShell == "dms") ''
+            include "./dms/alttab.kdl"
+            include "./dms/binds.kdl"
+            include "./dms/wpblur.kdl"
+          ''}
+        '';
+
         ".config/niri/main.kdl".source = ./files/main.kdl;
+        ".config/niri/binds.kdl".source = ./files/binds.kdl;
         ".config/niri/extra.kdl".text = cfg.extraConfig;
       };
 
