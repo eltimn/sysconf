@@ -42,8 +42,11 @@ in
   };
 
   sysconf = {
-    settings.hostRole = "desktop";
-    settings.desktopEnvironment = "cosmic+niri";
+    settings = {
+      hostRole = "desktop";
+      desktopEnvironment = "cosmic+niri";
+      niriShell = "dms";
+    };
 
     users.nelly = {
       enable = true;

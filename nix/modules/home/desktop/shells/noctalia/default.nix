@@ -93,6 +93,7 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       file = {
+        ".config/niri/noctalia.kdl".source = ./noctalia.kdl;
         ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
         ".config/noctalia/settings.json".source = settingsJsonPath;
         ".config/noctalia/user-templates.toml".text = noctaliaUserTemplates;

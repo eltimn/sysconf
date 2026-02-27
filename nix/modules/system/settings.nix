@@ -27,6 +27,12 @@ in
       description = "Desktop Environment used. Use 'cosmic+niri' for multi-session with greetd chooser.";
     };
 
+    niriShell = lib.mkOption {
+      type = lib.types.str;
+      default = "noctalia"; # noctalia|dms|none
+      description = "The shell/bar/launcher used for the Niri desktop environment.";
+    };
+
     homeDomain = lib.mkOption {
       type = lib.types.str;
       description = "The home domain.";

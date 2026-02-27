@@ -6,6 +6,7 @@ in
   imports = [
     ./cosmic
     ./niri
+    ./shells/dms
     ./shells/noctalia
     ./gnome.nix
   ];
@@ -24,7 +25,6 @@ in
     (lib.mkIf (settings.desktopEnvironment == "niri") {
       sysconf = {
         desktop.niri.enable = true;
-        desktop.noctalia.enable = true;
         programs.foot.theme = "noctalia";
         programs.ghostty.theme = "noctalia";
       };
@@ -35,7 +35,6 @@ in
         desktop = {
           cosmic.enable = true;
           niri.enable = true;
-          noctalia.enable = true;
         };
 
         programs = {
@@ -43,6 +42,12 @@ in
           ghostty.theme = "noctalia";
         };
       };
+    })
+    (lib.mkIf (settings.niriShell == "noctalia") {
+      sysconf.desktop.noctalia.enable = true;
+    })
+    (lib.mkIf (settings.niriShell == "dms") {
+      sysconf.desktop.dms.enable = true;
     })
   ];
 }
