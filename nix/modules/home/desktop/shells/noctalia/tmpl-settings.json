@@ -439,7 +439,7 @@
         "id": "ghostty"
       }
     ],
-    "enableUserTemplates": true
+    "enableUserTheming": true
   },
   "ui": {
     "bluetoothDetailsViewMode": "grid",

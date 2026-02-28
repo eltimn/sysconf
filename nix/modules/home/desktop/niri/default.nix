@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.sysconf.desktop.niri;
-  noctaliaConfigFile = "${config.home.homeDirectory}/.config/niri/noctalia.kdl";
+  noctaliaConfigFile = "${config.home.homeDirectory}/.config/niri/noctalia/config.kdl";
 
   # Build swayidle command based on configured timeouts
   swayidleCmd =
@@ -112,9 +112,10 @@ in
           include "./main.kdl"
           include "./binds.kdl"
           include "./extra.kdl"
-          ${lib.optionalString (
-            osConfig.sysconf.settings.niriShell == "noctalia"
-          ) ''include "./noctalia.kdl"''}
+          ${lib.optionalString (osConfig.sysconf.settings.niriShell == "noctalia") ''
+            include "./noctalia/config.kdl"
+            include "./noctalia.kdl"
+          ''}
           ${lib.optionalString (osConfig.sysconf.settings.niriShell == "dms") ''
             include "./dms/alttab.kdl"
             include "./dms/binds.kdl"

@@ -45,7 +45,7 @@ in
     settings = {
       hostRole = "desktop";
       desktopEnvironment = "cosmic+niri";
-      niriShell = "dms";
+      niriShell = "noctalia";
     };
 
     users.nelly = {

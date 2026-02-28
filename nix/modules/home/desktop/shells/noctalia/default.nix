@@ -93,7 +93,8 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       file = {
-        ".config/niri/noctalia.kdl".source = ./noctalia.kdl;
+        # Noctalia's theme templating writes a file with colors to .config/niri/noctalia.kdl
+        ".config/niri/noctalia/config.kdl".source = ./niri-config.kdl;
         ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
         ".config/noctalia/settings.json".source = settingsJsonPath;
         ".config/noctalia/user-templates.toml".text = noctaliaUserTemplates;
