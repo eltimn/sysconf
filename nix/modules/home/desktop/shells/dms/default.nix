@@ -7,6 +7,7 @@
 }:
 let
   cfg = config.sysconf.desktop.dms;
+  wallpaperPath = "${config.home.homeDirectory}/Downloads/047.jpg";
 in
 {
   imports = [
@@ -49,9 +50,17 @@ in
         launcherLogoMode = "os";
         barConfigs = builtins.fromJSON (builtins.readFile ./files/barConfigs.json);
         use24HourClock = false;
+        useFahrenheit = true;
+        acMonitorTimeout = 600;
+        acLockTimeout = 0;
+        acSuspendTimeout = 1800;
+        acSuspendBehavior = 0;
+        acProfileName = "";
+        lockBeforeSuspend = false;
       };
 
       session = {
+        inherit wallpaperPath;
         isLightMode = false;
         themeModeAutoEnabled = true;
         themeModeAutoMode = "time";
@@ -59,7 +68,6 @@ in
         themeModeStartMinute = 0;
         themeModeEndHour = 6;
         themeModeEndMinute = 30;
-        wallpaperPath = "${config.home.homeDirectory}/Downloads/089.png";
         weatherLocation = "Minneapolis, Minnesota";
         weatherCoordinates = "44.9772995,-93.2654692";
       };
