@@ -22,10 +22,10 @@ in
   config = lib.mkIf cfg.enable {
 
     home.file = {
-      ".config/niri/dms/alttab.kdl".source = ./files/alttab.kdl;
-      ".config/niri/dms/binds.kdl".source = ./files/binds.kdl;
-      ".config/niri/dms/colors.kdl".source = ./files/colors.kdl;
-      ".config/niri/dms/wpblur.kdl".source = ./files/wpblur.kdl;
+      ".config/niri/dms/alttab.kdl".source = ./files/niri/alttab.kdl;
+      ".config/niri/dms/binds.kdl".source = ./files/niri/binds.kdl;
+      ".config/niri/dms/colors.kdl".source = ./files/niri/colors.kdl;
+      ".config/niri/dms/wpblur.kdl".source = ./files/niri/wpblur.kdl;
       ".config/DankMaterialShell/tokyo-night.json".source = ./files/tokyo-night.json;
     };
 
