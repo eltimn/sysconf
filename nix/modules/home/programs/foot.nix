@@ -15,7 +15,7 @@ in
     theme = lib.mkOption {
       type = lib.types.str;
       description = "Name of the theme file.";
-      default = "default";
+      default = "themes/default";
     };
   };
 
@@ -26,7 +26,7 @@ in
 
       settings = {
         main = {
-          include = "${config.home.homeDirectory}/.config/foot/themes/${cfg.theme}";
+          include = "${config.home.homeDirectory}/.config/foot/${cfg.theme}";
           term = "xterm-256color";
           font = "monospace:size=${toString fonts.size}";
           pad = "12x12";

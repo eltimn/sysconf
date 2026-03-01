@@ -170,12 +170,6 @@
       zen-browser = {
         enable = true;
         profileName = "nelly";
-        userChrome = ''
-          @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userChrome.css";
-        '';
-        userContent = ''
-          @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userContent.css";
-        '';
       };
     };
 

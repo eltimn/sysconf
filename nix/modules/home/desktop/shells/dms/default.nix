@@ -8,6 +8,8 @@
 let
   cfg = config.sysconf.desktop.dms;
   wallpaperPath = "${config.home.homeDirectory}/Downloads/047.jpg";
+
+  minutes = n: n * 60;
 in
 {
   imports = [
@@ -17,6 +19,12 @@ in
 
   options.sysconf.desktop.dms = {
     enable = lib.mkEnableOption "dms";
+
+    isLaptop = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether this is a laptop. If true, battery monitoring and alerts will be enabled.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -39,7 +47,7 @@ in
 
       enableSystemMonitoring = true;
       enableVPN = false;
-      enableDynamicTheming = false;
+      enableDynamicTheming = true;
       enableAudioWavelength = true;
       enableCalendarEvents = true;
       enableClipboardPaste = true;
@@ -51,17 +59,16 @@ in
         barConfigs = builtins.fromJSON (builtins.readFile ./files/barConfigs.json);
         use24HourClock = false;
         useFahrenheit = true;
-        acMonitorTimeout = 600;
-        acLockTimeout = 0;
-        acSuspendTimeout = 1800;
+        acMonitorTimeout = minutes 10;
+        acLockTimeout = if cfg.isLaptop then minutes 15 else 0;
+        acSuspendTimeout = minutes 30;
         acSuspendBehavior = 0;
         acProfileName = "";
-        lockBeforeSuspend = false;
+        lockBeforeSuspend = cfg.isLaptop;
       };
 
       session = {
         inherit wallpaperPath;
-        isLightMode = false;
         themeModeAutoEnabled = true;
         themeModeAutoMode = "time";
         themeModeStartHour = 19;
@@ -73,7 +80,7 @@ in
       };
 
       plugins = {
-        # dankBatteryAlerts.enable = true;
+        dankBatteryAlerts.enable = cfg.isLaptop;
         dockerManager.enable = true;
       };
     };
