@@ -47,6 +47,11 @@ in
         programs = {
           foot.theme = "themes/noctalia";
           ghostty.theme = "noctalia";
+          zed-editor.theme = {
+            mode = "system";
+            dark = "Noctalia Dark";
+            light = "Noctalia Light";
+          };
           zen-browser = {
             userChrome = ''
               @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userChrome.css";

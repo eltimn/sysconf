@@ -298,7 +298,7 @@
     "showCalendarEvents": true,
     "showCalendarWeather": true,
     "showWeekNumberInCalendar": false,
-    "use12hourFormat": false,
+    "use12hourFormat": true,
     "useFahrenheit": true,
     "weatherEnabled": true,
     "weatherShowEffects": true
@@ -391,7 +391,7 @@
     "showHeader": true,
     "showNumberLabels": true
   },
-  "settingsVersion": 41,
+  "settingsVersion": 54,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -437,6 +437,14 @@
       {
         "enabled": true,
         "id": "ghostty"
+      },
+      {
+        "enabled": true,
+        "id": "qt"
+      },
+      {
+        "enabled": true,
+        "id": "zed"
       }
     ],
     "enableUserTheming": true

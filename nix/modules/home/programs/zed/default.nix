@@ -31,6 +31,16 @@ in
 {
   options.sysconf.programs.zed-editor = {
     enable = lib.mkEnableOption "zed-editor";
+
+    theme = lib.mkOption {
+      type = lib.types.attrs;
+      description = "Theme settings (mode, dark, light)";
+      default = {
+        mode = "system";
+        dark = "Tokyo Night";
+        light = "One Light";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -61,11 +71,7 @@ in
         "xml"
       ];
       userSettings = {
-        theme = {
-          mode = "system";
-          dark = "Tokyo Night";
-          light = "One Light";
-        };
+        theme = cfg.theme;
         file_types = {
           "Shell Script" = [
             ".env.*"
