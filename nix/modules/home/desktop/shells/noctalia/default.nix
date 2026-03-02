@@ -7,11 +7,15 @@
 }:
 let
   cfg = config.sysconf.desktop.noctalia;
+  niriCfg = config.sysconf.desktop.niri;
+  niriConfigFile = "${config.home.homeDirectory}/.config/niri/noctalia/config.kdl";
 
   noctaliaWallpapers = {
-    defaultWallpaper = "${config.home.homeDirectory}/background-image";
+    defaultWallpaper = "${config.home.homeDirectory}/Wallpapers/089.png";
     wallpapers = { };
   };
+
+  minToSec = n: n * 60;
 
   # User defined templates to extend their built-in ones.
   noctaliaUserTemplates = ''
@@ -73,6 +77,42 @@ let
     fi
   '';
 
+  # Build swayidle command based on configured timeouts
+  swayidleCmd =
+    let
+      lockCmd = "noctalia-shell ipc call lockScreen lock";
+      lockTimeout = minToSec niriCfg.lockTimeout;
+      monitorOffTimeout = minToSec niriCfg.monitorOffTimeout;
+      suspendTimeout = minToSec niriCfg.suspendTimeout;
+      hasLockTimeout = lockTimeout > 0;
+      hasMonitorTimeout = monitorOffTimeout > 0;
+      hasSuspendTimeout = suspendTimeout > 0;
+
+      # Build timeout arguments in order
+      timeouts =
+        (lib.optionalString hasLockTimeout "timeout ${toString lockTimeout} '${lockCmd}' ")
+        + (lib.optionalString (
+          hasMonitorTimeout && (!hasLockTimeout || monitorOffTimeout > lockTimeout)
+        ) "timeout ${toString monitorOffTimeout} 'niri msg action power-off-monitors' ")
+        + (lib.optionalString hasSuspendTimeout "timeout ${toString suspendTimeout} 'systemctl suspend' ")
+        + (lib.optionalString hasMonitorTimeout "resume 'niri msg action power-on-monitors' ");
+
+      # Build before-sleep command (always lock before sleep if lockTimeout is set)
+      beforeSleep = lib.optionalString hasLockTimeout "before-sleep '${lockCmd}'";
+
+      # When monitorOffTimeout is set but is less than or equal to lockTimeout,
+      # the monitor-off timeout is skipped (Line 25-27), but the resume command
+      # on Line 29 is still added. This results in a resume directive without a
+      # corresponding timeout for monitor-off.
+
+      # While swayidle handles this gracefully (the resume is simply never triggered),
+      # it's unnecessary and could be confusing.
+    in
+    if hasLockTimeout || hasMonitorTimeout || hasSuspendTimeout then
+      "${pkgs.swayidle}/bin/swayidle -w ${timeouts}${beforeSleep}"
+    else
+      null;
+
   # To find out what changes the GUI makes, run `noctalia-shell ipc call state all | jq .settings.bar.widgets.right`
   settingsJsonPath = pkgs.replaceVars ./tmpl-settings.json {
     barMonitor = cfg.barMonitor;
@@ -93,7 +133,7 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       file = {
-        # Noctalia's theme templating writes a file with colors to .config/noctalia.kdl
+        # Noctalia's theme templating writes a file with colors to .config/niri/noctalia.kdl
         ".config/niri/noctalia/config.kdl".source = ./niri-config.kdl;
         ".cache/noctalia/wallpapers.json".text = builtins.toJSON noctaliaWallpapers;
         ".config/noctalia/settings.json".source = settingsJsonPath;
@@ -115,7 +155,18 @@ in
           xdg-desktop-portal-wlr
           (pkgs.writeShellScriptBin "sync-darkman" syncDarkman)
         ]
-        ++ [ pkgs-unstable.noctalia-shell ];
+        ++ [ pkgs-unstable.noctalia-shell ]
+        ++ lib.optionals (
+          niriCfg.lockTimeout > 0 || niriCfg.monitorOffTimeout > 0 || niriCfg.suspendTimeout > 0
+        ) [ pkgs.swayidle ];
+
+      activation.initNoctalia = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        # ensure niri noctalia config file exists
+        if [[ ! -f "${niriConfigFile}" ]]; then
+          mkdir -p $(dirname "${niriConfigFile}")
+          touch "${niriConfigFile}"
+        fi
+      '';
     };
 
     # Switching between light/dark will be managed by Noctalia. This just provides the dbus backend.
@@ -168,6 +219,23 @@ in
         };
         Service = {
           ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+        };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+      };
+
+      # Configure swayidle service if timeouts are set
+      swayidle = lib.mkIf (swayidleCmd != null) {
+        Unit = {
+          Description = "Idle manager";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+          ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
+        };
+        Service = {
+          ExecStart = swayidleCmd;
           Restart = "on-failure";
         };
         Install = {

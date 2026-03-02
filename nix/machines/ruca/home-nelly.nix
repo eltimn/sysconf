@@ -69,9 +69,9 @@
       cosmic.primaryMonitor = "HDMI-A-1";
       noctalia.barMonitor = "HDMI-A-1";
       niri = {
-        # lockTimeout = 600; # Lock after 10 minutes
-        monitorOffTimeout = 1200; # Turn off monitors after 20 minutes
-        suspendTimeout = 1800; # Suspend after 30 minutes
+        # lockTimeout = 10; # minutes
+        monitorOffTimeout = 20; # minutes
+        suspendTimeout = 30; # minutes
         extraConfig = ''
           // https://yalter.github.io/niri/Configuration:-Input
           input {

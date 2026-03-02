@@ -7,9 +7,10 @@
 }:
 let
   cfg = config.sysconf.desktop.dms;
+  niriCfg = config.sysconf.desktop.niri;
   wallpaperPath = "${config.home.homeDirectory}/Downloads/047.jpg";
 
-  minutes = n: n * 60;
+  minToSec = n: n * 60;
 in
 {
   imports = [
@@ -19,12 +20,6 @@ in
 
   options.sysconf.desktop.dms = {
     enable = lib.mkEnableOption "dms";
-
-    isLaptop = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether this is a laptop. If true, battery monitoring and alerts will be enabled.";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -59,12 +54,12 @@ in
         barConfigs = builtins.fromJSON (builtins.readFile ./files/barConfigs.json);
         use24HourClock = false;
         useFahrenheit = true;
-        acMonitorTimeout = minutes 10;
-        acLockTimeout = if cfg.isLaptop then minutes 15 else 0;
-        acSuspendTimeout = minutes 30;
+        acLockTimeout = minToSec niriCfg.lockTimeout;
+        acMonitorTimeout = minToSec niriCfg.monitorOffTimeout;
+        acSuspendTimeout = minToSec niriCfg.suspendTimeout;
         acSuspendBehavior = 0;
         acProfileName = "";
-        lockBeforeSuspend = cfg.isLaptop;
+        lockBeforeSuspend = niriCfg.isLaptop;
       };
 
       session = {
@@ -80,7 +75,7 @@ in
       };
 
       plugins = {
-        dankBatteryAlerts.enable = cfg.isLaptop;
+        dankBatteryAlerts.enable = niriCfg.isLaptop;
         dockerManager.enable = true;
       };
     };
