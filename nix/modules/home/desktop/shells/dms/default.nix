@@ -54,22 +54,58 @@ in
         barConfigs = builtins.fromJSON (builtins.readFile ./files/barConfigs.json);
         use24HourClock = false;
         useFahrenheit = true;
-        acLockTimeout = minToSec niriCfg.lockTimeout;
+
+        # power mgmt
         acMonitorTimeout = minToSec niriCfg.monitorOffTimeout;
+        acLockTimeout = minToSec niriCfg.lockTimeout;
         acSuspendTimeout = minToSec niriCfg.suspendTimeout;
         acSuspendBehavior = 0;
         acProfileName = "";
+        batteryMonitorTimeout = minToSec niriCfg.monitorOffTimeout;
+        batteryLockTimeout = minToSec niriCfg.lockTimeout;
+        batterySuspendTimeout = minToSec niriCfg.suspendTimeout;
+        batterySuspendBehavior = 0;
+        batteryProfileName = "";
         lockBeforeSuspend = niriCfg.isLaptop;
+
+        # theme syncing
+        gtkThemingEnabled = false;
+        qtThemingEnabled = false;
+        syncModeWithPortal = false;
+        terminalsAlwaysDark = false;
+        runDmsMatugenTemplates = false;
+        runUserMatugenTemplates = false;
+        matugenTemplateGtk = false;
+        matugenTemplateNiri = false;
+        matugenTemplateHyprland = false;
+        matugenTemplateMangowc = false;
+        matugenTemplateQt5ct = false;
+        matugenTemplateQt6ct = false;
+        matugenTemplateFirefox = false;
+        matugenTemplatePywalfox = false;
+        matugenTemplateZenBrowser = false;
+        matugenTemplateVesktop = false;
+        matugenTemplateEquibop = false;
+        matugenTemplateGhostty = false;
+        matugenTemplateKitty = false;
+        matugenTemplateFoot = false;
+        matugenTemplateAlacritty = false;
+        matugenTemplateNeovim = false;
+        matugenTemplateWezterm = false;
+        matugenTemplateDgop = false;
+        matugenTemplateKcolorscheme = false;
+        matugenTemplateVscode = false;
+        matugenTemplateEmacs = false;
       };
 
       session = {
         inherit wallpaperPath;
-        themeModeAutoEnabled = true;
-        themeModeAutoMode = "time";
-        themeModeStartHour = 19;
-        themeModeStartMinute = 0;
-        themeModeEndHour = 6;
-        themeModeEndMinute = 30;
+        themeModeAutoEnabled = false;
+        # themeModeAutoMode = "time";
+        # themeModeStartHour = 19;
+        # themeModeStartMinute = 0;
+        # themeModeEndHour = 6;
+        # themeModeEndMinute = 30;
         weatherLocation = "Minneapolis, Minnesota";
         weatherCoordinates = "44.9772995,-93.2654692";
       };
