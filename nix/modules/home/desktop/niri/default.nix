@@ -6,9 +6,14 @@
   ...
 }:
 let
+  inherit (osConfig.sysconf) settings;
   cfg = config.sysconf.desktop.niri;
 in
 {
+  imports = [
+    ./darkman.nix
+  ];
+
   options.sysconf.desktop.niri = {
     enable = lib.mkEnableOption "niri";
 
@@ -41,16 +46,31 @@ in
       '';
     };
 
-    isLaptop = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether this is a laptop. If true, battery monitoring and alerts will be enabled.";
-    };
-
     extraConfig = lib.mkOption {
       type = lib.types.str;
       description = "Extra config to add to Niri";
       default = "";
+    };
+
+    # Scripts are passed the current theme mode as an argument (e.g. 'dark' or 'light').
+    themeHandlers = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.oneOf [
+          lib.types.path
+          lib.types.package
+          lib.types.lines
+        ]
+      );
+      default = { };
+      description = ''
+        An attribute set of custom handlers for darkman. The key is the name of the handler, and the value is either an absolute path to a script or a string containing the script content.
+      '';
+    };
+
+    enableThemeHandlers = lib.mkOption {
+      type = lib.types.bool;
+      default = settings.niriShell != "noctalia";
+      description = "Whether to enable theme synchronization with darkman.";
     };
   };
 
@@ -69,27 +89,27 @@ in
         gtk.enable = true;
         x11.enable = true;
       };
+    };
 
-      file = {
-        ".config/niri/config.kdl".text = ''
-          include "./main.kdl"
-          include "./binds.kdl"
-          include "./extra.kdl"
-          ${lib.optionalString (osConfig.sysconf.settings.niriShell == "noctalia") ''
-            include "./noctalia/config.kdl"
-            include "./noctalia.kdl"
-          ''}
-          ${lib.optionalString (osConfig.sysconf.settings.niriShell == "dms") ''
-            include "./dms/alttab.kdl"
-            include "./dms/binds.kdl"
-            include "./dms/wpblur.kdl"
-          ''}
-        '';
+    xdg.configFile = {
+      "niri/config.kdl".text = ''
+        include "./main.kdl"
+        include "./binds.kdl"
+        include "./extra.kdl"
+        ${lib.optionalString (settings.niriShell == "noctalia") ''
+          include "./noctalia/config.kdl"
+          include "./noctalia.kdl"
+        ''}
+        ${lib.optionalString (settings.niriShell == "dms") ''
+          include "./dms/alttab.kdl"
+          include "./dms/binds.kdl"
+          include "./dms/wpblur.kdl"
+        ''}
+      '';
 
-        ".config/niri/main.kdl".source = ./files/main.kdl;
-        ".config/niri/binds.kdl".source = ./files/binds.kdl;
-        ".config/niri/extra.kdl".text = cfg.extraConfig;
-      };
+      "niri/main.kdl".source = ./files/main.kdl;
+      "niri/binds.kdl".source = ./files/binds.kdl;
+      "niri/extra.kdl".text = cfg.extraConfig;
     };
   };
 }

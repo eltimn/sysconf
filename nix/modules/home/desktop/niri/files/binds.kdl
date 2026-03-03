@@ -24,6 +24,9 @@ binds {
   Mod+E hotkey-overlay-title="Open Yazi in floating window" {
     spawn "ghostty" "--title=yazi-floating" "-e" "yazi"
   }
+  Mod+G hotkey-overlay-title="Toggle Theme Mode" {
+    spawn "darkman" "toggle"
+  }
   // Mod+D hotkey-overlay-title="Open Television in floating window" {
   //   spawn "ghostty" "--title=tv-floating" "-e" "tv";
   // }

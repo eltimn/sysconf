@@ -2,11 +2,13 @@
   config,
   inputs,
   lib,
+  osConfig,
   pkgs,
   ...
 }:
 let
   cfg = config.sysconf.desktop.dms;
+  isLaptop = osConfig.sysconf.settings.isBatteryPowered;
   niriCfg = config.sysconf.desktop.niri;
   wallpaperPath = "${config.home.homeDirectory}/Downloads/047.jpg";
 
@@ -66,7 +68,7 @@ in
         batterySuspendTimeout = minToSec niriCfg.suspendTimeout;
         batterySuspendBehavior = 0;
         batteryProfileName = "";
-        lockBeforeSuspend = niriCfg.isLaptop;
+        lockBeforeSuspend = isLaptop;
 
         # theme syncing
         gtkThemingEnabled = false;
@@ -111,7 +113,7 @@ in
       };
 
       plugins = {
-        dankBatteryAlerts.enable = niriCfg.isLaptop;
+        dankBatteryAlerts.enable = isLaptop;
         dockerManager.enable = true;
       };
     };

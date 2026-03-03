@@ -13,32 +13,26 @@ let
   cfg = config.sysconf.programs.opencode;
   tuiFileLoc = "$HOME/.config/opencode/tui.json";
 
-  tuiAttrs = {
-    "$schema" = "https://opencode.ai/tui.json";
-    theme = cfg.theme;
-  };
-
-  oc = pkgs.writeShellScriptBin "oc" ''
-    COSMIC_THEME_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
+  syncOpencodeThemePkg = pkgs.writeShellScriptBin "sync-opencode-theme" ''
+    # This script will run when darkman detects a theme change and will update the OpenCode TUI theme accordingly.
     TUI_FILE=${tuiFileLoc}
+    THEME_MODE="$1"
 
-    # Determine theme based on Cosmic theme setting
-    if [[ -f "$COSMIC_THEME_FILE" ]] && [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
-      THEME="tokyonight"
-    else
-      THEME="cosmic-light"
-    fi
+    case "$THEME_MODE" in
+    dark) THEME="tokyonight" ;;
+    light) THEME="cosmic-light" ;;
+    default) exit 1;;
+    esac
 
-    # Ensure theme file exists
+    # Ensure tui file exists
     if [[ ! -f "$TUI_FILE" ]]; then
-      echo '{ "theme": "'"$THEME"'" }' > "$TUI_FILE"
+      echo '{ "$schema": "https://opencode.ai/tui.json", "theme": "'"$THEME"'" }' > "$TUI_FILE"
+      exit 0
     fi
 
-    # Update theme in theme config
+    # Update theme in tui config
     ${pkgs.jq}/bin/jq --arg theme "$THEME" '.theme = $theme' "$TUI_FILE" > "$TUI_FILE.tmp" && \
       mv "$TUI_FILE.tmp" "$TUI_FILE"
-
-    ${pkgs-unstable.opencode}/bin/opencode "$@"
   '';
 in
 {
@@ -60,7 +54,6 @@ in
       "opencode/themes".source = ./files/themes;
       "opencode/AGENTS.md".source = ./files/AGENTS.md;
       "opencode/opencode.json".source = ./files/opencode.json;
-      "opencode/tui-start.json".text = builtins.toJSON tuiAttrs;
       "opencode/agents".source = ./files/agents;
 
       # eltimn-ai-tools
@@ -74,9 +67,9 @@ in
     };
 
     home = {
-      # Copy tui.json as a mutable file (not symlink) so it can be edited externally
+      # Create tui.json as a mutable file (not symlink) so it can be edited externally
       activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD cp -f "$HOME/.config/opencode/tui-start.json" ${tuiFileLoc}
+        $DRY_RUN_CMD echo '{ "$schema": "https://opencode.ai/tui.json", "theme": "${cfg.theme}" }' > "${tuiFileLoc}"
         $DRY_RUN_CMD chmod u+w ${tuiFileLoc}
       '';
 
@@ -85,12 +78,17 @@ in
         OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
       };
 
-      packages = [ oc ];
+      packages = [
+        pkgs.jq
+        syncOpencodeThemePkg
+      ];
     };
 
     programs.opencode = {
       enable = true;
       package = pkgs-unstable.opencode;
     };
+
+    sysconf.desktop.niri.themeHandlers.opencode = syncOpencodeThemePkg;
   };
 }

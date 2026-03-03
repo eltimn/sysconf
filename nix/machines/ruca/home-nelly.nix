@@ -66,8 +66,10 @@
   # Enable sysconf modules
   sysconf = {
     desktop = {
-      cosmic.primaryMonitor = "HDMI-A-1";
-      noctalia.barMonitor = "HDMI-A-1";
+      monitors = {
+        primary = "HDMI-A-1";
+        secondary = "DP-2";
+      };
       niri = {
         # lockTimeout = 10; # minutes
         monitorOffTimeout = 20; # minutes

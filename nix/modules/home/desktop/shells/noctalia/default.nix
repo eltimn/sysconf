@@ -126,7 +126,7 @@ in
     barMonitor = lib.mkOption {
       type = lib.types.str;
       description = "The monitor to include the topbar on.";
-      default = "";
+      default = config.sysconf.desktop.monitors.primary;
     };
   };
 

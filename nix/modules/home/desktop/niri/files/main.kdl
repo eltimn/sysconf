@@ -233,6 +233,10 @@ xwayland-satellite {
   // off
   path "xwayland-satellite"
 }
+// named workspaces
+workspace "main" {
+  open-on-output "HDMI-A-1"
+}
 // Find details about a window, run `niri msg pick-window` and click on the window.
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
@@ -282,5 +286,17 @@ window-rule {
   match app-id="zen-beta"
   match app-id="obsidian"
   open-maximized true
+}
+// Apps to open on the main workspace by default
+window-rule {
+  match app-id="obsidian"
+  open-on-workspace "main"
+}
+// Rule for ghostty
+window-rule {
+  match app-id="com.mitchellh.ghostty"
+  default-column-width {
+    proportion 0.66667
+  }
 }
 

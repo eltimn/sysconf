@@ -7,7 +7,6 @@
 let
   cfg = config.sysconf.desktop.niri;
   isGreetdEnabled = config.sysconf.desktop.greetd.enable;
-  isNoctaliaEnabled = config.sysconf.settings.niriShell == "noctalia";
 in
 {
   options.sysconf.desktop.niri = {
@@ -33,7 +32,7 @@ in
       };
     };
 
-    xdg.portal = lib.mkIf isNoctaliaEnabled {
+    xdg.portal = {
       enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk

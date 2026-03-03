@@ -32,7 +32,7 @@ in
     # Use `cosmic-randr list` to see what's available.
     primaryMonitor = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
-      default = null;
+      default = config.sysconf.desktop.monitors.primary;
       description = "The primary monitor for panels and dock (e.g., 'HDMI-A-1', 'eDP-1'). Set to null for all monitors.";
       example = "HDMI-A-1";
     };

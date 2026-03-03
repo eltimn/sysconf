@@ -7,7 +7,6 @@ binds {
     toggle-overview
   }
   // === Application Launchers ===
-  // Mod+T hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
   Mod+Space hotkey-overlay-title="Application Launcher" {
     spawn "dms" "ipc" "call" "spotlight" "toggle"
   }
@@ -16,19 +15,21 @@ binds {
   //   spawn "dms" "ipc" "call" "clipboard" "toggle"
   // }
   // Commented out - conflict with niri maximize-window-to-edges
-  // Mod+M hotkey-overlay-title="Task Manager" {
-  //   spawn "dms" "ipc" "call" "processlist" "focusOrToggle"
-  // }
-  Super+X hotkey-overlay-title="Power Menu: Toggle" {
+  // Mod+N => Mod+B
+  Mod+B hotkey-overlay-title="Task Manager" {
+    spawn "dms" "ipc" "call" "processlist" "focusOrToggle"
+  }
+  // Changed from Super+x to Mod+P like Noctalia
+  Mod+P hotkey-overlay-title="Power Menu: Toggle" {
     spawn "dms" "ipc" "call" "powermenu" "toggle"
   }
   // Commented out - conflict with niri consume-window-into-column
   // Mod+Comma hotkey-overlay-title="Settings" {
   //   spawn "dms" "ipc" "call" "settings" "focusOrToggle"
   // }
-  Mod+Y hotkey-overlay-title="Browse Wallpapers" {
-    spawn "dms" "ipc" "call" "dankdash" "wallpaper"
-  }
+  // Mod+Y hotkey-overlay-title="Browse Wallpapers" {
+  //   spawn "dms" "ipc" "call" "dankdash" "wallpaper"
+  // }
   Mod+N hotkey-overlay-title="Notification Center" {
     spawn "dms" "ipc" "call" "notifications" "toggle"
   }

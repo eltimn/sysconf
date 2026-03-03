@@ -1,0 +1,85 @@
+/* Common variables affecting all pages */
+@-moz-document url-prefix("about:") {
+  :root {
+    --in-content-page-color: #bb9af7 !important;
+    --color-accent-primary: #7aa2f7 !important;
+    /* --color-accent-primary-hover: rgb(249, 217, 240) !important;
+      --color-accent-primary-active: rgb(245, 195, 219) !important; */
+    background-color: #24283b !important;
+    --in-content-page-background: #24283b !important;
+  }
+}
+
+/* Variables and styles specific to about:newtab and about:home */
+@-moz-document url("about:newtab"), url("about:home") {
+  :root {
+    --newtab-background-color: #24283b !important;
+    --newtab-background-color-secondary: #2c3148 !important;
+    --newtab-element-hover-color: #2c3148 !important;
+    --newtab-text-primary-color: #bb9af7 !important;
+    --newtab-wordmark-color: #bb9af7 !important;
+    --newtab-primary-action-background: #7aa2f7 !important;
+  }
+
+  .icon {
+    color: #7aa2f7 !important;
+  }
+
+  .card-outer:is(:hover, :focus, .active):not(.placeholder) .card-title {
+    color: #7aa2f7 !important;
+  }
+}
+
+/* Variables and styles specific to about:preferences */
+@-moz-document url-prefix("about:preferences") {
+  :root {
+    --zen-colors-tertiary: #1f2130 !important;
+    --in-content-text-color: #bb9af7 !important;
+    --link-color: #7aa2f7 !important;
+    /* --link-color-hover: rgb(249, 217, 240) !important; */
+    --zen-colors-primary: #2c3148 !important;
+    --in-content-box-background: #2c3148 !important;
+    --zen-primary-color: #7aa2f7 !important;
+  }
+
+  groupbox,
+  moz-card {
+    background: #24283b !important;
+  }
+
+  button,
+  groupbox menulist {
+    background: #2c3148 !important;
+    color: #bb9af7 !important;
+  }
+
+  .main-content {
+    background-color: #1c1d2a !important;
+  }
+}
+
+/* Variables and styles specific to about:addons */
+@-moz-document url-prefix("about:addons") {
+  :root {
+    --zen-dark-color-mix-base: #1f2130 !important;
+    --background-color-box: #24283b !important;
+  }
+}
+
+/* Variables and styles specific to about:protections */
+@-moz-document url-prefix("about:protections") {
+  :root {
+    --zen-primary-color: #24283b !important;
+    --in-content-primary-button-text-color-hover: #bb9af7 !important;
+    --in-content-primary-button-background: #24283b !important;
+    --in-content-primary-button-text-color: #bb9af7 !important;
+  }
+
+  .card {
+    background-color: #2c3148 !important;
+  }
+}
+/* Pane UI button visibility issue fix */
+#PanelUI-menu-button[open] .toolbarbutton-icon {
+  fill: #7aa2f7 !important;
+}
