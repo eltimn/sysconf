@@ -16,8 +16,11 @@ in
     };
 
     hostRole = lib.mkOption {
-      type = lib.types.str;
-      default = "server"; # desktop|server
+      type = lib.types.enum [
+        "desktop"
+        "server"
+      ];
+      default = "server";
       description = "Host role - determines which programs/services are enabled.";
     };
 
@@ -28,14 +31,24 @@ in
     };
 
     desktopEnvironment = lib.mkOption {
-      type = lib.types.str;
-      default = "none"; # cosmic|gnome|niri|cosmic+niri|none
+      type = lib.types.enum [
+        "cosmic"
+        "gnome"
+        "niri"
+        "cosmic+niri"
+        "none"
+      ];
+      default = "none";
       description = "Desktop Environment used. Use 'cosmic+niri' for multi-session with greetd chooser.";
     };
 
     niriShell = lib.mkOption {
-      type = lib.types.str;
-      default = "noctalia"; # noctalia|dms|none
+      type = lib.types.enum [
+        "noctalia"
+        "dms"
+        "none"
+      ];
+      default = "none";
       description = "The shell/bar/launcher used for the Niri desktop environment.";
     };
 

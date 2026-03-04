@@ -34,7 +34,7 @@ in
     theme = lib.mkOption {
       type = lib.types.str;
       default = "system";
-      description = "Rofi theme to use. If 'system', the theme will be chosen based on the current desktop enviroment's theme mode (e.g. light/dark). Otherwise, specify a specific theme (e.g. 'light' or 'dark'). ";
+      description = "Rofi theme to use. If 'system', the theme will be chosen based on the current desktop enviroment's theme mode (e.g. light/dark). Otherwise, specify a specific theme name.";
     };
   };
 

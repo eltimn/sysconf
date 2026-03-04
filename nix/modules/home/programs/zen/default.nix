@@ -165,18 +165,6 @@ in
       };
     };
 
-    # home.activation.initZen = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    #   $DRY_RUN_CMD mkdir -p "${chromeDir}"
-    #   $DRY_RUN_CMD cat << EOF > "${chromeDir}/userChrome.css"
-    #   ${cfg.userChrome}
-    #   EOF
-    #   $DRY_RUN_CMD cat << EOF > "${chromeDir}/userContent.css"
-    #   ${cfg.userContent}
-    #   EOF
-    #   $DRY_RUN_CMD chmod u+w "${chromeDir}/userChrome.css"
-    #   $DRY_RUN_CMD chmod u+w "${chromeDir}/userContent.css"
-    # '';
-
     home.packages = [ syncZenThemeScript ];
 
     xdg.configFile = {

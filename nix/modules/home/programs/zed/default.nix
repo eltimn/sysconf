@@ -33,6 +33,7 @@ in
     enable = lib.mkEnableOption "zed-editor";
 
     theme = lib.mkOption {
+      description = "Zed editor theme configuration.";
       type = lib.types.submodule {
         options = {
           mode = lib.mkOption {

@@ -108,8 +108,8 @@ Deployments will be done manually.
 {
   config,      # Module config
   lib,         # Nixpkgs lib functions
-  pkgs,        # Packages (system modules) or omit (if not needed)
   osConfig,    # System config (Home Manager modules only)
+  pkgs,        # Packages (system modules) or omit (if not needed)
   ...
 }:
 ```

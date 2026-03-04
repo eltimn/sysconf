@@ -1,13 +1,13 @@
 * {
-  --base:           #1c1d2a;
-  --surface:        #1f2130;
-  --overlay:        #24283b;
-  --muted:          #2c3148;
-  --subtle:         #333954;
-  --text:           #c0caf5;
-  --secondary:      #bb9af7;
-  --primary:        #7aa2f7;
-  --on_primary:      #16161e;
+  --base: #1c1d2a;
+  --surface: #1f2130;
+  --overlay: #24283b;
+  --muted: #2c3148;
+  --subtle: #333954;
+  --text: #c0caf5;
+  --secondary: #bb9af7;
+  --primary: #7aa2f7;
+  --on_primary: #16161e;
 }
 
 :root {
@@ -42,9 +42,6 @@
   --sidebar-text-color: var(--text) !important;
   --lwt-sidebar-text-color: var(--text) !important;
   --lwt-sidebar-background-color: var(--base) !important;
-
-  /* --- Tab Selection --- */
-  --tab-selected-textcolor: var(--primary) !important;
 }
 
 /* Element Specific Overrides */
@@ -82,17 +79,14 @@
   background: var(--base) !important;
 }
 
-#zen-toast-container {
-  color: var(--primary) !important;
-}
-
 toolbar .toolbarbutton-1 {
   &:not([disabled]) {
-    &:is([open], [checked]) > :is(
-    .toolbarbutton-icon,
-    .toolbarbutton-text,
-    .toolbarbutton-badge-stack
-    ) {
+    &:is([open], [checked])
+      > :is(
+        .toolbarbutton-icon,
+        .toolbarbutton-text,
+        .toolbarbutton-badge-stack
+      ) {
       fill: var(--base);
     }
   }

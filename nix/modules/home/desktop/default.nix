@@ -119,16 +119,6 @@ in
     (lib.mkIf (settings.niriShell == "dms") {
       sysconf = {
         desktop.dms.enable = true;
-        # programs = {
-        #   foot.theme = "dank-colors.ini";
-        #   ghostty.theme = "dankcolors";
-
-        #   zen-browser = {
-        #     userChrome = ''
-        #       @import "${config.home.homeDirectory}/.config/DankMaterialShell/zen.css";
-        #     '';
-        #   };
-        # };
       };
     })
   ];
