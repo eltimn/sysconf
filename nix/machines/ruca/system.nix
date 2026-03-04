@@ -14,6 +14,9 @@ in
   boot = {
     supportedFilesystems = [ "btrfs" ];
 
+    # Disable USB autosuspend to fix KVM keyboard issues after suspend
+    # kernelParams = [ "usbcore.autosuspend=-1" ];
+
     # Bootloader
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;

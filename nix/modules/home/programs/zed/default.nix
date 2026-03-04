@@ -139,7 +139,6 @@ in
                 arguments = [
                   "format"
                   "--stdin"
-                  "{buffer_path}"
                 ];
               };
             };

@@ -19,8 +19,7 @@ binds {
   Mod+B hotkey-overlay-title="Task Manager" {
     spawn "dms" "ipc" "call" "processlist" "focusOrToggle"
   }
-  // Changed from Super+x to Mod+P like Noctalia
-  Mod+P hotkey-overlay-title="Power Menu: Toggle" {
+  Mod+X hotkey-overlay-title="Power Menu: Toggle" {
     spawn "dms" "ipc" "call" "powermenu" "toggle"
   }
   // Commented out - conflict with niri consume-window-into-column
@@ -87,9 +86,9 @@ binds {
     spawn "dms" "ipc" "call" "window-rules" "toggle"
   }
   // === Workspace Management ===
-  Ctrl+Shift+R hotkey-overlay-title="Rename Workspace" {
-    spawn "dms" "ipc" "call" "workspace-rename" "open"
-  }
+  // Ctrl+Shift+R hotkey-overlay-title="Rename Workspace" {
+  //   spawn "dms" "ipc" "call" "workspace-rename" "open"
+  // }
   // === Screenshots ===
   XF86Launch1 {
     screenshot

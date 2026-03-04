@@ -16,7 +16,7 @@ let
       MODE_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
 
       if [[ ! -f "$MODE_FILE" ]]; then
-        echo "Mode file not found, defaulting to light"
+        echo "Mode file not found, defaulting to light" >&2
         echo "light"
         exit 0
       fi

@@ -26,6 +26,7 @@ let
 
     # Ensure tui file exists
     if [[ ! -f "$TUI_FILE" ]]; then
+      mkdir -p "$(dirname "$TUI_FILE")"
       echo '{ "$schema": "https://opencode.ai/tui.json", "theme": "'"$THEME"'" }' > "$TUI_FILE"
       exit 0
     fi

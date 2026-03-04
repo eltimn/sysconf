@@ -8,7 +8,7 @@
 let
   cfg = config.sysconf.programs.zen-browser;
 
-  syncZenThemePkg = pkgs.writeShellScriptBin "sync-zen-theme" ''
+  syncZenThemeScript = pkgs.writeShellScriptBin "sync-zen-theme" ''
     # This script will run when darkman detects a theme change and will update the zen-browser theme accordingly.
     THEME_MODE="$1"
 
@@ -177,7 +177,7 @@ in
     #   $DRY_RUN_CMD chmod u+w "${chromeDir}/userContent.css"
     # '';
 
-    home.packages = [ syncZenThemePkg ];
+    home.packages = [ syncZenThemeScript ];
 
     xdg.configFile = {
       "zen/${cfg.profileName}/chrome/userChrome.css".text = cfg.userChrome;
@@ -189,6 +189,6 @@ in
       "zen/themes/userContent-light.css".text = "";
     };
 
-    sysconf.desktop.niri.themeHandlers.zen-browser = syncZenThemePkg;
+    sysconf.desktop.niri.themeHandlers.zen-browser = syncZenThemeScript;
   };
 }
