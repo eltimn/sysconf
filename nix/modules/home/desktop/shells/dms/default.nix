@@ -116,6 +116,16 @@ in
         dankBatteryAlerts.enable = isLaptop;
         dockerManager.enable = true;
       };
+
+      clipboardSettings = {
+        disabled = true;
+        disableHistory = true;
+        disablePersist = true;
+        maxHistory = 25;
+        maxEntrySize = 5242880;
+        autoClearDays = 1;
+        clearAtStartup = true;
+      };
     };
   };
 }
