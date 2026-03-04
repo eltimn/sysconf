@@ -33,13 +33,30 @@ in
     enable = lib.mkEnableOption "zed-editor";
 
     theme = lib.mkOption {
-      type = lib.types.attrs;
-      description = "Theme settings (mode, dark, light)";
-      default = {
-        mode = "system";
-        dark = "Tokyo Night";
-        light = "One Light";
+      type = lib.types.submodule {
+        options = {
+          mode = lib.mkOption {
+            type = lib.types.enum [
+              "system"
+              "dark"
+              "light"
+            ];
+            default = "system";
+            description = "Theme mode selection strategy.";
+          };
+          dark = lib.mkOption {
+            type = lib.types.str;
+            default = "Tokyo Night";
+            description = "Theme used in dark mode.";
+          };
+          light = lib.mkOption {
+            type = lib.types.str;
+            default = "One Light";
+            description = "Theme used in light mode.";
+          };
+        };
       };
+      default = { };
     };
   };
 
