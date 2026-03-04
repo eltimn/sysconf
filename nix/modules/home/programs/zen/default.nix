@@ -7,21 +7,20 @@
 
 let
   cfg = config.sysconf.programs.zen-browser;
-  chromeDir = "${config.home.homeDirectory}/.config/zen/${cfg.profileName}/chrome";
 
   syncZenThemePkg = pkgs.writeShellScriptBin "sync-zen-theme" ''
     # This script will run when darkman detects a theme change and will update the zen-browser theme accordingly.
     THEME_MODE="$1"
 
-    case "$THEME_MODE" in
-    dark) THEME="dark" ;;
-    light) THEME="light" ;;
-    *) exit 1 ;;
-    esac
+    # check if the theme mode is valid
+    if [[ "$THEME_MODE" != "dark" && "$THEME_MODE" != "light" ]]; then
+      echo "Invalid theme mode: $THEME_MODE"
+      exit 1
+    fi
 
     # Create symlinks for zen-browser userChrome and userContent CSS files based on the current theme
-    ln -sf "${config.home.homeDirectory}/.config/zen/themes/userChrome-$THEME.css" "${config.home.homeDirectory}/.config/zen/themes/userChrome.css"
-    ln -sf "${config.home.homeDirectory}/.config/zen/themes/userContent-$THEME.css" "${config.home.homeDirectory}/.config/zen/themes/userContent.css"
+    ln -sf "${config.home.homeDirectory}/.config/zen/themes/userChrome-$THEME_MODE.css" "${config.home.homeDirectory}/.config/zen/themes/userChrome.css"
+    ln -sf "${config.home.homeDirectory}/.config/zen/themes/userContent-$THEME_MODE.css" "${config.home.homeDirectory}/.config/zen/themes/userContent.css"
   '';
 in
 {
@@ -181,8 +180,8 @@ in
     home.packages = [ syncZenThemePkg ];
 
     xdg.configFile = {
-      "${chromeDir}/userChrome.css".text = cfg.userChrome;
-      "${chromeDir}/userContent.css".text = cfg.userContent;
+      "zen/${cfg.profileName}/chrome/userChrome.css".text = cfg.userChrome;
+      "zen/${cfg.profileName}/chrome/userContent.css".text = cfg.userContent;
       "zen/themes/userChrome-dark.css".source = ./files/userChrome-dark.css;
       "zen/themes/userContent-dark.css".source = ./files/userContent-dark.css;
       # Leave these blank and use the default light theme.

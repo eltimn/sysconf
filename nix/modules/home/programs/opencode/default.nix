@@ -21,7 +21,7 @@ let
     case "$THEME_MODE" in
     dark) THEME="tokyonight" ;;
     light) THEME="cosmic-light" ;;
-    default) exit 1;;
+    *) exit 1;;
     esac
 
     # Ensure tui file exists
@@ -69,6 +69,7 @@ in
     home = {
       # Create tui.json as a mutable file (not symlink) so it can be edited externally
       activation.copyThemeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD mkdir -p "$(dirname ${tuiFileLoc})"
         $DRY_RUN_CMD echo '{ "$schema": "https://opencode.ai/tui.json", "theme": "${cfg.theme}" }' > "${tuiFileLoc}"
         $DRY_RUN_CMD chmod u+w ${tuiFileLoc}
       '';

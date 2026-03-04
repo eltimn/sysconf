@@ -18,6 +18,8 @@ let
     fi
 
     # make a symlink for gtk3 & gtk4 themes based on the current theme mode
+    mkdir -p "${config.home.homeDirectory}/.config/gtk-3.0"
+    mkdir -p "${config.home.homeDirectory}/.config/gtk-4.0"
     ln -sf "${config.home.homeDirectory}/.config/darkman/themes/gtk3-$THEME_MODE.css" "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
     ln -sf "${config.home.homeDirectory}/.config/darkman/themes/gtk4-$THEME_MODE.css" "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
   '';
