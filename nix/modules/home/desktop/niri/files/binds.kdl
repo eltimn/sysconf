@@ -411,16 +411,12 @@ binds {
   // since it will switch twice upon pressing the hotkey (once by xkb, once by niri).
   // Mod+Space       { switch-layout "next"; }
   // Mod+Shift+Space { switch-layout "prev"; }
-  // Print { screenshot; }
-  Ctrl+Print {
-    screenshot-screen
-  }
-  // Alt+Print { screenshot-window; }
   // Screenshots
+  // captures whole screen
   Print {
     spawn-sh "grim - | swappy -f -"
   }
-  // captures whole screen
+  // Allows for selection
   Mod+Shift+S {
     spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"
   }

@@ -7,10 +7,6 @@
 }:
 let
   cfg = config.sysconf.desktop.niri;
-  theme = {
-    name = "Tokyonight";
-    package = pkgs.tokyonight-gtk-theme;
-  };
 
   syncGtkScript = pkgs.writeShellScriptBin "sync-gtk-theme" ''
     THEME_MODE="$1"
@@ -21,21 +17,18 @@ let
       exit 1
     fi
 
-    # make a symlink for gtk3 & gtk4 themes based on the current theme mode
-    # mkdir -p "${config.home.homeDirectory}/.config/gtk-3.0"
-    # mkdir -p "${config.home.homeDirectory}/.config/gtk-4.0"
-    # ln -sf "${config.home.homeDirectory}/.config/darkman/themes/gtk3-$THEME_MODE.css" "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
-    # ln -sf "${config.home.homeDirectory}/.config/darkman/themes/gtk4-$THEME_MODE.css" "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
-
     # make symlinks for the gtk css files
-    if [[ "$THEME_MODE" == "dark" ]]; then
-      ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Dark/gtk-4.0/gtk-dark.css "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
-      ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Dark/gtk-3.0/gtk-dark.css "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
-    else
-      ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-4.0/gtk.css "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
-      ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-3.0/gtk.css "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
-    fi
-
+    # if [[ "$THEME_MODE" == "dark" ]]; then
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Dark/gtk-4.0/assets "${config.home.homeDirectory}/.config/gtk-4.0/assets"
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Dark/gtk-4.0/gtk.css "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Dark/gtk-3.0/assets "${config.home.homeDirectory}/.config/gtk-3.0/assets"
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Dark/gtk-3.0/gtk.css "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
+    # else
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-4.0/assets "${config.home.homeDirectory}/.config/gtk-4.0/assets"
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-4.0/gtk.css "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-3.0/assets "${config.home.homeDirectory}/.config/gtk-3.0/assets"
+    #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-3.0/gtk.css "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
+    # fi
 
     # set the dconf key
     ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-$THEME_MODE'"
@@ -63,9 +56,13 @@ in
 {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      home.packages = [ theme.package ];
+      # home.packages = [ pkgs.tokyonight-gtk-theme ];
       gtk = {
         enable = true;
+        theme = {
+          name = "Adwaita";
+          package = pkgs.gnome-themes-extra;
+        };
         iconTheme = {
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
@@ -89,14 +86,6 @@ in
 
     (lib.mkIf (cfg.enable && cfg.enableThemeHandlers) {
       sysconf.desktop.niri.themeHandlers.gtk = syncGtkScript;
-
-      # xdg.configFile = {
-      #   "darkman/themes/gtk3-dark.css".source = ./files/gtk3-dark.css;
-      #   "darkman/themes/gtk3-light.css".source = ./files/gtk3-light.css;
-      #   "darkman/themes/gtk4-dark.css".source = ./files/gtk4-dark.css;
-      #   "darkman/themes/gtk4-light.css".source = ./files/gtk4-light.css;
-      # };
-
       xdg.dataFile = lib.mkIf (cfg.themeHandlers != { }) (generateScripts cfg.themeHandlers);
     })
   ];
