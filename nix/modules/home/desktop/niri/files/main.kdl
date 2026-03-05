@@ -282,6 +282,7 @@ window-rule {
 }
 // Apps to open maximized by default
 window-rule {
+  match app-id="dev.zed.Zed"
   match app-id="zed"
   match app-id="zen-beta"
   match app-id="obsidian"

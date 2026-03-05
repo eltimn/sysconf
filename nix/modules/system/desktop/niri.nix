@@ -45,7 +45,6 @@ in
       };
       config.niri = {
         default = [ "gtk" ];
-        # Explicitly route theme/setting requests to darkman
         "org.freedesktop.impl.portal.Settings" = [ "darkman" ];
         # Screenshot and screencast
         "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];

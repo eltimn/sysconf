@@ -1,4 +1,7 @@
 binds {
+  Mod+G hotkey-overlay-title="Toggle Theme Mode" {
+    spawn "darkman" "toggle"
+  }
   // === System & Overview ===
   Mod+D repeat=false {
     toggle-overview
