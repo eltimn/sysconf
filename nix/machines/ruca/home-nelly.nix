@@ -55,12 +55,6 @@
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
-
-    yazi = {
-      enable = true;
-      enableZshIntegration = true;
-      shellWrapperName = "y";
-    };
   };
 
   # Enable sysconf modules
@@ -163,6 +157,7 @@
     programs = {
       claude.enable = true;
       nodejs.enable = true;
+      yazi.enable = true;
 
       git = {
         githubIncludePath = config.sops.secrets."git/github".path;

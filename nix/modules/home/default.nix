@@ -56,6 +56,7 @@ let
     nixfmt-rfc-style
     nixpkgs-lint-community
     notify-osd
+    nurl
     obsidian
     # sqlitebrowser
     sqlitestudio

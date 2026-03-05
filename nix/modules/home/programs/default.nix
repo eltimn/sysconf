@@ -21,5 +21,6 @@
     ./nodejs.nix
     ./tmux.nix
     ./tv.nix
+    ./yazi.nix
   ];
 }
