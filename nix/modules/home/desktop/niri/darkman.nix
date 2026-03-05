@@ -8,6 +8,19 @@
 let
   cfg = config.sysconf.desktop.niri;
 
+  theme = {
+    name = "Nordic";
+    package = pkgs.nordic;
+  };
+
+  # gtkSettings = ''
+  #   [Settings]
+  #   gtk-cursor-theme-name=Adwaita
+  #   gtk-cursor-theme-size=24
+  #   gtk-icon-theme-name=Adwaita
+  #   gtk-theme-name=${theme.name}
+  # '';
+
   syncGtkScript = pkgs.writeShellScriptBin "sync-gtk-theme" ''
     THEME_MODE="$1"
 
@@ -28,6 +41,14 @@ let
     #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-4.0/gtk.css "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
     #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-3.0/assets "${config.home.homeDirectory}/.config/gtk-3.0/assets"
     #   ln -sf ${pkgs.tokyonight-gtk-theme}/share/themes/Tokyonight-Light/gtk-3.0/gtk.css "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
+    # fi
+
+    # if [[ "$THEME_MODE" == "dark" ]]; then
+    #   echo "@import url(\"file://${theme.package}/share/themes/${theme.name}/gtk-4.0/gtk-dark.css\");" > "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
+    #   echo "@import url(\"file://${theme.package}/share/themes/${theme.name}/gtk-3.0/gtk-dark.css\");" > "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
+    # else
+    #   echo "@import url(\"file://${theme.package}/share/themes/${theme.name}/gtk-4.0/gtk.css\");" > "${config.home.homeDirectory}/.config/gtk-4.0/gtk.css"
+    #   echo "@import url(\"file://${theme.package}/share/themes/${theme.name}/gtk-3.0/gtk.css\");" > "${config.home.homeDirectory}/.config/gtk-3.0/gtk.css"
     # fi
 
     # set the dconf key
@@ -57,12 +78,13 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       # home.packages = [ pkgs.tokyonight-gtk-theme ];
+      home.packages = [
+        pkgs.adwaita-icon-theme
+        theme.package
+      ];
       gtk = {
+        inherit theme;
         enable = true;
-        theme = {
-          name = "Adwaita";
-          package = pkgs.gnome-themes-extra;
-        };
         iconTheme = {
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
@@ -82,6 +104,11 @@ in
           portal = true;
         };
       };
+
+      # xdg.configFile = {
+      #   "gtk-3.0/settings.ini".text = gtkSettings;
+      #   "gtk-4.0/settings.ini".text = gtkSettings;
+      # };
     })
 
     (lib.mkIf (cfg.enable && cfg.enableThemeHandlers) {
