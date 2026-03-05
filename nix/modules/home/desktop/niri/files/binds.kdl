@@ -424,6 +424,14 @@ binds {
   Mod+Shift+S {
     spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"
   }
+  // focused window → swappy
+  Alt+Print {
+    spawn-sh "grim -g \"$(niri msg --json focused-window | jq -r '\"\\(.loc.x),\\(.loc.y) \\(.size.w)x\\(.size.h)\"')\" - | swappy -f -"
+  }
+  // focused monitor → swappy
+  Ctrl+Shift+Print {
+    spawn-sh "grim -o \"$(niri msg --json focused-output | jq -r '.name')\" - | swappy -f -"
+  }
   // Clipboard history
   Ctrl+Alt+H {
     spawn "rofi-cliphist"

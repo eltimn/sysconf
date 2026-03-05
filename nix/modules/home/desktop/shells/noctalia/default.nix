@@ -145,12 +145,9 @@ in
         with pkgs;
         [
           # fuzzel
-          grim
           mako
           playerctl
           polkit_gnome
-          slurp
-          swappy
           xdg-desktop-portal-gtk
           xdg-desktop-portal-wlr
           (pkgs.writeShellScriptBin "sync-darkman" syncDarkman)

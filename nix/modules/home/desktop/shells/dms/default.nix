@@ -22,16 +22,29 @@ in
 
   options.sysconf.desktop.dms = {
     enable = lib.mkEnableOption "dms";
+
+    screenshotsPath = lib.mkOption {
+      type = lib.types.str;
+      default = "${config.home.homeDirectory}/Screenshots";
+      description = "Directory where screenshots taken by DMS plugins will be saved.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
 
-    home.file = {
-      ".config/niri/dms/alttab.kdl".source = ./files/niri/alttab.kdl;
-      ".config/niri/dms/binds.kdl".source = ./files/niri/binds.kdl;
-      ".config/niri/dms/colors.kdl".source = ./files/niri/colors.kdl;
-      ".config/niri/dms/wpblur.kdl".source = ./files/niri/wpblur.kdl;
-      ".config/DankMaterialShell/tokyo-night.json".source = ./files/tokyo-night.json;
+    home = {
+      file = {
+        ".config/niri/dms/alttab.kdl".source = ./files/niri/alttab.kdl;
+        ".config/niri/dms/binds.kdl".source = ./files/niri/binds.kdl;
+        ".config/niri/dms/colors.kdl".source = ./files/niri/colors.kdl;
+        ".config/niri/dms/wpblur.kdl".source = ./files/niri/wpblur.kdl;
+        ".config/DankMaterialShell/tokyo-night.json".source = ./files/tokyo-night.json;
+        ".config/swappy/config".text = ''
+          [Default]
+          save_dir=${cfg.screenshotsPath}
+          save_filename_format=screenshot-%Y%m%d-%H%M%S.png
+        '';
+      };
     };
 
     programs.dank-material-shell = {
@@ -127,5 +140,7 @@ in
         clearAtStartup = true;
       };
     };
+
+    systemd.user.tmpfiles.rules = [ "d ${cfg.screenshotsPath} 0755 - - -" ];
   };
 }

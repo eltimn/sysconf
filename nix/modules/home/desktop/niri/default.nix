@@ -77,7 +77,10 @@ in
   config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [
+        grim
         niri
+        slurp
+        swappy
         wl-clipboard
         xwayland-satellite
       ];

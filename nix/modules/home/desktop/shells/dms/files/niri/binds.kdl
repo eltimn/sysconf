@@ -88,22 +88,22 @@ binds {
   Mod+Shift+W hotkey-overlay-title="Create window rule" {
     spawn "dms" "ipc" "call" "window-rules" "toggle"
   }
-  // === Workspace Management ===
+ // === Workspace Management ===
   // Ctrl+Shift+R hotkey-overlay-title="Rename Workspace" {
   //   spawn "dms" "ipc" "call" "workspace-rename" "open"
   // }
   // === Screenshots ===
-  XF86Launch1 {
-    screenshot
-  }
-  Ctrl+XF86Launch1 {
-    screenshot-screen
-  }
-  Alt+XF86Launch1 {
-    screenshot-window
-  }
-  Alt+Print {
-    screenshot-window
-  }
+  // XF86Launch1 {
+  //   screenshot
+  // }
+  // Ctrl+XF86Launch1 {
+  //   screenshot-screen
+  // }
+  // Alt+XF86Launch1 {
+  //   screenshot-window
+  // }
+  // Alt+Print {
+  //   screenshot-window
+  // }
 }
 
