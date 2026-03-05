@@ -13,7 +13,7 @@ let
   cfg = config.sysconf.programs.opencode;
   tuiFileLoc = "$HOME/.config/opencode/tui.json";
 
-  syncOpencodeThemePkg = pkgs.writeShellScriptBin "sync-opencode-theme" ''
+  syncOpencodeThemeScript = pkgs.writeShellScriptBin "sync-opencode-theme" ''
     # This script will run when darkman detects a theme change and will update the OpenCode TUI theme accordingly.
     TUI_FILE=${tuiFileLoc}
     THEME_MODE="$1"
@@ -76,14 +76,17 @@ in
       '';
 
       sessionVariables = {
-        OPENCODE_EXPERIMENTAL_LSP_TOOL = "1";
+        OPENCODE_EXPERIMENTAL_LSP_TOOL = "true";
         OPENCODE_OLLAMA_CLOUD_APIKEY = "$(cat ${config.sops.secrets."ollama_api_key".path})";
       };
 
       packages = [
         pkgs.jq
-        syncOpencodeThemePkg
+      ]
+      ++ lib.optionals (cfg.theme == "system") [
+        syncOpencodeThemeScript
       ];
+
     };
 
     programs.opencode = {
@@ -91,6 +94,8 @@ in
       package = pkgs-unstable.opencode;
     };
 
-    sysconf.desktop.niri.themeHandlers.opencode = syncOpencodeThemePkg;
+    sysconf.desktop.niri.themeHandlers.opencode = lib.mkIf (
+      cfg.theme == "system"
+    ) syncOpencodeThemeScript;
   };
 }
