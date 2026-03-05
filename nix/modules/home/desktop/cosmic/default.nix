@@ -38,7 +38,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     # cosmic manager options
     wayland.desktopManager.cosmic = {
       # Enable COSMIC Desktop declarative configuration

@@ -47,7 +47,7 @@ in
   sysconf = {
     settings = {
       hostRole = "desktop";
-      desktopEnvironment = "cosmic+niri";
+      desktopEnvironment = "niri";
       niriShell = "dms";
     };
 

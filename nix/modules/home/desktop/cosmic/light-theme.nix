@@ -1,10 +1,11 @@
 # COSMIC Desktop Light Theme Configuration (Aether Light)
-{ config, ... }:
+{ config, lib, ... }:
 let
   mkRaw = config.lib.cosmic.mkRON "raw";
+  cfg = config.sysconf.desktop.cosmic;
 in
 {
-  wayland.desktopManager.cosmic.appearance.theme.light = {
+  wayland.desktopManager.cosmic.appearance.theme.light = lib.mkIf cfg.enable {
     # Background color
     bg_color = config.lib.cosmic.mkRON "optional" {
       red = mkRaw "0.9607843";

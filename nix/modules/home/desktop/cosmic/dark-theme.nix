@@ -1,10 +1,11 @@
 # COSMIC Desktop Dark Theme Configuration
-{ config, ... }:
+{ config, lib, ... }:
 let
   mkRaw = config.lib.cosmic.mkRON "raw";
+  cfg = config.sysconf.desktop.cosmic;
 in
 {
-  wayland.desktopManager.cosmic.appearance.theme.dark = {
+  wayland.desktopManager.cosmic.appearance.theme.dark = lib.mkIf cfg.enable {
     # Text tint (light for dark theme)
     text_tint = config.lib.cosmic.mkRON "optional" {
       red = mkRaw "0.9254902";

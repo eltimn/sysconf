@@ -1,6 +1,10 @@
 # COSMIC Terminal Configuration
-_: {
-  programs.cosmic-term = {
+{ config, lib, ... }:
+let
+  cfg = config.sysconf.desktop.cosmic;
+in
+{
+  programs.cosmic-term = lib.mkIf cfg.enable {
     enable = true;
     settings = {
       syntax_theme_light = "COSMIC Light Dark Text";
