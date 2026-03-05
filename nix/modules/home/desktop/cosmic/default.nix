@@ -148,6 +148,7 @@ in
     ];
 
     # Systemd timers for custom theme scheduling (08:00 Light / 20:00 Dark)
+    # TODO: use `cosmic-settings set com.system76.CosmicTheme.Mode is_dark true`
     systemd.user = {
       services.cosmic-theme-dark = {
         Unit.Description = "Switch COSMIC to Dark Mode";

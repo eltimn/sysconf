@@ -13,6 +13,7 @@ let
       echo $(${lib.getExe pkgs.darkman} get)
     elif [[ "$XDG_CURRENT_DESKTOP" == "cosmic" ]]; then
       # This script reads the current theme mode (dark/light) for COSMIC from the config file.
+      # TODO: use `cosmic-settings get com.system76.CosmicTheme.Mode is_dark`
       MODE_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
 
       if [[ ! -f "$MODE_FILE" ]]; then
