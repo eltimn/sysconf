@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.sysconf.desktop.niri;
-  greetdEnabled = config.sysconf.desktop.greetd.enable;
+  isGreetdEnabled = config.sysconf.desktop.greetd.enable;
 in
 {
   options.sysconf.desktop.niri = {
@@ -22,7 +22,7 @@ in
 
     # Only enable greetd here if greetd module is not managing sessions
     # (fallback for single-DE setups using just niri)
-    services.greetd = lib.mkIf (!greetdEnabled) {
+    services.greetd = lib.mkIf (!isGreetdEnabled) {
       enable = true;
       settings = {
         default_session = {
@@ -45,7 +45,6 @@ in
       };
       config.niri = {
         default = [ "gtk" ];
-        # Explicitly route theme/setting requests to darkman
         "org.freedesktop.impl.portal.Settings" = [ "darkman" ];
         # Screenshot and screencast
         "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];

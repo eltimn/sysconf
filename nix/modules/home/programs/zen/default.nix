@@ -7,7 +7,21 @@
 
 let
   cfg = config.sysconf.programs.zen-browser;
-  chromeDir = "${config.home.homeDirectory}/.config/zen/${cfg.profileName}/chrome";
+
+  syncZenThemeScript = pkgs.writeShellScriptBin "sync-zen-theme" ''
+    # This script will run when darkman detects a theme change and will update the zen-browser theme accordingly.
+    THEME_MODE="$1"
+
+    # check if the theme mode is valid
+    if [[ "$THEME_MODE" != "dark" && "$THEME_MODE" != "light" ]]; then
+      echo "Invalid theme mode: $THEME_MODE"
+      exit 1
+    fi
+
+    # Create symlinks for zen-browser userChrome and userContent CSS files based on the current theme
+    ln -sf "${config.home.homeDirectory}/.config/zen/themes/userChrome-$THEME_MODE.css" "${config.home.homeDirectory}/.config/zen/themes/userChrome.css"
+    ln -sf "${config.home.homeDirectory}/.config/zen/themes/userContent-$THEME_MODE.css" "${config.home.homeDirectory}/.config/zen/themes/userContent.css"
+  '';
 in
 {
   imports = [
@@ -49,13 +63,13 @@ in
 
     userChrome = lib.mkOption {
       type = lib.types.lines;
-      default = "";
+      default = ''@import "${config.home.homeDirectory}/.config/zen/themes/userChrome.css";'';
       description = "Custom CSS for zen-browser UI customization.";
     };
 
     userContent = lib.mkOption {
       type = lib.types.lines;
-      default = "";
+      default = ''@import "${config.home.homeDirectory}/.config/zen/themes/userContent.css";'';
       description = "Custom CSS for zen-browser UI customization.";
     };
 
@@ -93,7 +107,6 @@ in
       // cfg.policies;
 
       profiles.${cfg.profileName} = {
-        # userChrome = cfg.userChrome;
         search = import ./search.nix { inherit pkgs; };
 
         extensions.packages =
@@ -152,16 +165,18 @@ in
       };
     };
 
-    home.activation.copySettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD mkdir -p "${chromeDir}"
-      $DRY_RUN_CMD cat << EOF > "${chromeDir}/userChrome.css"
-      ${cfg.userChrome}
-      EOF
-      $DRY_RUN_CMD cat << EOF > "${chromeDir}/userContent.css"
-      ${cfg.userContent}
-      EOF
-      $DRY_RUN_CMD chmod u+w "${chromeDir}/userChrome.css"
-      $DRY_RUN_CMD chmod u+w "${chromeDir}/userContent.css"
-    '';
+    home.packages = [ syncZenThemeScript ];
+
+    xdg.configFile = {
+      "zen/${cfg.profileName}/chrome/userChrome.css".text = cfg.userChrome;
+      "zen/${cfg.profileName}/chrome/userContent.css".text = cfg.userContent;
+      "zen/themes/userChrome-dark.css".source = ./files/userChrome-dark.css;
+      "zen/themes/userContent-dark.css".source = ./files/userContent-dark.css;
+      # Leave these blank and use the default light theme.
+      "zen/themes/userChrome-light.css".text = "";
+      "zen/themes/userContent-light.css".text = "";
+    };
+
+    sysconf.desktop.niri.themeHandlers.zen-browser = syncZenThemeScript;
   };
 }

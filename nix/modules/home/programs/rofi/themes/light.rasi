@@ -1,48 +1,67 @@
 * {
-    /* COSMIC Aether Light theme colors */
-    bg: #f5f7fa;              /* bg_color */
-    bg-container: #ffffff;    /* primary_container_bg */
-    fg: #2a2a2a;              /* text_tint */
-    fg-muted: #606873;        /* neutral_tint */
-    accent: #003a99;          /* accent */
-    border-color: #e2e2e2;    /* neutral_1 */
+  /* Noctalia Material Design 3 Colors */
+  background: #e1e2e7;
+  surface: #f5f7fa;
+  surface-high: #c3cadb;
+  on-surface: #3760bf;
+  on-surface-variant: #6172b0;
+  primary: #2e7de9;
+  on-primary: #e1e2e7;
+  primary-container: #c1d5f0;
+  on-primary-container: #072145;
+  outline: #003a99;
+  error: #f52a65;
 
-    background-color: @bg-container;
-    text-color: @fg;
-    font: "Sans 12";
+  background-color: @surface;
+  text-color: @on-surface;
+  font: "Sans 12";
 }
 
 window {
-    location: center;
-    anchor: center;
-    width: 30%;
-    border: 2px;
-    border-color: @border-color;
-    border-radius: 10px;
+  location: center;
+  anchor: center;
+  width: 30%;
+  border: 2px;
+  border-color: @outline;
+  border-radius: 12px;
+  background-color: @surface;
 }
 
 mainbox {
-    children: [ inputbar, listview ];
+  children:
+    [ inputbar,
+    listview];
+  background-color: transparent;
 }
 
 inputbar {
-    color: @fg;
-    padding: 12px;
-    background-color: @bg;
+  color: @on-surface;
+  padding: 12px;
+  background-color: @background;
+  border-radius: 12px 12px 0 0;
 }
 
 listview {
-    padding: 8px;
-    lines: 10;
+  padding: 8px;
+  lines: 10;
+  background-color: transparent;
 }
 
 element {
-    padding: 8px;
+  padding: 8px;
+  background-color: transparent;
+  text-color: @on-surface;
 }
 
 element selected {
-    border: 1px;
-    border-color: @accent;
-    text-color: @accent;
-    border-radius: 4px;
+  background-color: @primary-container;
+  text-color: @on-primary-container;
+  border: 1px;
+  border-color: @primary;
+  border-radius: 6px;
+}
+
+element selected.active {
+  background-color: @primary;
+  text-color: @on-primary;
 }

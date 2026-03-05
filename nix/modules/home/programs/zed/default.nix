@@ -31,13 +31,42 @@ in
 {
   options.sysconf.programs.zed-editor = {
     enable = lib.mkEnableOption "zed-editor";
+
+    theme = lib.mkOption {
+      description = "Zed editor theme configuration.";
+      type = lib.types.submodule {
+        options = {
+          mode = lib.mkOption {
+            type = lib.types.enum [
+              "system"
+              "dark"
+              "light"
+            ];
+            default = "system";
+            description = "Theme mode selection strategy.";
+          };
+          dark = lib.mkOption {
+            type = lib.types.str;
+            default = "Tokyo Night";
+            description = "Theme used in dark mode.";
+          };
+          light = lib.mkOption {
+            type = lib.types.str;
+            default = "One Light";
+            description = "Theme used in light mode.";
+          };
+        };
+      };
+      default = { };
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
+      kdlfmt
       nil
       nixd
-      rumdl
+      rumdl # markdown formatter
     ];
 
     # https://home-manager-options.extranix.com/?query=programs.zed-editor&release=release-25.11
@@ -60,11 +89,7 @@ in
         "xml"
       ];
       userSettings = {
-        theme = {
-          mode = "system";
-          dark = "Tokyo Night";
-          light = "One Light";
-        };
+        theme = cfg.theme;
         file_types = {
           "Shell Script" = [
             ".env.*"
@@ -105,6 +130,20 @@ in
           font_size = fontSize;
           # Terminal line height: comfortable (1.618), standard(1.3) or `{ "custom": 2 }`
           line_height = "standard";
+        };
+
+        languages = {
+          Kdl = {
+            formatter = {
+              external = {
+                command = "${pkgs.kdlfmt}/bin/kdlfmt";
+                arguments = [
+                  "format"
+                  "--stdin"
+                ];
+              };
+            };
+          };
         };
       };
     };

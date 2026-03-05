@@ -7,7 +7,8 @@
 let
   cfg = config.sysconf.services.mount-vault;
 
-  # Script that handles mounting/unmounting encrypted directories
+  # Script that handles mounting/unmounting gocryptfs encrypted directories
+  # Works best on non-CoW filesystems like ext4 or XFS. Avoid using on Btrfs due to CoW and fragmentation issues.
   mountVaultScript = pkgs.writeShellScriptBin "mount-vault" ''
     export PATH="${
       lib.makeBinPath [

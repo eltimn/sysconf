@@ -66,12 +66,14 @@
   # Enable sysconf modules
   sysconf = {
     desktop = {
-      cosmic.primaryMonitor = "HDMI-A-1";
-      noctalia.barMonitor = "HDMI-A-1";
+      monitors = {
+        primary = "HDMI-A-1";
+        secondary = "DP-2";
+      };
       niri = {
-        # lockTimeout = 600; # Lock after 10 minutes
-        monitorOffTimeout = 1200; # Turn off monitors after 20 minutes
-        suspendTimeout = 1800; # Suspend after 30 minutes
+        # lockTimeout = 10; # minutes
+        monitorOffTimeout = 20; # minutes
+        suspendTimeout = 30; # minutes
         extraConfig = ''
           // https://yalter.github.io/niri/Configuration:-Input
           input {
@@ -170,12 +172,6 @@
       zen-browser = {
         enable = true;
         profileName = "nelly";
-        userChrome = ''
-          @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userChrome.css";
-        '';
-        userContent = ''
-          @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userContent.css";
-        '';
       };
     };
 

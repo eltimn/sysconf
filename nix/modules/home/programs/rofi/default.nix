@@ -8,33 +8,37 @@ let
   cfg = config.sysconf.programs.rofi;
 
   rofi-cliphist = pkgs.writeShellScriptBin "rofi-cliphist" ''
-    # Theme detection: check Noctalia, then Cosmic
-    COSMIC_THEME_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
-    NOCTALIA_THEME_FILE="$HOME/.config/rofi/noctalia.rasi"
+    ROFI_CONFIG_DIR="$HOME/.config/rofi"
+    CFG_THEME="${cfg.theme}"
 
-    if [[ -f "$NOCTALIA_THEME_FILE" ]]; then
-      THEME="noctalia"
-    elif [[ -f "$COSMIC_THEME_FILE" ]]; then
-      if [[ "$(cat "$COSMIC_THEME_FILE")" == "true" ]]; then
-        THEME="dark"
-      else
-        THEME="light"
-      fi
+    if [[ "$CFG_THEME" == "system" ]]; then
+      THEME=$(get-theme-mode)
     else
-      # Default to light for non-COSMIC/Noctalia sessions
-      THEME="light"
+      THEME="$CFG_THEME"
     fi
 
-    cliphist list | rofi -dmenu -theme "$HOME/.config/rofi/$THEME.rasi" -p "Clipboard" | cliphist decode | wl-copy
+    ROFI_THEME_FILE="$ROFI_CONFIG_DIR/$THEME.rasi"
+
+    if [[ ! -f "$ROFI_THEME_FILE" ]]; then
+      echo "Rofi theme file not found: $ROFI_THEME_FILE"
+      ROFI_THEME_FILE="$ROFI_CONFIG_DIR/light.rasi"
+    fi
+
+    cliphist list | rofi -dmenu -theme "$ROFI_THEME_FILE" -p "Clipboard: " | cliphist decode | wl-copy
   '';
 in
 {
   options.sysconf.programs.rofi = {
     enable = lib.mkEnableOption "rofi";
+
+    theme = lib.mkOption {
+      type = lib.types.str;
+      default = "system";
+      description = "Rofi theme to use. If 'system', the theme will be chosen based on the current desktop enviroment's theme mode (e.g. light/dark). Otherwise, specify a specific theme name.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-
     # Systemd service to watch clipboard and store in cliphist
     systemd.user.services.cliphist = {
       Unit = {
@@ -52,18 +56,18 @@ in
     };
 
     home = {
-      # Symlink themes to ~/.config/rofi
-      file = {
-        ".config/rofi/dark.rasi".source = ./themes/dark.rasi;
-        ".config/rofi/light.rasi".source = ./themes/light.rasi;
-        ".config/rofi/tmpl-noctalia.rasi".source = ./tmpl-noctalia.rasi;
-      };
-
       packages = with pkgs; [
         cliphist
         rofi-cliphist
         wl-clipboard
       ];
+    };
+
+    # Symlink themes to ~/.config/rofi
+    xdg.configFile = {
+      "rofi/dark.rasi".source = ./themes/dark.rasi;
+      "rofi/light.rasi".source = ./themes/light.rasi;
+      "rofi/tmpl-noctalia.rasi".source = ./tmpl-noctalia.rasi; # for noctalia
     };
 
     programs.rofi = {

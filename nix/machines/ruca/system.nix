@@ -14,6 +14,9 @@ in
   boot = {
     supportedFilesystems = [ "btrfs" ];
 
+    # Disable USB autosuspend to fix KVM keyboard issues after suspend
+    # kernelParams = [ "usbcore.autosuspend=-1" ];
+
     # Bootloader
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
@@ -42,8 +45,11 @@ in
   };
 
   sysconf = {
-    settings.hostRole = "desktop";
-    settings.desktopEnvironment = "cosmic+niri";
+    settings = {
+      hostRole = "desktop";
+      desktopEnvironment = "cosmic+niri";
+      niriShell = "dms";
+    };
 
     users.nelly = {
       enable = true;

@@ -4,6 +4,9 @@
   "tools": {
     "lsp": true
   },
+  "permission": {
+    "lsp": "allow"
+  },
   "mcp": {},
   "provider": {
     "ollama-cloud": {
