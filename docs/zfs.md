@@ -14,11 +14,20 @@ Use legacy mounts so systemd/NixOS controls ordering and dependencies.
 ```shell
 sudo zfs create datapool/<name>
 sudo zfs set mountpoint=legacy datapool/<name>
+# For encrypted drives that rely on a key from Colmena and are to be mounted manually.
+sudo zfs set canmount=noauto datapool/<name>
 ```
 
 Then add a `fileSystems` entry in `disks.nix`, keep pool roots with
-`mountpoint=none` and `canmount=off`, ensure `boot.zfs.extraPools`
-lists the pool, and set `networking.hostId`.
+`mountpoint=none` and `canmount=off`, and set `networking.hostId`.
+
+`boot.zfs.extraPools` creates a Systemd service that imports the pool at boot,
+but doesn't mount it. The `fileSystems` entry creates a Systemd mount unit that
+mounts the dataset at the specified mount point, and can be used to control
+dependencies for services that rely on the dataset. If there is an encrypted
+dataset the key will be required to be loaded before the import service can start.
+That's why a custom import service should be created instead of using the one
+created by extraPools. You must also set `canmount=noauto` on the encrypted dataset.
 
 ## Creating an encrypted parent dataset
 
@@ -31,6 +40,7 @@ sudo zfs create -o encryption=aes-256-gcm \
   -o keylocation=prompt \
   -o compression=zstd \
   -o mountpoint=/srv/media/private \
+  -o canmount=noauto \
   mediapool/private
 
 # Children datasets
@@ -139,7 +149,8 @@ There are two ways to mount ZFS datasets.
    - **Why you need it:** Since your root filesystem is on `ext4` (not ZFS),
      NixOS won't automatically look for ZFS pools unless you tell it to.
 
-> What if I removed the fileSystems entries and just used zfs automounting? Any reason not to do that?
+> What if I removed the fileSystems entries and just used zfs automounting? Any
+  reason not to do that?
 
 You can do that, and it is simpler in some ways, but there are specific reasons
 why the NixOS community (and the wiki) generally steers you toward the `legacy`
