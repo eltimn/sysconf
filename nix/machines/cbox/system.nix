@@ -31,7 +31,7 @@ in
   systemd.network = {
     # Persistent network interface naming
     links."10-lan" = {
-      matchConfig.MACAddress = "d8:c4:97:3a:59:1a";
+      matchConfig.MACAddress = "ac:87:a3:34:50:2a";
       linkConfig.Name = "eth0";
     };
 
@@ -59,5 +59,5 @@ in
   };
 
   # system
-  system.stateVersion = "23.11"; # Don't change unless installing fresh
+  system.stateVersion = "25.11"; # Don't change unless installing fresh
 }
