@@ -549,7 +549,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
         "sysconf-secrets": "sysconf-secrets",
-        "zen-browser-flake": "zen-browser-flake"
+        "zen-browser": "zen-browser"
       }
     },
     "sops-nix": {
@@ -646,7 +646,7 @@
         "type": "github"
       }
     },
-    "zen-browser-flake": {
+    "zen-browser": {
       "inputs": {
         "home-manager": [
           "home-manager"

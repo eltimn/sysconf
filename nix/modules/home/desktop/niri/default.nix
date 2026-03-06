@@ -52,21 +52,6 @@ in
       default = "";
     };
 
-    # Scripts are passed the current theme mode as an argument (e.g. 'dark' or 'light').
-    themeHandlers = lib.mkOption {
-      type = lib.types.attrsOf (
-        lib.types.oneOf [
-          lib.types.path
-          lib.types.package
-          lib.types.lines
-        ]
-      );
-      default = { };
-      description = ''
-        An attribute set of custom handlers for darkman. The key is the name of the handler, and the value is either an absolute path to a script or a string containing the script content.
-      '';
-    };
-
     enableThemeHandlers = lib.mkOption {
       type = lib.types.bool;
       default = settings.niriShell != "noctalia";

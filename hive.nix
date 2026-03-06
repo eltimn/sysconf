@@ -157,10 +157,9 @@ let
             ./nix/modules/home # home manager modules
           ];
         };
-        extraSpecialArgs = { inherit pkgs-unstable; };
+        extraSpecialArgs = { inherit inputs pkgs-unstable; };
         sharedModules = [
           inputs.sops-nix.homeManagerModules.sops
-          inputs.zen-browser-flake.homeModules.default
         ];
       };
     };

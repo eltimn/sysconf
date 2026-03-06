@@ -46,7 +46,7 @@
       url = "github:zhaofengli/colmena/stable";
     };
 
-    zen-browser-flake = {
+    zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
         nixpkgs.follows = "nixpkgs";
@@ -172,9 +172,7 @@
                 };
 
                 sharedModules = [
-                  inputs.cosmic-manager.homeManagerModules.cosmic-manager
                   inputs.sops-nix.homeManagerModules.sops
-                  inputs.zen-browser-flake.homeModules.default
                 ];
               };
             }
@@ -198,7 +196,6 @@
       # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
       # Also some flakes and other misc things that are referred to differently than regular packages.
       overlays.default = final: prev: {
-        zen-browser = inputs.zen-browser-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
         # git-worktree-runner = prev.callPackage ./nix/pkgs/git-worktree-runner.nix { };

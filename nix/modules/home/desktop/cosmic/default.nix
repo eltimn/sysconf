@@ -1,6 +1,7 @@
 # COSMIC Desktop Configuration
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -25,6 +26,7 @@ in
     ./dark-theme.nix
     ./light-theme.nix
     ./terminal.nix
+    inputs.cosmic-manager.homeManagerModules.cosmic-manager
   ];
 
   options.sysconf.desktop.cosmic = {

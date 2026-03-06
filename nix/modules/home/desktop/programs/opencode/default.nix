@@ -86,7 +86,6 @@ in
       ++ lib.optionals (cfg.theme == "system") [
         syncOpencodeThemeScript
       ];
-
     };
 
     programs.opencode = {
@@ -94,8 +93,6 @@ in
       package = pkgs-unstable.opencode;
     };
 
-    sysconf.desktop.niri.themeHandlers.opencode = lib.mkIf (
-      cfg.theme == "system"
-    ) syncOpencodeThemeScript;
+    sysconf.desktop.themeHandlers.opencode = syncOpencodeThemeScript;
   };
 }

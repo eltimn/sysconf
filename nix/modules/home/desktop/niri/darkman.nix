@@ -112,8 +112,8 @@ in
     })
 
     (lib.mkIf (cfg.enable && cfg.enableThemeHandlers) {
-      sysconf.desktop.niri.themeHandlers.gtk = syncGtkScript;
-      xdg.dataFile = lib.mkIf (cfg.themeHandlers != { }) (generateScripts cfg.themeHandlers);
+      sysconf.desktop.themeHandlers.gtk = syncGtkScript;
+      xdg.dataFile = generateScripts config.sysconf.desktop.themeHandlers;
     })
   ];
 }

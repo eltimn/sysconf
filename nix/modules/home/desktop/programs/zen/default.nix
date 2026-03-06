@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -26,6 +27,7 @@ in
 {
   imports = [
     ./xdg.nix
+    inputs.zen-browser.homeModules.beta
   ];
 
   options.sysconf.programs.zen-browser = {
@@ -177,6 +179,6 @@ in
       "zen/themes/userContent-light.css".text = "";
     };
 
-    sysconf.desktop.niri.themeHandlers.zen-browser = syncZenThemeScript;
+    sysconf.desktop.themeHandlers.zen-browser = syncZenThemeScript;
   };
 }

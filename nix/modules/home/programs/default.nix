@@ -3,20 +3,12 @@
     ./claude
     ./git
     ./goose
-    ./opencode
     ./rofi
-    ./vscode
-    ./zed
     ./zellij
-    ./zen
     ./zsh
     ./backup.nix
     ./bat.nix
-    ./chromium.nix
     ./direnv.nix
-    ./firefox.nix
-    ./foot.nix
-    ./ghostty.nix
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix
