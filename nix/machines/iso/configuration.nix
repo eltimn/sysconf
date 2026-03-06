@@ -53,6 +53,8 @@ in
     zed-editor
   ];
 
+  environment.etc."iso/README.md".source = ./README.md;
+
   users.users = {
     nixos = {
       openssh.authorizedKeys.keys = nellyKeys.base;

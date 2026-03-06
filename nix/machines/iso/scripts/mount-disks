@@ -4,24 +4,37 @@ set -euo pipefail
 # ensure it's run as root
 if [ "$EUID" -ne 0 ]; then
 	echo "Please run as root"
-	exit 1
+  exit 1
 fi
 
-# Safely unmount everything under /mnt if it exists
-if mountpoint -q /mnt; then
-  if ! umount -R /mnt; then
-    echo "Failed to recursively unmount /mnt. Please close any open files or terminals using /mnt and try again." >&2
-    exit 1
-  fi
+usage() {
+  echo "Usage: $0 <ext4|btrfs>"
+  echo ""
+  echo "Mounts the install target filesystems to /mnt"
+  echo ""
+  echo "Options:"
+  echo "  ext4   Mount ext4 filesystem with labels 'nixos' and 'boot'"
+  echo "  btrfs  Mount btrfs subvolumes with partlabel 'disk-main-root' and 'boot'"
+  exit 1
+}
+
+if [ $# -eq 0 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+  usage
 fi
 
-disk_type="${1:-ext4}"
+disk_type="$1"
 
 if [ "$disk_type" = "ext4" ]; then
   mount /dev/disk/by-label/nixos /mnt
   # UEFI systems
   mkdir -p /mnt/boot
   mount -o umask=0077 /dev/disk/by-label/boot /mnt/boot
+
+  echo "----------- /mnt"
+  ls -alh /mnt
+
+  echo "----------- /mnt/boot"
+  ls -alh /mnt/boot
 elif [ "$disk_type" = "btrfs" ]; then
   # mount root subvolume
   mount -o subvol=@,compress=zstd,noatime /dev/disk/by-partlabel/disk-main-root /mnt
@@ -40,22 +53,22 @@ elif [ "$disk_type" = "btrfs" ]; then
 
   echo "Btrfs subvolumes on /mnt:"
   btrfs subvolume list /mnt
+
+  echo "----------- /mnt"
+  ls -alh /mnt
+
+  echo "----------- /mnt/boot"
+  ls -alh /mnt/boot
+
+  echo "----------- /mnt/home"
+  ls -alh /mnt/home
+
+  echo "----------- /mnt/nix"
+  ls -alh /mnt/nix
+
+  echo "----------- /mnt/var/log"
+  ls -alh /mnt/var/log
 else
   echo "Invalid disk type: $disk_type"
   exit 1
 fi
-
-echo "----------- /mnt"
-ls -alh /mnt
-
-echo "----------- /mnt/boot"
-ls -alh /mnt/boot
-
-echo "----------- /mnt/home"
-ls -alh /mnt/home
-
-echo "----------- /mnt/nix"
-ls -alh /mnt/nix
-
-echo "----------- /mnt/var/log"
-ls -alh /mnt/var/log
