@@ -88,8 +88,16 @@
   ];
 
   # zfs configuration
-  # Note: pool import is handled manually in system.nix to avoid
-  # loading encryption keys for encrypted datasets during activation
-  boot.zfs.devNodes = "/dev/disk/by-id"; # needed because pools were created using disk ids.
-  # boot.zfs.extraPools is intentionally omitted - see system.nix for custom import
+  boot.zfs = {
+    devNodes = "/dev/disk/by-id"; # needed because pools were created using disk ids.
+    forceImportRoot = false;
+    # Disable encryption credential loading for mediapool -
+    # encrypted dataset (mediapool/private) is manually unlocked via zfs-vault
+    requestEncryptionCredentials = false;
+  };
+
+  services = {
+    btrfs.autoScrub.enable = true;
+    zfs.autoScrub.enable = true;
+  };
 }

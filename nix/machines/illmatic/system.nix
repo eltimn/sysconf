@@ -13,7 +13,7 @@ in
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
 
-    # Enable ZFS support
+    # Enable ZFS and btrfs support
     # https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html
     # https://nixos.org/manual/nixos/stable/options.html#opt-networking.hostId
     supportedFilesystems = [
@@ -21,15 +21,10 @@ in
       "zfs"
       "ext4"
     ];
-
-    zfs.forceImportRoot = false;
   };
 
   # Enable services
   services = {
-    btrfs.autoScrub.enable = true;
-    zfs.autoScrub.enable = true;
-
     # Route gateway admin web thru caddy to avoid ssl cert warnings
     caddy.virtualHosts."unifi.${settings.homeDomain}".extraConfig = ''
       reverse_proxy https://router.${settings.homeDomain} {
@@ -137,47 +132,6 @@ in
       immich-server = {
         after = [ "mnt-pictures.mount" ];
         requires = [ "mnt-pictures.mount" ];
-      };
-
-      # Disable stock ZFS import service and create a bare import that doesn't load keys
-      # The encrypted dataset will be manually unlocked via zfs-vault after Colmena deploys the key
-      zfs-import-mediapool.enable = false;
-
-      # Custom pool import that runs without loading encryption keys
-      # This replaces the auto-generated service from boot.zfs.extraPools
-      import-mediapool-bare = {
-        description = "Import ZFS pool 'mediapool' (without key loading)";
-        wantedBy = [
-          "zfs-mount.service"
-          "local-fs.target"
-        ];
-        after = [
-          "systemd-modules-load.service"
-          "systemd-udevd.service"
-          "zfs-import.target"
-        ];
-        before = [
-          "zfs-mount.service"
-          "local-fs.target"
-        ];
-
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          Restart = "on-failure";
-          RestartSec = "1s";
-        };
-
-        script = ''
-          # Import the pool if not already imported
-          if ! ${pkgs.zfs}/bin/zpool list mediapool >/dev/null 2>&1; then
-            echo "Importing mediapool..."
-            ${pkgs.zfs}/bin/zpool import -f -N -d /dev/disk/by-id mediapool
-            echo "Pool imported successfully."
-          else
-            echo "Pool mediapool already imported."
-          fi
-        '';
       };
     };
   };
