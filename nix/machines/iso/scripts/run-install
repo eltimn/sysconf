@@ -40,7 +40,7 @@ section_header "Disks"
 lsblk --nodeps -o name,size,type,serial
 cat <<'EOF'
 
-Manual disk setup required.
+Disk setup required.
 
 - Partition + format your disks however you prefer.
 - Create filesystems labeled:
@@ -50,9 +50,12 @@ Manual disk setup required.
 Then run:
   sudo mount-disks
 
+Or, use disko to configure your disks. disko assumes a disks.nix file in the machine's directory.
 EOF
 
-gum confirm --default=false "Disks are partitioned/formatted and mounted to /mnt?" || exit 1
+# TODO: Add option to run disko.
+
+gum confirm --default=false "Disks are partitioned, formatted, and mounted to /mnt?" || exit 1
 
 section_header "Secrets"
 
@@ -62,21 +65,22 @@ run prepare-key first so sops/age can decrypt your secrets repo.
 
 - Plug in the USB (or disk) that contains: keys.txt.gpg
 - Then run: prepare-key /dev/<device>
-
 EOF
 
-if gum confirm --default=false "Run prepare-key now?"; then
-  key_device=$(lsblk -dpno NAME,SIZE,MODEL | gum choose --header="Select the device/partition holding keys.txt.gpg")
+if gum confirm --default=false "Run prepare-key now? Select No if you prepared it manually."; then
+  key_device=$(lsblk -lpno NAME,SIZE,MODEL | gum choose --header="Select the device/partition holding keys.txt.gpg")
   # use first column (device path)
   key_device_path=$(echo "$key_device" | awk '{print $1}')
   prepare-key "$key_device_path"
 fi
 
-echo "Generating the hardware config"
-# Write hardware config into the host directory (tracked later once back in sysconf)
-sudo nixos-generate-config --dir "$HOME/sysconf/nix/machines/$TARGET_HOST" --no-filesystems
-
-echo "Config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
+if gum confirm --default=false "Generate the hardware configuration file? Select No if one already exists."; then
+  # Write hardware config into the host directory (tracked later once back in sysconf)
+  sudo nixos-generate-config --dir "$HOME/sysconf/nix/machines/$TARGET_HOST" --no-filesystems
+  sudo chown "$USER:$USER" "$HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix"
+  echo "Hardware config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
+  git -C "$HOME/sysconf" add "nix/machines/$TARGET_HOST/hardware-configuration.nix"
+fi
 
 section_header "Install OS"
 
@@ -87,6 +91,3 @@ sudo nixos-install --no-root-passwd --flake "$HOME/sysconf#$TARGET_HOST"
 # copy the sysconf repo into the new system for future reference
 sudo mkdir -p /mnt/home/nelly
 sudo cp -r "$HOME/sysconf" /mnt/home/nelly
-
-# Afterwards: set password according to the manual, then create an ssh key:
-# ssh-keygen -t ed25519 -C "your_email@example.com"

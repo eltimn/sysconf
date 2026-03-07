@@ -4,7 +4,7 @@
   home = {
     username = "nelly";
     homeDirectory = "/home/nelly";
-    stateVersion = "23.11"; # don't change unless reinstalling from scratch
+    stateVersion = "25.11"; # don't change unless reinstalling from scratch
 
     sessionPath = [
       "$HOME/bin"

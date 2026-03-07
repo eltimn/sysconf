@@ -33,6 +33,7 @@ section_header "AGE Key"
 selected_device="$1"
 echo "You selected device: $selected_device"
 
+# TODO: document how this key is created and encrypted with gpg, and how to add keys to it (e.g. for new machines or users)
 sudo mkdir -p /mnt/age-key
 sudo mount "$selected_device" /mnt/age-key
 mkdir -p "$sops_age_key_dir"
