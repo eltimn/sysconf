@@ -27,7 +27,7 @@ sudo wipefs -a /dev/sda3
 sudo wipefs -a /dev/sda
 
 # Overwrite data (more secure):
-sudo dd if=/dev/zero of=/dev/sda3 bs=1M status=progess
+sudo dd if=/dev/zero of=/dev/sda3 bs=1M status=progress
 
 # Wipes GPT and MBR partition tables:
 sudo sgdisk --zap-all /dev/sda
@@ -53,7 +53,7 @@ findmnt /mnt /mnt/boot
 ```
 
 For BTRFS, see [NixOS Wiki: BTRFS](https://wiki.nixos.org/wiki/Btrfs) and refer
-to the mounf-disks script for expected labels.
+to the mount-disks script for expected labels.
 
 ## Bootstrap Note
 

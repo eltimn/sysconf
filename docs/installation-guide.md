@@ -2,7 +2,7 @@
 
 ## Physical Computer
 
-NOTE: Machines that will be dpolyed to by Colmena have different requirements
+NOTE: Machines that will be deployed to by Colmena have different requirements
 than others when it comes to secrets.
 
 1. Use ISO and manually create and format file systems or do beforehand
