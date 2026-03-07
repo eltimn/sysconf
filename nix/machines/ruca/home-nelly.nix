@@ -135,13 +135,14 @@
           }
 
           // Monitor configuration
+          // Run `niri msg outputs` to get the list of outputs and their names.
           // Samsung (main) on the left, Dell on the right
           output "HDMI-A-1" {
             position x=0 y=0
             focus-at-startup
           }
 
-          output "DP-2" {
+          output "DP-3" {
             position x=2560 y=0
           }
         '';
