@@ -5,12 +5,6 @@
 NOTE: Machines that will be deployed to by Colmena have different requirements
 than others when it comes to secrets.
 
-1. Use ISO and manually create and format file systems or do beforehand
-if you have access to the disk. Don't use disko to format.
-
-TODO: Create a first install "host" machine configuration that doesn't include
-any SOPS secrets.
-
 ## Guide
 
 1. Configure and format disks as described in
@@ -44,6 +38,7 @@ export SELECTED_BRANCH=wip_illmatic_nixos
 
 ```shell
 git clone https://github.com/eltimn/sysconf.git "$HOME/sysconf"
+cd "$HOME/sysconf"
 git checkout -t "$SELECTED_BRANCH"
 ```
 

@@ -79,7 +79,7 @@ if gum confirm --default=false "Generate the hardware configuration file? Select
   sudo nixos-generate-config --dir "$HOME/sysconf/nix/machines/$TARGET_HOST" --no-filesystems
   sudo chown "$USER:$USER" "$HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix"
   echo "Hardware config saved in $HOME/sysconf/nix/machines/$TARGET_HOST"
-  git add "$HOME/sysconf/nix/machines/$TARGET_HOST/hardware-configuration.nix"
+  git -C "$HOME/sysconf" add "nix/machines/$TARGET_HOST/hardware-configuration.nix"
 fi
 
 section_header "Install OS"
