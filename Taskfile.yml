@@ -136,7 +136,10 @@ tasks:
 
   upload-keys:
     desc: Upload deploy keys to a hive. Required after reboot.
-    cmd: nix run .#colmena -- upload-keys --impure --on @{{.CLI_ARGS}}
+    cmds:
+      - nix run .#colmena -- upload-keys --impure --on @{{.CLI_ARGS}}
+      # Update password after key upload (hashedPasswordFile requires activation to update /etc/shadow)
+      - ssh sysconf@{{.CLI_ARGS}} "sudo /run/current-system/activate"
 
   test-blocky:
     desc: Test Blocky DNS server (default 192.168.0.22)
