@@ -89,11 +89,6 @@ in
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
         };
-        cursorTheme = {
-          name = "Adwaita";
-          package = pkgs.adwaita-icon-theme;
-          size = 24;
-        };
       };
       services.darkman = {
         enable = true;
