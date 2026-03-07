@@ -93,7 +93,12 @@ let
 
       if ! is_mounted; then
         echo "Mounting $DATASET and all children..."
-        zfs mount -R "$DATASET"
+        # Mount parent dataset explicitly (bypasses canmount=noauto)
+        zfs mount "$DATASET"
+        # Mount children explicitly
+        zfs list -r -H -o name "$DATASET" | tail -n +2 | while read -r child; do
+          zfs mount "$child" 2>/dev/null || true
+        done
         echo "Dataset mounted."
       fi
 
