@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.sysconf.desktop.niri;
-  isGreetdEnabled = config.sysconf.desktop.greetd.enable;
 in
 {
   options.sysconf.desktop.niri = {
@@ -19,18 +18,6 @@ in
 
     services = {
       dbus.enable = true; # Wayland baseline
-      # Only enable greetd here if greetd module is not managing sessions
-      # (fallback for single-DE setups using just niri)
-      greetd = lib.mkIf (!isGreetdEnabled) {
-        enable = true;
-        settings = {
-          default_session = {
-            command = "${lib.getExe pkgs.tuigreet} --cmd niri-session";
-            user = "greeter";
-          };
-        };
-      };
-
       # USB drive auto-mounting support
       udisks2.enable = true;
     };
