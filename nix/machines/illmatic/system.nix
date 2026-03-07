@@ -13,7 +13,7 @@ in
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
 
-    # Enable ZFS support
+    # Enable ZFS and btrfs support
     # https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html
     # https://nixos.org/manual/nixos/stable/options.html#opt-networking.hostId
     supportedFilesystems = [
@@ -21,15 +21,10 @@ in
       "zfs"
       "ext4"
     ];
-
-    zfs.forceImportRoot = false;
   };
 
   # Enable services
   services = {
-    btrfs.autoScrub.enable = true;
-    zfs.autoScrub.enable = true;
-
     # Route gateway admin web thru caddy to avoid ssl cert warnings
     caddy.virtualHosts."unifi.${settings.homeDomain}".extraConfig = ''
       reverse_proxy https://router.${settings.homeDomain} {
@@ -133,9 +128,11 @@ in
       };
     };
 
-    services.immich-server = {
-      after = [ "mnt-pictures.mount" ];
-      requires = [ "mnt-pictures.mount" ];
+    services = {
+      immich-server = {
+        after = [ "mnt-pictures.mount" ];
+        requires = [ "mnt-pictures.mount" ];
+      };
     };
   };
 

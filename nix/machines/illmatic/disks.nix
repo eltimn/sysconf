@@ -88,8 +88,16 @@
   ];
 
   # zfs configuration
-  boot.zfs.devNodes = "/dev/disk/by-id"; # needed because pools were created using disk ids.
-  boot.zfs.extraPools = [
-    "mediapool"
-  ];
+  boot.zfs = {
+    devNodes = "/dev/disk/by-id"; # needed because pools were created using disk ids.
+    forceImportRoot = false;
+    # Disable encryption credential loading for mediapool -
+    # encrypted dataset (mediapool/private) is manually unlocked via zfs-vault
+    requestEncryptionCredentials = false;
+  };
+
+  services = {
+    btrfs.autoScrub.enable = true;
+    zfs.autoScrub.enable = true;
+  };
 }
