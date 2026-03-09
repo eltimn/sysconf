@@ -132,19 +132,19 @@ in
           line_height = "standard";
         };
 
-        languages = {
-          Kdl = {
-            formatter = {
-              external = {
-                command = "${pkgs.kdlfmt}/bin/kdlfmt";
-                arguments = [
-                  "format"
-                  "--stdin"
-                ];
-              };
-            };
-          };
-        };
+        # languages = {
+        #   Kdl = {
+        #     formatter = {
+        #       external = {
+        #         command = "${pkgs.kdlfmt}/bin/kdlfmt";
+        #         arguments = [
+        #           "format"
+        #           "--stdin"
+        #         ];
+        #       };
+        #     };
+        #   };
+        # };
       };
     };
 

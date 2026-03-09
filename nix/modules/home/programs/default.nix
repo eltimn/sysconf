@@ -9,6 +9,7 @@
     ./backup.nix
     ./bat.nix
     ./direnv.nix
+    ./nix-converter.nix
     ./micro.nix
     ./nodejs.nix
     ./tmux.nix

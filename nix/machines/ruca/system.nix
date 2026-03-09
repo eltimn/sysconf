@@ -48,7 +48,7 @@ in
     settings = {
       hostRole = "desktop";
       desktopEnvironment = "niri";
-      niriShell = "dms";
+      niriShell = "waybar";
     };
 
     users.nelly = {

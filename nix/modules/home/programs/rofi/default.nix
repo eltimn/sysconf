@@ -7,7 +7,7 @@
 let
   cfg = config.sysconf.programs.rofi;
 
-  rofi-cliphist = pkgs.writeShellScriptBin "rofi-cliphist" ''
+  getThemeFile = ''
     ROFI_CONFIG_DIR="$HOME/.config/rofi"
     CFG_THEME="${cfg.theme}"
 
@@ -20,11 +20,41 @@ let
     ROFI_THEME_FILE="$ROFI_CONFIG_DIR/$THEME.rasi"
 
     if [[ ! -f "$ROFI_THEME_FILE" ]]; then
-      echo "Rofi theme file not found: $ROFI_THEME_FILE"
+      echo "Rofi theme file not found: $ROFI_THEME_FILE" >&2
       ROFI_THEME_FILE="$ROFI_CONFIG_DIR/light.rasi"
     fi
 
+    echo "$ROFI_THEME_FILE"
+  '';
+
+  rofi-cliphist = pkgs.writeShellScriptBin "rofi-cliphist" ''
+    ROFI_THEME_FILE=$(${getThemeFile})
     cliphist list | rofi -dmenu -theme "$ROFI_THEME_FILE" -p "Clipboard: " | cliphist decode | wl-copy
+  '';
+
+  rofi-launcher = pkgs.writeShellScriptBin "rofi-launcher" ''
+    ROFI_THEME_FILE=$(${getThemeFile})
+
+    # Default mode is drun (application launcher)
+    MODE="''${1:-drun}"
+
+    case "$MODE" in
+      drun)
+        # Use -display-drun to set custom prompt text
+        rofi -show drun -theme "$ROFI_THEME_FILE" -display-drun "Apps: "
+        ;;
+      window)
+        rofi -show window -theme "$ROFI_THEME_FILE" -display-window "Windows: "
+        ;;
+      run)
+        rofi -show run -theme "$ROFI_THEME_FILE" -display-run "Run: "
+        ;;
+      *)
+        echo "Unknown mode: $MODE" >&2
+        echo "Usage: rofi-launcher [drun|window|run]" >&2
+        exit 1
+        ;;
+    esac
   '';
 in
 {
@@ -59,6 +89,7 @@ in
       packages = with pkgs; [
         cliphist
         rofi-cliphist
+        rofi-launcher
         wl-clipboard
       ];
     };

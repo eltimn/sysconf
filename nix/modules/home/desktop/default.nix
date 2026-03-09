@@ -44,6 +44,7 @@ let
     ffmpeg
     filen-desktop
     firefox
+    gimp2
     # git-worktree-runner
     google-chrome
     # libnss3-tools
@@ -79,6 +80,7 @@ in
     ./programs
     ./shells/dms
     ./shells/noctalia
+    ./shells/waybar
     ./gnome.nix
   ];
 
@@ -135,6 +137,7 @@ in
         firefox.enable = true;
         foot.enable = true;
         ghostty.enable = true;
+        nixConverter.enable = true;
         opencode.enable = true;
         rofi.enable = true;
         vscode.enable = true;
@@ -187,6 +190,11 @@ in
     (lib.mkIf (settings.niriShell == "dms") {
       sysconf = {
         desktop.dms.enable = true;
+      };
+    })
+    (lib.mkIf (settings.niriShell == "waybar") {
+      sysconf = {
+        desktop.waybar.enable = true;
       };
     })
   ];
