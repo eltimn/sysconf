@@ -85,7 +85,7 @@ in
           };
 
           "keyboard-state" = {
-            numlock = true;
+            numlock = false;
             capslock = true;
             format = "{name} {icon}";
             format-icons = {

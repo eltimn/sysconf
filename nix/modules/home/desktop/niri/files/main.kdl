@@ -54,6 +54,25 @@ overview {
   workspace-shadow {
     off
   }
+  // Backdrop color for the overview (shown behind workspaces)
+  backdrop-color "#24283b"
+}
+// Recent windows switcher configuration (Alt+Tab)
+recent-windows {
+  // Delay before opening the switcher (prevents flicker on quick Alt-Tab)
+  open-delay-ms 150
+  // Highlight behind the focused window preview
+  highlight {
+    active-color "#7aa2f7"
+    urgent-color "#f7768e"
+    padding 20
+    corner-radius 12
+  }
+  // Window previews in the switcher
+  previews {
+    max-height 360
+    max-scale 0.4
+  }
 }
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -301,3 +320,4 @@ window-rule {
     proportion 0.66667
   }
 }
+

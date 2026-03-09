@@ -106,16 +106,3 @@ in
     };
   };
 }
-
-# niri regex: https://docs.rs/regex/latest/regex/#syntax
-#
-# wf-recorder usage examples:
-# wf-recorder -f output.mp4                    # Full screen
-# wf-recorder -g "$(slurp)" -f output.mp4      # Select region
-# wf-recorder -o HDMI-A-1 -f output.mp4        # Specific monitor
-#
-# Key options:
-# - -a - Record audio (microphone)
-# - --audio=<device> - Record specific audio device
-# - -c <codec> - Use specific codec (libx264, libvpx, etc.)
-# - -r 30 - Set framerate
