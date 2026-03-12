@@ -22,7 +22,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      mate.engrampa
+      file-roller
     ];
 
     programs.xfconf.enable = true; # Needed to save preferences when not using XFCE desktop environment

@@ -57,6 +57,8 @@ in
       envEditor = "zeditor --wait";
     };
 
+    desktop.thunar.enable = true;
+
     # BTRFS snapshots for home directory
     services = {
       btrbk = {
