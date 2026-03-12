@@ -58,17 +58,70 @@ let
     esac
   '';
 
-  enableRofi = cfg.enableClipboardHistory || cfg.enableAppLauncher;
+  rofi-session-control = pkgs.writeShellScriptBin "rofi-session-control" ''
+    ROFI_THEME_FILE=$(${getThemeFile})
+
+    # Define actions
+    ACTIONS="Logout
+    Reboot
+    Shutdown
+    Suspend
+    Lock"
+
+    # Show menu and get selection
+    SELECTION=$(echo -e "$ACTIONS" | rofi -dmenu -theme "$ROFI_THEME_FILE" -p "Session: ")
+
+    # Exit if nothing selected
+    [ -z "$SELECTION" ] && exit 0
+
+    # Execute action
+    case "$SELECTION" in
+      "Logout")
+        ${cfg.logoutCmd}
+        ;;
+      "Reboot")
+        systemctl reboot
+        ;;
+      "Shutdown")
+        systemctl poweroff
+        ;;
+      "Suspend")
+        systemctl suspend
+        ;;
+      "Lock")
+        ${cfg.lockCmd}
+        ;;
+      *)
+        echo "Unknown action: $SELECTION" >&2
+        exit 1
+        ;;
+    esac
+  '';
+
+  enableRofi = cfg.enableClipboardHistory || cfg.enableAppLauncher || cfg.enableSessionControl;
 in
 {
   options.sysconf.desktop.rofi = {
     enableClipboardHistory = lib.mkEnableOption "Enable clipboard history with cliphist and wl-clipboard";
     enableAppLauncher = lib.mkEnableOption "Enable application launcher menu (drun mode)";
+    enableSessionControl = lib.mkEnableOption "Enable session control menu (logout, reboot, shutdown, etc.)";
 
     theme = lib.mkOption {
       type = lib.types.str;
       default = "system";
       description = "Rofi theme to use. If 'system', the theme will be chosen based on the current desktop enviroment's theme mode (e.g. light/dark). Otherwise, specify a specific theme name.";
+    };
+
+    lockCmd = lib.mkOption {
+      type = lib.types.str;
+      default = "swaylock -f -c 000000";
+      description = "Command to execute for locking the screen. The default is a simple swaylock invocation with a transparent background.";
+    };
+
+    logoutCmd = lib.mkOption {
+      type = lib.types.str;
+      default = "niri msg action quit";
+      description = "Command to execute for logging out. The default sends a quit message to Niri, which should trigger the logout process in most setups.";
     };
   };
 
@@ -113,6 +166,10 @@ in
 
     (lib.mkIf cfg.enableAppLauncher {
       home.packages = [ rofi-launcher ];
+    })
+
+    (lib.mkIf cfg.enableSessionControl {
+      home.packages = [ rofi-session-control ];
     })
   ];
 }

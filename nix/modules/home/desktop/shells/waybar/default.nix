@@ -20,7 +20,7 @@ in
       default = config.sysconf.desktop.monitors.primary;
     };
 
-    wallpaper = lib.mkOption {
+    wallpaperPath = lib.mkOption {
       type = lib.types.str;
       description = "Path to the wallpaper image.";
       default = "${config.home.homeDirectory}/Wallpapers/047.jpg";
@@ -37,6 +37,8 @@ in
       rofi = {
         enableClipboardHistory = true;
         enableAppLauncher = true;
+        enableSessionControl = true;
+        lockCmd = "swaylock -f --image ${cfg.wallpaperPath}";
       };
     };
 
@@ -327,7 +329,7 @@ in
         ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
       };
       Service = {
-        ExecStart = "${pkgs.swaybg}/bin/swaybg -i ${cfg.wallpaper} -m fill";
+        ExecStart = "${pkgs.swaybg}/bin/swaybg -i ${cfg.wallpaperPath} -m fill";
         Restart = "on-failure";
       };
       Install = {

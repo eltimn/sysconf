@@ -25,7 +25,6 @@ in
         "bin/mount-nas".source = ./files/desktop/mount-nas;
         "bin/mount-nas-dir".source = ./files/desktop/mount-nas-dir;
         "bin/reset-cosmic-theme".source = ./files/reset-cosmic-theme;
-        "bin/session-control".source = ./files/desktop/session-control;
       };
     })
   ];
