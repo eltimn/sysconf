@@ -303,6 +303,9 @@ window-rule {
 // Apps to open maximized by default
 window-rule {
   match app-id="dev.zed.Zed"
+  match app-id="zed"
+  match app-id="zen-beta"
+  match app-id="obsidian"
   open-maximized true
 }
 // Apps to open on the main workspace by default
@@ -310,15 +313,9 @@ window-rule {
   match app-id="obsidian"
   open-on-workspace "main"
 }
-// Rule for ghostty
+// Rule for 2/3 column width
 window-rule {
   match app-id="com.mitchellh.ghostty"
-  default-column-width {
-    proportion 0.66667
-  }
-}
-// Rule for thunar
-window-rule {
   match app-id="thunar"
   default-column-width {
     proportion 0.66667
