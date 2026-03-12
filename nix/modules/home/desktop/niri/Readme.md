@@ -7,7 +7,7 @@ app has its own themes and switches between them. For Waybar, its theme can be
 updated via a `themeHandler` like the rest of the apps. For DMS, it is currently
 not automated and stays in dark mode.
 
-For Nocatalia, it uses its internal theme switcher. See Readme for Noctalia for
+For Noctalia, it uses its internal theme switcher. See Readme for Noctalia for
 more details.
 
 ## Niri Services

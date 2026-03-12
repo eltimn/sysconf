@@ -52,9 +52,9 @@ let
     mkdir -p "$MAKO_CONFIG_DIR"
 
     if [[ "$THEME_MODE" == "dark" ]]; then
-      cat ${darkConfig} > "$MAKO_CONFIG_DIR/config"
+      cat ${cfg.darkConfig} > "$MAKO_CONFIG_DIR/config"
     else
-      cat ${lightConfig} > "$MAKO_CONFIG_DIR/config"
+      cat ${cfg.lightConfig} > "$MAKO_CONFIG_DIR/config"
     fi
 
     # Reload mako if running
