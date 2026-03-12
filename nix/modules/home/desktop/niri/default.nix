@@ -11,7 +11,6 @@ let
 in
 {
   imports = [
-    ./services
     ./darkman.nix
   ];
 

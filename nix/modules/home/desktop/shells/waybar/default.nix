@@ -30,9 +30,9 @@ in
   config = lib.mkIf cfg.enable {
     sysconf.desktop = {
       mako.enable = true;
+      polkit.enable = true;
       swappy.enable = true;
-      # Enable shared niri services (polkit & swayidle)
-      niri-services.enable = true;
+      swayidle.enable = true;
     };
 
     home = {

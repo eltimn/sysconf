@@ -3,19 +3,19 @@
 # Session control script - launcher agnostic
 # Works with rofi, fuzzel, or any dmenu-compatible launcher
 
-# Configuration: Set LAUNCHER_CMD to override default
+# Configuration: Set LOGOUT_LAUNCHER_CMD to override default
 # Examples:
-#   LAUNCHER_CMD="rofi -dmenu -p 'Session:'" ./session-control
-#   LAUNCHER_CMD="fuzzel --dmenu -p 'Session:'" ./session-control
+#   LOGOUT_LAUNCHER_CMD="rofi -dmenu -p 'Session:'" ./session-control
+#   LOGOUT_LAUNCHER_CMD="fuzzel --dmenu -p 'Session:'" ./session-control
 
 # Default launcher detection
-if [ -z "$LAUNCHER_CMD" ]; then
+if [ -z "$LOGOUT_LAUNCHER_CMD" ]; then
   if command -v fuzzel &> /dev/null; then
-    LAUNCHER_CMD="fuzzel --dmenu -p 'Session: '"
+    LOGOUT_LAUNCHER_CMD="fuzzel --dmenu -p 'Session: '"
   elif command -v rofi &> /dev/null; then
-    LAUNCHER_CMD="rofi -dmenu -p 'Session:'"
+    LOGOUT_LAUNCHER_CMD="rofi -dmenu -p 'Session:'"
   else
-    echo "Error: No launcher found. Install fuzzel or rofi, or set LAUNCHER_CMD." >&2
+    echo "Error: No launcher found. Install fuzzel or rofi, or set LOGOUT_LAUNCHER_CMD." >&2
     exit 1
   fi
 fi
@@ -28,7 +28,7 @@ Suspend
 Lock"
 
 # Show menu and get selection
-SELECTION=$(echo -e "$ACTIONS" | eval "$LAUNCHER_CMD")
+SELECTION=$(echo -e "$ACTIONS" | eval "$LOGOUT_LAUNCHER_CMD")
 
 # Exit if nothing selected
 [ -z "$SELECTION" ] && exit 0
