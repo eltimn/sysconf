@@ -65,7 +65,6 @@ in
         grim
         niri
         slurp
-        swappy
         wf-recorder
         wl-clipboard
         xwayland-satellite

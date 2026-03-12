@@ -3,7 +3,6 @@
     ./claude
     ./git
     ./goose
-    ./rofi
     ./zellij
     ./zsh
     ./backup.nix

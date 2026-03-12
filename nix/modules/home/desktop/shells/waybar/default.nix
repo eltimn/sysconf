@@ -33,6 +33,11 @@ in
       polkit.enable = true;
       swappy.enable = true;
       swayidle.enable = true;
+
+      rofi = {
+        enableClipboardHistory = true;
+        enableAppLauncher = true;
+      };
     };
 
     home = {

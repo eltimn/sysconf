@@ -1,3 +1,4 @@
+# Rofi launcher with themed application menu, window switcher, and clipboard history
 {
   config,
   lib,
@@ -5,7 +6,7 @@
   ...
 }:
 let
-  cfg = config.sysconf.programs.rofi;
+  cfg = config.sysconf.desktop.rofi;
 
   getThemeFile = ''
     ROFI_CONFIG_DIR="$HOME/.config/rofi"
@@ -56,10 +57,13 @@ let
         ;;
     esac
   '';
+
+  enableRofi = cfg.enableClipboardHistory || cfg.enableAppLauncher;
 in
 {
-  options.sysconf.programs.rofi = {
-    enable = lib.mkEnableOption "rofi";
+  options.sysconf.desktop.rofi = {
+    enableClipboardHistory = lib.mkEnableOption "Enable clipboard history with cliphist and wl-clipboard";
+    enableAppLauncher = lib.mkEnableOption "Enable application launcher menu (drun mode)";
 
     theme = lib.mkOption {
       type = lib.types.str;
@@ -68,42 +72,47 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    # Systemd service to watch clipboard and store in cliphist
-    systemd.user.services.cliphist = {
-      Unit = {
-        Description = "Clipboard history watcher";
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
+  config = lib.mkMerge [
+    (lib.mkIf enableRofi {
+      # Symlink themes to ~/.config/rofi
+      xdg.configFile = {
+        "rofi/dark.rasi".source = ./themes/dark.rasi;
+        "rofi/light.rasi".source = ./themes/light.rasi;
+        "rofi/tmpl-noctalia.rasi".source = ./tmpl-noctalia.rasi; # for noctalia
       };
-      Service = {
-        ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store";
-        Restart = "on-failure";
-      };
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
-    };
 
-    home = {
-      packages = with pkgs; [
+      programs.rofi = {
+        enable = true;
+        package = pkgs.rofi; # Includes Wayland support as of nixpkgs 25.11
+      };
+    })
+
+    (lib.mkIf cfg.enableClipboardHistory {
+      # Systemd service to watch clipboard and store in cliphist
+      systemd.user.services.cliphist = {
+        Unit = {
+          Description = "Clipboard history watcher";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+        };
+        Service = {
+          ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store";
+          Restart = "on-failure";
+        };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+      };
+
+      home.packages = with pkgs; [
         cliphist
         rofi-cliphist
-        rofi-launcher
         wl-clipboard
       ];
-    };
+    })
 
-    # Symlink themes to ~/.config/rofi
-    xdg.configFile = {
-      "rofi/dark.rasi".source = ./themes/dark.rasi;
-      "rofi/light.rasi".source = ./themes/light.rasi;
-      "rofi/tmpl-noctalia.rasi".source = ./tmpl-noctalia.rasi; # for noctalia
-    };
-
-    programs.rofi = {
-      enable = true;
-      package = pkgs.rofi; # Includes Wayland support as of nixpkgs 25.11
-    };
-  };
+    (lib.mkIf cfg.enableAppLauncher {
+      home.packages = [ rofi-launcher ];
+    })
+  ];
 }

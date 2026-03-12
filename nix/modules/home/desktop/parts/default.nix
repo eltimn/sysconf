@@ -1,5 +1,6 @@
 {
   imports = [
+    ./rofi
     ./mako.nix
     ./polkit.nix
     ./swappy.nix
