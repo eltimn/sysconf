@@ -9,7 +9,7 @@ binds {
     spawn rofi-launcher run
   }
   Mod+X hotkey-overlay-title="Session menu: logout, reboot, shutdown" {
-    spawn rofi-session-control
+    spawn "rofi-session-control"
   }
   Mod+Shift+N hotkey-overlay-title="Convert JSON/YAML to Nix." {
     spawn json2nix-clipboard
@@ -17,5 +17,7 @@ binds {
   Mod+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" {
     spawn swaylock -f --image "/home/nelly/Wallpapers/047.jpg"
   }
+  Mod+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" {
+    spawn "swaylock" "-f" "--image" "/home/nelly/Wallpapers/047.jpg"
+  }
 }
-
