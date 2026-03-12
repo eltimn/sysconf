@@ -102,14 +102,14 @@ let
 in
 {
   options.sysconf.desktop.rofi = {
-    enableClipboardHistory = lib.mkEnableOption "Enable clipboard history with cliphist and wl-clipboard";
-    enableAppLauncher = lib.mkEnableOption "Enable application launcher menu (drun mode)";
-    enableSessionControl = lib.mkEnableOption "Enable session control menu (logout, reboot, shutdown, etc.)";
+    enableClipboardHistory = lib.mkEnableOption "clipboard history with cliphist and wl-clipboard";
+    enableAppLauncher = lib.mkEnableOption "application launcher menu (drun mode)";
+    enableSessionControl = lib.mkEnableOption "session control menu (logout, reboot, shutdown, etc.)";
 
     theme = lib.mkOption {
       type = lib.types.str;
       default = "system";
-      description = "Rofi theme to use. If 'system', the theme will be chosen based on the current desktop enviroment's theme mode (e.g. light/dark). Otherwise, specify a specific theme name.";
+      description = "Rofi theme to use. If 'system', the theme will be chosen based on the current desktop environment's theme mode (e.g. light/dark). Otherwise, specify a specific theme name.";
     };
 
     lockCmd = lib.mkOption {

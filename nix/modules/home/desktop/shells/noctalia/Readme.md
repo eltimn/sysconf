@@ -7,9 +7,9 @@ Theme switching is handled by Noctalia. When the mode is switched, Noctalia:
 1. Updates its own settings.json file with colorSchemes.darkMode = true/false
 2. Updates any app's theme it is controlling.
 3. Runs userTemplates:
-  1. Updates a file that is used to determine dark/light (uses hex of bg color
+   - Updates a file that is used to determine dark/light (uses hex of bg color
      and determines its luminance)
-  2. Runs `darkman set light/dark` which acts a backend for dbus system settings
+   - Runs `darkman set light/dark` which acts a backend for dbus system settings
      that GTK and other apps listen on for changes.
 
 ### Current Limitations

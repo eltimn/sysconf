@@ -23,6 +23,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !config.sysconf.desktop.mako.enable;
+        message = "Cannot enable both swaync and mako notification daemons. Disable mako when using swaync.";
+      }
+    ];
+
     # SwayNotificationCenter for notifications with control center
     services.swaync = {
       enable = true;

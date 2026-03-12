@@ -18,7 +18,7 @@ let
       # Convert clipboard contents (JSON/YAML/JSONC) to Nix
 
       get_clipboard() {
-        if command -v wl-copy &> /dev/null && [ -n "''${WAYLAND_DISPLAY:-}" ]; then
+        if command -v wl-paste &> /dev/null && [ -n "''${WAYLAND_DISPLAY:-}" ]; then
           wl-paste
         elif command -v xclip &> /dev/null && [ -n "''${DISPLAY:-}" ]; then
           xclip -selection clipboard -o
