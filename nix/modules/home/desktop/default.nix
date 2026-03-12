@@ -77,6 +77,7 @@ in
   imports = [
     ./cosmic
     ./niri
+    ./parts
     ./programs
     ./shells/dms
     ./shells/noctalia

@@ -28,8 +28,14 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Enable shared niri services
-    sysconf.desktop.niri-services.enable = true;
+    sysconf.desktop = {
+      swappy.enable = true;
+      # Enable shared niri services but disable mako (we use swaync instead)
+      niri-services = {
+        enable = true;
+        mako = false; # Disable mako, we use swaync
+      };
+    };
 
     home = {
       file = {
@@ -63,10 +69,8 @@ in
           ];
 
           modules-right = [
+            "custom/notification"
             "keyboard-state"
-            # "cpu"
-            # "memory"
-            # "temperature"
             "pulseaudio"
             "network"
             "tray"
@@ -204,6 +208,23 @@ in
             tooltip-format-disconnected = "MPD (disconnected)";
           };
 
+          "custom/notification" = {
+            tooltip = true;
+            format = "{icon}";
+            format-icons = {
+              notification = "󱅫";
+              none = "󰂜";
+              dnd-notification = "󰂠";
+              dnd-none = "󰪓";
+            };
+            return-type = "json";
+            exec-if = "which swaync-client";
+            exec = "swaync-client -swb";
+            on-click = "swaync-client -t -sw";
+            on-click-right = "swaync-client -d -sw";
+            escape = true;
+          };
+
         };
       };
 
@@ -282,9 +303,19 @@ in
           -gtk-icon-effect: dim;
         }
 
-        #tray > .needs-attention {
-          -gtk-icon-effect: highlight;
-          background-color: #f38ba8;
+        /* Notification widget */
+        #custom-notification {
+          padding: 0 12px;
+          color: #7aa2f7;
+          font-family: "NotoSansMono Nerd Font", "Symbols Nerd Font", monospace;
+        }
+
+        #custom-notification.notification {
+          color: #e0af68;
+        }
+
+        #custom-notification.dnd {
+          color: #bb9af7;
         }
       '';
     };
@@ -332,6 +363,193 @@ in
       Install = {
         WantedBy = [ "graphical-session.target" ];
       };
+    };
+
+    # SwayNotificationCenter for notifications with control center
+    services.swaync = {
+      enable = true;
+      settings = {
+        positionX = "right";
+        positionY = "top";
+        control-center-positionX = "none";
+        control-center-positionY = "none";
+        notification-visibility = {
+          example-name = {
+            state = "muted";
+            urgency = "Low";
+          };
+        };
+        widgets = [
+          "title"
+          "dnd"
+          "notifications"
+        ];
+        widget-config = {
+          title = {
+            text = "Notifications";
+            clear-all-button = true;
+            button-text = "Clear All";
+          };
+          dnd = {
+            text = "Do Not Disturb";
+          };
+        };
+      };
+      style = ''
+        /* Tokyo Night Dark theme for SwayNotificationCenter */
+        @define-color background #1a1b26;
+        @define-color background-transparent rgba(26, 27, 38, 0.95);
+        @define-color foreground #c0caf5;
+        @define-color primary #7aa2f7;
+        @define-color secondary #bb9af7;
+        @define-color error #f7768e;
+        @define-color surface #24283b;
+        @define-color surface-high #353d57;
+
+        /* Main control center window - force background */
+        .control-center {
+          background: @background-transparent;
+          border: 2px solid @primary;
+          border-radius: 12px;
+          padding: 16px;
+        }
+
+        .control-center > * {
+          background: transparent;
+        }
+
+        /* Notification cards - explicit backgrounds */
+        .notification {
+          background: @surface;
+          border: 1px solid @surface-high;
+          border-radius: 8px;
+          padding: 12px;
+          margin-bottom: 8px;
+        }
+
+        .notification:hover {
+          background: @surface-high;
+          border-color: @primary;
+        }
+
+        /* Notification icon - proper sizing */
+        .notification-icon {
+          -gtk-icon-size: 48px;
+          min-width: 48px;
+          min-height: 48px;
+          margin-right: 12px;
+        }
+
+        .notification-icon image {
+          -gtk-icon-style: symbolic;
+        }
+
+        .notification-content {
+          background: transparent;
+        }
+
+        .notification-content:hover {
+          background: transparent;
+        }
+
+        /* On-screen notification popup window */
+        .notification-window {
+          background: transparent;
+        }
+
+        .notification-window .notification {
+          background: @surface;
+          border: 2px solid @primary;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Close button */
+        .close-button {
+          background: @error;
+          color: @background;
+          border-radius: 50%;
+        }
+
+        .close-button:hover {
+          background: @error;
+        }
+
+        /* Title widget */
+        .widget-title {
+          color: @primary;
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 12px;
+          background: transparent;
+        }
+
+        .widget-title button {
+          background: @error;
+          color: @background;
+          border-radius: 6px;
+          padding: 4px 8px;
+        }
+
+        .widget-title button:hover {
+          background: @error;
+        }
+
+        /* DND toggle */
+        .widget-dnd {
+          color: @foreground;
+          font-size: 14px;
+          margin-bottom: 12px;
+          background: transparent;
+        }
+
+        .widget-dnd > switch {
+          background: @surface-high;
+          border-radius: 12px;
+        }
+
+        .widget-dnd > switch:hover {
+          background: @surface-high;
+        }
+
+        .widget-dnd > switch:checked {
+          background: @primary;
+        }
+
+        /* Empty notification placeholder */
+        .notification-placeholder {
+          color: @foreground;
+          opacity: 0.5;
+          background: transparent;
+        }
+
+        .notification-placeholder image {
+          -gtk-icon-size: 64px;
+          min-width: 64px;
+          min-height: 64px;
+          margin-bottom: 16px;
+        }
+
+        /* Scrollbar styling */
+        scrollbar {
+          background: transparent;
+        }
+
+        scrollbar slider {
+          background: @surface-high;
+          border-radius: 8px;
+        }
+
+        /* Action buttons */
+        .notification-action {
+          background: @surface-high;
+          border-radius: 6px;
+        }
+
+        .notification-action:hover {
+          background: @primary;
+        }
+      '';
     };
   };
 }

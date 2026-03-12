@@ -12,9 +12,9 @@ in
   imports = [
     ./containers
     ./desktop
-    ./fonts.nix
     ./services
     ./users
+    ./fonts.nix
     ./settings.nix
     ./sops.nix
   ];
@@ -34,6 +34,7 @@ in
         htop
         jq
         ncdu
+        p7zip
         parted
         python3
         s3cmd

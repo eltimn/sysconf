@@ -142,7 +142,7 @@ tasks:
       - ssh sysconf@{{.CLI_ARGS}} "sudo /run/current-system/activate"
 
   niri-validate:
-    desc: Validate the Niri configuration.
+    desc: Validate the Niri configuration KDL files.
     cmd: find nix/modules/home/desktop -name '*.kdl' -type f -print -exec niri validate -c {} \;
 
   test-blocky:
