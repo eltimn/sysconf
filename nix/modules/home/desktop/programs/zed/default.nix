@@ -63,7 +63,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      kdlfmt
+      # kdlfmt
       nil
       nixd
       rumdl # markdown formatter
@@ -76,7 +76,7 @@ in
         "git-firefly"
         "gleam"
         "html"
-        "kdl"
+        # "kdl"
         "lua"
         "make"
         "nix"
@@ -139,7 +139,7 @@ in
         #         command = "${pkgs.kdlfmt}/bin/kdlfmt";
         #         arguments = [
         #           "format"
-        #           "--stdin"
+        #           "-"
         #         ];
         #       };
         #     };
