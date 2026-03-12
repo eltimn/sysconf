@@ -103,7 +103,7 @@ Deployments will be done manually.
 
 ### Nix Module Structure
 
-**Example module imports. Use only what's needed.:**
+**Example module imports. Use only what's needed:**
 
 ```nix
 {
