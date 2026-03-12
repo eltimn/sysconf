@@ -54,6 +54,25 @@ overview {
   workspace-shadow {
     off
   }
+  // Backdrop color for the overview (shown behind workspaces)
+  backdrop-color "#24283b"
+}
+// Recent windows switcher configuration (Alt+Tab)
+recent-windows {
+  // Delay before opening the switcher (prevents flicker on quick Alt-Tab)
+  open-delay-ms 150
+  // Highlight behind the focused window preview
+  highlight {
+    active-color "#7aa2f7"
+    urgent-color "#f7768e"
+    padding 20
+    corner-radius 12
+  }
+  // Window previews in the switcher
+  previews {
+    max-height 360
+    max-scale 0.4
+  }
 }
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -111,12 +130,12 @@ layout {
     // - RGB hex: "#rgb", "#rgba", "#rrggbb", "#rrggbbaa"
     // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
     // Color of the ring on the active monitor.
-    active-color "#7fc8ff"
+    active-color "#7aa2f7"
     // Color of the ring on inactive monitors.
     //
     // The focus ring only draws around the active window, so the only place
     // where you can see its inactive-color is on other monitors.
-    inactive-color "#505050"
+    inactive-color "#1a1b26"
  // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
         // The angle is the same as in linear-gradient, and is optional,
@@ -294,9 +313,10 @@ window-rule {
   match app-id="obsidian"
   open-on-workspace "main"
 }
-// Rule for ghostty
+// Rule for 2/3 column width
 window-rule {
   match app-id="com.mitchellh.ghostty"
+  match app-id="thunar"
   default-column-width {
     proportion 0.66667
   }

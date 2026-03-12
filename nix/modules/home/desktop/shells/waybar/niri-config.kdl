@@ -1,0 +1,23 @@
+binds {
+  Mod+G hotkey-overlay-title="Toggle Theme Mode" {
+    spawn darkman toggle
+  }
+  Mod+Space hotkey-overlay-title="Application Launcher" {
+    spawn rofi-launcher
+  }
+  Alt+F2 hotkey-overlay-title="Run Command" {
+    spawn rofi-launcher run
+  }
+  Mod+X hotkey-overlay-title="Session menu: logout, reboot, shutdown" {
+    spawn "rofi-session-control"
+  }
+  Mod+Shift+N hotkey-overlay-title="Convert JSON/YAML to Nix." {
+    spawn json2nix-clipboard
+  }
+  Mod+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" {
+    spawn swaylock -f --image "/home/nelly/Wallpapers/047.jpg"
+  }
+  Mod+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" {
+    spawn "swaylock" "-f" "--image" "/home/nelly/Wallpapers/047.jpg"
+  }
+}

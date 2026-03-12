@@ -38,6 +38,7 @@ in
           "wheel"
           "networkmanager"
           "keys"
+          "input"
         ];
         hashedPasswordFile = cfg.hashedPasswordFile;
         openssh.authorizedKeys.keys = config.sysconf.settings.sshKeys.nelly.base;

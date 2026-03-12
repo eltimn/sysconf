@@ -4,5 +4,6 @@
     ./gnome.nix
     ./greetd.nix
     ./niri.nix
+    ./thunar.nix
   ];
 }

@@ -65,7 +65,7 @@ in
         grim
         niri
         slurp
-        swappy
+        wf-recorder
         wl-clipboard
         xwayland-satellite
       ];
@@ -93,6 +93,9 @@ in
           include "./dms/binds.kdl"
           include "./dms/wpblur.kdl"
         ''}
+        ${lib.optionalString (settings.niriShell == "waybar") ''
+          include "./waybar/config.kdl"
+        ''}
       '';
 
       "niri/main.kdl".source = ./files/main.kdl;
@@ -101,5 +104,3 @@ in
     };
   };
 }
-
-# niri regex: https://docs.rs/regex/latest/regex/#syntax

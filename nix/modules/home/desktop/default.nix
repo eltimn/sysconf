@@ -44,6 +44,7 @@ let
     ffmpeg
     filen-desktop
     firefox
+    gimp2
     # git-worktree-runner
     google-chrome
     # libnss3-tools
@@ -55,7 +56,7 @@ let
     # net-tools
     nixfmt-rfc-style
     nixpkgs-lint-community
-    notify-osd
+    # notify-osd
     nurl
     obsidian
     # sqlitebrowser
@@ -76,9 +77,11 @@ in
   imports = [
     ./cosmic
     ./niri
+    ./parts
     ./programs
     ./shells/dms
     ./shells/noctalia
+    ./shells/waybar
     ./gnome.nix
   ];
 
@@ -135,8 +138,8 @@ in
         firefox.enable = true;
         foot.enable = true;
         ghostty.enable = true;
+        nixConverter.enable = true;
         opencode.enable = true;
-        rofi.enable = true;
         vscode.enable = true;
         zed-editor.enable = true;
       };
@@ -148,17 +151,13 @@ in
       sysconf.desktop.cosmic.enable = true;
     })
     (lib.mkIf (settings.desktopEnvironment == "niri") {
-      sysconf = {
-        desktop.niri.enable = true;
-      };
+      sysconf.desktop.niri.enable = true;
     })
     # Multi-session: enable Home Manager config for both COSMIC and Niri
     (lib.mkIf (settings.desktopEnvironment == "cosmic+niri") {
-      sysconf = {
-        desktop = {
-          cosmic.enable = true;
-          niri.enable = true;
-        };
+      sysconf.desktop = {
+        cosmic.enable = true;
+        niri.enable = true;
       };
     })
     (lib.mkIf (settings.niriShell == "noctalia") {
@@ -180,14 +179,14 @@ in
               @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userContent.css";
             '';
           };
-          rofi.theme = "noctalia";
         };
       };
     })
     (lib.mkIf (settings.niriShell == "dms") {
-      sysconf = {
-        desktop.dms.enable = true;
-      };
+      sysconf.desktop.dms.enable = true;
+    })
+    (lib.mkIf (settings.niriShell == "waybar") {
+      sysconf.desktop.waybar.enable = true;
     })
   ];
 }

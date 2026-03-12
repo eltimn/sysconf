@@ -12,9 +12,9 @@ in
   imports = [
     ./containers
     ./desktop
-    ./fonts.nix
     ./services
     ./users
+    ./fonts.nix
     ./settings.nix
     ./sops.nix
   ];
@@ -34,6 +34,7 @@ in
         htop
         jq
         ncdu
+        p7zip
         parted
         python3
         s3cmd
@@ -99,7 +100,10 @@ in
       sysconf.desktop.cosmic.enable = true;
     })
     (lib.mkIf (settings.desktopEnvironment == "niri") {
-      sysconf.desktop.niri.enable = true;
+      sysconf.desktop = {
+        greetd.enable = true;
+        niri.enable = true;
+      };
     })
     # Multi-session: both COSMIC and Niri with greetd session chooser
     (lib.mkIf (settings.desktopEnvironment == "cosmic+niri") {

@@ -44,17 +44,15 @@ task clean
 
 ### Applying Configurations
 
-```bash
-task boot             # Set as boot default (applies on next boot)
-task update           # Update flake.lock (all inputs)
-```
+This will be done manually by the operator.
 
 ### Linting and Formatting
 
-The project uses `nixfmt` (version 1.2.0+), which is the official Nix formatter implementing RFC 166. Both `nixd` and `nil` LSPs use this formatter.
+The project uses `nixfmt` (version 1.2.0+), which is the official Nix formatter
+implementing RFC 166. Both `nixd` and `nil` LSPs use this formatter.
 
 ```bash
-# Format Nix files (RFC 166 style)
+# Format Nix files (RFC 166 style). For .nix files only.
 nixfmt nix/modules/home/programs/example.nix
 
 # Format all Nix files recursively (requires nixfmt-tree)
@@ -69,6 +67,9 @@ statix check  # General Nix code linter (catches anti-patterns)
 
 # Check for issues
 nix flake check  # Comprehensive validation
+
+# Validate Niri KDL files
+niri validate -c nix/modules/home/desktop/niri/files/example.kdl
 ```
 
 ### Infrastructure (OpenTofu)
@@ -102,7 +103,7 @@ Deployments will be done manually.
 
 ### Nix Module Structure
 
-**Standard module imports (order matters):**
+**Example module imports. Use only what's needed:**
 
 ```nix
 {
@@ -158,7 +159,8 @@ in
 
 ### Comments
 
-- **Inline comments**: Use `#` for brief explanations
+- **Inline comments**: Use appropriate comment string ('#', '//', etc.) for
+  brief explanations.
 - **Section headers**: Use comments to separate logical sections
 - **Documentation**: Option descriptions go in `description` field, not comments
 - **TODOs**: Acceptable but should be addressed

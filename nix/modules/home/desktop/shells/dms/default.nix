@@ -31,6 +31,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sysconf.desktop.swappy.enable = true;
 
     home = {
       file = {
@@ -39,11 +40,6 @@ in
         ".config/niri/dms/colors.kdl".source = ./files/niri/colors.kdl;
         ".config/niri/dms/wpblur.kdl".source = ./files/niri/wpblur.kdl;
         ".config/DankMaterialShell/tokyo-night.json".source = ./files/tokyo-night.json;
-        ".config/swappy/config".text = ''
-          [Default]
-          save_dir=${cfg.screenshotsPath}
-          save_filename_format=screenshot-%Y%m%d-%H%M%S.png
-        '';
       };
     };
 
@@ -140,7 +136,5 @@ in
         clearAtStartup = true;
       };
     };
-
-    systemd.user.tmpfiles.rules = [ "d ${cfg.screenshotsPath} 0755 - - -" ];
   };
 }
