@@ -23,9 +23,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Disable mako when swaync is enabled
-    sysconf.desktop.niri-services.mako = lib.mkForce false;
-
     # SwayNotificationCenter for notifications with control center
     services.swaync = {
       enable = true;

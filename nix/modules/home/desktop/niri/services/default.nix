@@ -42,12 +42,6 @@ in
   options.sysconf.desktop.niri-services = {
     enable = lib.mkEnableOption "niri shared services";
 
-    mako = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable mako notification daemon.";
-    };
-
     swayidle = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -62,35 +56,16 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # Install swayidle packages
     home.packages =
       with pkgs;
-      lib.optionals cfg.mako [ mako ]
-      ++ lib.optionals cfg.swayidle [ swaylock ]
+      lib.optionals cfg.swayidle [ swaylock ]
       ++ lib.optionals (
         cfg.swayidle
         && (niriCfg.lockTimeout > 0 || niriCfg.monitorOffTimeout > 0 || niriCfg.suspendTimeout > 0)
       ) [ swayidle ];
 
     systemd.user.services = lib.mkMerge [
-      # Mako notification daemon
-      (lib.mkIf cfg.mako {
-        mako = {
-          Unit = {
-            Description = "Mako notifications";
-            PartOf = [ "graphical-session.target" ];
-            After = [ "graphical-session.target" ];
-            ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
-          };
-          Service = {
-            ExecStart = lib.getExe pkgs.mako;
-            Restart = "on-failure";
-          };
-          Install = {
-            WantedBy = [ "graphical-session.target" ];
-          };
-        };
-      })
-
       # Polkit authentication agent
       (lib.mkIf cfg.polkitGnome {
         polkit-gnome-authentication-agent = {

@@ -29,8 +29,9 @@ in
 
   config = lib.mkIf cfg.enable {
     sysconf.desktop = {
+      mako.enable = true;
       swappy.enable = true;
-      # Enable shared niri services (mako for notifications)
+      # Enable shared niri services (polkit & swayidle)
       niri-services.enable = true;
     };
 

@@ -56,7 +56,7 @@ let
     # net-tools
     nixfmt-rfc-style
     nixpkgs-lint-community
-    notify-osd
+    # notify-osd
     nurl
     obsidian
     # sqlitebrowser
