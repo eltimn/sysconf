@@ -159,7 +159,7 @@ in
 
 ### Comments
 
-- **Inline comments**: Use appropriate comment string ('#', '//", etc.) for
+- **Inline comments**: Use appropriate comment string ('#', '//', etc.) for
   brief explanations.
 - **Section headers**: Use comments to separate logical sections
 - **Documentation**: Option descriptions go in `description` field, not comments
