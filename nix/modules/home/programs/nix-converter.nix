@@ -102,9 +102,16 @@ let
 
       # Convert
       converted=$(nix-converter -f "$tmpfile" -l "$format" 2>&1)
+      exit_code=$?
+
+      if [ $exit_code -ne 0 ]; then
+        echo "Error: nix-converter failed with exit code $exit_code" >&2
+        echo "$converted" >&2
+        exit 1
+      fi
 
       if [ -z "$converted" ]; then
-        echo "Error: Conversion failed" >&2
+        echo "Error: Conversion produced empty output" >&2
         exit 1
       fi
 
