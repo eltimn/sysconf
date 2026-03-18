@@ -53,7 +53,17 @@ in
             dfz = "difftool --tool=zed";
             st = "status";
             sw = "switch";
-            cleanup = "!git branch --merged main | grep -v '^*\\|main' | xargs -r -n 1 git branch -D";
+            cleanup = ''
+              !wt_list="$(git worktree list)" &&
+              git branch --merged main |
+              sed -e '/^[\\*]/d' -e '/ main$/d' -e '/^[[:space:]]*[+]/d' |
+              while read branch; do
+                case "$wt_list" in
+                  *"[$branch]"*) continue ;;
+                esac;
+                git branch -D "$branch";
+              done
+            '';
             prune = "fetch --prune origin"; # git remote update origin --prune (are these the same ???)
             remove = "rm --cached";
             lg = "log --pretty='tformat:%h %an (%ai): %s' --topo-order --graph";
