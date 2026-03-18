@@ -46,6 +46,7 @@ in
       type = lib.types.enum [
         "noctalia"
         "dms"
+        "waybar"
         "none"
       ];
       default = "none";

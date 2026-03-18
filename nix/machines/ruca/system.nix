@@ -48,7 +48,7 @@ in
     settings = {
       hostRole = "desktop";
       desktopEnvironment = "niri";
-      niriShell = "dms";
+      niriShell = "waybar";
     };
 
     users.nelly = {
@@ -56,6 +56,8 @@ in
       hashedPasswordFile = config.sops.secrets."users/nelly/password".path;
       envEditor = "zeditor --wait";
     };
+
+    desktop.thunar.enable = true;
 
     # BTRFS snapshots for home directory
     services = {

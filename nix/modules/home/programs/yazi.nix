@@ -28,6 +28,7 @@ in
         full-border = pkgs.yaziPlugins.full-border;
         toggle-pane = pkgs.yaziPlugins.toggle-pane;
         mount = pkgs.yaziPlugins.mount;
+        ouch = pkgs.yaziPlugins.ouch;
       };
 
       keymap = {
@@ -35,6 +36,11 @@ in
           {
             on = "M";
             run = "plugin mount";
+          }
+          {
+            on = "C";
+            run = "plugin ouch";
+            desc = "Compress with ouch";
           }
         ];
       };

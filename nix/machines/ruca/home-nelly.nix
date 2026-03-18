@@ -115,6 +115,10 @@
               left-handed
             }
 
+            trackball {
+              left-handed
+            }
+
             trackpoint {
               off
               // natural-scroll

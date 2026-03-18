@@ -131,6 +131,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sysconf.desktop.rofi = {
+      enableClipboardHistory = true;
+      enableAppLauncher = true;
+    };
+
     home = {
       file = {
         # Noctalia's theme templating writes a file with colors to .config/niri/noctalia.kdl
