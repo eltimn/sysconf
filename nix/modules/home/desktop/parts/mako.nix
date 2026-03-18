@@ -10,7 +10,7 @@ let
   cfg = config.sysconf.desktop.mako;
 
   # Tokyo Night Dark colors for mako
-  darkConfig = pkgs.writeText "mako-dark-config" ''
+  darkConfig = ''
     # Tokyo Night Dark theme
     background-color=#1a1b26
     text-color=#c0caf5
@@ -25,7 +25,7 @@ let
   '';
 
   # Tokyo Night Light colors for mako
-  lightConfig = pkgs.writeText "mako-light-config" ''
+  lightConfig = ''
     # Tokyo Night Light theme
     background-color=#e1e2e7
     text-color=#3760bf
@@ -51,11 +51,8 @@ let
     MAKO_CONFIG_DIR="${config.xdg.configHome}/mako"
     mkdir -p "$MAKO_CONFIG_DIR"
 
-    if [[ "$THEME_MODE" == "dark" ]]; then
-      cat ${cfg.darkConfig} > "$MAKO_CONFIG_DIR/config"
-    else
-      cat ${cfg.lightConfig} > "$MAKO_CONFIG_DIR/config"
-    fi
+    # Remove existing config and create symlink to appropriate theme
+    ln -sf "$MAKO_CONFIG_DIR/$THEME_MODE" "$MAKO_CONFIG_DIR/config"
 
     # Reload mako if running
     ${pkgs.mako}/bin/makoctl reload 2>/dev/null || true
@@ -65,32 +62,42 @@ in
   options.sysconf.desktop.mako = {
     enable = lib.mkEnableOption "mako notification daemon.";
 
-    darkConfigFile = lib.mkOption {
-      type = lib.types.path;
+    darkConfig = lib.mkOption {
+      type = lib.types.str;
       default = darkConfig;
-      description = "Path to the dark theme config file for mako.";
+      description = "Dark theme config text for mako.";
     };
 
-    lightConfigFile = lib.mkOption {
-      type = lib.types.path;
+    lightConfig = lib.mkOption {
+      type = lib.types.str;
       default = lightConfig;
-      description = "Path to the light theme config file for mako.";
+      description = "Light theme config text for mako.";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ syncThemeScript ];
+    home = {
+      packages = [
+        pkgs.mako
+        syncThemeScript
+      ];
+
+      # Initialize mako config with current theme on activation
+      activation.makoThemeInit = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD ${pkgs.bash}/bin/bash -c '
+          THEME_MODE=$(${lib.getExe pkgs.darkman} get 2>/dev/null || echo "dark")
+          ${lib.getExe syncThemeScript} "$THEME_MODE"
+        '
+      '';
+    };
+
+    xdg.configFile = {
+      "mako/light".text = cfg.lightConfig;
+      "mako/dark".text = cfg.darkConfig;
+    };
 
     # Register theme handler with darkman if enabled
     sysconf.desktop.themeHandlers.mako = syncThemeScript;
-
-    # Initialize mako config with current theme on activation
-    home.activation.makoThemeInit = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${pkgs.bash}/bin/bash -c '
-        THEME_MODE=$(${lib.getExe pkgs.darkman} get 2>/dev/null || echo "dark")
-        ${lib.getExe syncThemeScript} "$THEME_MODE"
-      '
-    '';
 
     # Mako notification daemon systemd service
     systemd.user.services.mako = {
