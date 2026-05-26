@@ -92,7 +92,6 @@ in
       enable = true;
       languagePacks = [ "en-US" ];
       nativeMessagingHosts = with pkgs; [ vdhcoapp ]; # video download helper companion app
-      suppressXdgMigrationWarning = true;
       policies = {
         DisableAppUpdate = true;
         DisableTelemetry = true;
