@@ -142,10 +142,15 @@ tasks:
       - ssh sysconf@{{.CLI_ARGS}} "sudo /run/current-system/activate"
 
   niri-validate:
-    desc: Validate the Niri configuration KDL files.
-    cmd: find nix/modules/home/desktop -name '*.kdl' -type f -print -exec niri validate -c {} \;
+    desc: Validate the Niri configuration KDL files in a build.
+    # cmd: find nix/modules/home/desktop -name '*.kdl' -type f -print -exec niri validate -c {} \;
+    env:
+      HM_FILES:
+        sh: nix-store -q --tree result | grep -oE '/nix/store/[a-z0-9]+-home-manager-files' | head -1
+    cmd: niri validate -c "$HM_FILES/.config/niri/config.kdl"
 
   test-blocky:
-    desc: Test Blocky DNS server (default 192.168.0.22)
+    desc: Test Blocky DNS servers
     cmds:
-      - ./nix/modules/system/services/blocky/test.sh {{.CLI_ARGS | default "192.168.0.22"}}
+      - ./nix/modules/system/services/blocky/test.sh 10.42.10.22
+      - ./nix/modules/system/services/blocky/test.sh 10.42.10.23
