@@ -194,8 +194,25 @@ tasks:
         vars: { ISO: "gnome" }
 
   iso-copy:
-    desc: Copy the iso to a USB drive
-    cmd: cp result/iso/*.iso /run/media/$USER/Ventoy
+    desc: Copy a iso to a USB drive
+    internal: true
+    requires:
+      vars:
+        - name: ISO
+          enum: [min, gnome]
+    cmd: cp result-iso-{{.ISO}}/iso/*.iso /run/media/$USER/Ventoy
+
+  iso-copy-min:
+    desc: Copy the minimal ISO to a USB drive
+    cmds:
+      - task: iso-copy
+        vars: { ISO: "min" }
+
+  iso-copy-gnome:
+    desc: Copy the GNOME ISO to a USB drive
+    cmds:
+      - task: iso-copy
+        vars: { ISO: "gnome" }
 
   #### Colmena
   deploy-hive:
