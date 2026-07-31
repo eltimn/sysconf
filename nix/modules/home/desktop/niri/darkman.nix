@@ -89,6 +89,7 @@ in
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
         };
+        # TODO: resolve this
         # The default value of `gtk.gtk4.theme` has changed from `config.gtk.theme` to `null`.
         #   You are currently using the legacy default (`config.gtk.theme`) because `home.stateVersion` is less than "26.05".
         #   To silence this warning and keep legacy behavior, set:
