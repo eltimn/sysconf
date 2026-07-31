@@ -19,21 +19,55 @@ tasks:
     cmds:
       - echo {{.NIX_CMD}}
 
-  build:
-    desc: Build the flake.
-    requires:
-      vars:
-        - "NIX_BUILD_CMD"
+  # build:
+  #   internal: true
+  #   desc: Build the flake.
+  #   requires:
+  #     vars:
+  #       - "NIX_BUILD_CMD"
+  #       - "MACHINE"
+  #   cmds:
+  #     - "{{.NIX_BUILD_CMD}} build --flake .#{{.MACHINE}}" # --print-build-logs --verbose
+
+  build-ruca:
+    desc: Build the ruca configuration
     cmds:
-      - "{{.NIX_BUILD_CMD}} build --flake .{{.CLI_ARGS}}" # --print-build-logs --verbose
+      - nix build .#nixosConfigurations.ruca.config.system.build.toplevel --out-link result-ruca
+      - task: niri-validate
+        vars: { RESULT: result-ruca }
+
+  # build-ruca:
+  #   desc: Build the ruca configuration
+  #   cmds:
+  #     - nixos-rebuild build --flake .#ruca
+  #     - task: niri-validate
+
+  build-lappy:
+    desc: Build the lappy configuration
+    cmd: nixos-rebuild build --flake .#lappy
 
   build-do-image:
     desc: Build the Digital Ocean custom image
-    cmd: nix build .#do-image
+    cmd: nix build .#do-image --print-out-paths
 
   build-iso:
+    internal: true
     desc: Build an installer ISO [gnome|min]
-    cmd: nix build .#nixosConfigurations.iso-{{.CLI_ARGS}}.config.system.build.isoImage
+    vars:
+      IMAGE: '{{default "min" .IMAGE}}'
+    cmd: nix build .#nixosConfigurations.iso-{{.IMAGE}}.config.system.build.isoImage --print-out-paths
+
+  build-iso-min:
+    desc: Build the min installer ISO
+    cmds:
+      - task: build-iso
+        vars: { IMAGE: "min" }
+
+  build-iso-gnome:
+    desc: Build the gnome installer ISO
+    cmds:
+      - task: build-iso
+        vars: { IMAGE: "gnome" }
 
   build-hives:
     desc: Build all hives without deploying
@@ -43,15 +77,30 @@ tasks:
     desc: Build local hive without deploying
     cmd: nix run .#colmena -- build --impure --on @{{.CLI_ARGS}}
 
+  build-machines:
+    internal: true
+    deps: [build-ruca, build-lappy]
+
+  build-images:
+    internal: true
+    deps: [build-do-image, build-iso-min, build-iso-gnome]
+
   build-all:
     desc: Build everything.
     cmds:
-      - nixos-rebuild build --flake .#ruca
-      - nixos-rebuild build --flake .#lappy
-      - nix run .#colmena -- build --impure
-      - nix build .#do-image
-      - nix build .#nixosConfigurations.iso-gnome.config.system.build.isoImage
-      - nix build .#nixosConfigurations.iso-min.config.system.build.isoImage
+      - task: build-machines
+      - task: build-hives
+      - task: build-images
+
+  build-all-seq:
+    desc: Build everything sequentially.
+    cmds:
+      - task: build-ruca
+      - task: build-lappy
+      - task: build-hives
+      - task: build-do-image
+      - task: build-iso-min
+      - task: build-iso-gnome
 
   switch:
     desc: Build then switch to the new build.
@@ -84,6 +133,7 @@ tasks:
     desc: Delete the result directory that the build task creates.
     cmds:
       - rm -rf result
+      - rm -rf result-ruca
 
   update:
     desc: Update packages and the lock file.
@@ -142,12 +192,25 @@ tasks:
       - ssh sysconf@{{.CLI_ARGS}} "sudo /run/current-system/activate"
 
   niri-validate:
+    internal: true
     desc: Validate the Niri configuration KDL files in a build.
-    # cmd: find nix/modules/home/desktop -name '*.kdl' -type f -print -exec niri validate -c {} \;
-    env:
-      HM_FILES:
-        sh: nix-store -q --tree result | grep -oE '/nix/store/[a-z0-9]+-home-manager-files' | head -1
-    cmd: niri validate -c "$HM_FILES/.config/niri/config.kdl"
+    vars:
+      RESULT: '{{default "result" .RESULT}}'
+    cmds:
+      - |
+        HM_FILES="$(nix-store -q --tree {{.RESULT}} | rg -o -m 1 '/nix/store/[a-z0-9]+-home-manager-files')"
+        test -n "$HM_FILES"
+        test -f "$HM_FILES/.config/niri/config.kdl"
+        niri validate -c "$HM_FILES/.config/niri/config.kdl"
+
+  # niri-validate:
+  #   internal: true
+  #   desc: Validate the Niri configuration KDL files in a build.
+  #   # cmd: find nix/modules/home/desktop -name '*.kdl' -type f -print -exec niri validate -c {} \;
+  #   env:
+  #     HM_FILES:
+  #       sh: nix-store -q --tree result | rg -o -m 1 '/nix/store/[a-z0-9]+-home-manager-files' | head -1
+  #   cmd: niri validate -c "$HM_FILES/.config/niri/config.kdl"
 
   test-blocky:
     desc: Test Blocky DNS servers
