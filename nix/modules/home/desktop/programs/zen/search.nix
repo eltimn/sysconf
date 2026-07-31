@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   force = true;
-  default = "SearXNG";
+  default = "ddg";
   engines =
     let
       nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
@@ -156,8 +156,6 @@
         definedAliases = [
           "duck"
           "ddg"
-          "dck"
-          "dckk"
         ];
       };
 
