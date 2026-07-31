@@ -128,12 +128,21 @@ tasks:
     cmd: "{{.NIX_CMD}} switch --flake ."
 
   boot:
-    desc: Build the flake and set for next boot.
+    desc: Build a flake and set for next boot.
+    internal: true
     requires:
       vars:
-        - "NIX_CMD"
+        - name: MACHINE
+          enum: [ruca, lappy]
     cmds:
-      - "{{.NIX_CMD}} boot --flake .{{.CLI_ARGS}}"
+      - "sudo nixos-rebuild boot --flake .#{{.MACHINE}}"
+
+  boot-ruca:
+    desc: Build the flake and set for next boot.
+    deps: [build-ruca]
+    cmds:
+      - task: boot
+        vars: { MACHINE: ruca }
 
   deploy:
     desc: Deploy configuration to remote host
@@ -150,6 +159,11 @@ tasks:
     desc: Update packages and the lock file.
     cmds:
       - nix flake update {{.CLI_ARGS}}
+
+  update-secrets:
+    desc: Update the secrets
+    cmds:
+      - nix flake update sysconf-secrets
 
   ### Garbage collection
   gc:
