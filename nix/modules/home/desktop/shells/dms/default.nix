@@ -17,7 +17,7 @@ in
 {
   imports = [
     inputs.dms.homeModules.dank-material-shell
-    inputs.dms-plugin-registry.modules.default
+    inputs.dms-plugin-registry.homeModules.default
   ];
 
   options.sysconf.desktop.dms = {
@@ -45,7 +45,7 @@ in
 
     programs.dank-material-shell = {
       enable = true;
-      dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+      dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default;
       systemd = {
         enable = true;
         restartIfChanged = true;

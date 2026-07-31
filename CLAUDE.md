@@ -59,7 +59,7 @@ task update           # Update flake.lock (all inputs)
 
 ```bash
 # Format Nix files (RFC 166 style)
-nixfmt-rfc-style nix/modules/home/programs/example.nix
+nixfmt nix/modules/home/programs/example.nix
 
 # Check for issues
 nix flake check
@@ -197,7 +197,7 @@ in
 ### Formatting Standards
 
 - **Indentation**: 2 spaces (no tabs)
-- **Formatter**: Use `nixfmt-rfc-style` for consistent formatting
+- **Formatter**: Use `nixfmt` for consistent formatting
 - **Variables**: camelCase (`cfg`, `basePkgs`, `desktopPkgs`)
 - **Options**: camelCase with dots (`sysconf.programs.git.enable`)
 - **Files**: kebab-case (`sshd.nix`, `git-worktree-runner.nix`)

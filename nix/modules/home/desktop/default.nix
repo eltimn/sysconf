@@ -3,6 +3,7 @@
   lib,
   osConfig,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 let
@@ -34,44 +35,46 @@ let
     fi
   '';
 
-  desktopPkgs = with pkgs; [
-    bitwarden-desktop
-    borgbackup
-    caligula
-    devbox
-    # enpass
-    # entr
-    ffmpeg
-    filen-desktop
-    firefox
-    gimp2
-    # git-worktree-runner
-    google-chrome
-    # libnss3-tools
-    libnotify
-    lm_sensors
-    # logseq
-    meld
-    # mongodb-compass
-    # net-tools
-    nixfmt-rfc-style
-    nixpkgs-lint-community
-    # notify-osd
-    nurl
-    obsidian
-    # sqlitebrowser
-    sqlitestudio
-    # vivaldi
-    # vivaldi-ffmpeg-codecs
-    vhs
-    vlc
-    # warp-terminal
-    wev
-    # wezterm # https://github.com/wezterm/wezterm/issues/6025
-    wl-color-picker
-    yubioath-flutter
-    yubikey-manager
-  ];
+  desktopPkgs =
+    with pkgs;
+    [
+      borgbackup
+      caligula
+      devbox
+      # enpass
+      # entr
+      ffmpeg
+      filen-desktop
+      firefox
+      gimp2
+      # git-worktree-runner
+      google-chrome
+      # libnss3-tools
+      libnotify
+      lm_sensors
+      # logseq
+      meld
+      # mongodb-compass
+      # net-tools
+      nixfmt
+      nixpkgs-lint-community
+      # notify-osd
+      nurl
+      obsidian
+      # sqlitebrowser
+      sqlitestudio
+      # vivaldi
+      # vivaldi-ffmpeg-codecs
+      vhs
+      vlc
+      # warp-terminal
+      wev
+      # wezterm # https://github.com/wezterm/wezterm/issues/6025
+      wl-color-picker
+      yubioath-flutter
+      yubikey-manager
+    ]
+    ++ [ pkgs-unstable.bitwarden-desktop ]; # bitwarden from 26.05 had an outdated electron
 in
 {
   imports = [

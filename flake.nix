@@ -5,7 +5,7 @@
 
   inputs = {
     # Specify the source of Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Flake modules
@@ -28,7 +28,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -37,13 +37,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     colmena = {
-      url = "github:zhaofengli/colmena/stable";
+      url = "github:zhaofengli/colmena/main";
     };
 
     zen-browser = {
@@ -98,7 +93,6 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      nixos-generators,
       git-hooks,
       ...
     }@inputs:
@@ -191,6 +185,12 @@
           ];
           specialArgs = { inherit inputs; };
         };
+
+      doImageConfig = nixpkgs.lib.nixosSystem {
+        inherit system pkgs;
+        modules = [ ./nix/machines/do-image/configuration.nix ];
+        specialArgs = { inherit inputs; };
+      };
     in
     {
       # Overlays to use a specific version as the main package. e.g use `pkgs.go` to refer to `pkgs.go_1_23`.
@@ -199,15 +199,6 @@
         isd = inputs.isd-flake.packages.${prev.stdenv.hostPlatform.system}.default;
         firefox-addons = inputs.firefox-addons.packages.${prev.stdenv.hostPlatform.system};
         # git-worktree-runner = prev.callPackage ./nix/pkgs/git-worktree-runner.nix { };
-        nix-2-33 = prev.nix.overrideAttrs (oldAttrs: {
-          version = "2.33.0";
-          src = prev.fetchFromGitHub {
-            owner = "NixOS";
-            repo = "nix";
-            rev = "231d5b41ed1b4b65f4cb875994691a4e40b150d9"; # or specific commit
-            hash = "sha256-aVwmNDnTOYZZQbTy++rYS0NOGEu9Zwljg3+TXJmw4TE=";
-          };
-        });
         # crush = prev.callPackage ./nix/pkgs/crush.nix { };
         unifi-api = inputs.eltimn-ai-tools.packages.${prev.stdenv.hostPlatform.system}.unifi-api;
         # Or for multiple tools:
@@ -221,12 +212,8 @@
       # Packages
       packages.${pkgs.stdenv.hostPlatform.system} = {
         # git-worktree-runner = pkgs.git-worktree-runner;
-        do-image = nixos-generators.nixosGenerate {
-          system = "x86_64-linux";
-          modules = [ ./nix/machines/do-image/configuration.nix ];
-          format = "do";
-        };
         colmena = inputs.colmena.packages.${pkgs.stdenv.hostPlatform.system}.colmena;
+        do-image = doImageConfig.config.system.build.image;
         # crush = pkgs.crush;
       };
 
@@ -244,6 +231,8 @@
 
         iso-gnome = isoConfig "installation-cd-graphical-gnome";
         iso-min = isoConfig "installation-cd-minimal";
+
+        do-image = doImageConfig;
       };
 
       # Colmena configuration - combined hive with tags
@@ -312,25 +301,33 @@
 
       # DevShell with pre-commit hooks
       devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          age
-          borgbackup
-          caddy
-          doctl
-          go-task
-          immich-cli
-          nixfmt
-          nixfmt-tree
-          opentofu
-          pipx
-          rumdl
-          sops
-          ssh-to-age
-          statix
-          # terraform-providers.cloudflare_cloudflare
-          # terraform-providers.digitalocean_digitalocean
-          # terraform-providers.trozz_pocketid
-        ];
+        packages =
+          with pkgs;
+          [
+            age
+            borgbackup
+            caddy
+            doctl
+            go-task
+            immich-cli
+            nixfmt
+            nixfmt-tree
+            opentofu
+            rumdl
+            sops
+            ssh-to-age
+            statix
+            # terraform-providers.cloudflare_cloudflare
+            # terraform-providers.digitalocean_digitalocean
+            # terraform-providers.trozz_pocketid
+          ]
+          ++ [
+            # TODO: switch back to stable when fixed upstream
+            # Tests were failing with 26.05 (pipx v1.8) and unstable (pipx v1.14 - 2026-07-30)
+            (pkgs-unstable.pipx.overridePythonAttrs (_: {
+              doCheck = false;
+            }))
+          ];
 
         shellHook = ''
           echo "Welcome to sysconf!"

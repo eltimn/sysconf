@@ -91,7 +91,6 @@ in
     programs.zen-browser = {
       enable = true;
       languagePacks = [ "en-US" ];
-      nativeMessagingHosts = with pkgs; [ vdhcoapp ]; # video download helper companion app
       policies = {
         DisableAppUpdate = true;
         DisableTelemetry = true;

@@ -22,14 +22,14 @@ variable "do_access_token" {
 
 variable "do_custom_image_name" {
   description = "Name of the Digital Ocean custom image"
-  type = string
-  default = "nixos-25.11-v3"
+  type        = string
+  default     = "nixos-26.05-v1"
 }
 
 variable "region" {
   description = "The region to use."
-  type = string
-  default = "nyc3"
+  type        = string
+  default     = "nyc3"
 }
 
 # variable "home_ip" {

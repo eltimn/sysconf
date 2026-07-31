@@ -15,7 +15,8 @@ in
   config = lib.mkIf cfg.enable {
     programs.firefox = {
       enable = true;
-      nativeMessagingHosts = with pkgs; [ vdhcoapp ]; # video download helper companion app
+      # TODO: Move configPath to new default.
+      configPath = ".mozilla/firefox"; # New default is `${config.xdg.configHome}/mozilla/firefox`
       profiles.nelly = {
         # userChrome = ''
         #   									#sidebar-box[sidebarcommand^="containertabs"] #sidebar-header { display: none; }
