@@ -5,7 +5,7 @@
 .direnv
 *.code-workspace
 result
-result-ruca
+result-*
 history.txt
 junk/
 .terraform/
