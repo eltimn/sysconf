@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   force = true;
-  default = "DuckDuckGo";
+  default = "ddg";
   engines =
     let
       nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
@@ -137,7 +137,7 @@
         ];
       };
 
-      "DuckDuckGo" = {
+      "ddg" = {
         urls = [
           {
             template = "https://duckduckgo.com";

@@ -19,21 +19,66 @@ tasks:
     cmds:
       - echo {{.NIX_CMD}}
 
-  build:
-    desc: Build the flake.
+  ### Build
+
+  # build:
+  #   internal: true
+  #   desc: Build the flake.
+  #   requires:
+  #     vars:
+  #       - "NIX_BUILD_CMD"
+  #       - "MACHINE"
+  #   cmds:
+  #     - "{{.NIX_BUILD_CMD}} build --flake .#{{.MACHINE}}" # --print-build-logs --verbose
+
+  build-machine:
+    desc: Build a machine configuration
+    internal: true
     requires:
       vars:
-        - "NIX_BUILD_CMD"
+        - name: MACHINE
+          enum: [ruca, lappy]
     cmds:
-      - "{{.NIX_BUILD_CMD}} build --flake .{{.CLI_ARGS}}" # --print-build-logs --verbose
+      - nix build .#nixosConfigurations.{{.MACHINE}}.config.system.build.toplevel --out-link result-{{.MACHINE}} # use this instead of nixos-rebuild to control the result directory
+
+  build-ruca:
+    desc: Build the ruca configuration
+    cmds:
+      - task: build-machine
+        vars: { MACHINE: ruca }
+      - task: niri-validate
+        vars: { RESULT: "result-ruca" }
+
+  build-lappy:
+    desc: Build the lappy configuration
+    cmds:
+      - task: build-machine
+        vars: { MACHINE: lappy }
 
   build-do-image:
     desc: Build the Digital Ocean custom image
-    cmd: nix build .#do-image
+    cmd: nix build .#do-image --print-out-paths --out-link result-do-image
 
   build-iso:
+    internal: true
     desc: Build an installer ISO [gnome|min]
-    cmd: nix build .#nixosConfigurations.iso-{{.CLI_ARGS}}.config.system.build.isoImage
+    requires:
+      vars:
+        - name: ISO
+          enum: [min, gnome]
+    cmd: nix build .#nixosConfigurations.iso-{{.ISO}}.config.system.build.isoImage --print-out-paths --out-link result-iso-{{.ISO}}
+
+  build-iso-min:
+    desc: Build the minimal installer ISO
+    cmds:
+      - task: build-iso
+        vars: { ISO: "min" }
+
+  build-iso-gnome:
+    desc: Build the gnome installer ISO
+    cmds:
+      - task: build-iso
+        vars: { ISO: "gnome" }
 
   build-hives:
     desc: Build all hives without deploying
@@ -43,15 +88,40 @@ tasks:
     desc: Build local hive without deploying
     cmd: nix run .#colmena -- build --impure --on @{{.CLI_ARGS}}
 
+  build-machines:
+    deps: [build-ruca, build-lappy]
+
+  build-images:
+    deps: [build-do-image, build-iso-min, build-iso-gnome]
+
   build-all:
     desc: Build everything.
     cmds:
-      - nixos-rebuild build --flake .#ruca
-      - nixos-rebuild build --flake .#lappy
-      - nix run .#colmena -- build --impure
-      - nix build .#do-image
-      - nix build .#nixosConfigurations.iso-gnome.config.system.build.isoImage
-      - nix build .#nixosConfigurations.iso-min.config.system.build.isoImage
+      - task: build-machines
+      - task: build-hives
+      - task: build-images
+
+  build-all-seq:
+    desc: Build everything sequentially.
+    cmds:
+      - task: build-ruca
+      - task: build-lappy
+      - task: build-hives
+      - task: build-do-image
+      - task: build-iso-min
+      - task: build-iso-gnome
+
+  niri-validate:
+    internal: true
+    desc: Validate the Niri configuration KDL files in a build.
+    vars:
+      RESULT: '{{default "result" .RESULT}}'
+    cmds:
+      - |
+        HM_FILES="$(nix-store -q --tree {{.RESULT}} | rg -o -m 1 '/nix/store/[a-z0-9]+-home-manager-files')"
+        test -n "$HM_FILES"
+        test -f "$HM_FILES/.config/niri/config.kdl"
+        niri validate -c "$HM_FILES/.config/niri/config.kdl"
 
   switch:
     desc: Build then switch to the new build.
@@ -70,26 +140,18 @@ tasks:
     cmds:
       - nixos-rebuild switch --flake .#{{.CLI_ARGS}} --target-host sysconf@{{.CLI_ARGS}} --sudo --ask-sudo-password
 
-  eval:
-    desc: Show a configuration value.
-    cmds:
-      - nix eval .#{{.CLI_ARGS}} # task eval -- nixosConfigurations.ruca.config.services.xserver.videoDrivers
-
-  option:
-    desc: Show the calculated value of a flake option.
-    cmds:
-      - nixos-option --flake . {{.CLI_ARGS}}
-
   clean:
-    desc: Delete the result directory that the build task creates.
+    desc: Delete the result directories that the build task creates.
     cmds:
       - rm -rf result
+      - rm -rf result-*
 
   update:
     desc: Update packages and the lock file.
     cmds:
       - nix flake update {{.CLI_ARGS}}
 
+  ### Garbage collection
   gc:
     desc: Run both gc tasks.
     deps: [gc-os, gc-hm]
@@ -109,23 +171,50 @@ tasks:
     cmds:
       - sudo nix-collect-garbage --delete-older-than 14d # system wide
 
-  news:
-    desc: Display Home Manager news
-    cmds:
-      - home-manager news --flake .
-
-  history:
-    desc: List all previous generations available.
-    cmd: nix profile history --profile /nix/var/nix/profiles/system
-
+  ### ISO
   iso-burn:
     desc: Burn an iso to a USB drive
-    cmd: caligula burn $(gum file ./result/iso)
+    internal: true
+    requires:
+      vars:
+        - name: ISO
+          enum: [min, gnome]
+    cmd: caligula burn $(gum file ./result-iso-{{.ISO}}/iso)
+
+  iso-burn-min:
+    desc: Burn the minimal ISO to disk
+    cmds:
+      - task: iso-burn
+        vars: { ISO: "min" }
+
+  iso-burn-gnome:
+    desc: Burn the gnome ISO to disk
+    cmds:
+      - task: iso-burn
+        vars: { ISO: "gnome" }
 
   iso-copy:
-    desc: Copy the iso to a USB drive
-    cmd: cp result/iso/*.iso /run/media/$USER/Ventoy
+    desc: Copy a iso to a USB drive
+    internal: true
+    requires:
+      vars:
+        - name: ISO
+          enum: [min, gnome]
+    cmd: cp result-iso-{{.ISO}}/iso/*.iso /run/media/$USER/Ventoy
 
+  iso-copy-min:
+    desc: Copy the minimal ISO to a USB drive
+    cmds:
+      - task: iso-copy
+        vars: { ISO: "min" }
+
+  iso-copy-gnome:
+    desc: Copy the GNOME ISO to a USB drive
+    cmds:
+      - task: iso-copy
+        vars: { ISO: "gnome" }
+
+  #### Colmena
   deploy-hive:
     desc: Deploy a hive
     cmd: nix run .#colmena -- apply --impure --on @{{.CLI_ARGS}}
@@ -141,16 +230,29 @@ tasks:
       # Update password after key upload (hashedPasswordFile requires activation to update /etc/shadow)
       - ssh sysconf@{{.CLI_ARGS}} "sudo /run/current-system/activate"
 
-  niri-validate:
-    desc: Validate the Niri configuration KDL files in a build.
-    # cmd: find nix/modules/home/desktop -name '*.kdl' -type f -print -exec niri validate -c {} \;
-    env:
-      HM_FILES:
-        sh: nix-store -q --tree result | grep -oE '/nix/store/[a-z0-9]+-home-manager-files' | head -1
-    cmd: niri validate -c "$HM_FILES/.config/niri/config.kdl"
-
+  ### Tests
   test-blocky:
     desc: Test Blocky DNS servers
     cmds:
       - ./nix/modules/system/services/blocky/test.sh 10.42.10.22
       - ./nix/modules/system/services/blocky/test.sh 10.42.10.23
+
+  ## Utils
+  news:
+    desc: Display Home Manager news
+    cmds:
+      - home-manager news --flake .
+
+  history:
+    desc: List all previous generations available.
+    cmd: nix profile history --profile /nix/var/nix/profiles/system
+
+  eval:
+    desc: Show a configuration value.
+    cmds:
+      - nix eval .#{{.CLI_ARGS}} # task eval -- nixosConfigurations.ruca.config.services.xserver.videoDrivers
+
+  option:
+    desc: Show the calculated value of a flake option.
+    cmds:
+      - nixos-option --flake . {{.CLI_ARGS}}
