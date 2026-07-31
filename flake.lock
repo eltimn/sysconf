@@ -157,11 +157,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1785384175,
-        "narHash": "sha256-sWSJPXpQwKJstL4rdhpAQYCYlHK5wOkEHR8/lNHBVb4=",
+        "lastModified": 1785470577,
+        "narHash": "sha256-fZJg72+gLEOSnykkuhI9WX9wS3bIbN5D6aonGXfNiTI=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "db607f3d0afe811bcb3b16266f28b2fc5af4e74f",
+        "rev": "d4cbdc76523635d7d252fe8365bf79b54dd8c527",
         "type": "gitlab"
       },
       "original": {
@@ -348,11 +348,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1785379933,
-        "narHash": "sha256-pGF24+SRXpA15zZHcW2r8Tpoljb2AEMi/dMkg8AMn5g=",
+        "lastModified": 1785468833,
+        "narHash": "sha256-e5ACzQu7wKCje0ziNMm+xSyIaZWfMB2W573p6dgStHA=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "81b6d2803d8f04a4084c3e0eca988e2b573e52ee",
+        "rev": "b9452374ccfd2b13c946198f932814e79f28e2bc",
         "type": "github"
       },
       "original": {
@@ -379,11 +379,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1785318670,
-        "narHash": "sha256-dN6Ou5x/+23FZLEpYP3IffO+NyJFzUlGumt1uu3MMaY=",
+        "lastModified": 1785454630,
+        "narHash": "sha256-LQy14TZp77TwbQf40gg1V3jo8FwJG0jGDkAH+zRHqg8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0954f7ee2f6bb3dc7d4e3d0d8bcb8fd4bde4cfc5",
+        "rev": "1559d3daa3ecc813a650b79375ea61b6741b8746",
         "type": "github"
       },
       "original": {
@@ -551,10 +551,10 @@
     "sysconf-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1770762053,
-        "narHash": "sha256-gPNLnH1xh9oaLNo4xcm09elQhSFJAg2AEOyeHa7RP7A=",
+        "lastModified": 1785523728,
+        "narHash": "sha256-2igHEW6WmPud/aQxWJoPfu7EOOjmQKQtxDuV7dokUGM=",
         "ref": "main",
-        "rev": "b9a7b586c94f94553e571a0e5169867839147b05",
+        "rev": "600f98f61c695a7b48a47dd83aa5bcef84d7dd20",
         "shallow": true,
         "type": "git",
         "url": "ssh://forgejo@git.home.eltimn.com/eltimn/sysconf-secrets.git"

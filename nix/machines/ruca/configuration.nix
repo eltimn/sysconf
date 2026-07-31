@@ -4,5 +4,6 @@
     ./disks.nix
     ./hardware-configuration.nix
     ./system.nix
+    ./mounts.nix
   ];
 }
