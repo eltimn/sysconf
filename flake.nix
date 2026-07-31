@@ -301,25 +301,33 @@
 
       # DevShell with pre-commit hooks
       devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          age
-          borgbackup
-          caddy
-          doctl
-          go-task
-          immich-cli
-          nixfmt
-          nixfmt-tree
-          opentofu
-          pipx
-          rumdl
-          sops
-          ssh-to-age
-          statix
-          # terraform-providers.cloudflare_cloudflare
-          # terraform-providers.digitalocean_digitalocean
-          # terraform-providers.trozz_pocketid
-        ];
+        packages =
+          with pkgs;
+          [
+            age
+            borgbackup
+            caddy
+            doctl
+            go-task
+            immich-cli
+            nixfmt
+            nixfmt-tree
+            opentofu
+            rumdl
+            sops
+            ssh-to-age
+            statix
+            # terraform-providers.cloudflare_cloudflare
+            # terraform-providers.digitalocean_digitalocean
+            # terraform-providers.trozz_pocketid
+          ]
+          ++ [
+            # TODO: switch back to stable when fixed upstream
+            # Tests were failing with 26.05 (pipx v1.8) and unstable (pipx v1.14 - 2026-07-30)
+            (pkgs-unstable.pipx.overridePythonAttrs (_: {
+              doCheck = false;
+            }))
+          ];
 
         shellHook = ''
           echo "Welcome to sysconf!"
