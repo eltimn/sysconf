@@ -137,7 +137,7 @@
         ];
       };
 
-      "ddg" = {
+      "DuckDuckGo" = {
         urls = [
           {
             template = "https://duckduckgo.com";
