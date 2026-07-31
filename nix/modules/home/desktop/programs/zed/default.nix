@@ -69,7 +69,7 @@ in
       rumdl # markdown formatter
     ];
 
-    # https://home-manager-options.extranix.com/?query=programs.zed-editor&release=release-25.11
+    # https://home-manager-options.extranix.com/?query=programs.zed-editor&release=release-26.05
     programs.zed-editor = {
       enable = true;
       extensions = [

@@ -12,22 +12,26 @@ let
 in
 {
   # Make initrd extra tolerant of USB/Ventoy-style boot media.
-  boot.initrd.availableKernelModules = lib.mkDefault [
-    "xhci_pci"
-    "ehci_pci"
-    "uhci_hcd"
-    "usb_storage"
-    "uas"
-    "sd_mod"
-    "sr_mod"
-  ];
+  boot = {
+    initrd.availableKernelModules = lib.mkDefault [
+      "xhci_pci"
+      "ehci_pci"
+      "uhci_hcd"
+      "usb_storage"
+      "uas"
+      "sd_mod"
+      "sr_mod"
+    ];
 
-  # Avoid early USB autosuspend issues on some firmware.
-  boot.kernelParams = lib.mkDefault [ "usbcore.autosuspend=-1" ];
+    # Avoid early USB autosuspend issues on some firmware.
+    kernelParams = lib.mkDefault [ "usbcore.autosuspend=-1" ];
+    # ZFS root auto-import is unsafe and becomes false by default in 26.11.
+    zfs.forceImportRoot = false;
 
-  # linux kernel
-  # boot.kernelPackages = pkgs.linuxPackages_6_13;
-  # boot.supportedFilesystems.zfs = lib.mkForce false;
+    # linux kernel
+    # kernelPackages = pkgs.linuxPackages_6_13;
+    # supportedFilesystems.zfs = lib.mkForce false;
+  };
 
   # gnome power settings do not turn off screen
   systemd = {

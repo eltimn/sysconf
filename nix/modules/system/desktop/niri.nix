@@ -34,7 +34,6 @@ in
         "org.freedesktop.impl.portal.Settings" = [ "darkman" ];
       };
       config.niri = {
-        default = [ "gtk" ];
         "org.freedesktop.impl.portal.Settings" = [ "darkman" ];
         # Screenshot and screencast
         "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
