@@ -13,7 +13,7 @@
       EDITOR = osConfig.sysconf.users.nelly.envEditor;
     };
 
-    stateVersion = "25.11"; # Don't change unless installing fresh.
+    stateVersion = "26.05"; # Don't change unless installing fresh.
   };
 
   # Basic user configuration

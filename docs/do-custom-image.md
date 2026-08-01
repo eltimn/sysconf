@@ -1,6 +1,7 @@
 # Digital Ocean Custom Image Creation
 
-This document outlines the process for creating and deploying a custom NixOS image for Digital Ocean.
+This document outlines the process for creating and deploying a custom NixOS
+image for Digital Ocean.
 
 ## Prerequisites
 
@@ -17,27 +18,31 @@ Use the Taskfile to build the Digital Ocean image:
 task build-do-image
 ```
 
-This will create a compressed qcow2 image at:
-```
-./result/nixos-image-digital-ocean-25.11.20251223.76701a1-x86_64-linux.qcow2.gz
-```
+This will create a compressed qcow2 image at: 
+*./result-do-image/nixos-image-digital-ocean-XXXXXXXXXXX-x86_64-linux.qcow2.gz*
 
 ### 2. Upload to Spaces
 
-#### Option A: Manual Upload (Recommended)
+#### Option A: Use upload-do-image task (Recommended)
+
+```bash
+task upload-do-image
+```
+
+#### Option B: Manual Upload (Recommended)
 
 1. Access your Digital Ocean Spaces bucket via the web interface
-2. Upload the image file from `./result/`
+2. Upload the image file from `./result-do-image/`
 3. Set the file to be publicly accessible
 4. Note the public URL
 
-#### Option B: Using s3cmd (if configured)
+#### Option C: Using s3cmd (if configured)
 
 ```bash
 s3cmd --access_key=$AWS_ACCESS_KEY_ID \
       --secret_key=$AWS_SECRET_ACCESS_KEY \
       --host=nyc3.digitaloceanspaces.com \
-      put ./result/nixos-image-digital-ocean-25.11.20251223.76701a1-x86_64-linux.qcow2.gz \
+      put ./result/nixos-image-digital-ocean-XXXXXXXXXXX-x86_64-linux.qcow2.gz \
       s3://sysconf-images/nixos-25.11-v3.qcow2.gz \
       --acl-public
 ```
@@ -46,14 +51,16 @@ s3cmd --access_key=$AWS_ACCESS_KEY_ID \
 
 Use OpenTofu to create the custom image and test VPS.
 
+1. Add an entry for the new image in `infra/images.tf`
+2. Apply the changes:
+
 ```bash
 cd infra
 tofu apply
 ```
 
-This will:
-- Upload the image to Spaces (configured in TF)
-- Create a Digital Ocean custom image from the uploaded file
+This will create a Digital Ocean custom image from the uploaded file in the
+Spaces bucket (sysconf-images)
 
 ### 4. Deploy with OpenTofu
 
@@ -66,6 +73,7 @@ This will:
 ### Image Features
 
 The custom NixOS image includes:
+
 - SSH access for both `sysconf` and `nelly` users
 - Essential packages: vim, git, htop, curl, wget
 - Flakes and nix-command enabled
@@ -80,6 +88,7 @@ The custom NixOS image includes:
 ## Version Management
 
 When updating the image:
+
 1. Increment version in the filename (v1, v2, v3, etc.)
 2. Update the Spaces URL accordingly
 3. Create new DO custom image with incremented version
@@ -93,4 +102,4 @@ After successful deployment, clean up build artifacts:
 task clean
 ```
 
-This removes the `result/` directory containing the built image.
+This removes the `result-do-image/` directory containing the built image.

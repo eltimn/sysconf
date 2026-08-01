@@ -12,14 +12,20 @@ terraform {
   required_version = ">= 1.6"
 
   backend "s3" {
-    endpoint                    = "nyc3.digitaloceanspaces.com"
-    region                      = "us-east-1"
-    bucket                      = "eltimn-tf-state"
-    key                         = "eltimn.com/terraform.tfstate"
+    endpoints = {
+      s3 = "https://nyc3.digitaloceanspaces.com"
+    }
+
+    region = "us-east-1"
+    bucket = "eltimn-tf-state"
+    key    = "eltimn.com/terraform.tfstate"
+
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
     skip_requesting_account_id  = true
     skip_s3_checksum            = true
+
+    use_lockfile = true
   }
 }

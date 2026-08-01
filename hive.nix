@@ -5,7 +5,7 @@
   ...
 }:
 let
-  secretsPath = builtins.toString inputs.sysconf-secrets;
+  secretsPath = toString inputs.sysconf-secrets;
 
   mkKeyCommand = pathSegments: [
     "sops"
@@ -170,5 +170,9 @@ in
   illmatic = colmenaConfig "illmatic" [ "local" "illmatic" "dns" ] illmaticKeys;
 
   ## Digital Ocean (DO) hosts ##
-  # nixos-test-01 = colmenaConfig "nixos-test-01.eltimn.com" [ "do" "digitalocean" ] mkPasswordKeys;
+  nixos-test-01 = colmenaConfig "nixos-test-01.eltimn.com" [
+    "do"
+    "digitalocean"
+    "nixos-test-01"
+  ] mkPasswordKeys;
 }

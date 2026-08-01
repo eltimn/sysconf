@@ -9,7 +9,7 @@
   ];
 
   # Basic system configuration
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
   # Networking - Digital Ocean will configure this
   networking.useDHCP = lib.mkForce true;

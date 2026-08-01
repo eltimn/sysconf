@@ -7,6 +7,7 @@ vars:
     sh: if [ -e /etc/NIXOS ]; then echo "sudo nixos-rebuild"; else echo "home-manager"; fi
   NIX_BUILD_CMD:
     sh: if [ -e /etc/NIXOS ]; then echo "nixos-rebuild"; else echo "home-manager"; fi
+  DO_IMAGE_NAME: nixos-26.05-v1
 
 tasks:
   echo:
@@ -84,9 +85,32 @@ tasks:
     desc: Build all hives without deploying
     cmd: nix run .#colmena -- build --impure
 
+  build-hive-internal:
+    desc: Build a hive without deploying
+    internal: true
+    requires:
+      vars:
+        - name: HIVE
+          enum: [local, do, dns, cbox, illmatic, nixos-test-01]
+    cmd: nix run .#colmena -- build --impure --on @{{.HIVE}}
+
   build-hive:
-    desc: Build local hive without deploying
-    cmd: nix run .#colmena -- build --impure --on @{{.CLI_ARGS}}
+    desc: Build a hive without deploying
+    cmds:
+      - task: build-hive-internal
+        vars: { HIVE: "{{.CLI_ARGS}}" }
+
+  build-hive-do:
+    desc: Build digital ocean hive without deploying
+    cmds:
+      - task: build-hive-internal
+        vars: { HIVE: do }
+
+  build-hive-local:
+    desc: Build digital ocean hive without deploying
+    cmds:
+      - task: build-hive-internal
+        vars: { HIVE: local }
 
   build-machines:
     deps: [build-ruca, build-lappy]
@@ -165,6 +189,19 @@ tasks:
     cmds:
       - nix flake update sysconf-secrets
 
+  upload-do-image:
+    desc: Upload the do-image
+    deps: [build-do-image]
+    cmds:
+      - |
+        set -- ./result-do-image/*.qcow2.gz
+        test -f "$1"
+        test "$#" -eq 1
+        s3cmd -c ~/secret/sysconf/digital-ocean/s3-images-creds \
+        put "$1" \
+        s3://sysconf-images/{{.DO_IMAGE_NAME}}.qcow2.gz \
+        --acl-public
+
   ### Garbage collection
   gc:
     desc: Run both gc tasks.
@@ -229,9 +266,32 @@ tasks:
         vars: { ISO: "gnome" }
 
   #### Colmena
+  deploy-hive-internal:
+    desc: Deploy a hive
+    internal: true
+    requires:
+      vars:
+        - name: HIVE
+          enum: [local, do, dns, cbox, illmatic, nixos-test-01]
+    cmd: nix run .#colmena -- apply --impure --on @{{.HIVE}}
+
   deploy-hive:
     desc: Deploy a hive
-    cmd: nix run .#colmena -- apply --impure --on @{{.CLI_ARGS}}
+    cmds:
+      - task: deploy-hive-internal
+        vars: { HIVE: "{{.CLI_ARGS}}" }
+
+  deploy-hive-do:
+    desc: Deploy the digital ocean hive
+    cmds:
+      - task: deploy-hive-internal
+        vars: { HIVE: do }
+
+  deploy-hive-local:
+    desc: Deploy the local hive
+    cmds:
+      - task: deploy-hive-internal
+        vars: { HIVE: local }
 
   deploy-hives:
     desc: Deploy all hives
