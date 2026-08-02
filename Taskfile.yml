@@ -91,7 +91,7 @@ tasks:
     requires:
       vars:
         - name: HIVE
-          enum: [local, do, dns, cbox, illmatic, nixos-test-01]
+          enum: [local, do, dns, cbox, illmatic, vps1]
     cmd: nix run .#colmena -- build --impure --on @{{.HIVE}}
 
   build-hive:
@@ -272,7 +272,7 @@ tasks:
     requires:
       vars:
         - name: HIVE
-          enum: [local, do, dns, cbox, illmatic, nixos-test-01]
+          enum: [local, do, dns, cbox, illmatic, vps1]
     cmd: nix run .#colmena -- apply --impure --on @{{.HIVE}}
 
   deploy-hive:

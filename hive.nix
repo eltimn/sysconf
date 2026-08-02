@@ -170,9 +170,9 @@ in
   illmatic = colmenaConfig "illmatic" [ "local" "illmatic" "dns" ] illmaticKeys;
 
   ## Digital Ocean (DO) hosts ##
-  nixos-test-01 = colmenaConfig "nixos-test-01.eltimn.com" [
+  vps1 = colmenaConfig "vps1.eltimn.com" [
     "do"
     "digitalocean"
-    "nixos-test-01"
+    "vps1"
   ] mkPasswordKeys;
 }

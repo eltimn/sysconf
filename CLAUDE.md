@@ -11,7 +11,7 @@ This repository contains declarative NixOS and Home Manager configurations for m
 - `lappy`: Laptop
 - `cbox`: Home server
 - `illmatic`: Home server/NAS
-- `nixos-test-01`: Digital Ocean test VPS
+- `vps1`: Digital Ocean VPS
 
 **Core Technologies:**
 - Nix Flakes for declarative package management

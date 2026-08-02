@@ -34,5 +34,5 @@
   };
 
   # Enable Nginx container
-  sysconf.containers.nginx.enable = true;
+  # sysconf.containers.nginx.enable = true;
 }
