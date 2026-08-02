@@ -100,3 +100,12 @@ resource "cloudflare_dns_record" "keybase" {
   ttl     = 1
   proxied = false
 }
+
+resource "cloudflare_dns_record" "bluesky" {
+  zone_id = var.cloudflare_zone_id
+  name    = "_atproto"
+  content = "did=did:plc:pp5e3w7evk7brm4dh73lsxc6"
+  type    = "TXT"
+  ttl     = 1
+  proxied = false
+}
