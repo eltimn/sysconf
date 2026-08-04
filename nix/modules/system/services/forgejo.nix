@@ -41,7 +41,15 @@ in
 
         security.LOGIN_REMEMBER_DAYS = 365;
         service.DISABLE_REGISTRATION = true;
-        session.COOKIE_SECURE = true;
+
+        session = {
+          COOKIE_SECURE = true;
+          SESSION_LIFE_TIME = 604800; # 7 days, seconds
+          GC_INTERVAL_TIME = 86400;
+        };
+
+        # Will be available in v16
+        oauth2_client.ENABLE_REMEMBER_ME = true;
       };
     };
 

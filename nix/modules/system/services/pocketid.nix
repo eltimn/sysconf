@@ -35,6 +35,10 @@ in
         PORT = cfg.port;
         TRUST_PROXY = true;
         ANALYTICS_DISABLED = true;
+
+        # In order to use these env vars, you must disable UI config.
+        # UI_CONFIG_DISABLED = true;
+        # SESSION_DURATION = 43200; # 30 days, minutes
       };
       credentials = {
         ENCRYPTION_KEY = "/run/keys/pocketid-encryption-key";
