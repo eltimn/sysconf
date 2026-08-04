@@ -131,10 +131,14 @@ in
 
   environment.systemPackages = with pkgs; [
     clinfo
+    freecad
     isd
+    openscad
+    openscad-lsp
+    orca-slicer
     pciutils
-    system-config-printer
     quickemu
+    system-config-printer
 
     # Bluetooth CLI tools (e.g. bluetoothctl)
     bluez
