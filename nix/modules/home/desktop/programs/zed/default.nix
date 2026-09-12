@@ -73,6 +73,7 @@ in
     programs.zed-editor = {
       enable = true;
       extensions = [
+        "env"
         "git-firefly"
         "gleam"
         "html"

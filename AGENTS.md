@@ -24,7 +24,8 @@ See @hive.nix for details about Colmena.
 
 ```bash
 # Build configuration for a specific host (ruca, lappy)
-task build -- '#ruca'
+task build-ruca
+task build-lappy
 
 # Build colmena hosts (cbox, illmatic)
 task build-hive -- <tag>  # <tag> can be cbox, illmatic, local, dns, or digitalocean.
